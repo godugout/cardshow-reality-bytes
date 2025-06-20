@@ -42,7 +42,7 @@ const Card3D = ({
   });
 
   // Spring animation for hover and flip effects
-  const { rotation, position, scale: animatedScale } = useSpring({
+  const { rotation, position, scale: springScale } = useSpring({
     rotation: [
       isFlipped ? Math.PI : 0,
       isHovered && !isFlipped ? 0.1 : 0,
@@ -53,31 +53,25 @@ const Card3D = ({
     config: { tension: 300, friction: 40 }
   });
 
-  // Touch gesture handling
-  const bind = useGesture(
-    {
-      onDrag: ({ offset: [x, y] }) => {
-        if (!interactive || !meshRef.current) return;
-        meshRef.current.rotation.y = x / 100;
-        meshRef.current.rotation.x = -y / 100;
-      },
-      onPinch: ({ offset: [scale] }) => {
-        if (!interactive || !meshRef.current) return;
-        const newScale = Math.max(0.5, Math.min(2, 1 + scale / 200));
-        meshRef.current.scale.setScalar(newScale);
-      },
-      onDoubleClick: () => {
-        if (interactive) {
-          setIsFlipped(!isFlipped);
-          onClick?.();
-        }
-      }
+  // Touch gesture handling - removed target option for Three.js compatibility
+  const bind = useGesture({
+    onDrag: ({ offset: [x, y] }) => {
+      if (!interactive || !meshRef.current) return;
+      meshRef.current.rotation.y = x / 100;
+      meshRef.current.rotation.x = -y / 100;
     },
-    {
-      target: meshRef,
-      eventOptions: { passive: false }
+    onPinch: ({ offset: [scale] }) => {
+      if (!interactive || !meshRef.current) return;
+      const newScale = Math.max(0.5, Math.min(2, 1 + scale / 200));
+      meshRef.current.scale.setScalar(newScale);
+    },
+    onDoubleClick: () => {
+      if (interactive) {
+        setIsFlipped(!isFlipped);
+        onClick?.();
+      }
     }
-  );
+  });
 
   // Animation frame updates
   useFrame((state) => {
@@ -118,7 +112,7 @@ const Card3D = ({
       ref={meshRef}
       rotation={rotation as any}
       position={position as any}
-      scale={animatedScale}
+      scale={springScale}
       material={material}
       onPointerEnter={() => interactive && setIsHovered(true)}
       onPointerLeave={() => interactive && setIsHovered(false)}
