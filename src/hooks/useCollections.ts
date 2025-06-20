@@ -59,22 +59,33 @@ export const useCollections = (filters: CollectionFilters = {}) => {
 
         const followingIds = new Set(following?.map(f => f.collection_id) || []);
         
-        // Get card counts
+        // Get card counts - handle potential missing quantity column
         const collectionIds = data.map(c => c.id);
-        const { data: cardCounts } = await supabase
-          .from('collection_cards')
-          .select('collection_id, quantity.sum()')
-          .in('collection_id', collectionIds);
+        if (collectionIds.length > 0) {
+          const { data: cardCounts } = await supabase
+            .from('collection_cards')
+            .select('collection_id')
+            .in('collection_id', collectionIds);
 
-        const cardCountMap = new Map(
-          cardCounts?.map(cc => [cc.collection_id, cc.sum]) || []
-        );
-        
-        collectionsWithExtras = data.map(collection => ({
-          ...collection,
-          is_following: followingIds.has(collection.id),
-          card_count: cardCountMap.get(collection.id) || 0
-        }));
+          // Count cards per collection
+          const cardCountMap = new Map<string, number>();
+          cardCounts?.forEach(cc => {
+            const currentCount = cardCountMap.get(cc.collection_id) || 0;
+            cardCountMap.set(cc.collection_id, currentCount + 1);
+          });
+          
+          collectionsWithExtras = data.map(collection => ({
+            ...collection,
+            is_following: followingIds.has(collection.id),
+            card_count: cardCountMap.get(collection.id) || 0
+          }));
+        } else {
+          collectionsWithExtras = data.map(collection => ({
+            ...collection,
+            is_following: followingIds.has(collection.id),
+            card_count: 0
+          }));
+        }
       } else if (data) {
         collectionsWithExtras = data.map(collection => ({
           ...collection,
