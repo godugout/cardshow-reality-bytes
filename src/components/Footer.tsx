@@ -1,6 +1,6 @@
 
 import { Badge } from "@/components/ui/badge";
-import { Github, Twitter, Discord, Mail } from "lucide-react";
+import { Github, Twitter, MessageCircle, Mail } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -52,7 +52,7 @@ const Footer = () => {
             <h3 className="text-white font-semibold mb-4">Community</h3>
             <div className="flex space-x-4 mb-4">
               <a href="#" className="text-gray-400 hover:text-[#00C851] transition-colors">
-                <Discord className="w-5 h-5" />
+                <MessageCircle className="w-5 h-5" />
               </a>
               <a href="#" className="text-gray-400 hover:text-[#00C851] transition-colors">
                 <Twitter className="w-5 h-5" />
