@@ -1,5 +1,5 @@
 
-import { group } from 'three';
+import { Group } from 'three';
 import Card3DViewerPremium from '@/components/cards/Card3DViewerPremium';
 import type { CardPosition } from '@/utils/galleryLayouts';
 

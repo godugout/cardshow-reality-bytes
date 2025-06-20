@@ -16,8 +16,8 @@ const Gallery = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   
-  const { data: collections } = useCollections();
-  const { data: cards } = useCards();
+  const { collections } = useCollections();
+  const { cards } = useCards();
   const [selectedCard, setSelectedCard] = useState(null);
 
   const collection = collections?.find(c => c.id === collectionId);

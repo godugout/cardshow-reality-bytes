@@ -40,7 +40,9 @@ export const useViewingHistory = (
           interaction_count: interactionCount.current,
           last_card_viewed: selectedCard?.id || null
         })
-        .catch(console.error);
+        .then(({ error }) => {
+          if (error) console.error('Error saving viewing history:', error);
+        });
     };
   }, [user, collectionId, layoutType, selectedCard]);
 

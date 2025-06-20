@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +13,7 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { useCollectionMutations } from '@/hooks/useCollections';
 import type { Collection } from '@/types/collection';
-import { Heart, Eye, Users, MoreVertical, Edit, Trash2, Cube } from 'lucide-react';
+import { Heart, Eye, Users, MoreVertical, Edit, Trash2, Star } from 'lucide-react';
 
 interface CollectionCardProps {
   collection: Collection;

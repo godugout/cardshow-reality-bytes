@@ -73,9 +73,9 @@ const EnvironmentalEffects = ({ theme, dominantColors, enableParticles }: Enviro
       
       {theme === 'nature' && (
         <group ref={cloudsRef}>
-          <Cloud position={[-20, 10, -20]} opacity={0.3} speed={0.4} width={20} depth={1.5} />
-          <Cloud position={[20, 8, -15]} opacity={0.2} speed={0.3} width={15} depth={1} />
-          <Cloud position={[0, 12, -25]} opacity={0.25} speed={0.5} width={25} depth={2} />
+          <Cloud position={[-20, 10, -20]} opacity={0.3} speed={0.4} />
+          <Cloud position={[20, 8, -15]} opacity={0.2} speed={0.3} />
+          <Cloud position={[0, 12, -25]} opacity={0.25} speed={0.5} />
         </group>
       )}
       
