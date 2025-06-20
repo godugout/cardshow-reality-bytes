@@ -26,9 +26,9 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-300 hover:text-[#00C851] transition-colors">
-              Features
-            </a>
+            <Link to="/cards" className="text-gray-300 hover:text-[#00C851] transition-colors">
+              Cards
+            </Link>
             <a href="#marketplace" className="text-gray-300 hover:text-[#00C851] transition-colors">
               Marketplace
             </a>
@@ -76,9 +76,9 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-800">
             <nav className="flex flex-col space-y-4">
-              <a href="#features" className="text-gray-300 hover:text-[#00C851] transition-colors">
-                Features
-              </a>
+              <Link to="/cards" className="text-gray-300 hover:text-[#00C851] transition-colors">
+                Cards
+              </Link>
               <a href="#marketplace" className="text-gray-300 hover:text-[#00C851] transition-colors">
                 Marketplace
               </a>
