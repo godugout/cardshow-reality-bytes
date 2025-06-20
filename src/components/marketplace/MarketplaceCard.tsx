@@ -57,7 +57,7 @@ const MarketplaceCard = ({ listing }: MarketplaceCardProps) => {
         {/* Card Image */}
         <div className="relative h-48 overflow-hidden">
           <img
-            src={listing.card?.thumbnail_url || listing.card?.image_url || '/placeholder.svg'}
+            src={listing.card?.image_url || '/placeholder.svg'}
             alt={listing.card?.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
           />

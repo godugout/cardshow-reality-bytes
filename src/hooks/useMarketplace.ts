@@ -13,9 +13,9 @@ export const useMarketplaceListings = (filters: ListingFilters = {}) => {
         .from('marketplace_listings')
         .select(`
           *,
-          card:cards(id, title, image_url, rarity, thumbnail_url),
-          seller_profiles(user_id, rating, total_sales, verification_status),
-          profiles(username, avatar_url)
+          card:cards(id, title, image_url, rarity),
+          seller_profiles!inner(user_id, rating, total_sales, verification_status),
+          profiles!inner(username, avatar_url)
         `)
         .eq('status', 'active')
         .order('created_at', { ascending: false });
