@@ -53,25 +53,25 @@ const Card3D = ({
     config: { tension: 300, friction: 40 }
   });
 
-  // Touch gesture handling - removed target option for Three.js compatibility
-  const bind = useGesture({
-    onDrag: ({ offset: [x, y] }) => {
-      if (!interactive || !meshRef.current) return;
-      meshRef.current.rotation.y = x / 100;
-      meshRef.current.rotation.x = -y / 100;
-    },
-    onPinch: ({ offset: [scale] }) => {
-      if (!interactive || !meshRef.current) return;
-      const newScale = Math.max(0.5, Math.min(2, 1 + scale / 200));
-      meshRef.current.scale.setScalar(newScale);
-    },
-    onDoubleClick: () => {
-      if (interactive) {
-        setIsFlipped(!isFlipped);
-        onClick?.();
-      }
+  // Touch gesture handling for manual rotation
+  const handleDrag = ({ offset: [x, y] }: { offset: [number, number] }) => {
+    if (!interactive || !meshRef.current) return;
+    meshRef.current.rotation.y = x / 100;
+    meshRef.current.rotation.x = -y / 100;
+  };
+
+  const handlePinch = ({ offset: [scale] }: { offset: [number] }) => {
+    if (!interactive || !meshRef.current) return;
+    const newScale = Math.max(0.5, Math.min(2, 1 + scale / 200));
+    meshRef.current.scale.setScalar(newScale);
+  };
+
+  const handleDoubleClick = () => {
+    if (interactive) {
+      setIsFlipped(!isFlipped);
+      onClick?.();
     }
-  });
+  };
 
   // Animation frame updates
   useFrame((state) => {
@@ -117,7 +117,18 @@ const Card3D = ({
       onPointerEnter={() => interactive && setIsHovered(true)}
       onPointerLeave={() => interactive && setIsHovered(false)}
       onClick={() => interactive && onClick?.()}
-      {...(interactive ? bind() : {})}
+      onPointerDown={(e) => {
+        if (!interactive) return;
+        e.stopPropagation();
+      }}
+      onPointerMove={(e) => {
+        if (!interactive) return;
+        // Handle drag manually for better control
+        if (e.buttons === 1) {
+          handleDrag({ offset: [e.movementX, e.movementY] });
+        }
+      }}
+      onDoubleClick={handleDoubleClick}
     >
       <planeGeometry args={[2.5, 3.5]} />
     </animated.mesh>
