@@ -23,8 +23,7 @@ export const useCards = (filters: CardFilters = {}) => {
         .select(`
           *,
           creator:profiles(id, username, avatar_url),
-          set:sets(id, name),
-          is_favorited:card_favorites!inner(user_id)
+          set:sets(id, name)
         `)
         .eq('is_public', true)
         .order('created_at', { ascending: false });
@@ -62,8 +61,10 @@ export const useCards = (filters: CardFilters = {}) => {
       
       if (error) throw error;
 
-      // Add is_favorited flag for authenticated users
-      if (user) {
+      // Handle favorites separately for authenticated users
+      let cardsWithFavorites = data || [];
+      
+      if (user && data) {
         const { data: favorites } = await supabase
           .from('card_favorites')
           .select('card_id')
@@ -71,13 +72,18 @@ export const useCards = (filters: CardFilters = {}) => {
 
         const favoriteIds = new Set(favorites?.map(f => f.card_id) || []);
         
-        return data.map(card => ({
+        cardsWithFavorites = data.map(card => ({
           ...card,
           is_favorited: favoriteIds.has(card.id)
-        })) as Card[];
+        }));
+      } else if (data) {
+        cardsWithFavorites = data.map(card => ({
+          ...card,
+          is_favorited: false
+        }));
       }
 
-      return data as Card[];
+      return cardsWithFavorites as Card[];
     },
     enabled: true
   });
