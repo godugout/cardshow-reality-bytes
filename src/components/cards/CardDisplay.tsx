@@ -9,6 +9,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useCardFavorites } from '@/hooks/useCards';
 import RarityBadge from './RarityBadge';
 import CardStats from './CardStats';
+import Card3DViewer from './Card3DViewer';
+import Card3DToggle from './Card3DToggle';
 import type { Card as CardType } from '@/types/card';
 
 interface CardDisplayProps {
@@ -22,6 +24,8 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
   const { user } = useAuth();
   const { toggleFavorite } = useCardFavorites();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [is3D, setIs3D] = useState(false);
+  const [view3DLoaded, setView3DLoaded] = useState(false);
 
   const sizeClasses = {
     sm: 'w-48 h-64',
@@ -52,31 +56,61 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
       className
     )}>
       <CardContent className="p-0 h-full">
-        {/* Card Image */}
+        {/* Card Image/3D View */}
         <div className="relative h-2/3 overflow-hidden">
-          {!imageLoaded && (
-            <div className="absolute inset-0 bg-gray-800 animate-pulse" />
+          {/* 3D/2D Toggle */}
+          <div className="absolute top-2 left-2 z-10">
+            <Card3DToggle
+              is3D={is3D}
+              onToggle={setIs3D}
+            />
+          </div>
+
+          {/* 2D Image */}
+          {!is3D && (
+            <>
+              {!imageLoaded && (
+                <div className="absolute inset-0 bg-gray-800 animate-pulse" />
+              )}
+              <img
+                src={card.image_url || '/placeholder.svg'}
+                alt={card.title}
+                className={cn(
+                  'w-full h-full object-cover transition-opacity duration-300',
+                  imageLoaded ? 'opacity-100' : 'opacity-0'
+                )}
+                onLoad={() => setImageLoaded(true)}
+              />
+            </>
           )}
-          <img
-            src={card.image_url || '/placeholder.svg'}
-            alt={card.title}
-            className={cn(
-              'w-full h-full object-cover transition-opacity duration-300',
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            )}
-            onLoad={() => setImageLoaded(true)}
-          />
+
+          {/* 3D View */}
+          {is3D && (
+            <div className="w-full h-full">
+              <Card3DViewer
+                card={card}
+                interactive
+                onLoad={() => setView3DLoaded(true)}
+              />
+              
+              {!view3DLoaded && (
+                <div className="absolute inset-0 bg-gray-800 animate-pulse flex items-center justify-center">
+                  <div className="text-gray-400 text-sm">Loading 3D...</div>
+                </div>
+              )}
+            </div>
+          )}
           
           {/* Rarity Badge */}
           {card.rarity && (
-            <div className="absolute top-2 left-2">
+            <div className="absolute top-2 right-2">
               <RarityBadge rarity={card.rarity} size="sm" animated />
             </div>
           )}
 
           {/* Serial Number */}
           {card.serial_number && (
-            <div className="absolute top-2 right-2">
+            <div className="absolute top-12 right-2">
               <Badge variant="secondary" className="text-xs font-mono">
                 #{card.serial_number}
               </Badge>
