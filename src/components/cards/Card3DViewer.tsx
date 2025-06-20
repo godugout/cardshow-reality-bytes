@@ -1,7 +1,8 @@
 
-import { Suspense, useState, useEffect, ErrorBoundary } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls, Preload } from '@react-three/drei';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Perf } from 'r3f-perf';
 import Card3D from './Card3D';
 import { detectWebGLSupport, getDevicePerformanceTier } from '@/utils/webglDetection';
@@ -63,7 +64,8 @@ const Card3DViewer = ({
     return <Card3DFallback card={card} />;
   }
 
-  const quality = preferences.quality === 'auto' ? performanceTier : preferences.quality;
+  // Use performance tier as fallback for quality
+  const quality = preferences.quality || performanceTier;
 
   return (
     <div className={cn('w-full h-full relative', className)}>

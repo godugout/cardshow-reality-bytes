@@ -38,8 +38,14 @@ export const use3DPreferences = () => {
 
         if (error) throw error;
 
-        if (data?.preferences?.threeDCard) {
-          setPreferences({ ...DEFAULT_PREFERENCES, ...data.preferences.threeDCard });
+        if (data?.preferences && typeof data.preferences === 'object') {
+          const prefs = data.preferences as Record<string, any>;
+          if (prefs.threeDCard && typeof prefs.threeDCard === 'object') {
+            setPreferences({
+              ...DEFAULT_PREFERENCES,
+              ...prefs.threeDCard as Partial<ThreeDPreferences>
+            });
+          }
         }
       } catch (error) {
         console.warn('Failed to load 3D preferences:', error);
@@ -63,7 +69,7 @@ export const use3DPreferences = () => {
         .eq('id', user.id)
         .single();
 
-      const currentPreferences = currentData?.preferences || {};
+      const currentPreferences = (currentData?.preferences as Record<string, any>) || {};
       
       await supabase
         .from('profiles')

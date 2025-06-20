@@ -42,14 +42,14 @@ const Card3D = ({
   });
 
   // Spring animation for hover and flip effects
-  const { rotation, position, scale: springScale } = useSpring({
+  const { rotation, position, scale: animatedScale } = useSpring({
     rotation: [
       isFlipped ? Math.PI : 0,
       isHovered && !isFlipped ? 0.1 : 0,
       isHovered && !isFlipped ? 0.1 : 0
     ],
     position: [0, isHovered ? 0.1 : 0, 0],
-    scale: springScale || (isHovered ? scale * 1.05 : scale),
+    scale: isHovered ? scale * 1.05 : scale,
     config: { tension: 300, friction: 40 }
   });
 
@@ -107,17 +107,19 @@ const Card3D = ({
     }
   }, [onLoad]);
 
+  const gestureProps = interactive ? bind() : {};
+
   return (
     <animated.mesh
       ref={meshRef}
       rotation={rotation as any}
       position={position as any}
-      scale={springScale}
+      scale={animatedScale}
       material={material}
       onPointerEnter={() => interactive && setIsHovered(true)}
       onPointerLeave={() => interactive && setIsHovered(false)}
       onClick={() => interactive && onClick?.()}
-      {...(interactive ? bind() : {})}
+      {...gestureProps}
     >
       <planeGeometry args={[2.5, 3.5]} />
     </animated.mesh>
