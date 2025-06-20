@@ -2,7 +2,7 @@
 import { useRef, useState, useEffect, Suspense } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useSpring, animated } from '@react-spring/three';
-import { Mesh, Vector3, Euler } from 'three';
+import * as THREE from 'three';
 import { usePremiumCardMaterial } from './materials/PremiumCardMaterials';
 import ParticleSystem from './effects/ParticleSystem';
 import { useAdvanced3DPreferences } from '@/hooks/useAdvanced3DPreferences';
@@ -25,7 +25,7 @@ const Card3DPremium = ({
   onClick,
   onLoad 
 }: Card3DPremiumProps) => {
-  const meshRef = useRef<Mesh>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -36,11 +36,14 @@ const Card3DPremium = ({
   const { startGestureTracking, stopGestureTracking } = useGestureTracking();
   const { logPerformance } = usePerformanceMonitor();
   
+  // Convert auto quality to specific quality for the material
+  const materialQuality = preferences.qualityPreset === 'auto' ? 'medium' : preferences.qualityPreset as 'low' | 'medium' | 'high' | 'ultra';
+  
   // Get premium material
   const material = usePremiumCardMaterial({
     rarity: card.rarity || 'common',
     imageUrl: card.image_url || '/placeholder.svg',
-    quality: preferences.qualityPreset,
+    quality: materialQuality,
     enableShaders: preferences.enableShaders
   });
   

@@ -83,7 +83,7 @@ export const useAdvanced3DPreferences = () => {
 
         if (data) {
           const loadedPrefs: Advanced3DPreferences = {
-            qualityPreset: data.quality_preset === 'auto' ? getAutoQualityPreset() : data.quality_preset,
+            qualityPreset: data.quality_preset === 'auto' ? getAutoQualityPreset() : data.quality_preset as Advanced3DPreferences['qualityPreset'],
             enableShaders: data.enable_shaders,
             enableParticles: data.enable_particles,
             enableAnimations: data.enable_animations,
@@ -91,7 +91,7 @@ export const useAdvanced3DPreferences = () => {
             enableHaptics: data.enable_haptics,
             batteryOptimization: data.battery_optimization,
             accessibilityMode: data.accessibility_mode,
-            customSettings: data.custom_settings || {}
+            customSettings: (data.custom_settings as Record<string, any>) || {}
           };
           setPreferences(loadedPrefs);
         } else {
