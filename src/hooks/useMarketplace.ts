@@ -14,8 +14,8 @@ export const useMarketplaceListings = (filters: ListingFilters = {}) => {
         .select(`
           *,
           card:cards(id, title, image_url, rarity),
-          seller_profiles!inner(user_id, rating, total_sales, verification_status),
-          profiles!inner(username, avatar_url)
+          seller_profiles(user_id, rating, total_sales, verification_status),
+          profiles(username, avatar_url)
         `)
         .eq('status', 'active')
         .order('created_at', { ascending: false });
@@ -47,7 +47,7 @@ export const useMarketplaceListings = (filters: ListingFilters = {}) => {
       const { data, error } = await query;
       
       if (error) throw error;
-      return data as MarketplaceListing[];
+      return data || [];
     },
   });
 

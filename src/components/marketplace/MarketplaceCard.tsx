@@ -58,7 +58,7 @@ const MarketplaceCard = ({ listing }: MarketplaceCardProps) => {
         <div className="relative h-48 overflow-hidden">
           <img
             src={listing.card?.image_url || '/placeholder.svg'}
-            alt={listing.card?.title}
+            alt={listing.card?.title || 'Card'}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
           />
           
@@ -102,7 +102,7 @@ const MarketplaceCard = ({ listing }: MarketplaceCardProps) => {
           {/* Title and Price */}
           <div className="space-y-1">
             <h3 className="font-bold text-white text-sm line-clamp-1">
-              {listing.card?.title}
+              {listing.card?.title || 'Untitled Card'}
             </h3>
             <div className="flex items-center justify-between">
               <span className="text-2xl font-bold text-[#00C851]">
@@ -128,13 +128,13 @@ const MarketplaceCard = ({ listing }: MarketplaceCardProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Avatar className="w-6 h-6">
-                <AvatarImage src={listing.profiles?.avatar_url} />
+                <AvatarImage src={listing.profiles?.avatar_url || undefined} />
                 <AvatarFallback className="text-xs">
-                  {listing.profiles?.username?.charAt(0).toUpperCase()}
+                  {listing.profiles?.username?.charAt(0).toUpperCase() || '?'}
                 </AvatarFallback>
               </Avatar>
               <span className="text-xs text-gray-400">
-                {listing.profiles?.username}
+                {listing.profiles?.username || 'Unknown User'}
               </span>
               {listing.seller_profiles?.rating && listing.seller_profiles.rating > 0 && (
                 <div className="flex items-center gap-1">

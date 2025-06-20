@@ -7,17 +7,17 @@ export type MarketplaceListing = Database['public']['Tables']['marketplace_listi
     title: string;
     image_url: string;
     rarity: string;
-  };
+  } | null;
   seller_profiles?: {
     user_id: string;
     rating: number;
     total_sales: number;
     verification_status: string;
-  };
+  } | null;
   profiles?: {
     username: string;
     avatar_url?: string;
-  };
+  } | null;
 };
 
 export type Transaction = Database['public']['Tables']['transactions']['Row'];
