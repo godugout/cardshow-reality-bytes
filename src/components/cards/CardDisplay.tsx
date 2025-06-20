@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useCardFavorites } from '@/hooks/useCards';
 import RarityBadge from './RarityBadge';
 import CardStats from './CardStats';
-import Card3DViewer from './Card3DViewer';
+import Card3DViewerPremium from './Card3DViewerPremium';
 import Card3DToggle from './Card3DToggle';
 import type { Card as CardType } from '@/types/card';
 
@@ -84,18 +84,22 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
             </>
           )}
 
-          {/* 3D View */}
+          {/* Premium 3D View */}
           {is3D && (
             <div className="w-full h-full">
-              <Card3DViewer
+              <Card3DViewerPremium
                 card={card}
                 interactive
                 onLoad={() => setView3DLoaded(true)}
+                onFlip={() => {
+                  // Add flip sound effect here if enabled
+                  console.log('Card flipped:', card.title);
+                }}
               />
               
               {!view3DLoaded && (
                 <div className="absolute inset-0 bg-gray-800 animate-pulse flex items-center justify-center">
-                  <div className="text-gray-400 text-sm">Loading 3D...</div>
+                  <div className="text-gray-400 text-sm">Loading premium 3D...</div>
                 </div>
               )}
             </div>

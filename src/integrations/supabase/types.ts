@@ -966,6 +966,42 @@ export type Database = {
         }
         Relationships: []
       }
+      shader_performance_logs: {
+        Row: {
+          compilation_time_ms: number | null
+          device_info: Json | null
+          fps_average: number | null
+          id: string
+          quality_preset: string | null
+          render_time_ms: number | null
+          shader_type: string | null
+          timestamp: string
+          user_id: string | null
+        }
+        Insert: {
+          compilation_time_ms?: number | null
+          device_info?: Json | null
+          fps_average?: number | null
+          id?: string
+          quality_preset?: string | null
+          render_time_ms?: number | null
+          shader_type?: string | null
+          timestamp?: string
+          user_id?: string | null
+        }
+        Update: {
+          compilation_time_ms?: number | null
+          device_info?: Json | null
+          fps_average?: number | null
+          id?: string
+          quality_preset?: string | null
+          render_time_ms?: number | null
+          shader_type?: string | null
+          timestamp?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       tags: {
         Row: {
           category: string | null
@@ -987,6 +1023,54 @@ export type Database = {
           id?: string
           name?: string
           usage_count?: number | null
+        }
+        Relationships: []
+      }
+      user_3d_preferences: {
+        Row: {
+          accessibility_mode: boolean | null
+          battery_optimization: boolean | null
+          created_at: string
+          custom_settings: Json | null
+          enable_animations: boolean | null
+          enable_haptics: boolean | null
+          enable_particles: boolean | null
+          enable_shaders: boolean | null
+          enable_sound: boolean | null
+          id: string
+          quality_preset: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accessibility_mode?: boolean | null
+          battery_optimization?: boolean | null
+          created_at?: string
+          custom_settings?: Json | null
+          enable_animations?: boolean | null
+          enable_haptics?: boolean | null
+          enable_particles?: boolean | null
+          enable_shaders?: boolean | null
+          enable_sound?: boolean | null
+          id?: string
+          quality_preset?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accessibility_mode?: boolean | null
+          battery_optimization?: boolean | null
+          created_at?: string
+          custom_settings?: Json | null
+          enable_animations?: boolean | null
+          enable_haptics?: boolean | null
+          enable_particles?: boolean | null
+          enable_shaders?: boolean | null
+          enable_sound?: boolean | null
+          id?: string
+          quality_preset?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
