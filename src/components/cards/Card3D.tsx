@@ -54,24 +54,30 @@ const Card3D = ({
   });
 
   // Touch gesture handling
-  const bind = useGesture({
-    onDrag: ({ offset: [x, y] }) => {
-      if (!interactive || !meshRef.current) return;
-      meshRef.current.rotation.y = x / 100;
-      meshRef.current.rotation.x = -y / 100;
-    },
-    onPinch: ({ offset: [scale] }) => {
-      if (!interactive || !meshRef.current) return;
-      const newScale = Math.max(0.5, Math.min(2, 1 + scale / 200));
-      meshRef.current.scale.setScalar(newScale);
-    },
-    onDoubleClick: () => {
-      if (interactive) {
-        setIsFlipped(!isFlipped);
-        onClick?.();
+  const bind = useGesture(
+    {
+      onDrag: ({ offset: [x, y] }) => {
+        if (!interactive || !meshRef.current) return;
+        meshRef.current.rotation.y = x / 100;
+        meshRef.current.rotation.x = -y / 100;
+      },
+      onPinch: ({ offset: [scale] }) => {
+        if (!interactive || !meshRef.current) return;
+        const newScale = Math.max(0.5, Math.min(2, 1 + scale / 200));
+        meshRef.current.scale.setScalar(newScale);
+      },
+      onDoubleClick: () => {
+        if (interactive) {
+          setIsFlipped(!isFlipped);
+          onClick?.();
+        }
       }
+    },
+    {
+      target: meshRef,
+      eventOptions: { passive: false }
     }
-  });
+  );
 
   // Animation frame updates
   useFrame((state) => {
@@ -107,8 +113,6 @@ const Card3D = ({
     }
   }, [onLoad]);
 
-  const gestureProps = interactive ? bind() : {};
-
   return (
     <animated.mesh
       ref={meshRef}
@@ -119,7 +123,7 @@ const Card3D = ({
       onPointerEnter={() => interactive && setIsHovered(true)}
       onPointerLeave={() => interactive && setIsHovered(false)}
       onClick={() => interactive && onClick?.()}
-      {...gestureProps}
+      {...(interactive ? bind() : {})}
     >
       <planeGeometry args={[2.5, 3.5]} />
     </animated.mesh>
