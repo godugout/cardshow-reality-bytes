@@ -1,0 +1,98 @@
+
+{
+  "name": "Cardshow - Digital Trading Cards",
+  "short_name": "Cardshow",
+  "description": "Premium digital trading card platform with 3D visualization and marketplace",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#00C851",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "categories": ["games", "entertainment", "social"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Cardshow desktop experience"
+    },
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Cardshow mobile experience"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "My Collection",
+      "short_name": "Collection",
+      "description": "View your card collection",
+      "url": "/collections",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "16x16 32x32"
+        }
+      ]
+    },
+    {
+      "name": "Marketplace",
+      "short_name": "Market",
+      "description": "Browse and trade cards",
+      "url": "/marketplace",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "16x16 32x32"
+        }
+      ]
+    },
+    {
+      "name": "Creator Studio",
+      "short_name": "Create",
+      "description": "Design and publish cards",
+      "url": "/creator",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "16x16 32x32"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred",
+  "capture_links": "existing-client-navigate"
+}
