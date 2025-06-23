@@ -39,7 +39,14 @@ export const useCreatorForums = (category?: string, skillLevel?: string) => {
 
       const { data, error } = await query;
       if (error) throw error;
-      return data as CreatorForum[];
+      
+      return (data as any[]).map(item => ({
+        ...item,
+        creator: item.creator ? {
+          ...item.creator,
+          user_profile: item.creator.user_profile || { username: 'Unknown', avatar_url: null }
+        } : undefined
+      })) as CreatorForum[];
     }
   });
 
@@ -118,7 +125,14 @@ export const useForumReplies = (forumId: string) => {
         .order('created_at', { ascending: true });
 
       if (error) throw error;
-      return data as ForumReply[];
+      
+      return (data as any[]).map(item => ({
+        ...item,
+        creator: item.creator ? {
+          id: item.creator.id,
+          user_profile: item.creator.user_profile || { username: 'Unknown', avatar_url: null }
+        } : undefined
+      })) as ForumReply[];
     },
     enabled: !!forumId
   });
@@ -151,12 +165,22 @@ export const useForumReplies = (forumId: string) => {
 
       if (error) throw error;
 
-      // Update forum reply count
-      await supabase.rpc('increment', {
-        table: 'creator_forums',
-        row_id: forumId,
-        column: 'reply_count'
-      });
+      // Update forum reply count manually
+      const { data: forum } = await supabase
+        .from('creator_forums')
+        .select('reply_count')
+        .eq('id', forumId)
+        .single();
+
+      if (forum) {
+        await supabase
+          .from('creator_forums')
+          .update({ 
+            reply_count: forum.reply_count + 1,
+            last_activity: new Date().toISOString()
+          })
+          .eq('id', forumId);
+      }
 
       return data;
     },

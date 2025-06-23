@@ -46,10 +46,16 @@ export const useChallengeSubmissions = (challengeId: string) => {
           )
         `)
         .eq('challenge_id', challengeId)
-        .order('score', { ascending: false, nullsLast: true });
+        .order('score', { ascending: false, nullsFirst: false });
 
       if (error) throw error;
-      return data as ChallengeSubmission[];
+      return (data as any[]).map(item => ({
+        ...item,
+        creator: item.creator ? {
+          id: item.creator.id,
+          user_profile: item.creator.user_profile || { username: 'Unknown', avatar_url: null }
+        } : undefined
+      })) as ChallengeSubmission[];
     },
     enabled: !!challengeId
   });
@@ -83,12 +89,19 @@ export const useChallengeSubmissions = (challengeId: string) => {
 
       if (error) throw error;
 
-      // Update challenge participant count
-      await supabase.rpc('increment', {
-        table: 'creator_challenges',
-        row_id: challengeId,
-        column: 'current_participants'
-      });
+      // Update challenge participant count manually
+      const { data: challenge } = await supabase
+        .from('creator_challenges')
+        .select('current_participants')
+        .eq('id', challengeId)
+        .single();
+
+      if (challenge) {
+        await supabase
+          .from('creator_challenges')
+          .update({ current_participants: challenge.current_participants + 1 })
+          .eq('id', challengeId);
+      }
 
       return data;
     },

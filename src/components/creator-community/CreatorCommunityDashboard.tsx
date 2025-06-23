@@ -120,13 +120,13 @@ export default function CreatorCommunityDashboard() {
                     </div>
                   ) : activities.length > 0 ? (
                     activities.slice(0, 10).map((activity) => (
-                      <div key={activity.activity_id} className="flex items-start gap-3">
+                      <div key={activity.id} className="flex items-start gap-3">
                         <div className="mt-1">
                           {getActivityIcon(activity.activity_type)}
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm">
-                            <span className="font-medium">{activity.creator_username}</span>{' '}
+                            <span className="font-medium">{activity.creator_username || 'Creator'}</span>{' '}
                             {formatActivityMessage(activity)}
                           </p>
                           <p className="text-xs text-muted-foreground">

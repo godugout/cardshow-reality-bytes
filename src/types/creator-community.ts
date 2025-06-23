@@ -1,4 +1,3 @@
-
 export interface CreatorForum {
   id: string;
   title: string;
@@ -157,6 +156,7 @@ export interface CreatorActivity {
       avatar_url?: string;
     };
   };
+  creator_username?: string;
 }
 
 export interface CreatorStream {

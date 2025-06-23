@@ -1,11 +1,11 @@
 
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import CreatorDashboard from '@/components/creator/CreatorDashboard';
-import CardDesigner from '@/components/creator/CardDesigner';
-import CreatorProfile from '@/components/creator/CreatorProfile';
-import RevenueAnalytics from '@/components/creator/RevenueAnalytics';
-import TemplateMarketplace from '@/components/creator/TemplateMarketplace';
+import { CreatorDashboard } from '@/components/creator/CreatorDashboard';
+import { CardDesigner } from '@/components/creator/CardDesigner';
+import { CreatorProfile } from '@/components/creator/CreatorProfile';
+import { RevenueAnalytics } from '@/components/creator/RevenueAnalytics';
+import { TemplateMarketplace } from '@/components/creator/TemplateMarketplace';
 import CreatorCommunityDashboard from '@/components/creator-community/CreatorCommunityDashboard';
 import { useAuth } from '@/hooks/useAuth';
 

@@ -31,7 +31,14 @@ export const useCreatorCourses = (skillLevel?: string, courseType?: string) => {
 
       const { data, error } = await query;
       if (error) throw error;
-      return data as CreatorCourse[];
+      
+      return (data as any[]).map(item => ({
+        ...item,
+        instructor: item.instructor ? {
+          id: item.instructor.id,
+          user_profile: item.instructor.user_profile || { username: 'Unknown', avatar_url: null }
+        } : undefined
+      })) as CreatorCourse[];
     }
   });
 
@@ -92,12 +99,19 @@ export const useCourseEnrollments = () => {
 
       if (error) throw error;
 
-      // Update course enrollment count
-      await supabase.rpc('increment', {
-        table: 'creator_courses',
-        row_id: courseId,
-        column: 'enrollment_count'
-      });
+      // Update course enrollment count manually
+      const { data: course } = await supabase
+        .from('creator_courses')
+        .select('enrollment_count')
+        .eq('id', courseId)
+        .single();
+
+      if (course) {
+        await supabase
+          .from('creator_courses')
+          .update({ enrollment_count: course.enrollment_count + 1 })
+          .eq('id', courseId);
+      }
 
       return data;
     },

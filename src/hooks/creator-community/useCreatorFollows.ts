@@ -172,7 +172,17 @@ export const useCreatorActivityFeed = (creatorId?: string) => {
       });
 
       if (error) throw error;
-      return data as CreatorActivity[];
+      
+      // Transform the data to match our CreatorActivity interface
+      return (data as any[]).map(item => ({
+        id: item.activity_id,
+        creator_id: item.creator_id,
+        activity_type: item.activity_type,
+        activity_data: item.activity_data,
+        created_at: item.created_at,
+        visibility: 'public' as const,
+        creator_username: item.creator_username
+      })) as CreatorActivity[];
     }
   });
 
