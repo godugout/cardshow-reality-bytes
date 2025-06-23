@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,7 +32,7 @@ const TradeOfferBuilder = ({
   const [showCardSelector, setShowCardSelector] = useState<'offered' | 'requested' | null>(null);
 
   const { cards: userCards = [] } = useCards();
-  const { mutate: createOffer, isPending } = useCreateTradeOffer();
+  const createOfferMutation = useCreateTradeOffer();
 
   const handleAddCard = (card: CardType, type: 'offered' | 'requested') => {
     const setter = type === 'offered' ? setOfferedCards : setRequestedCards;
@@ -84,7 +83,7 @@ const TradeOfferBuilder = ({
   const handleCreateOffer = () => {
     if (offeredCards.length === 0 && requestedCards.length === 0) return;
 
-    createOffer({
+    createOfferMutation.mutate({
       recipient_id: recipientId,
       offered_cards: offeredCards.map(item => ({
         id: item.card.id,
@@ -359,10 +358,10 @@ const TradeOfferBuilder = ({
       <div className="flex gap-4">
         <Button
           onClick={handleCreateOffer}
-          disabled={isPending || (offeredCards.length === 0 && requestedCards.length === 0)}
+          disabled={createOfferMutation.isPending || (offeredCards.length === 0 && requestedCards.length === 0)}
           className="flex-1 bg-blue-600 hover:bg-blue-700"
         >
-          {isPending ? 'Creating...' : 'Send Trade Offer'}
+          {createOfferMutation.isPending ? 'Creating...' : 'Send Trade Offer'}
         </Button>
         <Button variant="outline" onClick={onClose}>
           Cancel

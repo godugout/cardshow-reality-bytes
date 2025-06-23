@@ -47,7 +47,20 @@ export const useMarketplaceListings = (filters: ListingFilters = {}) => {
       const { data, error } = await query;
       
       if (error) throw error;
-      return (data || []) as MarketplaceListing[];
+      
+      // Transform the data to match our interface, handling potential SelectQueryError
+      return (data || []).map(listing => ({
+        ...listing,
+        card: listing.card && typeof listing.card === 'object' && 'id' in listing.card
+          ? listing.card
+          : undefined,
+        seller_profiles: listing.seller_profiles && typeof listing.seller_profiles === 'object' && 'user_id' in listing.seller_profiles
+          ? listing.seller_profiles
+          : undefined,
+        profiles: listing.profiles && typeof listing.profiles === 'object' && 'username' in listing.profiles
+          ? listing.profiles
+          : undefined
+      })) as MarketplaceListing[];
     },
   });
 

@@ -25,8 +25,8 @@ export const useTradeOffers = (filters: TradeFilters = {}) => {
         .from('trade_offers')
         .select(`
           *,
-          initiator:profiles!initiator_id(id, username, avatar_url),
-          recipient:profiles!recipient_id(id, username, avatar_url)
+          initiator:profiles!trade_offers_initiator_id_fkey(id, username, avatar_url),
+          recipient:profiles!trade_offers_recipient_id_fkey(id, username, avatar_url)
         `)
         .or(`initiator_id.eq.${user.id},recipient_id.eq.${user.id}`)
         .order('created_at', { ascending: false });
@@ -45,7 +45,21 @@ export const useTradeOffers = (filters: TradeFilters = {}) => {
 
       const { data, error } = await query;
       if (error) throw error;
-      return (data || []) as TradeOffer[];
+      
+      // Transform the data to match our interface
+      return (data || []).map(trade => ({
+        ...trade,
+        initiator: trade.initiator ? {
+          id: trade.initiator.id,
+          username: trade.initiator.username,
+          avatar_url: trade.initiator.avatar_url
+        } : null,
+        recipient: trade.recipient ? {
+          id: trade.recipient.id,
+          username: trade.recipient.username,
+          avatar_url: trade.recipient.avatar_url
+        } : null
+      })) as TradeOffer[];
     },
     enabled: !!user,
   });
@@ -86,13 +100,21 @@ export const useTradeMessages = (tradeId: string) => {
         .from('trade_messages')
         .select(`
           *,
-          sender:profiles!sender_id(username, avatar_url)
+          sender:profiles!trade_messages_sender_id_fkey(username, avatar_url)
         `)
         .eq('trade_id', tradeId)
         .order('timestamp', { ascending: true });
 
       if (error) throw error;
-      return (data || []) as TradeMessage[];
+      
+      // Transform the data to match our interface
+      return (data || []).map(message => ({
+        ...message,
+        sender: message.sender ? {
+          username: message.sender.username,
+          avatar_url: message.sender.avatar_url
+        } : null
+      })) as TradeMessage[];
     },
     enabled: !!tradeId,
   });
@@ -136,11 +158,20 @@ export const useTradeParticipants = (tradeId: string) => {
         .from('trade_participants')
         .select(`
           *,
-          user:profiles!user_id(username, avatar_url)
+          user:profiles!trade_participants_user_id_fkey(username, avatar_url)
         `)
         .eq('trade_id', tradeId);
 
-      setParticipants((data || []) as TradeParticipant[]);
+      // Transform the data to match our interface
+      const transformedData = (data || []).map(participant => ({
+        ...participant,
+        user: participant.user ? {
+          username: participant.user.username,
+          avatar_url: participant.user.avatar_url
+        } : null
+      })) as TradeParticipant[];
+
+      setParticipants(transformedData);
     };
 
     fetchParticipants();
