@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useMarketplaceListings } from '@/hooks/useMarketplace';
 import { Input } from '@/components/ui/input';
-import { Button } = '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
