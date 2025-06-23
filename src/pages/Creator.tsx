@@ -1,80 +1,40 @@
 
-import { useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
-import { CreatorDashboard } from "@/components/creator/CreatorDashboard";
-import { CardDesigner } from "@/components/creator/CardDesigner";
-import { TemplateMarketplace } from "@/components/creator/TemplateMarketplace";
-import { RevenueAnalytics } from "@/components/creator/RevenueAnalytics";
-import { CreatorProfile } from "@/components/creator/CreatorProfile";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { useCreateStripeAccount } from "@/hooks/useStripePayments";
-import { Loader2, Plus, DollarSign, Palette, Store, BarChart3, User } from "lucide-react";
+import { useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import CreatorDashboard from '@/components/creator/CreatorDashboard';
+import CardDesigner from '@/components/creator/CardDesigner';
+import CreatorProfile from '@/components/creator/CreatorProfile';
+import RevenueAnalytics from '@/components/creator/RevenueAnalytics';
+import TemplateMarketplace from '@/components/creator/TemplateMarketplace';
+import CreatorCommunityDashboard from '@/components/creator-community/CreatorCommunityDashboard';
+import { useAuth } from '@/hooks/useAuth';
 
-const Creator = () => {
+export default function Creator() {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState("dashboard");
-  const createStripeAccount = useCreateStripeAccount();
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <Card className="bg-gray-800 border-gray-700">
-          <CardHeader>
-            <CardTitle className="text-white">Access Denied</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-400">Please sign in to access the Creator Studio.</p>
-          </CardContent>
-        </Card>
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Creator Portal</h1>
+          <p className="text-muted-foreground">Please sign in to access creator features.</p>
+        </div>
       </div>
     );
   }
 
-  const handleSetupStripeAccount = () => {
-    createStripeAccount.mutate({ 
-      business_type: "individual",
-      country: "US" 
-    });
-  };
-
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Creator Studio</h1>
-          <p className="text-gray-400">
-            Design, publish, and monetize your digital trading cards
-          </p>
-        </div>
-
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid grid-cols-6 bg-gray-800 border-gray-700">
-            <TabsTrigger value="dashboard" className="flex items-center gap-2">
-              <BarChart3 size={16} />
-              Dashboard
-            </TabsTrigger>
-            <TabsTrigger value="designer" className="flex items-center gap-2">
-              <Palette size={16} />
-              Designer
-            </TabsTrigger>
-            <TabsTrigger value="templates" className="flex items-center gap-2">
-              <Store size={16} />
-              Templates
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2">
-              <DollarSign size={16} />
-              Analytics
-            </TabsTrigger>
-            <TabsTrigger value="profile" className="flex items-center gap-2">
-              <User size={16} />
-              Profile
-            </TabsTrigger>
-            <TabsTrigger value="setup" className="flex items-center gap-2">
-              <Plus size={16} />
-              Setup
-            </TabsTrigger>
+          <TabsList className="grid w-full grid-cols-6">
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+            <TabsTrigger value="designer">Designer</TabsTrigger>
+            <TabsTrigger value="community">Community</TabsTrigger>
+            <TabsTrigger value="marketplace">Templates</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="profile">Profile</TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard">
@@ -85,7 +45,11 @@ const Creator = () => {
             <CardDesigner />
           </TabsContent>
 
-          <TabsContent value="templates">
+          <TabsContent value="community">
+            <CreatorCommunityDashboard />
+          </TabsContent>
+
+          <TabsContent value="marketplace">
             <TemplateMarketplace />
           </TabsContent>
 
@@ -96,33 +60,8 @@ const Creator = () => {
           <TabsContent value="profile">
             <CreatorProfile />
           </TabsContent>
-
-          <TabsContent value="setup">
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-white">Creator Account Setup</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-gray-400">
-                  Set up your Stripe Connect account to receive payments for your creations.
-                </p>
-                <Button 
-                  onClick={handleSetupStripeAccount}
-                  disabled={createStripeAccount.isPending}
-                  className="w-full"
-                >
-                  {createStripeAccount.isPending && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  Setup Payment Account
-                </Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
       </div>
     </div>
   );
-};
-
-export default Creator;
+}
