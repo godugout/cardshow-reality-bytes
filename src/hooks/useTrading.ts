@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,11 +22,7 @@ export const useTradeOffers = (filters: TradeFilters = {}) => {
 
       let query = supabase
         .from('trade_offers')
-        .select(`
-          *,
-          initiator:profiles!trade_offers_initiator_id_fkey(id, username, avatar_url),
-          recipient:profiles!trade_offers_recipient_id_fkey(id, username, avatar_url)
-        `)
+        .select('*')
         .or(`initiator_id.eq.${user.id},recipient_id.eq.${user.id}`)
         .order('created_at', { ascending: false });
 
@@ -46,20 +41,23 @@ export const useTradeOffers = (filters: TradeFilters = {}) => {
       const { data, error } = await query;
       if (error) throw error;
       
-      // Transform the data to match our interface
-      return (data || []).map(trade => ({
-        ...trade,
-        initiator: trade.initiator ? {
-          id: trade.initiator.id,
-          username: trade.initiator.username,
-          avatar_url: trade.initiator.avatar_url
-        } : null,
-        recipient: trade.recipient ? {
-          id: trade.recipient.id,
-          username: trade.recipient.username,
-          avatar_url: trade.recipient.avatar_url
-        } : null
-      })) as TradeOffer[];
+      // Get profile data separately
+      const tradesWithProfiles = await Promise.all(
+        (data || []).map(async (trade) => {
+          const [initiatorProfile, recipientProfile] = await Promise.all([
+            supabase.from('profiles').select('id, username, avatar_url').eq('id', trade.initiator_id).single(),
+            supabase.from('profiles').select('id, username, avatar_url').eq('id', trade.recipient_id).single()
+          ]);
+
+          return {
+            ...trade,
+            initiator: initiatorProfile.data || null,
+            recipient: recipientProfile.data || null
+          };
+        })
+      );
+
+      return tradesWithProfiles as TradeOffer[];
     },
     enabled: !!user,
   });
@@ -98,23 +96,29 @@ export const useTradeMessages = (tradeId: string) => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('trade_messages')
-        .select(`
-          *,
-          sender:profiles!trade_messages_sender_id_fkey(username, avatar_url)
-        `)
+        .select('*')
         .eq('trade_id', tradeId)
         .order('timestamp', { ascending: true });
 
       if (error) throw error;
       
-      // Transform the data to match our interface
-      return (data || []).map(message => ({
-        ...message,
-        sender: message.sender ? {
-          username: message.sender.username,
-          avatar_url: message.sender.avatar_url
-        } : null
-      })) as TradeMessage[];
+      // Get sender profiles separately
+      const messagesWithSenders = await Promise.all(
+        (data || []).map(async (message) => {
+          const { data: senderProfile } = await supabase
+            .from('profiles')
+            .select('username, avatar_url')
+            .eq('id', message.sender_id)
+            .single();
+
+          return {
+            ...message,
+            sender: senderProfile || null
+          };
+        })
+      );
+
+      return messagesWithSenders as TradeMessage[];
     },
     enabled: !!tradeId,
   });
@@ -156,22 +160,26 @@ export const useTradeParticipants = (tradeId: string) => {
     const fetchParticipants = async () => {
       const { data } = await supabase
         .from('trade_participants')
-        .select(`
-          *,
-          user:profiles!trade_participants_user_id_fkey(username, avatar_url)
-        `)
+        .select('*')
         .eq('trade_id', tradeId);
 
-      // Transform the data to match our interface
-      const transformedData = (data || []).map(participant => ({
-        ...participant,
-        user: participant.user ? {
-          username: participant.user.username,
-          avatar_url: participant.user.avatar_url
-        } : null
-      })) as TradeParticipant[];
+      // Get user profiles separately
+      const participantsWithUsers = await Promise.all(
+        (data || []).map(async (participant) => {
+          const { data: userProfile } = await supabase
+            .from('profiles')
+            .select('username, avatar_url')
+            .eq('id', participant.user_id)
+            .single();
 
-      setParticipants(transformedData);
+          return {
+            ...participant,
+            user: userProfile || null
+          };
+        })
+      );
+
+      setParticipants(participantsWithUsers as TradeParticipant[]);
     };
 
     fetchParticipants();

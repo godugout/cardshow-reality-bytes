@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -14,14 +13,13 @@ export const useMarketplaceListings = (filters: ListingFilters = {}) => {
         .select(`
           *,
           card:cards(id, title, image_url, rarity),
-          seller_profiles(user_id, rating, total_sales, verification_status),
-          profiles(username, avatar_url)
+          seller_profiles!marketplace_listings_seller_id_fkey(user_id, rating, total_sales, verification_status)
         `)
         .eq('status', 'active')
         .order('created_at', { ascending: false });
 
       if (filters.search) {
-        query = query.or(`description.ilike.%${filters.search}%,card.title.ilike.%${filters.search}%`);
+        query = query.or(`description.ilike.%${filters.search}%`);
       }
 
       if (filters.min_price !== undefined) {
@@ -48,19 +46,34 @@ export const useMarketplaceListings = (filters: ListingFilters = {}) => {
       
       if (error) throw error;
       
-      // Transform the data to match our interface, handling potential SelectQueryError
-      return (data || []).map(listing => ({
-        ...listing,
-        card: listing.card && typeof listing.card === 'object' && 'id' in listing.card
-          ? listing.card
-          : undefined,
-        seller_profiles: listing.seller_profiles && typeof listing.seller_profiles === 'object' && 'user_id' in listing.seller_profiles
-          ? listing.seller_profiles
-          : undefined,
-        profiles: listing.profiles && typeof listing.profiles === 'object' && 'username' in listing.profiles
-          ? listing.profiles
-          : undefined
-      })) as MarketplaceListing[];
+      // Get seller profiles with user info
+      const listingsWithProfiles = await Promise.all(
+        (data || []).map(async (listing) => {
+          let profiles = null;
+          
+          if (listing.seller_profiles?.user_id) {
+            const { data: profileData } = await supabase
+              .from('profiles')
+              .select('username, avatar_url')
+              .eq('id', listing.seller_profiles.user_id)
+              .single();
+            profiles = profileData;
+          }
+
+          return {
+            ...listing,
+            card: listing.card && typeof listing.card === 'object' && 'id' in listing.card
+              ? listing.card
+              : null,
+            seller_profiles: listing.seller_profiles && typeof listing.seller_profiles === 'object' && 'user_id' in listing.seller_profiles
+              ? listing.seller_profiles
+              : null,
+            profiles
+          };
+        })
+      );
+
+      return listingsWithProfiles as MarketplaceListing[];
     },
   });
 
