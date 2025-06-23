@@ -100,6 +100,7 @@ export interface UserStats {
   achievements_count: number;
 }
 
+// Updated NotificationData to match actual database schema
 export interface NotificationData {
   id: string;
   user_id: string;

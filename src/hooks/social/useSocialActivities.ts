@@ -102,7 +102,7 @@ export const useActivityReactions = (activityId: string) => {
       const { error } = await supabase
         .from('social_activities')
         .update({ 
-          reaction_count: supabase.raw('reaction_count + 1')
+          reaction_count: supabase.sql`reaction_count + 1`
         })
         .eq('id', activityId);
 

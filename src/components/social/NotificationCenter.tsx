@@ -148,7 +148,7 @@ const NotificationItem = ({
             )}
           </div>
 
-          {/* Show user avatar if notification is from another user */}
+          {/* Show user avatar if notification data contains user info */}
           {notification.data?.user_avatar && (
             <div className="flex items-center space-x-2 mt-2">
               <Avatar className="w-6 h-6">
