@@ -21,7 +21,7 @@ import {
   Star,
   Plus,
   Image,
-  Cube,
+  Box,
   Palette,
   Zap
 } from 'lucide-react';
@@ -59,7 +59,7 @@ export const DesignAssetsLibrary = () => {
   const getAssetTypeIcon = (type: string) => {
     switch (type) {
       case 'texture': return <Image className="h-4 w-4" />;
-      case 'shape': return <Cube className="h-4 w-4" />;
+      case 'shape': return <Box className="h-4 w-4" />;
       case 'animation': return <Zap className="h-4 w-4" />;
       case 'shader': return <Palette className="h-4 w-4" />;
       case 'template': return <Package className="h-4 w-4" />;

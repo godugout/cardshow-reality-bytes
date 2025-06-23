@@ -103,23 +103,27 @@ export const useDesignAssets = (assetType?: string, creatorId?: string) => {
 
   const downloadAsset = useMutation({
     mutationFn: async (assetId: string) => {
-      // Update download count
-      const { error } = await supabase
+      // First get current downloads count
+      const { data: currentAsset, error: fetchError } = await supabase
         .from('design_assets_library')
-        .update({ downloads_count: supabase.sql`downloads_count + 1` })
-        .eq('id', assetId);
-
-      if (error) throw error;
-
-      // Get asset data for download
-      const { data, error: fetchError } = await supabase
-        .from('design_assets_library')
-        .select('file_url, asset_name')
+        .select('downloads_count, file_url, asset_name')
         .eq('id', assetId)
         .single();
 
       if (fetchError) throw fetchError;
-      return data;
+
+      // Update download count manually
+      const { error } = await supabase
+        .from('design_assets_library')
+        .update({ downloads_count: (currentAsset.downloads_count || 0) + 1 })
+        .eq('id', assetId);
+
+      if (error) throw error;
+
+      return {
+        file_url: currentAsset.file_url,
+        asset_name: currentAsset.asset_name
+      };
     },
     onSuccess: (asset) => {
       queryClient.invalidateQueries({ queryKey: ['design-assets'] });
