@@ -18,11 +18,11 @@ const NotificationCenter = () => {
     switch (type) {
       case 'follow':
         return <Users className="w-4 h-4 text-blue-500" />;
-      case 'like':
+      case 'reaction':
         return <Heart className="w-4 h-4 text-red-500" />;
-      case 'achievement':
+      case 'card_shared':
         return <Trophy className="w-4 h-4 text-yellow-500" />;
-      case 'feature':
+      case 'collection_shared':
         return <Star className="w-4 h-4 text-purple-500" />;
       default:
         return <Bell className="w-4 h-4 text-gray-400" />;
@@ -118,9 +118,9 @@ const NotificationItem = ({
   return (
     <div 
       className={`p-4 hover:bg-gray-800 cursor-pointer border-l-2 ${
-        notification.read ? 'border-transparent' : 'border-blue-500 bg-gray-800/50'
+        notification.is_read ? 'border-transparent' : 'border-blue-500 bg-gray-800/50'
       }`}
-      onClick={() => !notification.read && onMarkAsRead(notification.id)}
+      onClick={() => !notification.is_read && onMarkAsRead(notification.id)}
     >
       <div className="flex items-start space-x-3">
         <div className="flex-shrink-0 mt-1">
@@ -143,25 +143,10 @@ const NotificationItem = ({
               </p>
             </div>
 
-            {!notification.read && (
+            {!notification.is_read && (
               <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 mt-2" />
             )}
           </div>
-
-          {/* Show user avatar if notification data contains user info */}
-          {notification.data?.user_avatar && (
-            <div className="flex items-center space-x-2 mt-2">
-              <Avatar className="w-6 h-6">
-                <AvatarImage src={notification.data.user_avatar} />
-                <AvatarFallback className="text-xs">
-                  {notification.data.username?.charAt(0).toUpperCase() || 'U'}
-                </AvatarFallback>
-              </Avatar>
-              <span className="text-xs text-gray-400">
-                {notification.data.username}
-              </span>
-            </div>
-          )}
         </div>
       </div>
     </div>

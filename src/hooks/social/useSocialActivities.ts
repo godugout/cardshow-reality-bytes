@@ -97,16 +97,23 @@ export const useActivityReactions = (activityId: string) => {
     mutationFn: async () => {
       if (!user) throw new Error('Must be logged in');
 
-      // For simplicity, we'll just increment the reaction count
-      // In a real app, you'd want a separate reactions table
-      const { error } = await supabase
+      // Get current reaction count and increment it
+      const { data: currentActivity, error: fetchError } = await supabase
+        .from('social_activities')
+        .select('reaction_count')
+        .eq('id', activityId)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      const { error: updateError } = await supabase
         .from('social_activities')
         .update({ 
-          reaction_count: supabase.sql`reaction_count + 1`
+          reaction_count: (currentActivity.reaction_count || 0) + 1
         })
         .eq('id', activityId);
 
-      if (error) throw error;
+      if (updateError) throw updateError;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['social-activities'] });

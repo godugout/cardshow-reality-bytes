@@ -100,15 +100,16 @@ export interface UserStats {
   achievements_count: number;
 }
 
-// Updated NotificationData to match actual database schema
+// Match the actual database notifications table schema
 export interface NotificationData {
   id: string;
-  user_id: string;
-  type: string;
+  recipient_id: string; // This matches the database column
+  actor_id?: string;
+  type: 'follow' | 'comment' | 'reaction' | 'card_shared' | 'collection_shared';
   title: string;
   message?: string;
-  data: Record<string, any>;
-  read: boolean;
+  entity_type?: string;
+  entity_id?: string;
+  is_read: boolean; // This matches the database column
   created_at: string;
-  expires_at?: string;
 }

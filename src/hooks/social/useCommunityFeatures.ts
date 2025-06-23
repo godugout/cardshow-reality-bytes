@@ -85,24 +85,12 @@ export const useNotifications = () => {
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('recipient_id', user.id)
         .order('created_at', { ascending: false })
         .limit(50);
 
       if (error) throw error;
-      
-      // Transform the data to match our interface
-      return (data || []).map(item => ({
-        id: item.id,
-        user_id: item.user_id,
-        type: item.type,
-        title: item.title,
-        message: item.message,
-        data: item.data || {},
-        read: item.read || false,
-        created_at: item.created_at,
-        expires_at: item.expires_at
-      })) as NotificationData[];
+      return (data || []) as NotificationData[];
     },
     enabled: !!user
   });
@@ -111,7 +99,7 @@ export const useNotifications = () => {
     mutationFn: async (notificationId: string) => {
       const { error } = await supabase
         .from('notifications')
-        .update({ read: true })
+        .update({ is_read: true })
         .eq('id', notificationId);
 
       if (error) throw error;
@@ -127,9 +115,9 @@ export const useNotifications = () => {
 
       const { error } = await supabase
         .from('notifications')
-        .update({ read: true })
-        .eq('user_id', user.id)
-        .eq('read', false);
+        .update({ is_read: true })
+        .eq('recipient_id', user.id)
+        .eq('is_read', false);
 
       if (error) throw error;
     },
@@ -138,7 +126,7 @@ export const useNotifications = () => {
     }
   });
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return {
     notifications,
