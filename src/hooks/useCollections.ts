@@ -31,8 +31,8 @@ export const useCollections = (filters: CollectionFilters = {}) => {
         query = query.in('visibility', filters.visibility);
       }
       
-      if (filters.owner_id) {
-        query = query.eq('owner_id', filters.owner_id);
+      if (filters.user_id) {
+        query = query.eq('user_id', filters.user_id);
       }
       
       if (filters.is_featured !== undefined) {
@@ -59,7 +59,7 @@ export const useCollections = (filters: CollectionFilters = {}) => {
 
         const followingIds = new Set(following?.map(f => f.collection_id) || []);
         
-        // Get card counts - handle potential missing quantity column
+        // Get card counts
         const collectionIds = data.map(c => c.id);
         if (collectionIds.length > 0) {
           const { data: cardCounts } = await supabase
@@ -265,7 +265,7 @@ export const useCollectionMutations = () => {
         .from('collections')
         .insert({
           ...data,
-          owner_id: user.id,
+          user_id: user.id, // Changed from owner_id to user_id
           visibility: data.visibility || 'private'
         })
         .select()

@@ -92,13 +92,13 @@ const CollectionGrid = () => {
               variant={
                 (filters.visibility?.toString() === option.value.toString() &&
                  filters.is_featured === option.featured &&
-                 filters.owner_id === option.owner) ? "default" : "outline"
+                 filters.user_id === option.owner) ? "default" : "outline"
               }
               size="sm"
               onClick={() => handleFilterChange({
                 visibility: option.value as any,
                 is_featured: option.featured,
-                owner_id: option.owner
+                user_id: option.owner
               })}
               className="border-gray-600 text-gray-300 hover:text-white"
             >

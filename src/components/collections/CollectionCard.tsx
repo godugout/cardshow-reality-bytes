@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
@@ -100,7 +101,7 @@ const CollectionCard = ({ collection }: CollectionCardProps) => {
                     <Eye className="w-4 h-4 mr-2" />
                     View Details
                   </DropdownMenuItem>
-                  {user && user.id !== collection.owner_id && (
+                  {user && user.id !== collection.user_id && (
                     <DropdownMenuItem 
                       className="text-gray-300 hover:text-white hover:bg-gray-700"
                       onClick={handleFollowToggle}
@@ -153,7 +154,7 @@ const CollectionCard = ({ collection }: CollectionCardProps) => {
                 </span>
               </div>
               
-              {user && user.id !== collection.owner_id && collection.visibility === 'public' && (
+              {user && user.id !== collection.user_id && collection.visibility === 'public' && (
                 <Button
                   size="sm"
                   variant="ghost"
