@@ -32,8 +32,8 @@ const TradeOfferBuilder = ({
   const [tradeNote, setTradeNote] = useState('');
   const [showCardSelector, setShowCardSelector] = useState<'offered' | 'requested' | null>(null);
 
-  const { data: userCards = [] } = useCards();
-  const { mutate: createOffer, isLoading } = useCreateTradeOffer();
+  const { cards: userCards = [] } = useCards();
+  const { mutate: createOffer, isPending } = useCreateTradeOffer();
 
   const handleAddCard = (card: CardType, type: 'offered' | 'requested') => {
     const setter = type === 'offered' ? setOfferedCards : setRequestedCards;
@@ -359,10 +359,10 @@ const TradeOfferBuilder = ({
       <div className="flex gap-4">
         <Button
           onClick={handleCreateOffer}
-          disabled={isLoading || (offeredCards.length === 0 && requestedCards.length === 0)}
+          disabled={isPending || (offeredCards.length === 0 && requestedCards.length === 0)}
           className="flex-1 bg-blue-600 hover:bg-blue-700"
         >
-          {isLoading ? 'Creating...' : 'Send Trade Offer'}
+          {isPending ? 'Creating...' : 'Send Trade Offer'}
         </Button>
         <Button variant="outline" onClick={onClose}>
           Cancel

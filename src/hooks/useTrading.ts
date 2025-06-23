@@ -25,8 +25,8 @@ export const useTradeOffers = (filters: TradeFilters = {}) => {
         .from('trade_offers')
         .select(`
           *,
-          initiator:profiles!trade_offers_initiator_id_fkey(id, username, avatar_url),
-          recipient:profiles!trade_offers_recipient_id_fkey(id, username, avatar_url)
+          initiator:profiles!initiator_id(id, username, avatar_url),
+          recipient:profiles!recipient_id(id, username, avatar_url)
         `)
         .or(`initiator_id.eq.${user.id},recipient_id.eq.${user.id}`)
         .order('created_at', { ascending: false });
@@ -35,9 +35,17 @@ export const useTradeOffers = (filters: TradeFilters = {}) => {
         query = query.in('status', filters.status);
       }
 
+      if (filters.initiator_id) {
+        query = query.eq('initiator_id', filters.initiator_id);
+      }
+
+      if (filters.recipient_id) {
+        query = query.eq('recipient_id', filters.recipient_id);
+      }
+
       const { data, error } = await query;
       if (error) throw error;
-      return data || [];
+      return (data || []) as TradeOffer[];
     },
     enabled: !!user,
   });
@@ -78,13 +86,13 @@ export const useTradeMessages = (tradeId: string) => {
         .from('trade_messages')
         .select(`
           *,
-          sender:profiles!trade_messages_sender_id_fkey(username, avatar_url)
+          sender:profiles!sender_id(username, avatar_url)
         `)
         .eq('trade_id', tradeId)
         .order('timestamp', { ascending: true });
 
       if (error) throw error;
-      return data || [];
+      return (data || []) as TradeMessage[];
     },
     enabled: !!tradeId,
   });
@@ -128,11 +136,11 @@ export const useTradeParticipants = (tradeId: string) => {
         .from('trade_participants')
         .select(`
           *,
-          user:profiles!trade_participants_user_id_fkey(username, avatar_url)
+          user:profiles!user_id(username, avatar_url)
         `)
         .eq('trade_id', tradeId);
 
-      setParticipants(data || []);
+      setParticipants((data || []) as TradeParticipant[]);
     };
 
     fetchParticipants();

@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import { 
   MessageCircle, 
   Send, 
@@ -133,7 +132,7 @@ const TradingRoom = ({ trade, onClose }: TradingRoomProps) => {
                 <span>Expires:</span>
                 <span>{formatDistanceToNow(new Date(trade.expires_at))} left</span>
               </div>
-              {trade.cash_included > 0 && (
+              {trade.cash_included && trade.cash_included > 0 && (
                 <div className="flex justify-between">
                   <span>Cash Included:</span>
                   <span>{formatCurrency(trade.cash_included)}</span>

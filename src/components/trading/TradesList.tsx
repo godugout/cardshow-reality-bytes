@@ -19,10 +19,10 @@ const TradesList = () => {
 
   const { offers: allOffers } = useTradeOffers();
   const { offers: sentOffers } = useTradeOffers({ 
-    filters: { initiator_id: user?.id } 
+    initiator_id: user?.id 
   });
   const { offers: receivedOffers } = useTradeOffers({ 
-    filters: { recipient_id: user?.id } 
+    recipient_id: user?.id 
   });
 
   const getOffersForTab = () => {
@@ -135,7 +135,7 @@ const TradesList = () => {
                           <span>Cards Requested:</span>
                           <span>{requestedCardsCount}</span>
                         </div>
-                        {trade.cash_included > 0 && (
+                        {trade.cash_included && trade.cash_included > 0 && (
                           <div className="flex justify-between text-sm">
                             <span>Cash Included:</span>
                             <span className="text-green-400">
