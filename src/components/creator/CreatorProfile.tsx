@@ -23,6 +23,12 @@ import {
   Save
 } from "lucide-react";
 
+interface CommissionRates {
+  standard: number;
+  premium: number;
+  custom: number;
+}
+
 export const CreatorProfile = () => {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -36,7 +42,7 @@ export const CreatorProfile = () => {
       standard: 50.00,
       premium: 100.00,
       custom: 200.00
-    },
+    } as CommissionRates,
     payout_enabled: false,
   });
 
@@ -104,15 +110,27 @@ export const CreatorProfile = () => {
 
   useEffect(() => {
     if (creatorProfile) {
+      // Safely parse commission_rates from JSONB
+      let commissionRates: CommissionRates = {
+        standard: 50.00,
+        premium: 100.00,
+        custom: 200.00
+      };
+
+      if (creatorProfile.commission_rates && typeof creatorProfile.commission_rates === 'object') {
+        const rates = creatorProfile.commission_rates as any;
+        commissionRates = {
+          standard: Number(rates.standard) || 50.00,
+          premium: Number(rates.premium) || 100.00,
+          custom: Number(rates.custom) || 200.00
+        };
+      }
+
       setFormData({
         bio: creatorProfile.bio || "",
         portfolio_url: creatorProfile.portfolio_url || "",
-        specialties: creatorProfile.specialties || [],
-        commission_rates: creatorProfile.commission_rates || {
-          standard: 50.00,
-          premium: 100.00,
-          custom: 200.00
-        },
+        specialties: Array.isArray(creatorProfile.specialties) ? creatorProfile.specialties : [],
+        commission_rates: commissionRates,
         payout_enabled: creatorProfile.payout_enabled || false,
       });
     }
