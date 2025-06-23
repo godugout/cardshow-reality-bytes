@@ -1,20 +1,6 @@
 
-import { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { 
-  MessageCircle, 
-  Send, 
-  CheckCircle, 
-  XCircle, 
-  Clock,
-  Users,
-  DollarSign
-} from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { 
   useTradeMessages, 
@@ -23,7 +9,11 @@ import {
   useUpdateTradeStatus,
   useTradePresence
 } from '@/hooks/useTrading';
-import { formatDistanceToNow } from 'date-fns';
+import TradeDetails from './room/TradeDetails';
+import TradeActions from './room/TradeActions';
+import ChatHeader from './room/ChatHeader';
+import ChatMessages from './room/ChatMessages';
+import ChatInput from './room/ChatInput';
 import type { TradeOffer } from '@/types/trading';
 
 interface TradingRoomProps {
@@ -35,7 +25,6 @@ const TradingRoom = ({ trade, onClose }: TradingRoomProps) => {
   const { user } = useAuth();
   const [message, setMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   
   const { messages } = useTradeMessages(trade.id);
   const { participants } = useTradeParticipants(trade.id);
@@ -50,10 +39,6 @@ const TradingRoom = ({ trade, onClose }: TradingRoomProps) => {
     markOnline();
   }, [markOnline]);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
   const handleSendMessage = () => {
     if (!message.trim()) return;
 
@@ -63,7 +48,7 @@ const TradingRoom = ({ trade, onClose }: TradingRoomProps) => {
     });
 
     setMessage('');
-    setTyping(false);
+    setIsTyping(false);
   };
 
   const handleInputChange = (value: string) => {
@@ -104,6 +89,8 @@ const TradingRoom = ({ trade, onClose }: TradingRoomProps) => {
     }).format(amount);
   };
 
+  const isAnyoneTyping = participants.some(p => p.is_typing && p.user_id !== user?.id);
+
   return (
     <div className="flex h-screen bg-gray-900 text-white">
       {/* Trade Details Sidebar */}
@@ -113,162 +100,39 @@ const TradingRoom = ({ trade, onClose }: TradingRoomProps) => {
           <Button variant="ghost" onClick={onClose}>×</Button>
         </div>
 
-        <Card className="bg-gray-800 border-gray-700 mb-4">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">Trade Status</CardTitle>
-              <Badge className={`text-white ${getStatusColor(trade.status)}`}>
-                {trade.status.toUpperCase()}
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>Created:</span>
-                <span>{formatDistanceToNow(new Date(trade.created_at))} ago</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Expires:</span>
-                <span>{formatDistanceToNow(new Date(trade.expires_at))} left</span>
-              </div>
-              {trade.cash_included && trade.cash_included > 0 && (
-                <div className="flex justify-between">
-                  <span>Cash Included:</span>
-                  <span>{formatCurrency(trade.cash_included)}</span>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+        <TradeDetails 
+          trade={trade}
+          otherUser={otherUser}
+          getStatusColor={getStatusColor}
+          formatCurrency={formatCurrency}
+        />
 
-        {/* Trading Partner */}
-        <Card className="bg-gray-800 border-gray-700 mb-4">
-          <CardHeader>
-            <CardTitle className="text-lg">Trading With</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-3">
-              <Avatar>
-                <AvatarImage src={otherUser?.avatar_url || undefined} />
-                <AvatarFallback>
-                  {otherUser?.username?.charAt(0).toUpperCase() || '?'}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-semibold">{otherUser?.username || 'Unknown User'}</p>
-                <p className="text-sm text-gray-400">
-                  {participants.find(p => p.user_id === otherUser?.id)?.presence_status || 'offline'}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Trade Actions */}
-        {trade.status === 'pending' && !isInitiator && (
-          <div className="space-y-2">
-            <Button 
-              onClick={handleAcceptTrade}
-              className="w-full bg-green-600 hover:bg-green-700"
-            >
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Accept Trade
-            </Button>
-            <Button 
-              onClick={handleRejectTrade}
-              variant="destructive"
-              className="w-full"
-            >
-              <XCircle className="w-4 h-4 mr-2" />
-              Reject Trade
-            </Button>
-          </div>
-        )}
+        <div className="mt-4">
+          <TradeActions
+            trade={trade}
+            isInitiator={isInitiator}
+            onAccept={handleAcceptTrade}
+            onReject={handleRejectTrade}
+          />
+        </div>
       </div>
 
       {/* Chat Area */}
       <div className="flex-1 flex flex-col">
-        {/* Chat Header */}
-        <div className="border-b border-gray-700 p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <MessageCircle className="w-5 h-5" />
-              <span className="font-semibold">Trade Chat</span>
-            </div>
-            <div className="flex items-center gap-2 text-sm text-gray-400">
-              <Users className="w-4 h-4" />
-              <span>{participants.length} online</span>
-            </div>
-          </div>
-        </div>
+        <ChatHeader participantCount={participants.length} />
+        
+        <ChatMessages 
+          messages={messages}
+          userId={user?.id}
+          isTyping={isAnyoneTyping}
+        />
 
-        {/* Messages */}
-        <ScrollArea className="flex-1 p-4">
-          <div className="space-y-4">
-            {messages.map((msg) => {
-              const isOwn = msg.sender_id === user?.id;
-              return (
-                <div key={msg.id} className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                    isOwn 
-                      ? 'bg-blue-600 text-white' 
-                      : 'bg-gray-700 text-gray-100'
-                  }`}>
-                    {!isOwn && (
-                      <div className="text-xs text-gray-300 mb-1">
-                        {msg.sender?.username || 'Unknown'}
-                      </div>
-                    )}
-                    <p className="text-sm">{msg.message}</p>
-                    <div className="text-xs opacity-70 mt-1">
-                      {formatDistanceToNow(new Date(msg.timestamp))} ago
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-            
-            {/* Typing Indicator */}
-            {participants.some(p => p.is_typing && p.user_id !== user?.id) && (
-              <div className="flex justify-start">
-                <div className="bg-gray-700 px-4 py-2 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <div className="flex gap-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    </div>
-                    <span className="text-xs text-gray-400">typing...</span>
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            <div ref={messagesEndRef} />
-          </div>
-        </ScrollArea>
-
-        {/* Message Input */}
-        <div className="border-t border-gray-700 p-4">
-          <div className="flex gap-2">
-            <Input
-              value={message}
-              onChange={(e) => handleInputChange(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              placeholder="Type a message..."
-              className="flex-1 bg-gray-800 border-gray-600"
-              disabled={trade.status !== 'pending'}
-            />
-            <Button 
-              onClick={handleSendMessage}
-              disabled={!message.trim() || trade.status !== 'pending'}
-              className="bg-blue-600 hover:bg-blue-700"
-            >
-              <Send className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
+        <ChatInput
+          message={message}
+          onMessageChange={handleInputChange}
+          onSendMessage={handleSendMessage}
+          disabled={trade.status !== 'pending'}
+        />
       </div>
     </div>
   );
