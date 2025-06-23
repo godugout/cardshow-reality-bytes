@@ -7,6 +7,9 @@ import { CreatorProfile } from '@/components/creator/CreatorProfile';
 import { RevenueAnalytics } from '@/components/creator/RevenueAnalytics';
 import { TemplateMarketplace } from '@/components/creator/TemplateMarketplace';
 import CreatorCommunityDashboard from '@/components/creator-community/CreatorCommunityDashboard';
+import { AutomationDashboard } from '@/components/advanced-creator/AutomationDashboard';
+import { DesignAssetsLibrary } from '@/components/advanced-creator/DesignAssetsLibrary';
+import { AdvancedAnalytics } from '@/components/advanced-creator/AdvancedAnalytics';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function Creator() {
@@ -28,12 +31,15 @@ export default function Creator() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-9">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="designer">Designer</TabsTrigger>
+            <TabsTrigger value="automation">Automation</TabsTrigger>
+            <TabsTrigger value="assets">Assets</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="community">Community</TabsTrigger>
             <TabsTrigger value="marketplace">Templates</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="revenue">Revenue</TabsTrigger>
             <TabsTrigger value="profile">Profile</TabsTrigger>
           </TabsList>
 
@@ -45,6 +51,18 @@ export default function Creator() {
             <CardDesigner />
           </TabsContent>
 
+          <TabsContent value="automation">
+            <AutomationDashboard />
+          </TabsContent>
+
+          <TabsContent value="assets">
+            <DesignAssetsLibrary />
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <AdvancedAnalytics />
+          </TabsContent>
+
           <TabsContent value="community">
             <CreatorCommunityDashboard />
           </TabsContent>
@@ -53,7 +71,7 @@ export default function Creator() {
             <TemplateMarketplace />
           </TabsContent>
 
-          <TabsContent value="analytics">
+          <TabsContent value="revenue">
             <RevenueAnalytics />
           </TabsContent>
 
