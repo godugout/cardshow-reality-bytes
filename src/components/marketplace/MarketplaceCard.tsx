@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -11,6 +11,7 @@ import { useCurrentHighestBid } from '@/hooks/useAuctions';
 import AuctionBidding from './AuctionBidding';
 import RarityBadge from '@/components/cards/RarityBadge';
 import type { MarketplaceListing } from '@/types/marketplace';
+import type { CardRarity } from '@/types/card';
 import { formatDistanceToNow } from 'date-fns';
 
 interface MarketplaceCardProps {
@@ -94,7 +95,7 @@ const MarketplaceCard = ({ listing }: MarketplaceCardProps) => {
           </h3>
           
           <div className="flex items-center justify-between">
-            {listing.card?.rarity && <RarityBadge rarity={listing.card.rarity} />}
+            {listing.card?.rarity && <RarityBadge rarity={listing.card.rarity as CardRarity} />}
             <Badge variant="outline" className="text-xs">
               {listing.condition}
             </Badge>
@@ -194,7 +195,7 @@ const MarketplaceCard = ({ listing }: MarketplaceCardProps) => {
                   <div className="space-y-2">
                     <h3 className="text-xl font-bold">{listing.card?.title}</h3>
                     <div className="flex gap-2">
-                      {listing.card?.rarity && <RarityBadge rarity={listing.card.rarity} />}
+                      {listing.card?.rarity && <RarityBadge rarity={listing.card.rarity as CardRarity} />}
                       <Badge variant="outline">{listing.condition}</Badge>
                     </div>
                     
