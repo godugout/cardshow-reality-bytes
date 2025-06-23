@@ -14,6 +14,7 @@ import Gallery from "./pages/Gallery";
 import Marketplace from "./pages/Marketplace";
 import Trading from "./pages/Trading";
 import Creator from "./pages/Creator";
+import Community from "./pages/Community";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -37,6 +38,7 @@ const App = () => (
                 <Route path="/marketplace" element={<Marketplace />} />
                 <Route path="/trading" element={<Trading />} />
                 <Route path="/creator" element={<Creator />} />
+                <Route path="/community" element={<Community />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
