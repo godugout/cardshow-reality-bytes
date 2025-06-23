@@ -12,8 +12,7 @@ export const useMarketplaceListings = (filters: ListingFilters = {}) => {
         .from('marketplace_listings')
         .select(`
           *,
-          card:cards(id, title, image_url, rarity),
-          seller_profiles!marketplace_listings_seller_id_fkey(user_id, rating, total_sales, verification_status)
+          card:cards(id, title, image_url, rarity)
         `)
         .eq('status', 'active')
         .order('created_at', { ascending: false });
@@ -46,18 +45,30 @@ export const useMarketplaceListings = (filters: ListingFilters = {}) => {
       
       if (error) throw error;
       
-      // Get seller profiles with user info
+      // Get additional data separately since foreign keys are missing
       const listingsWithProfiles = await Promise.all(
         (data || []).map(async (listing) => {
+          let seller_profiles = null;
           let profiles = null;
           
-          if (listing.seller_profiles?.user_id) {
-            const { data: profileData } = await supabase
+          // Try to get seller profile
+          const { data: sellerProfile } = await supabase
+            .from('seller_profiles')
+            .select('user_id, rating, total_sales, verification_status')
+            .eq('user_id', listing.seller_id)
+            .single();
+          
+          if (sellerProfile) {
+            seller_profiles = sellerProfile;
+            
+            // Get user profile
+            const { data: userProfile } = await supabase
               .from('profiles')
               .select('username, avatar_url')
-              .eq('id', listing.seller_profiles.user_id)
+              .eq('id', sellerProfile.user_id)
               .single();
-            profiles = profileData;
+            
+            profiles = userProfile;
           }
 
           return {
@@ -65,9 +76,7 @@ export const useMarketplaceListings = (filters: ListingFilters = {}) => {
             card: listing.card && typeof listing.card === 'object' && 'id' in listing.card
               ? listing.card
               : null,
-            seller_profiles: listing.seller_profiles && typeof listing.seller_profiles === 'object' && 'user_id' in listing.seller_profiles
-              ? listing.seller_profiles
-              : null,
+            seller_profiles,
             profiles
           };
         })
