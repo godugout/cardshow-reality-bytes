@@ -16,6 +16,9 @@ import Trading from "./pages/Trading";
 import Creator from "./pages/Creator";
 import Community from "./pages/Community";
 import Auth from "./pages/Auth";
+import Admin from "./pages/Admin";
+import Support from "./pages/Support";
+import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +43,9 @@ const App = () => (
                 <Route path="/creator" element={<Creator />} />
                 <Route path="/community" element={<Community />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/support" element={<Support />} />
+                <Route path="/privacy" element={<Privacy />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
