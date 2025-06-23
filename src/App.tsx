@@ -11,6 +11,7 @@ import Cards from "./pages/Cards";
 import Collections from "./pages/Collections";
 import Gallery from "./pages/Gallery";
 import Marketplace from "./pages/Marketplace";
+import Trading from "./pages/Trading";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/collections" element={<Collections />} />
             <Route path="/gallery/:collectionId" element={<Gallery />} />
             <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/trading" element={<Trading />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

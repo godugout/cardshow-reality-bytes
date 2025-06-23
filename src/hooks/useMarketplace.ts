@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -47,7 +46,7 @@ export const useMarketplaceListings = (filters: ListingFilters = {}) => {
       const { data, error } = await query;
       
       if (error) throw error;
-      return data || [];
+      return (data || []) as MarketplaceListing[];
     },
   });
 
