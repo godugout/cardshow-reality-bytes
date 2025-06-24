@@ -87,11 +87,9 @@ export const useKnowledgeBase = (searchTerm?: string) => {
 
   const incrementViewMutation = useMutation({
     mutationFn: async (articleId: string) => {
-      // Use a direct update instead of calling the RPC function
-      const { error } = await supabase
-        .from('knowledge_base')
-        .update({ view_count: supabase.raw('view_count + 1') })
-        .eq('id', articleId);
+      const { error } = await supabase.rpc('increment_article_views', {
+        article_id: articleId
+      });
       
       if (error) throw error;
     }
