@@ -119,8 +119,9 @@ export const useTradeOffers = (userId?: string, filters: TradeFilters = {}) => {
         }
       )
       .subscribe((status) => {
-        if (status === 'SUBSCRIPTION_ERROR') {
-          console.error('Failed to subscribe to trade offers changes');
+        // Fixed: Check for 'SUBSCRIPTION_ERROR' status correctly
+        if (status !== 'SUBSCRIBED') {
+          console.error('Failed to subscribe to trade offers changes. Status:', status);
         }
       });
 
