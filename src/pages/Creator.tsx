@@ -130,7 +130,7 @@ export default function Creator() {
 
           <TabsContent value="profile">
             <CreatorProfile />
-          </TabContent>
+          </TabsContent>
         </Tabs>
       </div>
     </div>
