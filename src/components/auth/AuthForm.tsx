@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff } from 'lucide-react';
-import PasswordResetDialog from '@/components/PasswordResetDialog';
 
 interface AuthFormProps {
   isLogin: boolean;
@@ -98,21 +97,6 @@ const AuthForm = ({
           </button>
         </div>
       </div>
-
-      {isLogin && (
-        <div className="text-right">
-          <PasswordResetDialog
-            trigger={
-              <button
-                type="button"
-                className="text-sm text-[#00C851] hover:text-[#00A543]"
-              >
-                Forgot your password?
-              </button>
-            }
-          />
-        </div>
-      )}
 
       <Button
         type="submit"

@@ -3,9 +3,6 @@ import { useState } from 'react';
 import Header from '@/components/Header';
 import MarketplaceGrid from '@/components/marketplace/MarketplaceGrid';
 import MarketplaceFilters from '@/components/marketplace/filters/MarketplaceFilters';
-import { Button } from '@/components/ui/button';
-import PasswordResetDialog from '@/components/PasswordResetDialog';
-import { Send } from 'lucide-react';
 import type { ListingFilters } from '@/types/marketplace';
 
 const Marketplace = () => {
@@ -30,16 +27,6 @@ const Marketplace = () => {
               Discover and trade premium digital cards
             </p>
           </div>
-          
-          {/* Temporary Send button for password reset */}
-          <PasswordResetDialog
-            trigger={
-              <Button className="bg-[#00C851] hover:bg-[#00A543] text-white">
-                <Send className="w-4 h-4 mr-2" />
-                Send
-              </Button>
-            }
-          />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
