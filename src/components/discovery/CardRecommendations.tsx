@@ -8,7 +8,7 @@ import { RefreshCw, Heart, Eye, TrendingUp, Users } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import CardDisplay from '@/components/cards/CardDisplay';
 import { supabase } from '@/integrations/supabase/client';
-import type { Card as CardType } from '@/types/card';
+import type { Card as CardType, ManaCost } from '@/types/card';
 
 interface RecommendationSection {
   title: string;
@@ -156,12 +156,16 @@ const CardRecommendations = () => {
 };
 
 // Helper function to transform Supabase data to CardType
-const transformToCardType = (data: any): CardType => ({
-  ...data,
-  mana_cost: data.mana_cost || {},
-  abilities: data.abilities || [],
-  is_favorited: false
-});
+const transformToCardType = (data: any): CardType => {
+  return {
+    ...data,
+    mana_cost: (typeof data.mana_cost === 'object' && data.mana_cost !== null) 
+      ? data.mana_cost as ManaCost 
+      : {} as ManaCost,
+    abilities: Array.isArray(data.abilities) ? data.abilities : [],
+    is_favorited: false
+  } as CardType;
+};
 
 // Helper functions for fetching recommendations
 async function getUserInteractions(userId: string) {
