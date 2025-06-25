@@ -23,11 +23,7 @@ export const useCards = (filters: CardFilters = {}) => {
       try {
         let query = supabase
           .from('cards')
-          .select(`
-            *,
-            creator:profiles!cards_creator_id_fkey(id, username, avatar_url),
-            set:sets(id, name)
-          `)
+          .select('*')
           .eq('is_public', true)
           .order('created_at', { ascending: false });
 
@@ -64,10 +60,39 @@ export const useCards = (filters: CardFilters = {}) => {
         
         if (error) throw error;
 
-        // Handle favorites separately for authenticated users
-        let cardsWithFavorites = data || [];
+        // Get creator and set info separately to avoid complex joins
+        let cardsWithDetails = data || [];
         
-        if (user && data) {
+        if (data && data.length > 0) {
+          // Get creators
+          const creatorIds = data.map(c => c.creator_id).filter(Boolean);
+          const setIds = data.map(c => c.set_id).filter(Boolean);
+          
+          const [profilesResult, setsResult] = await Promise.all([
+            creatorIds.length > 0 ? supabase
+              .from('profiles')
+              .select('id, username, avatar_url')
+              .in('id', creatorIds) : Promise.resolve({ data: [] }),
+            setIds.length > 0 ? supabase
+              .from('sets')
+              .select('id, name')
+              .in('id', setIds) : Promise.resolve({ data: [] })
+          ]);
+
+          const profileMap = new Map(profilesResult.data?.map(p => [p.id, p]) || []);
+          const setMap = new Map(setsResult.data?.map(s => [s.id, s]) || []);
+          
+          cardsWithDetails = data.map(card => ({
+            ...card,
+            creator: card.creator_id ? profileMap.get(card.creator_id) : null,
+            set: card.set_id ? setMap.get(card.set_id) : null
+          }));
+        }
+
+        // Handle favorites separately for authenticated users
+        let cardsWithFavorites = cardsWithDetails;
+        
+        if (user && cardsWithDetails.length > 0) {
           try {
             const { data: favorites } = await supabase
               .from('card_favorites')
@@ -76,19 +101,19 @@ export const useCards = (filters: CardFilters = {}) => {
 
             const favoriteIds = new Set(favorites?.map(f => f.card_id) || []);
             
-            cardsWithFavorites = data.map(card => ({
+            cardsWithFavorites = cardsWithDetails.map(card => ({
               ...card,
               is_favorited: favoriteIds.has(card.id)
             }));
           } catch (favError) {
             console.warn('Failed to fetch favorites:', favError);
-            cardsWithFavorites = data.map(card => ({
+            cardsWithFavorites = cardsWithDetails.map(card => ({
               ...card,
               is_favorited: false
             }));
           }
-        } else if (data) {
-          cardsWithFavorites = data.map(card => ({
+        } else if (cardsWithDetails.length > 0) {
+          cardsWithFavorites = cardsWithDetails.map(card => ({
             ...card,
             is_favorited: false
           }));

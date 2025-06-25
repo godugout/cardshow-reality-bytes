@@ -12,17 +12,33 @@ export const useCollection = (collectionId: string) => {
     queryKey: ['collection', collectionId],
     queryFn: async () => {
       try {
-        const { data, error } = await supabase
+        // First get the collection
+        const { data: collectionData, error: collectionError } = await supabase
           .from('collections')
-          .select(`
-            *,
-            owner:profiles!collections_user_id_fkey(id, username, avatar_url)
-          `)
+          .select('*')
           .eq('id', collectionId)
           .single();
         
-        if (error) throw error;
-        return data as Collection;
+        if (collectionError) throw collectionError;
+
+        // Then get the owner profile separately to avoid complex joins
+        let owner = null;
+        if (collectionData.user_id) {
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('id, username, avatar_url')
+            .eq('id', collectionData.user_id)
+            .single();
+          
+          if (profileData) {
+            owner = profileData;
+          }
+        }
+
+        return {
+          ...collectionData,
+          owner
+        } as Collection;
       } catch (error) {
         handleError(error, {
           operation: 'fetch_collection',

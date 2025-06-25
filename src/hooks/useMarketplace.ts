@@ -15,33 +15,12 @@ export const useMarketplaceListings = (filters: Record<string, any> = {}) => {
       try {
         let query = supabase
           .from('marketplace_listings')
-          .select(`
-            *,
-            card:cards(
-              id,
-              title,
-              image_url,
-              rarity
-            ),
-            seller_profiles(
-              user_id,
-              rating,
-              total_sales,
-              verification_status
-            ),
-            profiles:seller_profiles!inner(
-              user_id,
-              profiles!inner(
-                username,
-                avatar_url
-              )
-            )
-          `)
+          .select('*')
           .eq('status', 'active')
           .order('created_at', { ascending: false });
 
         if (filters.search) {
-          query = query.or(`card.title.ilike.%${filters.search}%`);
+          // We'll need to join with cards for search - do this separately
         }
 
         if (filters.min_price) {
@@ -56,10 +35,52 @@ export const useMarketplaceListings = (filters: Record<string, any> = {}) => {
           query = query.in('condition', filters.condition);
         }
 
-        const { data, error } = await query;
+        const { data: listingsData, error } = await query;
 
         if (error) throw error;
-        return data as MarketplaceListing[];
+
+        // Get related data separately to avoid complex joins
+        let enrichedListings = listingsData || [];
+
+        if (listingsData && listingsData.length > 0) {
+          const cardIds = listingsData.map(l => l.card_id).filter(Boolean);
+          const sellerIds = listingsData.map(l => l.seller_id).filter(Boolean);
+
+          const [cardsResult, sellersResult, profilesResult] = await Promise.all([
+            cardIds.length > 0 ? supabase
+              .from('cards')
+              .select('id, title, image_url, rarity')
+              .in('id', cardIds) : Promise.resolve({ data: [] }),
+            sellerIds.length > 0 ? supabase
+              .from('seller_profiles')
+              .select('user_id, rating, total_sales, verification_status')
+              .in('user_id', sellerIds) : Promise.resolve({ data: [] }),
+            sellerIds.length > 0 ? supabase
+              .from('profiles')
+              .select('id, username, avatar_url')
+              .in('id', sellerIds) : Promise.resolve({ data: [] })
+          ]);
+
+          const cardMap = new Map(cardsResult.data?.map(c => [c.id, c]) || []);
+          const sellerMap = new Map(sellersResult.data?.map(s => [s.user_id, s]) || []);
+          const profileMap = new Map(profilesResult.data?.map(p => [p.id, p]) || []);
+
+          enrichedListings = listingsData.map(listing => ({
+            ...listing,
+            card: listing.card_id ? cardMap.get(listing.card_id) : null,
+            seller_profiles: listing.seller_id ? sellerMap.get(listing.seller_id) : null,
+            profiles: listing.seller_id ? profileMap.get(listing.seller_id) : null
+          }));
+
+          // Apply search filter if needed
+          if (filters.search) {
+            enrichedListings = enrichedListings.filter(listing => 
+              listing.card?.title?.toLowerCase().includes(filters.search.toLowerCase())
+            );
+          }
+        }
+
+        return enrichedListings as MarketplaceListing[];
       } catch (error) {
         handleError(error, { operation: 'fetch_marketplace_listings' });
         throw error;

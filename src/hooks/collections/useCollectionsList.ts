@@ -22,10 +22,7 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
       try {
         let query = supabase
           .from('collections')
-          .select(`
-            *,
-            owner:profiles!collections_user_id_fkey(id, username, avatar_url)
-          `)
+          .select('*')
           .order('updated_at', { ascending: false });
 
         // Apply filters
@@ -49,10 +46,31 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
         
         if (error) throw error;
 
-        // Get collection stats and follower info
-        let collectionsWithExtras = data || [];
+        // Get owner profiles separately to avoid complex joins
+        let collectionsWithOwners = data || [];
         
-        if (user && data) {
+        if (data && data.length > 0) {
+          const userIds = data.map(c => c.user_id).filter(Boolean);
+          
+          if (userIds.length > 0) {
+            const { data: profiles } = await supabase
+              .from('profiles')
+              .select('id, username, avatar_url')
+              .in('id', userIds);
+
+            const profileMap = new Map(profiles?.map(p => [p.id, p]) || []);
+            
+            collectionsWithOwners = data.map(collection => ({
+              ...collection,
+              owner: collection.user_id ? profileMap.get(collection.user_id) : null
+            }));
+          }
+        }
+
+        // Get collection stats and follower info
+        let collectionsWithExtras = collectionsWithOwners;
+        
+        if (user && collectionsWithOwners.length > 0) {
           try {
             // Get following status
             const { data: following } = await supabase
@@ -63,42 +81,34 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
             const followingIds = new Set(following?.map(f => f.collection_id) || []);
             
             // Get card counts
-            const collectionIds = data.map(c => c.id);
-            if (collectionIds.length > 0) {
-              const { data: cardCounts } = await supabase
-                .from('collection_cards')
-                .select('collection_id')
-                .in('collection_id', collectionIds);
+            const collectionIds = collectionsWithOwners.map(c => c.id);
+            const { data: cardCounts } = await supabase
+              .from('collection_cards')
+              .select('collection_id')
+              .in('collection_id', collectionIds);
 
-              // Count cards per collection
-              const cardCountMap = new Map<string, number>();
-              cardCounts?.forEach(cc => {
-                const currentCount = cardCountMap.get(cc.collection_id) || 0;
-                cardCountMap.set(cc.collection_id, currentCount + 1);
-              });
-              
-              collectionsWithExtras = data.map(collection => ({
-                ...collection,
-                is_following: followingIds.has(collection.id),
-                card_count: cardCountMap.get(collection.id) || 0
-              }));
-            } else {
-              collectionsWithExtras = data.map(collection => ({
-                ...collection,
-                is_following: followingIds.has(collection.id),
-                card_count: 0
-              }));
-            }
+            // Count cards per collection
+            const cardCountMap = new Map<string, number>();
+            cardCounts?.forEach(cc => {
+              const currentCount = cardCountMap.get(cc.collection_id) || 0;
+              cardCountMap.set(cc.collection_id, currentCount + 1);
+            });
+            
+            collectionsWithExtras = collectionsWithOwners.map(collection => ({
+              ...collection,
+              is_following: followingIds.has(collection.id),
+              card_count: cardCountMap.get(collection.id) || 0
+            }));
           } catch (extraError) {
             console.warn('Failed to fetch collection extras:', extraError);
-            collectionsWithExtras = data.map(collection => ({
+            collectionsWithExtras = collectionsWithOwners.map(collection => ({
               ...collection,
               is_following: false,
               card_count: 0
             }));
           }
-        } else if (data) {
-          collectionsWithExtras = data.map(collection => ({
+        } else if (collectionsWithOwners.length > 0) {
+          collectionsWithExtras = collectionsWithOwners.map(collection => ({
             ...collection,
             is_following: false,
             card_count: 0
