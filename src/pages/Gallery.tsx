@@ -6,7 +6,6 @@ import { useCollections } from '@/hooks/useCollections';
 import { useCards } from '@/hooks/useCards';
 import { useViewingHistory } from '@/hooks/useViewingHistory';
 import Collection3DGallery from '@/components/gallery/Collection3DGallery';
-import Header from '@/components/Header';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Settings, Share } from 'lucide-react';
 import { toast } from 'sonner';
@@ -42,8 +41,6 @@ const Gallery = () => {
 
   return (
     <div className="min-h-screen bg-black">
-      <Header />
-      
       {/* Gallery Header */}
       <div className="absolute top-16 left-0 right-0 z-10 bg-gradient-to-b from-black/80 to-transparent p-4">
         <div className="container mx-auto flex items-center justify-between">

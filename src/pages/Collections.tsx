@@ -1,14 +1,11 @@
 
 import { Suspense } from 'react';
-import Header from '@/components/Header';
 import CollectionGrid from '@/components/collections/CollectionGrid';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Collections = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
-      <Header />
-      
       <div className="container mx-auto px-4 py-8">
         <Suspense fallback={
           <div className="space-y-6">

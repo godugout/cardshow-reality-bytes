@@ -2,7 +2,13 @@
 import TradesList from '@/components/trading/TradesList';
 
 const Trading = () => {
-  return <TradesList />;
+  return (
+    <div className="min-h-screen bg-[#0a0a0a]">
+      <div className="container mx-auto px-4 py-8">
+        <TradesList />
+      </div>
+    </div>
+  );
 };
 
 export default Trading;
