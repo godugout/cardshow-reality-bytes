@@ -1,11 +1,13 @@
 
 import { Suspense } from 'react';
+import Header from '@/components/Header';
 import CardGrid from '@/components/cards/CardGrid';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Cards = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
+      <Header />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">Card Marketplace</h1>

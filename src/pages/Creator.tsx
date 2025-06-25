@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import Header from '@/components/Header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CreatorDashboard } from '@/components/creator/CreatorDashboard';
 import { CardDesigner } from '@/components/creator/CardDesigner';
@@ -18,17 +19,21 @@ export default function Creator() {
 
   if (!user) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Creator Portal</h1>
-          <p className="text-muted-foreground">Please sign in to access creator features.</p>
+      <div className="min-h-screen bg-[#0a0a0a]">
+        <Header />
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4 text-white">Creator Portal</h1>
+            <p className="text-gray-400">Please sign in to access creator features.</p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
+      <Header />
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-9">

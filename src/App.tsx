@@ -70,7 +70,7 @@ function App() {
                       <Collections />
                     </ErrorBoundary>
                   } />
-                  <Route path="/gallery/:collectionId" element={
+                  <Route path="/collections/:collectionId/gallery" element={
                     <ErrorBoundary>
                       <Gallery />
                     </ErrorBoundary>

@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Search, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +13,7 @@ const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,32 +25,41 @@ const Header = () => {
   const navigation = [
     { name: 'Cards', href: '/cards' },
     { name: 'Collections', href: '/collections' },
-    { name: 'Gallery', href: '/gallery' },
     { name: 'Marketplace', href: '/marketplace' },
     { name: 'Trading', href: '/trading' },
     { name: 'Creator', href: '/creator' },
     { name: 'Community', href: '/community' },
   ];
 
+  const isActiveRoute = (href: string) => {
+    return location.pathname === href;
+  };
+
   return (
     <header className="bg-black/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">C</span>
+          <Link to="/" className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-[#00C851] to-[#00A543] rounded-xl flex items-center justify-center shadow-lg">
+              <span className="text-white font-bold text-lg">C</span>
             </div>
-            <span className="text-xl font-bold text-white">Cardshow</span>
+            <span className="text-2xl font-bold bg-gradient-to-r from-[#00C851] to-[#00A543] bg-clip-text text-transparent">
+              Cardshow
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-1">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className="text-gray-300 hover:text-white transition-colors"
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActiveRoute(item.href)
+                    ? 'bg-[#00C851] text-white shadow-lg'
+                    : 'text-gray-300 hover:text-white hover:bg-gray-800'
+                }`}
               >
                 {item.name}
               </Link>
@@ -65,7 +75,7 @@ const Header = () => {
                 placeholder="Search cards, collections, creators..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-gray-900 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500"
+                className="pl-10 bg-gray-900 border-gray-700 text-white placeholder-gray-400 focus:border-[#00C851] focus:ring-[#00C851]"
               />
             </div>
           </form>
@@ -79,7 +89,7 @@ const Header = () => {
                   variant="outline"
                   size="sm"
                   onClick={() => navigate('/creator')}
-                  className="hidden sm:flex border-gray-600 text-gray-300 hover:text-white"
+                  className="hidden sm:flex border-gray-600 text-gray-300 hover:text-white hover:bg-[#00C851] hover:border-[#00C851] transition-colors"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Create
@@ -94,7 +104,7 @@ const Header = () => {
               variant="ghost"
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden"
+              className="lg:hidden text-gray-300 hover:text-white"
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>
@@ -110,7 +120,7 @@ const Header = () => {
               placeholder="Search cards, collections, creators..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-gray-900 border-gray-700 text-white placeholder-gray-400"
+              className="pl-10 bg-gray-900 border-gray-700 text-white placeholder-gray-400 focus:border-[#00C851]"
             />
           </form>
         </div>
@@ -124,11 +134,27 @@ const Header = () => {
                   key={item.name}
                   to={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="text-gray-300 hover:text-white transition-colors py-2"
+                  className={`py-3 px-4 rounded-lg transition-colors ${
+                    isActiveRoute(item.href)
+                      ? 'bg-[#00C851] text-white'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-800'
+                  }`}
                 >
                   {item.name}
                 </Link>
               ))}
+              {user && (
+                <Button
+                  onClick={() => {
+                    navigate('/creator');
+                    setIsMenuOpen(false);
+                  }}
+                  className="mt-4 bg-[#00C851] hover:bg-[#00A543] text-white"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Cards
+                </Button>
+              )}
             </nav>
           </div>
         )}

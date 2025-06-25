@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Header from '@/components/Header';
 import { useAuth } from '@/hooks/useAuth';
 import { useCollections } from '@/hooks/useCollections';
 import { useCards } from '@/hooks/useCards';
@@ -36,7 +37,19 @@ const Gallery = () => {
   }, [collection, navigate]);
 
   if (!collection) {
-    return null;
+    return (
+      <div className="min-h-screen bg-[#0a0a0a]">
+        <Header />
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center text-white">
+            <h1 className="text-2xl font-bold mb-4">Collection Not Found</h1>
+            <Button onClick={() => navigate('/collections')}>
+              Back to Collections
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
