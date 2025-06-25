@@ -65,8 +65,8 @@ export const useCards = (filters: CardFilters = {}) => {
         
         if (data && data.length > 0) {
           // Get creators
-          const creatorIds = data.map(c => c.creator_id).filter(Boolean);
-          const setIds = data.map(c => c.set_id).filter(Boolean);
+          const creatorIds = [...new Set(data.map(c => c.creator_id).filter(Boolean))];
+          const setIds = [...new Set(data.map(c => c.set_id).filter(Boolean))];
           
           const [profilesResult, setsResult] = await Promise.all([
             creatorIds.length > 0 ? supabase
@@ -79,8 +79,16 @@ export const useCards = (filters: CardFilters = {}) => {
               .in('id', setIds) : Promise.resolve({ data: [] })
           ]);
 
-          const profileMap = new Map(profilesResult.data?.map(p => [p.id, p]) || []);
-          const setMap = new Map(setsResult.data?.map(s => [s.id, s]) || []);
+          // Create lookup maps using proper tuple format
+          const profileMap = new Map<string, any>();
+          (profilesResult.data || []).forEach(profile => {
+            profileMap.set(profile.id, profile);
+          });
+
+          const setMap = new Map<string, any>();
+          (setsResult.data || []).forEach(set => {
+            setMap.set(set.id, set);
+          });
           
           cardsWithDetails = data.map(card => ({
             ...card,

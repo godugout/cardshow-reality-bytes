@@ -43,8 +43,8 @@ export const useMarketplaceListings = (filters: Record<string, any> = {}) => {
         let enrichedListings = listingsData || [];
 
         if (listingsData && listingsData.length > 0) {
-          const cardIds = listingsData.map(l => l.card_id).filter(Boolean);
-          const sellerIds = listingsData.map(l => l.seller_id).filter(Boolean);
+          const cardIds = [...new Set(listingsData.map(l => l.card_id).filter(Boolean))];
+          const sellerIds = [...new Set(listingsData.map(l => l.seller_id).filter(Boolean))];
 
           const [cardsResult, sellersResult, profilesResult] = await Promise.all([
             cardIds.length > 0 ? supabase
@@ -61,9 +61,21 @@ export const useMarketplaceListings = (filters: Record<string, any> = {}) => {
               .in('id', sellerIds) : Promise.resolve({ data: [] })
           ]);
 
-          const cardMap = new Map(cardsResult.data?.map(c => [c.id, c]) || []);
-          const sellerMap = new Map(sellersResult.data?.map(s => [s.user_id, s]) || []);
-          const profileMap = new Map(profilesResult.data?.map(p => [p.id, p]) || []);
+          // Create lookup maps using proper iteration
+          const cardMap = new Map<string, any>();
+          (cardsResult.data || []).forEach(card => {
+            cardMap.set(card.id, card);
+          });
+
+          const sellerMap = new Map<string, any>();
+          (sellersResult.data || []).forEach(seller => {
+            sellerMap.set(seller.user_id, seller);
+          });
+
+          const profileMap = new Map<string, any>();
+          (profilesResult.data || []).forEach(profile => {
+            profileMap.set(profile.id, profile);
+          });
 
           enrichedListings = listingsData.map(listing => ({
             ...listing,
