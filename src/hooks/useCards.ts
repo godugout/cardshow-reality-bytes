@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -185,8 +184,13 @@ export const useCardFavorites = () => {
   const { handleError } = useSupabaseErrorHandler();
   const queryClient = useQueryClient();
 
-  const toggleFavorite = useMutation({
-    mutationFn: async ({ cardId, isFavorited }: { cardId: string; isFavorited: boolean }) => {
+  // Simplified mutation with explicit types
+  const toggleFavorite = useMutation<
+    void,
+    Error,
+    { cardId: string; isFavorited: boolean }
+  >({
+    mutationFn: async ({ cardId, isFavorited }) => {
       if (!user) throw new Error('Must be logged in to favorite cards');
 
       try {
