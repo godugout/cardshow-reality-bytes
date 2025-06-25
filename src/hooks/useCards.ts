@@ -12,14 +12,17 @@ export const useCards = (filters: CardFilters = {}) => {
   const { handleError } = useSupabaseErrorHandler();
   const [searchTerm, setSearchTerm] = useState(filters.search || '');
 
+  // Simplified query key to avoid deep type instantiation
+  const queryKey = ['cards', JSON.stringify(filters), searchTerm];
+
   const {
     data: cards = [],
     isLoading,
     error,
     refetch
   } = useQuery({
-    queryKey: ['cards', filters, searchTerm],
-    queryFn: async () => {
+    queryKey,
+    queryFn: async (): Promise<Card[]> => {
       try {
         let query = supabase
           .from('cards')
@@ -211,7 +214,7 @@ export const useCardFavorites = () => {
       }
     },
     onSuccess: (_, { isFavorited }) => {
-      // Fix: Use proper query invalidation
+      // Simple query invalidation
       queryClient.invalidateQueries({ queryKey: ['cards'] });
       toast({
         title: isFavorited ? 'Removed from favorites' : 'Added to favorites',

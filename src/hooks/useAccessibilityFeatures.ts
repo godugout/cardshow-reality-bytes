@@ -45,10 +45,12 @@ export const useAccessibilityFeatures = () => {
     // Check for common screen reader indicators
     const hasScreenReader = 
       'speechSynthesis' in window ||
-      navigator.userAgent.includes('NVDA') ||
-      navigator.userAgent.includes('JAWS') ||
-      navigator.userAgent.includes('VoiceOver') ||
-      window.navigator.userAgent.includes('Orca');
+      (typeof navigator !== 'undefined' && (
+        navigator.userAgent.includes('NVDA') ||
+        navigator.userAgent.includes('JAWS') ||
+        navigator.userAgent.includes('VoiceOver') ||
+        navigator.userAgent.includes('Orca')
+      ));
 
     setA11yState(prev => ({ ...prev, screenReaderActive: hasScreenReader }));
   }, []);
