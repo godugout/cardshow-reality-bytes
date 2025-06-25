@@ -2,31 +2,46 @@
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useSupabaseErrorHandler } from '@/hooks/useSupabaseErrorHandler';
 import type { CollectionCard } from '@/types/collection';
 
 export const useCollectionCards = (collectionId: string) => {
+  const { handleError } = useSupabaseErrorHandler();
+
   const { data: cards = [], isLoading, refetch } = useQuery({
     queryKey: ['collection-cards', collectionId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('collection_cards')
-        .select(`
-          *,
-          card:cards(
-            id,
-            title,
-            image_url,
-            rarity,
-            current_market_value
-          )
-        `)
-        .eq('collection_id', collectionId)
-        .order('display_order', { ascending: true });
-      
-      if (error) throw error;
-      return data as CollectionCard[];
+      try {
+        const { data, error } = await supabase
+          .from('collection_cards')
+          .select(`
+            *,
+            card:cards(
+              id,
+              title,
+              image_url,
+              rarity,
+              current_market_value
+            )
+          `)
+          .eq('collection_id', collectionId)
+          .order('display_order', { ascending: true });
+        
+        if (error) throw error;
+        return data as CollectionCard[];
+      } catch (error) {
+        handleError(error, {
+          operation: 'fetch_collection_cards',
+          table: 'collection_cards'
+        });
+        throw error;
+      }
     },
-    enabled: !!collectionId
+    enabled: !!collectionId,
+    retry: (failureCount, error: any) => {
+      if (error?.code === 'PGRST116') return false;
+      return failureCount < 2;
+    }
   });
 
   // Real-time subscription for collection cards

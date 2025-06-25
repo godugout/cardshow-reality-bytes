@@ -2,6 +2,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useSupabaseErrorHandler } from '@/hooks/useSupabaseErrorHandler';
 import { useToast } from '@/hooks/use-toast';
 import type { Database } from '@/integrations/supabase/types';
 
@@ -16,39 +17,43 @@ type PortfolioItem = Database['public']['Tables']['portfolio_tracking']['Row'] &
 
 export const usePortfolio = () => {
   const { user } = useAuth();
+  const { handleError } = useSupabaseErrorHandler();
 
   const { data: portfolio = [], isLoading, refetch } = useQuery({
     queryKey: ['portfolio', user?.id],
     queryFn: async () => {
       if (!user) return [];
 
-      const { data, error } = await supabase
-        .from('portfolio_tracking')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+      try {
+        const { data, error } = await supabase
+          .from('portfolio_tracking')
+          .select(`
+            *,
+            card:cards(
+              id,
+              title,
+              image_url,
+              rarity
+            )
+          `)
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
 
-      if (error) throw error;
-
-      // Get card details separately
-      const portfolioWithCards = await Promise.all(
-        (data || []).map(async (item) => {
-          const { data: cardData } = await supabase
-            .from('cards')
-            .select('id, title, image_url, rarity')
-            .eq('id', item.card_id)
-            .single();
-
-          return {
-            ...item,
-            card: cardData || null
-          };
-        })
-      );
-
-      return portfolioWithCards as PortfolioItem[];
+        if (error) throw error;
+        return (data || []) as PortfolioItem[];
+      } catch (error) {
+        handleError(error, {
+          operation: 'fetch_portfolio',
+          table: 'portfolio_tracking'
+        });
+        throw error;
+      }
     },
     enabled: !!user,
+    retry: (failureCount, error: any) => {
+      if (error?.code === 'PGRST116') return false;
+      return failureCount < 2;
+    }
   });
 
   return { portfolio, isLoading, refetch };
@@ -74,6 +79,7 @@ export const usePortfolioStats = () => {
 export const useAddToPortfolio = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { handleError } = useSupabaseErrorHandler();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -90,21 +96,29 @@ export const useAddToPortfolio = () => {
     }) => {
       if (!user) throw new Error('Must be logged in');
 
-      const { data, error } = await supabase
-        .from('portfolio_tracking')
-        .insert({
-          user_id: user.id,
-          card_id: cardId,
-          purchase_price: purchasePrice,
-          quantity,
-          purchase_date: purchaseDate || new Date().toISOString(),
-          current_value: purchasePrice, // Initialize with purchase price
-        })
-        .select()
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from('portfolio_tracking')
+          .insert({
+            user_id: user.id,
+            card_id: cardId,
+            purchase_price: purchasePrice,
+            quantity,
+            purchase_date: purchaseDate || new Date().toISOString(),
+            current_value: purchasePrice, // Initialize with purchase price
+          })
+          .select()
+          .single();
 
-      if (error) throw error;
-      return data;
+        if (error) throw error;
+        return data;
+      } catch (error) {
+        handleError(error, {
+          operation: 'add_to_portfolio',
+          table: 'portfolio_tracking'
+        });
+        throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['portfolio'] });
@@ -114,11 +128,7 @@ export const useAddToPortfolio = () => {
       });
     },
     onError: (error) => {
-      toast({
-        title: 'Error adding to portfolio',
-        description: error.message,
-        variant: 'destructive',
-      });
+      console.error('Failed to add to portfolio:', error);
     },
   });
 };
