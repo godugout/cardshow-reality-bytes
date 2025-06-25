@@ -1,9 +1,8 @@
-
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { 
-  Seedling, 
   Sprout, 
+  TreePine, 
   Palette, 
   Crown, 
   Sparkles 
@@ -22,7 +21,7 @@ const levels: CreatorLevel[] = [
   {
     id: 'novice',
     name: 'Novice',
-    icon: Seedling,
+    icon: Sprout,
     color: 'bg-green-500',
     minPoints: 0,
     description: 'Just starting your creative journey'
@@ -30,7 +29,7 @@ const levels: CreatorLevel[] = [
   {
     id: 'apprentice',
     name: 'Apprentice',
-    icon: Sprout,
+    icon: TreePine,
     color: 'bg-blue-500',
     minPoints: 100,
     description: 'Learning the fundamentals'
