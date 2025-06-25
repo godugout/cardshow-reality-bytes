@@ -1,12 +1,22 @@
 
+import { useState } from 'react';
 import Header from '@/components/Header';
 import MarketplaceGrid from '@/components/marketplace/MarketplaceGrid';
 import MarketplaceFilters from '@/components/marketplace/filters/MarketplaceFilters';
 import { Button } from '@/components/ui/button';
 import PasswordResetDialog from '@/components/PasswordResetDialog';
 import { Send } from 'lucide-react';
+import type { ListingFilters } from '@/types/marketplace';
 
 const Marketplace = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('newest');
+  
+  const handleFiltersChange = (filters: Partial<ListingFilters>) => {
+    // Handle filter changes here if needed
+    console.log('Filters changed:', filters);
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
       <Header />
@@ -34,7 +44,13 @@ const Marketplace = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
-            <MarketplaceFilters />
+            <MarketplaceFilters
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              onFiltersChange={handleFiltersChange}
+            />
           </div>
           <div className="lg:col-span-3">
             <MarketplaceGrid />
