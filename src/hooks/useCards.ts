@@ -79,7 +79,7 @@ export const useCards = (filters: CardFilters = {}) => {
               .in('id', setIds) : Promise.resolve({ data: [] })
           ]);
 
-          // Create lookup maps using proper tuple format
+          // Create lookup maps
           const profileMap = new Map<string, any>();
           (profilesResult.data || []).forEach(profile => {
             profileMap.set(profile.id, profile);
@@ -211,7 +211,8 @@ export const useCardFavorites = () => {
       }
     },
     onSuccess: (_, { isFavorited }) => {
-      queryClient.invalidateQueries({ queryKey: ['cards'] });
+      // Fix: Use explicit type annotation to prevent deep type instantiation
+      queryClient.invalidateQueries({ queryKey: ['cards'] } as const);
       toast({
         title: isFavorited ? 'Removed from favorites' : 'Added to favorites',
         description: isFavorited ? 'Card removed from your collection' : 'Card added to your favorites',
