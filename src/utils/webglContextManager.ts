@@ -1,4 +1,3 @@
-
 interface WebGLContextConfig {
   antialias?: boolean;
   alpha?: boolean;
@@ -52,10 +51,12 @@ class WebGLContextManager {
       failIfMajorPerformanceCaveat: false
     };
 
-    // Try WebGL2 first, fallback to WebGL1
-    this.gl = this.canvas.getContext('webgl2', contextOptions) || 
-              this.canvas.getContext('webgl', contextOptions) || 
-              this.canvas.getContext('experimental-webgl', contextOptions);
+    // Try WebGL2 first, fallback to WebGL1 - Fix typing issue
+    const webgl2Context = this.canvas.getContext('webgl2', contextOptions) as WebGL2RenderingContext | null;
+    const webglContext = this.canvas.getContext('webgl', contextOptions) as WebGLRenderingContext | null;
+    const experimentalContext = this.canvas.getContext('experimental-webgl', contextOptions) as WebGLRenderingContext | null;
+    
+    this.gl = webgl2Context || webglContext || experimentalContext;
 
     if (!this.gl) {
       console.error('WebGL not supported');

@@ -1,4 +1,3 @@
-
 import * as THREE from 'three';
 
 interface TextureConfig {
@@ -154,9 +153,9 @@ class TextureManager {
     // Enable mipmaps if requested
     texture.generateMipmaps = config.generateMipmaps;
 
-    // Set wrapping
-    texture.wrapS = THREE.ClampToEdgeWrap;
-    texture.wrapT = THREE.ClampToEdgeWrap;
+    // Set wrapping - Fix: Use correct Three.js constant names
+    texture.wrapS = THREE.ClampToEdgeWrapping;
+    texture.wrapT = THREE.ClampToEdgeWrapping;
   }
 
   private getCacheKey(url: string, config: TextureConfig): string {
