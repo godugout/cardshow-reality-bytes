@@ -1,87 +1,13 @@
 
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Heart, Eye, TrendingUp, Users } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import CardDisplay from '@/components/cards/CardDisplay';
-import { supabase } from '@/integrations/supabase/client';
-import { transformToCardType } from '@/utils/cardTransforms';
+import { RefreshCw } from 'lucide-react';
 import { DiscoveryErrorBoundary } from './DiscoveryErrorBoundary';
-import type { Card as CardType } from '@/types/card';
-
-interface RecommendationSection {
-  title: string;
-  description: string;
-  icon: any;
-  badge: string;
-  cards: CardType[];
-}
+import RecommendationSection from './components/RecommendationSection';
+import { useRecommendations } from './hooks/useRecommendations';
 
 const CardRecommendations = () => {
-  const { user } = useAuth();
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  const { data: recommendations, isLoading, refetch, error } = useQuery({
-    queryKey: ['card-recommendations', user?.id, refreshKey],
-    queryFn: async (): Promise<RecommendationSection[]> => {
-      try {
-        // Get user's favorites and viewing history to personalize recommendations
-        const userInteractions = user ? await getUserInteractions(user.id) : null;
-        
-        // Get different recommendation categories
-        const [trending, similar, newReleases, popular] = await Promise.all([
-          getTrendingCards(),
-          getSimilarCards(userInteractions),
-          getNewReleases(),
-          getPopularCards()
-        ]);
-
-        return [
-          {
-            title: "Trending Now",
-            description: "Cards gaining popularity this week",
-            icon: TrendingUp,
-            badge: "Hot",
-            cards: trending
-          },
-          {
-            title: user ? "Based on Your Interests" : "Popular Choices",
-            description: user ? "Cards similar to ones you've viewed" : "Cards loved by the community",
-            icon: Heart,
-            badge: "For You",
-            cards: similar
-          },
-          {
-            title: "Fresh Releases",
-            description: "Just dropped this week",
-            icon: Eye,
-            badge: "New",
-            cards: newReleases
-          },
-          {
-            title: "Community Favorites",
-            description: "Most collected cards this month",
-            icon: Users,
-            badge: "Popular",
-            cards: popular
-          }
-        ];
-      } catch (err) {
-        console.error('Error fetching recommendations:', err);
-        return [];
-      }
-    },
-    retry: 2,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  });
-
-  const handleRefresh = () => {
-    setRefreshKey(prev => prev + 1);
-    refetch();
-  };
+  const { recommendations, isLoading, error, handleRefresh } = useRecommendations();
 
   if (error) {
     return (
@@ -102,16 +28,14 @@ const CardRecommendations = () => {
       <div className="space-y-6">
         {Array.from({ length: 4 }).map((_, i) => (
           <Card key={i} className="bg-gray-800 border-gray-700">
-            <CardHeader>
-              <div className="animate-pulse bg-gray-700 h-6 w-48 rounded" />
-            </CardHeader>
-            <CardContent>
+            <div className="p-6">
+              <div className="animate-pulse bg-gray-700 h-6 w-48 rounded mb-4" />
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {Array.from({ length: 4 }).map((_, j) => (
                   <div key={j} className="animate-pulse bg-gray-700 h-64 rounded-lg" />
                 ))}
               </div>
-            </CardContent>
+            </div>
           </Card>
         ))}
       </div>
@@ -147,168 +71,16 @@ const CardRecommendations = () => {
           </Button>
         </div>
 
-        {recommendations.map((section, index) => {
-          const Icon = section.icon;
-          return (
-            <Card key={index} className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Icon className="w-5 h-5 text-[#00C851]" />
-                    <CardTitle className="text-white">{section.title}</CardTitle>
-                    <Badge variant="outline" className="border-[#00C851] text-[#00C851]">
-                      {section.badge}
-                    </Badge>
-                  </div>
-                </div>
-                <p className="text-gray-400">{section.description}</p>
-              </CardHeader>
-              <CardContent>
-                {section.cards.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {section.cards.slice(0, 4).map((card) => (
-                      <DiscoveryErrorBoundary key={card.id} componentName="Card Display">
-                        <CardDisplay
-                          card={card}
-                          size="md"
-                          showStats={true}
-                        />
-                      </DiscoveryErrorBoundary>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-gray-400">
-                    No cards found for {section.title.toLowerCase()}
-                  </div>
-                )}
-                {section.cards.length > 4 && (
-                  <div className="mt-4 text-center">
-                    <Button variant="ghost" className="text-[#00C851] hover:text-white hover:bg-[#00C851]">
-                      View All {section.cards.length} Cards
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          );
-        })}
+        {recommendations.map((section, index) => (
+          <RecommendationSection
+            key={index}
+            section={section}
+            index={index}
+          />
+        ))}
       </div>
     </DiscoveryErrorBoundary>
   );
 };
-
-// Helper functions for fetching recommendations
-async function getUserInteractions(userId: string): Promise<string[]> {
-  try {
-    const { data } = await supabase
-      .from('card_favorites')
-      .select('card_id')
-      .eq('user_id', userId)
-      .limit(10);
-    
-    return data?.map(f => f.card_id) || [];
-  } catch (error) {
-    console.error('Error fetching user interactions:', error);
-    return [];
-  }
-}
-
-async function getTrendingCards(): Promise<CardType[]> {
-  try {
-    const { data } = await supabase
-      .from('cards')
-      .select('*, creator:profiles(username, avatar_url)')
-      .eq('is_public', true)
-      .order('view_count', { ascending: false })
-      .limit(8);
-    
-    return (data || []).map(item => {
-      try {
-        return transformToCardType(item);
-      } catch (error) {
-        console.error('Error transforming card:', error, item);
-        return null;
-      }
-    }).filter(Boolean) as CardType[];
-  } catch (error) {
-    console.error('Error fetching trending cards:', error);
-    return [];
-  }
-}
-
-async function getSimilarCards(userInteractions: string[] | null): Promise<CardType[]> {
-  try {
-    if (!userInteractions?.length) {
-      return getPopularCards();
-    }
-
-    const { data } = await supabase
-      .from('cards')
-      .select('*, creator:profiles(username, avatar_url)')
-      .eq('is_public', true)
-      .not('id', 'in', `(${userInteractions.join(',')})`)
-      .order('favorite_count', { ascending: false })
-      .limit(8);
-    
-    return (data || []).map(item => {
-      try {
-        return transformToCardType(item);
-      } catch (error) {
-        console.error('Error transforming card:', error, item);
-        return null;
-      }
-    }).filter(Boolean) as CardType[];
-  } catch (error) {
-    console.error('Error fetching similar cards:', error);
-    return [];
-  }
-}
-
-async function getNewReleases(): Promise<CardType[]> {
-  try {
-    const { data } = await supabase
-      .from('cards')
-      .select('*, creator:profiles(username, avatar_url)')
-      .eq('is_public', true)
-      .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
-      .order('created_at', { ascending: false })
-      .limit(8);
-    
-    return (data || []).map(item => {
-      try {
-        return transformToCardType(item);
-      } catch (error) {
-        console.error('Error transforming card:', error, item);
-        return null;
-      }
-    }).filter(Boolean) as CardType[];
-  } catch (error) {
-    console.error('Error fetching new releases:', error);
-    return [];
-  }
-}
-
-async function getPopularCards(): Promise<CardType[]> {
-  try {
-    const { data } = await supabase
-      .from('cards')
-      .select('*, creator:profiles(username, avatar_url)')
-      .eq('is_public', true)
-      .order('favorite_count', { ascending: false })
-      .limit(8);
-    
-    return (data || []).map(item => {
-      try {
-        return transformToCardType(item);
-      } catch (error) {
-        console.error('Error transforming card:', error, item);
-        return null;
-      }
-    }).filter(Boolean) as CardType[];
-  } catch (error) {
-    console.error('Error fetching popular cards:', error);
-    return [];
-  }
-}
 
 export default CardRecommendations;
