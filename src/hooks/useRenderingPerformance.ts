@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useCallback } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { usePerformanceMonitoring } from './usePerformanceMonitoring';
@@ -25,7 +26,7 @@ export const useRenderingPerformance = (cardCount: number = 0, qualityPreset: st
   // Get device information
   const getDeviceInfo = useCallback(() => {
     const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    const gl = canvas.getContext('webgl') || canvas.getContext('webgl2') || canvas.getContext('experimental-webgl');
     
     let deviceInfo: Record<string, any> = {
       userAgent: navigator.userAgent,
@@ -39,16 +40,17 @@ export const useRenderingPerformance = (cardCount: number = 0, qualityPreset: st
       }
     };
 
-    if (gl) {
-      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+    if (gl && gl instanceof WebGLRenderingContext) {
+      const webglContext = gl as WebGLRenderingContext;
+      const debugInfo = webglContext.getExtension('WEBGL_debug_renderer_info');
       if (debugInfo) {
         deviceInfo.gpu = {
-          vendor: gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL),
-          renderer: gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+          vendor: webglContext.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL),
+          renderer: webglContext.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
         };
       }
-      deviceInfo.webglVersion = gl.getParameter(gl.VERSION);
-      deviceInfo.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+      deviceInfo.webglVersion = webglContext.getParameter(webglContext.VERSION);
+      deviceInfo.maxTextureSize = webglContext.getParameter(webglContext.MAX_TEXTURE_SIZE);
     }
 
     return deviceInfo;

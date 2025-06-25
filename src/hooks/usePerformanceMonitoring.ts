@@ -78,7 +78,7 @@ export const usePerformanceMonitoring = () => {
     }
   }, []);
 
-  // Generic metric logging
+  // Generic metric logging - using performance_metrics table for now
   const logMetric = useCallback(async (metric: PerformanceMetric) => {
     if (!user) return;
 
@@ -96,23 +96,12 @@ export const usePerformanceMonitoring = () => {
     }
   }, [user]);
 
-  // Database performance logging
+  // Database performance logging - fallback to performance_metrics table
   const logDatabaseQuery = useCallback(async (query: DatabaseQuery) => {
     if (!user) return;
 
     try {
-      await supabase.from('database_performance').insert({
-        query_hash: query.queryHash,
-        query_type: query.queryType,
-        table_name: query.tableName,
-        execution_time_ms: query.executionTimeMs,
-        rows_affected: query.rowsAffected,
-        is_slow_query: query.executionTimeMs > 1000,
-        error_message: query.errorMessage,
-        user_id: user.id
-      });
-
-      // Also log as general metric
+      // Try to use the performance_metrics table as fallback
       await logMetric({
         metricType: 'database',
         metricName: 'query_execution_time',
@@ -120,7 +109,10 @@ export const usePerformanceMonitoring = () => {
         metadata: {
           queryType: query.queryType,
           tableName: query.tableName,
-          isSlowQuery: query.executionTimeMs > 1000
+          isSlowQuery: query.executionTimeMs > 1000,
+          queryHash: query.queryHash,
+          rowsAffected: query.rowsAffected,
+          errorMessage: query.errorMessage
         }
       });
     } catch (error) {
@@ -128,22 +120,12 @@ export const usePerformanceMonitoring = () => {
     }
   }, [user, logMetric]);
 
-  // Realtime performance logging
+  // Realtime performance logging - fallback to performance_metrics table
   const logRealtimeEvent = useCallback(async (event: RealtimeEvent) => {
     if (!user) return;
 
     try {
-      await supabase.from('realtime_performance').insert({
-        connection_id: event.connectionId,
-        channel_name: event.channelName,
-        event_type: event.eventType,
-        latency_ms: event.latencyMs,
-        payload_size_bytes: event.payloadSizeBytes,
-        error_details: event.errorDetails,
-        user_id: user.id
-      });
-
-      // Also log as general metric
+      // Try to use the performance_metrics table as fallback
       if (event.latencyMs) {
         await logMetric({
           metricType: 'realtime',
@@ -151,7 +133,10 @@ export const usePerformanceMonitoring = () => {
           metricValue: event.latencyMs,
           metadata: {
             eventType: event.eventType,
-            channelName: event.channelName
+            channelName: event.channelName,
+            connectionId: event.connectionId,
+            payloadSizeBytes: event.payloadSizeBytes,
+            errorDetails: event.errorDetails
           }
         });
       }
@@ -160,39 +145,36 @@ export const usePerformanceMonitoring = () => {
     }
   }, [user, logMetric]);
 
-  // 3D rendering performance logging
+  // 3D rendering performance logging - fallback to performance_metrics table
   const logRenderingMetrics = useCallback(async (metrics: RenderingMetrics) => {
     if (!user) return;
 
     try {
-      await supabase.from('rendering_performance').insert({
-        user_id: user.id,
-        session_id: metrics.sessionId,
-        fps_average: metrics.fpsAverage,
-        fps_min: metrics.fpsMin,
-        fps_max: metrics.fpsMax,
-        memory_used_mb: metrics.memoryUsedMb,
-        gpu_memory_mb: metrics.gpuMemoryMb,
-        webgl_version: metrics.webglVersion,
-        device_info: metrics.deviceInfo,
-        card_count: metrics.cardCount,
-        quality_preset: metrics.qualityPreset,
-        rendering_errors: metrics.renderingErrors
-      });
-
-      // Log individual metrics
+      // Log individual metrics using performance_metrics table
       await Promise.all([
         logMetric({
           metricType: '3d_rendering',
           metricName: 'fps_average',
           metricValue: metrics.fpsAverage,
-          sessionId: metrics.sessionId
+          sessionId: metrics.sessionId,
+          metadata: {
+            fpsMin: metrics.fpsMin,
+            fpsMax: metrics.fpsMax,
+            memoryUsedMb: metrics.memoryUsedMb,
+            cardCount: metrics.cardCount,
+            qualityPreset: metrics.qualityPreset
+          }
         }),
         logMetric({
           metricType: '3d_rendering',
           metricName: 'memory_usage',
           metricValue: metrics.memoryUsedMb,
-          sessionId: metrics.sessionId
+          sessionId: metrics.sessionId,
+          metadata: {
+            deviceInfo: metrics.deviceInfo,
+            webglVersion: metrics.webglVersion,
+            renderingErrors: metrics.renderingErrors
+          }
         })
       ]);
     } catch (error) {
@@ -200,22 +182,10 @@ export const usePerformanceMonitoring = () => {
     }
   }, [user, logMetric]);
 
-  // Payment performance logging
+  // Payment performance logging - fallback to performance_metrics table
   const logPaymentMetrics = useCallback(async (payment: PaymentMetrics) => {
     try {
-      await supabase.from('payment_performance').insert({
-        payment_intent_id: payment.paymentIntentId,
-        payment_method: payment.paymentMethod,
-        amount_cents: payment.amountCents,
-        processing_time_ms: payment.processingTimeMs,
-        status: payment.status,
-        error_code: payment.errorCode,
-        error_message: payment.errorMessage,
-        stripe_fee_cents: payment.stripeFeeCents,
-        user_id: user?.id
-      });
-
-      // Log as general metric
+      // Log as general metric using performance_metrics table
       await logMetric({
         metricType: 'payment',
         metricName: 'processing_time',
@@ -223,37 +193,36 @@ export const usePerformanceMonitoring = () => {
         metadata: {
           status: payment.status,
           paymentMethod: payment.paymentMethod,
-          amountCents: payment.amountCents
+          amountCents: payment.amountCents,
+          paymentIntentId: payment.paymentIntentId,
+          errorCode: payment.errorCode,
+          errorMessage: payment.errorMessage,
+          stripeFeeCents: payment.stripeFeeCents
         }
       });
     } catch (error) {
       console.warn('Failed to log payment performance:', error);
     }
-  }, [user, logMetric]);
+  }, [logMetric]);
 
-  // User engagement logging
+  // User engagement logging - fallback to performance_metrics table
   const logEngagementEvent = useCallback(async (event: EngagementEvent) => {
     if (!user) return;
 
     try {
-      await supabase.from('engagement_metrics').insert({
-        user_id: user.id,
-        session_id: event.sessionId,
-        event_type: event.eventType,
-        event_data: event.eventData || {},
-        page_url: event.pageUrl,
-        referrer: event.referrer,
-        device_type: event.deviceType,
-        browser_type: event.browserType,
-        session_duration_ms: event.sessionDurationMs
-      });
-
-      // Log as general metric
+      // Log as general metric using performance_metrics table
       await logMetric({
         metricType: 'user_engagement',
         metricName: event.eventType,
         metricValue: 1,
-        metadata: event.eventData,
+        metadata: {
+          ...event.eventData,
+          pageUrl: event.pageUrl,
+          referrer: event.referrer,
+          deviceType: event.deviceType,
+          browserType: event.browserType,
+          sessionDurationMs: event.sessionDurationMs
+        },
         sessionId: event.sessionId
       });
     } catch (error) {

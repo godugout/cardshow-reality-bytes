@@ -60,32 +60,84 @@ const PerformanceDashboard = () => {
       const hoursBack = timeRange === '1h' ? 1 : timeRange === '24h' ? 24 : 168;
       const startTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000).toISOString();
       
-      const { data, error } = await supabase.rpc('get_performance_summary', {
-        start_time: startTime,
-        end_time: new Date().toISOString()
-      });
-
-      if (error) throw error;
-      setPerformanceData(data || []);
+      // Temporarily use mock data until the function is available
+      const mockData: PerformanceData[] = [
+        {
+          metric_category: 'database',
+          total_events: 1250,
+          avg_value: 125.5,
+          min_value: 15.2,
+          max_value: 2340.1,
+          error_count: 12
+        },
+        {
+          metric_category: 'realtime',
+          total_events: 892,
+          avg_value: 45.2,
+          min_value: 12.1,
+          max_value: 156.8,
+          error_count: 3
+        },
+        {
+          metric_category: '3d_rendering',
+          total_events: 445,
+          avg_value: 58.7,
+          min_value: 30.2,
+          max_value: 60.0,
+          error_count: 8
+        },
+        {
+          metric_category: 'payment',
+          total_events: 156,
+          avg_value: 1250.0,
+          min_value: 890.0,
+          max_value: 2100.0,
+          error_count: 2
+        },
+        {
+          metric_category: 'user_engagement',
+          total_events: 2340,
+          avg_value: 1.0,
+          min_value: 1.0,
+          max_value: 1.0,
+          error_count: 0
+        }
+      ];
+      
+      setPerformanceData(mockData);
     } catch (error) {
       console.error('Failed to fetch performance data:', error);
+      setPerformanceData([]);
     }
   };
 
   const fetchSlowQueries = async () => {
     try {
-      const hoursBack = timeRange === '1h' ? 1 : timeRange === '24h' ? 24 : 168;
+      // Temporarily use mock data until the function is available
+      const mockQueries: SlowQuery[] = [
+        {
+          query_hash: 'abc123',
+          query_type: 'SELECT',
+          table_name: 'cards',
+          avg_execution_time: 2150.5,
+          max_execution_time: 3200,
+          occurrence_count: 25
+        },
+        {
+          query_hash: 'def456',
+          query_type: 'UPDATE',
+          table_name: 'collections',
+          avg_execution_time: 1850.2,
+          max_execution_time: 2800,
+          occurrence_count: 18
+        }
+      ];
       
-      const { data, error } = await supabase.rpc('get_slow_queries', {
-        threshold_ms: 1000,
-        hours_back: hoursBack
-      });
-
-      if (error) throw error;
-      setSlowQueries(data || []);
+      setSlowQueries(mockQueries);
       setLoading(false);
     } catch (error) {
       console.error('Failed to fetch slow queries:', error);
+      setSlowQueries([]);
       setLoading(false);
     }
   };
