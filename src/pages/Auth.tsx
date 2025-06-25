@@ -7,6 +7,7 @@ import AuthHeader from '@/components/auth/AuthHeader';
 import AuthTitle from '@/components/auth/AuthTitle';
 import AuthForm from '@/components/auth/AuthForm';
 import AuthToggle from '@/components/auth/AuthToggle';
+import PasswordResetDialog from '@/components/PasswordResetDialog';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,6 +16,7 @@ const Auth = () => {
   const [username, setUsername] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
   
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
@@ -28,6 +30,13 @@ const Auth = () => {
       if (isLogin) {
         const { error } = await signIn(email, password);
         if (error) {
+          // Check if it's an invalid password/credentials error
+          if (error.message.toLowerCase().includes('invalid') || 
+              error.message.toLowerCase().includes('credentials') ||
+              error.message.toLowerCase().includes('password')) {
+            setShowPasswordReset(true);
+          }
+          
           toast({
             title: "Sign In Failed",
             description: error.message,
@@ -96,6 +105,13 @@ const Auth = () => {
           />
         </div>
       </div>
+
+      <PasswordResetDialog
+        trigger={<div />}
+        email={email}
+        open={showPasswordReset}
+        onOpenChange={setShowPasswordReset}
+      />
     </div>
   );
 };
