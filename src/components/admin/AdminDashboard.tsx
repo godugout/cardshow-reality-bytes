@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -16,6 +15,7 @@ import {
   Globe
 } from 'lucide-react';
 import { useAdminMetrics, useModerationQueue, useSystemHealth, useUserManagement } from '@/hooks/enterprise/useAdminDashboard';
+import PerformanceDashboard from './PerformanceDashboard';
 
 const AdminDashboard = () => {
   const { metrics, isLoading: metricsLoading } = useAdminMetrics();
@@ -99,8 +99,9 @@ const AdminDashboard = () => {
       </div>
 
       <Tabs defaultValue="analytics" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-6 bg-gray-900">
+        <TabsList className="grid w-full grid-cols-7 bg-gray-900">
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="performance">Performance</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="moderation">Moderation</TabsTrigger>
           <TabsTrigger value="health">System Health</TabsTrigger>
@@ -137,6 +138,10 @@ const AdminDashboard = () => {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="performance" className="space-y-4">
+          <PerformanceDashboard />
         </TabsContent>
 
         <TabsContent value="users" className="space-y-4">
