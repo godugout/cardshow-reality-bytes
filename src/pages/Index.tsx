@@ -1,4 +1,6 @@
 
+import { Suspense } from 'react';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection";
@@ -11,18 +13,32 @@ import SocialProofTicker from "@/components/landing/SocialProofTicker";
 const Index = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
-      <Header />
-      <HeroSection />
+      <ErrorBoundary>
+        <Header />
+      </ErrorBoundary>
+      
+      <ErrorBoundary>
+        <HeroSection />
+      </ErrorBoundary>
       
       {/* Demo Section */}
       <section className="py-20 bg-[#0a0a0a]">
         <div className="container mx-auto px-4">
-          <DemoSection />
+          <ErrorBoundary>
+            <Suspense fallback={<div className="h-64 flex items-center justify-center text-gray-400">Loading demo...</div>}>
+              <DemoSection />
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </section>
       
-      <FeaturesSection />
-      <StatsSection />
+      <ErrorBoundary>
+        <FeaturesSection />
+      </ErrorBoundary>
+      
+      <ErrorBoundary>
+        <StatsSection />
+      </ErrorBoundary>
       
       {/* Testimonials Section */}
       <section className="py-20 bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a]">
@@ -35,14 +51,24 @@ const Index = () => {
               See what our community of artists, collectors, and traders have to say about Cardshow
             </p>
           </div>
-          <UserTestimonials />
+          <ErrorBoundary>
+            <Suspense fallback={<div className="h-32 flex items-center justify-center text-gray-400">Loading testimonials...</div>}>
+              <UserTestimonials />
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </section>
       
-      <Footer />
+      <ErrorBoundary>
+        <Footer />
+      </ErrorBoundary>
       
       {/* Social Proof Ticker */}
-      <SocialProofTicker />
+      <ErrorBoundary>
+        <Suspense fallback={null}>
+          <SocialProofTicker />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 };
