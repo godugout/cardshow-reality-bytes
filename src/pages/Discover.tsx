@@ -1,17 +1,22 @@
 
-import { useState } from 'react';
-import { Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import Header from '@/components/Header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { TrendingUp, Sparkles, Target, Users, Clock, Flame } from 'lucide-react';
+import { Sparkles, Target, TrendingUp, Clock, Flame } from 'lucide-react';
 import CardRecommendations from '@/components/discovery/CardRecommendations';
 import TrendingCards from '@/components/discovery/TrendingCards';
 import PersonalizedFeed from '@/components/discovery/PersonalizedFeed';
-import SmartFilters from '@/components/discovery/SmartFilters';
 import DiscoveryStats from '@/components/discovery/DiscoveryStats';
+import { DiscoveryErrorBoundary } from '@/components/discovery/DiscoveryErrorBoundary';
+
+const LoadingSpinner = ({ message }: { message: string }) => (
+  <div className="flex items-center justify-center py-12">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#00C851] mx-auto mb-4"></div>
+      <p className="text-gray-400">{message}</p>
+    </div>
+  </div>
+);
 
 const Discover = () => {
   const [activeTab, setActiveTab] = useState('recommendations');
@@ -31,9 +36,13 @@ const Discover = () => {
         </div>
 
         {/* Discovery Stats */}
-        <Suspense fallback={<div className="animate-pulse bg-gray-800 rounded-lg h-32 mb-6" />}>
-          <DiscoveryStats />
-        </Suspense>
+        <DiscoveryErrorBoundary componentName="Discovery Stats" fallback={
+          <div className="bg-gray-800 rounded-lg h-32 mb-6 animate-pulse" />
+        }>
+          <Suspense fallback={<div className="bg-gray-800 rounded-lg h-32 mb-6 animate-pulse" />}>
+            <DiscoveryStats />
+          </Suspense>
+        </DiscoveryErrorBoundary>
 
         {/* Main Discovery Interface */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -57,27 +66,35 @@ const Discover = () => {
           </TabsList>
 
           <TabsContent value="recommendations" className="space-y-6">
-            <Suspense fallback={<div className="text-center py-8 text-gray-400">Loading recommendations...</div>}>
-              <CardRecommendations />
-            </Suspense>
+            <DiscoveryErrorBoundary componentName="Recommendations">
+              <Suspense fallback={<LoadingSpinner message="Loading recommendations..." />}>
+                <CardRecommendations />
+              </Suspense>
+            </DiscoveryErrorBoundary>
           </TabsContent>
 
           <TabsContent value="trending" className="space-y-6">
-            <Suspense fallback={<div className="text-center py-8 text-gray-400">Loading trending cards...</div>}>
-              <TrendingCards />
-            </Suspense>
+            <DiscoveryErrorBoundary componentName="Trending Cards">
+              <Suspense fallback={<LoadingSpinner message="Loading trending cards..." />}>
+                <TrendingCards />
+              </Suspense>
+            </DiscoveryErrorBoundary>
           </TabsContent>
 
           <TabsContent value="new" className="space-y-6">
-            <Suspense fallback={<div className="text-center py-8 text-gray-400">Loading new releases...</div>}>
-              <PersonalizedFeed filter="new" />
-            </Suspense>
+            <DiscoveryErrorBoundary componentName="New Releases">
+              <Suspense fallback={<LoadingSpinner message="Loading new releases..." />}>
+                <PersonalizedFeed filter="new" />
+              </Suspense>
+            </DiscoveryErrorBoundary>
           </TabsContent>
 
           <TabsContent value="hot" className="space-y-6">
-            <Suspense fallback={<div className="text-center py-8 text-gray-400">Loading hot picks...</div>}>
-              <PersonalizedFeed filter="hot" />
-            </Suspense>
+            <DiscoveryErrorBoundary componentName="Hot Picks">
+              <Suspense fallback={<LoadingSpinner message="Loading hot picks..." />}>
+                <PersonalizedFeed filter="hot" />
+              </Suspense>
+            </DiscoveryErrorBoundary>
           </TabsContent>
         </Tabs>
       </div>
