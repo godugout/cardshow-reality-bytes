@@ -9,6 +9,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
 import Cards from "./pages/Cards";
 import Collections from "./pages/Collections";
 import Gallery from "./pages/Gallery";
@@ -60,6 +61,11 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/profile" element={
+                    <ErrorBoundary>
+                      <Profile />
+                    </ErrorBoundary>
+                  } />
                   <Route path="/cards" element={
                     <ErrorBoundary>
                       <Cards />

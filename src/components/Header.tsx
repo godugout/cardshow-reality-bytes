@@ -82,7 +82,7 @@ const Header = () => {
 
           {/* Right side actions */}
           <div className="flex items-center space-x-4">
-            {user && (
+            {user ? (
               <>
                 <NotificationCenter />
                 <Button
@@ -94,10 +94,16 @@ const Header = () => {
                   <Plus className="w-4 h-4 mr-2" />
                   Create
                 </Button>
+                <UserMenu />
               </>
+            ) : (
+              <Button
+                onClick={() => navigate('/auth')}
+                className="bg-[#00C851] hover:bg-[#00A543] text-white"
+              >
+                Sign In
+              </Button>
             )}
-
-            <UserMenu />
 
             {/* Mobile menu button */}
             <Button
@@ -143,7 +149,7 @@ const Header = () => {
                   {item.name}
                 </Link>
               ))}
-              {user && (
+              {user ? (
                 <Button
                   onClick={() => {
                     navigate('/creator');
@@ -153,6 +159,16 @@ const Header = () => {
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Create Cards
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    navigate('/auth');
+                    setIsMenuOpen(false);
+                  }}
+                  className="mt-4 bg-[#00C851] hover:bg-[#00A543] text-white"
+                >
+                  Sign In
                 </Button>
               )}
             </nav>

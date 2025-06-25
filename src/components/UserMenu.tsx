@@ -58,15 +58,24 @@ const UserMenu = () => {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 bg-gray-900 border-gray-800" align="end">
-        <DropdownMenuItem className="text-white hover:bg-gray-800 cursor-pointer">
+        <DropdownMenuItem 
+          className="text-white hover:bg-gray-800 cursor-pointer"
+          onClick={() => navigate('/profile')}
+        >
           <User className="w-4 h-4 mr-2" />
           Profile
         </DropdownMenuItem>
-        <DropdownMenuItem className="text-white hover:bg-gray-800 cursor-pointer">
+        <DropdownMenuItem 
+          className="text-white hover:bg-gray-800 cursor-pointer"
+          onClick={() => navigate('/cards')}
+        >
           <CreditCard className="w-4 h-4 mr-2" />
           My Cards
         </DropdownMenuItem>
-        <DropdownMenuItem className="text-white hover:bg-gray-800 cursor-pointer">
+        <DropdownMenuItem 
+          className="text-white hover:bg-gray-800 cursor-pointer"
+          onClick={() => navigate('/collections')}
+        >
           <Heart className="w-4 h-4 mr-2" />
           Collections
         </DropdownMenuItem>
