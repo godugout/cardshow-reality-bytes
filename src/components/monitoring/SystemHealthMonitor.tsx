@@ -2,44 +2,17 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { 
   Activity, 
   Database, 
   Server, 
-  Zap,
-  AlertTriangle,
-  CheckCircle,
-  Clock
+  Zap
 } from 'lucide-react';
 import { useIntegrationHealthCheck } from '@/hooks/useIntegrationHealthCheck';
-
-interface SystemMetrics {
-  database: {
-    status: 'healthy' | 'degraded' | 'down';
-    responseTime: number;
-    activeConnections: number;
-    queryPerformance: number;
-  };
-  realtime: {
-    status: 'healthy' | 'degraded' | 'down';
-    activeChannels: number;
-    messageLatency: number;
-    connectionCount: number;
-  };
-  storage: {
-    status: 'healthy' | 'degraded' | 'down';
-    uploadSpeed: number;
-    storageUsed: number;
-    totalStorage: number;
-  };
-  api: {
-    status: 'healthy' | 'degraded' | 'down';
-    averageResponseTime: number;
-    requestsPerMinute: number;
-    errorRate: number;
-  };
-}
+import { SystemMetrics } from './types';
+import { getOverallHealth } from './healthUtils';
+import SystemCard from './SystemCard';
+import HealthCheckResults from './HealthCheckResults';
 
 const SystemHealthMonitor = () => {
   const [metrics, setMetrics] = useState<SystemMetrics>({
@@ -103,29 +76,7 @@ const SystemHealthMonitor = () => {
     }));
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'healthy': return 'text-green-400';
-      case 'degraded': return 'text-yellow-400';
-      case 'down': return 'text-red-400';
-      default: return 'text-gray-400';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'healthy': return <CheckCircle className="w-5 h-5 text-green-400" />;
-      case 'degraded': return <AlertTriangle className="w-5 h-5 text-yellow-400" />;
-      case 'down': return <AlertTriangle className="w-5 h-5 text-red-400" />;
-      default: return <Clock className="w-5 h-5 text-gray-400" />;
-    }
-  };
-
-  const overallHealth = Object.values(metrics).every(service => service.status === 'healthy') 
-    ? 'healthy' 
-    : Object.values(metrics).some(service => service.status === 'down')
-    ? 'down'
-    : 'degraded';
+  const overallHealth = getOverallHealth(metrics);
 
   return (
     <div className="space-y-6">
@@ -145,154 +96,63 @@ const SystemHealthMonitor = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Database Health */}
-            <div className="bg-gray-800 p-4 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Database className="w-5 h-5 text-blue-400" />
-                  <span className="font-medium text-white">Database</span>
-                </div>
-                {getStatusIcon(metrics.database.status)}
-              </div>
-              
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-gray-300">
-                  <span>Response Time</span>
-                  <span>{metrics.database.responseTime}ms</span>
-                </div>
-                <div className="flex justify-between text-gray-300">
-                  <span>Connections</span>
-                  <span>{metrics.database.activeConnections}</span>
-                </div>
-                <div className="flex justify-between text-gray-300">
-                  <span>Performance</span>
-                  <span>{metrics.database.queryPerformance}%</span>
-                </div>
-                <Progress value={metrics.database.queryPerformance} className="mt-2" />
-              </div>
-            </div>
+            <SystemCard
+              title="Database"
+              icon={Database}
+              iconColor="text-blue-400"
+              status={metrics.database.status}
+              metrics={[
+                { label: 'Response Time', value: metrics.database.responseTime, unit: 'ms' },
+                { label: 'Connections', value: metrics.database.activeConnections },
+                { label: 'Performance', value: metrics.database.queryPerformance, unit: '%' }
+              ]}
+              progressValue={metrics.database.queryPerformance}
+            />
 
-            {/* Realtime Health */}
-            <div className="bg-gray-800 p-4 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-yellow-400" />
-                  <span className="font-medium text-white">Realtime</span>
-                </div>
-                {getStatusIcon(metrics.realtime.status)}
-              </div>
-              
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-gray-300">
-                  <span>Channels</span>
-                  <span>{metrics.realtime.activeChannels}</span>
-                </div>
-                <div className="flex justify-between text-gray-300">
-                  <span>Latency</span>
-                  <span>{metrics.realtime.messageLatency}ms</span>
-                </div>
-                <div className="flex justify-between text-gray-300">
-                  <span>Connections</span>
-                  <span>{metrics.realtime.connectionCount}</span>
-                </div>
-              </div>
-            </div>
+            <SystemCard
+              title="Realtime"
+              icon={Zap}
+              iconColor="text-yellow-400"
+              status={metrics.realtime.status}
+              metrics={[
+                { label: 'Channels', value: metrics.realtime.activeChannels },
+                { label: 'Latency', value: metrics.realtime.messageLatency, unit: 'ms' },
+                { label: 'Connections', value: metrics.realtime.connectionCount }
+              ]}
+            />
 
-            {/* Storage Health */}
-            <div className="bg-gray-800 p-4 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Server className="w-5 h-5 text-purple-400" />
-                  <span className="font-medium text-white">Storage</span>
-                </div>
-                {getStatusIcon(metrics.storage.status)}
-              </div>
-              
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-gray-300">
-                  <span>Upload Speed</span>
-                  <span>{metrics.storage.uploadSpeed} MB/s</span>
-                </div>
-                <div className="flex justify-between text-gray-300">
-                  <span>Usage</span>
-                  <span>{metrics.storage.storageUsed}/{metrics.storage.totalStorage} GB</span>
-                </div>
-                <Progress 
-                  value={(metrics.storage.storageUsed / metrics.storage.totalStorage) * 100} 
-                  className="mt-2" 
-                />
-              </div>
-            </div>
+            <SystemCard
+              title="Storage"
+              icon={Server}
+              iconColor="text-purple-400"
+              status={metrics.storage.status}
+              metrics={[
+                { label: 'Upload Speed', value: metrics.storage.uploadSpeed, unit: ' MB/s' },
+                { label: 'Usage', value: `${metrics.storage.storageUsed}/${metrics.storage.totalStorage}`, unit: ' GB' }
+              ]}
+              progressValue={(metrics.storage.storageUsed / metrics.storage.totalStorage) * 100}
+            />
 
-            {/* API Health */}
-            <div className="bg-gray-800 p-4 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Activity className="w-5 h-5 text-green-400" />
-                  <span className="font-medium text-white">API</span>
-                </div>
-                {getStatusIcon(metrics.api.status)}
-              </div>
-              
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-gray-300">
-                  <span>Response Time</span>
-                  <span>{metrics.api.averageResponseTime}ms</span>
-                </div>
-                <div className="flex justify-between text-gray-300">
-                  <span>Requests/min</span>
-                  <span>{metrics.api.requestsPerMinute}</span>
-                </div>
-                <div className="flex justify-between text-gray-300">
-                  <span>Error Rate</span>
-                  <span className={metrics.api.errorRate > 0.03 ? 'text-red-400' : 'text-green-400'}>
-                    {(metrics.api.errorRate * 100).toFixed(2)}%
-                  </span>
-                </div>
-              </div>
-            </div>
+            <SystemCard
+              title="API"
+              icon={Activity}
+              iconColor="text-green-400"
+              status={metrics.api.status}
+              metrics={[
+                { label: 'Response Time', value: metrics.api.averageResponseTime, unit: 'ms' },
+                { label: 'Requests/min', value: metrics.api.requestsPerMinute },
+                { 
+                  label: 'Error Rate', 
+                  value: (metrics.api.errorRate * 100).toFixed(2), 
+                  unit: '%' 
+                }
+              ]}
+            />
           </div>
         </CardContent>
       </Card>
 
-      {/* Health Check Results */}
-      {healthStatus.length > 0 && (
-        <Card className="bg-gray-900 border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-white">Recent Health Checks</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {healthStatus.slice(-5).map((check, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    {getStatusIcon(check.status)}
-                    <div>
-                      <div className="font-medium text-white">{check.system}</div>
-                      <div className="text-sm text-gray-400">
-                        {check.timestamp.toLocaleTimeString()}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="text-right">
-                    {check.latency && (
-                      <div className="text-sm text-gray-300">
-                        {check.latency}ms
-                      </div>
-                    )}
-                    {check.error && (
-                      <div className="text-sm text-red-400">
-                        {check.error}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      <HealthCheckResults healthStatus={healthStatus} />
     </div>
   );
 };
