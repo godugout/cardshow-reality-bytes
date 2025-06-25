@@ -6,6 +6,7 @@ import StatsSection from "@/components/StatsSection";
 import Footer from "@/components/Footer";
 import UserTestimonials from "@/components/landing/UserTestimonials";
 import DemoSection from "@/components/landing/DemoSection";
+import SocialProofTicker from "@/components/landing/SocialProofTicker";
 
 const Index = () => {
   return (
@@ -39,6 +40,9 @@ const Index = () => {
       </section>
       
       <Footer />
+      
+      {/* Social Proof Ticker */}
+      <SocialProofTicker />
     </div>
   );
 };

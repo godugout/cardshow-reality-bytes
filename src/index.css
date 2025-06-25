@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -99,5 +100,53 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Custom Animations */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+    opacity: 0;
+  }
+
+  .text-shadow-glow {
+    text-shadow: 0 0 10px rgba(0, 200, 81, 0.5);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Staggered animations */
+  .animate-fade-in[style*="animation-delay: 0.5s"] {
+    animation-delay: 0.5s;
+  }
+  
+  .animate-fade-in[style*="animation-delay: 1s"] {
+    animation-delay: 1s;
+  }
+  
+  .animate-fade-in[style*="animation-delay: 1.5s"] {
+    animation-delay: 1.5s;
+  }
+  
+  .animate-fade-in[style*="animation-delay: 2s"] {
+    animation-delay: 2s;
+  }
+  
+  .animate-fade-in[style*="animation-delay: 2.5s"] {
+    animation-delay: 2.5s;
+  }
+  
+  .animate-fade-in[style*="animation-delay: 3s"] {
+    animation-delay: 3s;
   }
 }
