@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, QueryKey } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useSupabaseErrorHandler } from '@/hooks/useSupabaseErrorHandler';
@@ -211,8 +211,9 @@ export const useCardFavorites = () => {
       }
     },
     onSuccess: (_, { isFavorited }) => {
-      // Fix: Use explicit type annotation to prevent deep type instantiation
-      queryClient.invalidateQueries({ queryKey: ['cards'] } as const);
+      // Fix: Use a simpler approach to avoid deep type instantiation
+      const queryKey: QueryKey = ['cards'];
+      queryClient.invalidateQueries({ queryKey });
       toast({
         title: isFavorited ? 'Removed from favorites' : 'Added to favorites',
         description: isFavorited ? 'Card removed from your collection' : 'Card added to your favorites',
