@@ -7,6 +7,14 @@ import CardDisplay from '@/components/cards/CardDisplay';
 import { supabase } from '@/integrations/supabase/client';
 import type { Card as CardType } from '@/types/card';
 
+// Helper function to transform Supabase data to CardType
+const transformToCardType = (data: any): CardType => ({
+  ...data,
+  mana_cost: data.mana_cost || {},
+  abilities: data.abilities || [],
+  is_favorited: false
+});
+
 const TrendingCards = () => {
   const { data: trendingData, isLoading } = useQuery({
     queryKey: ['trending-cards'],
@@ -38,9 +46,9 @@ const TrendingCards = () => {
         .limit(8);
 
       return {
-        trending: trending || [],
-        hottest: hottest || [],
-        rising: rising || []
+        trending: (trending || []).map(transformToCardType),
+        hottest: (hottest || []).map(transformToCardType),
+        rising: (rising || []).map(transformToCardType)
       };
     },
   });

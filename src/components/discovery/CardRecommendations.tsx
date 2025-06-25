@@ -155,6 +155,14 @@ const CardRecommendations = () => {
   );
 };
 
+// Helper function to transform Supabase data to CardType
+const transformToCardType = (data: any): CardType => ({
+  ...data,
+  mana_cost: data.mana_cost || {},
+  abilities: data.abilities || [],
+  is_favorited: false
+});
+
 // Helper functions for fetching recommendations
 async function getUserInteractions(userId: string) {
   const { data } = await supabase
@@ -174,7 +182,7 @@ async function getTrendingCards(): Promise<CardType[]> {
     .order('view_count', { ascending: false })
     .limit(8);
   
-  return data || [];
+  return (data || []).map(transformToCardType);
 }
 
 async function getSimilarCards(userInteractions: string[] | null): Promise<CardType[]> {
@@ -191,7 +199,7 @@ async function getSimilarCards(userInteractions: string[] | null): Promise<CardT
     .order('favorite_count', { ascending: false })
     .limit(8);
   
-  return data || [];
+  return (data || []).map(transformToCardType);
 }
 
 async function getNewReleases(): Promise<CardType[]> {
@@ -203,7 +211,7 @@ async function getNewReleases(): Promise<CardType[]> {
     .order('created_at', { ascending: false })
     .limit(8);
   
-  return data || [];
+  return (data || []).map(transformToCardType);
 }
 
 async function getPopularCards(): Promise<CardType[]> {
@@ -214,7 +222,7 @@ async function getPopularCards(): Promise<CardType[]> {
     .order('favorite_count', { ascending: false })
     .limit(8);
   
-  return data || [];
+  return (data || []).map(transformToCardType);
 }
 
 export default CardRecommendations;

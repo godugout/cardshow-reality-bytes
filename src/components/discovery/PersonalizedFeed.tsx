@@ -10,6 +10,14 @@ interface PersonalizedFeedProps {
   filter: 'new' | 'hot' | 'recommended';
 }
 
+// Helper function to transform Supabase data to CardType
+const transformToCardType = (data: any): CardType => ({
+  ...data,
+  mana_cost: data.mana_cost || {},
+  abilities: data.abilities || [],
+  is_favorited: false
+});
+
 const PersonalizedFeed = ({ filter }: PersonalizedFeedProps) => {
   const { user } = useAuth();
 
@@ -41,7 +49,7 @@ const PersonalizedFeed = ({ filter }: PersonalizedFeedProps) => {
       const { data, error } = await query.limit(20);
       
       if (error) throw error;
-      return data || [];
+      return (data || []).map(transformToCardType);
     },
   });
 
