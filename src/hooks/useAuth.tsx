@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 .from('user_profiles')
                 .select('id')
                 .eq('id', session.user.id)
-                .single();
+                .maybeSingle();
               
               if (error && error.code !== 'PGRST116') {
                 auditor.logIssue({

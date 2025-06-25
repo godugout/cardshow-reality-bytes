@@ -52,14 +52,38 @@ const TradesList = () => {
     );
   }
 
-  // Only call hooks when user is authenticated
-  const { offers: allOffers } = useTradeOffers();
-  const { offers: sentOffers } = useTradeOffers({ 
+  // Only call hooks when user is authenticated - pass userId as parameter
+  const { offers: allOffers, isLoading: allLoading, error: allError } = useTradeOffers(user.id);
+  const { offers: sentOffers, isLoading: sentLoading } = useTradeOffers(user.id, { 
     initiator_id: user.id 
   });
-  const { offers: receivedOffers } = useTradeOffers({ 
+  const { offers: receivedOffers, isLoading: receivedLoading } = useTradeOffers(user.id, { 
     recipient_id: user.id 
   });
+
+  // Show error state if there's an error loading trades
+  if (allError) {
+    return (
+      <div className="p-6 bg-gray-900 text-white min-h-screen">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold mb-4">Error Loading Trades</h2>
+              <p className="text-gray-400 mb-6">
+                There was an error loading your trades. Please try again.
+              </p>
+              <Button 
+                onClick={() => window.location.reload()}
+                className="bg-[#00C851] hover:bg-[#00A543] text-white"
+              >
+                Retry
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const getOffersForTab = () => {
     switch (activeTab) {
@@ -70,6 +94,8 @@ const TradesList = () => {
       default: return allOffers;
     }
   };
+
+  const isLoading = allLoading || sentLoading || receivedLoading;
 
   if (selectedTrade) {
     return (
@@ -95,22 +121,30 @@ const TradesList = () => {
           </TabsList>
 
           <TabsContent value={activeTab}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {getOffersForTab().map((trade) => {
-                const isInitiator = user.id === trade.initiator_id;
-                return (
-                  <TradeCard
-                    key={trade.id}
-                    trade={trade}
-                    isInitiator={isInitiator}
-                    onSelect={setSelectedTrade}
-                  />
-                );
-              })}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center h-32">
+                <div className="text-gray-400">Loading trades...</div>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {getOffersForTab().map((trade) => {
+                    const isInitiator = user.id === trade.initiator_id;
+                    return (
+                      <TradeCard
+                        key={trade.id}
+                        trade={trade}
+                        isInitiator={isInitiator}
+                        onSelect={setSelectedTrade}
+                      />
+                    );
+                  })}
+                </div>
 
-            {getOffersForTab().length === 0 && (
-              <TradesEmptyState activeTab={activeTab} />
+                {getOffersForTab().length === 0 && !isLoading && (
+                  <TradesEmptyState activeTab={activeTab} />
+                )}
+              </>
             )}
           </TabsContent>
         </Tabs>
