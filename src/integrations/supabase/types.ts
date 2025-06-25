@@ -158,6 +158,60 @@ export type Database = {
         }
         Relationships: []
       }
+      beta_feedback: {
+        Row: {
+          actual_behavior: string | null
+          browser_info: Json | null
+          category: string
+          created_at: string | null
+          description: string
+          expected_behavior: string | null
+          feedback_type: string
+          id: string
+          priority: string
+          status: string
+          steps_to_reproduce: string | null
+          title: string
+          updated_at: string | null
+          user_id: string | null
+          user_rating: number | null
+        }
+        Insert: {
+          actual_behavior?: string | null
+          browser_info?: Json | null
+          category?: string
+          created_at?: string | null
+          description: string
+          expected_behavior?: string | null
+          feedback_type: string
+          id?: string
+          priority?: string
+          status?: string
+          steps_to_reproduce?: string | null
+          title: string
+          updated_at?: string | null
+          user_id?: string | null
+          user_rating?: number | null
+        }
+        Update: {
+          actual_behavior?: string | null
+          browser_info?: Json | null
+          category?: string
+          created_at?: string | null
+          description?: string
+          expected_behavior?: string | null
+          feedback_type?: string
+          id?: string
+          priority?: string
+          status?: string
+          steps_to_reproduce?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string | null
+          user_rating?: number | null
+        }
+        Relationships: []
+      }
       bi_reports: {
         Row: {
           config: Json

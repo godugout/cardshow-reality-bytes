@@ -117,7 +117,9 @@ const BetaFeedbackSystem = () => {
   const captureScreenshot = async () => {
     try {
       const stream = await navigator.mediaDevices.getDisplayMedia({
-        video: { mediaSource: 'screen' }
+        video: { 
+          displaySurface: 'browser'
+        } as any
       });
       
       const video = document.createElement('video');
