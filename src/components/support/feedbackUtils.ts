@@ -1,12 +1,12 @@
 
-import { Bug, Lightbulb, Star, MessageSquare } from 'lucide-react';
+import { Bug, Lightbulb, Star, MessageSquare, LucideIcon } from 'lucide-react';
 
-export const getFeedbackIcon = (type: string) => {
+export const getFeedbackIcon = (type: string): LucideIcon => {
   switch (type) {
-    case 'bug': return <Bug className="w-4 h-4" />;
-    case 'feature': return <Lightbulb className="w-4 h-4" />;
-    case 'improvement': return <Star className="w-4 h-4" />;
-    default: return <MessageSquare className="w-4 h-4" />;
+    case 'bug': return Bug;
+    case 'feature': return Lightbulb;
+    case 'improvement': return Star;
+    default: return MessageSquare;
   }
 };
 
