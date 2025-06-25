@@ -67,13 +67,13 @@ export const useStateSync = () => {
         
         switch (op.operation) {
           case 'insert':
-            result = await supabase.from(op.table).insert(op.data);
+            result = await (supabase as any).from(op.table).insert(op.data);
             break;
           case 'update':
-            result = await supabase.from(op.table).update(op.data).eq('id', op.data.id);
+            result = await (supabase as any).from(op.table).update(op.data).eq('id', op.data.id);
             break;
           case 'delete':
-            result = await supabase.from(op.table).delete().eq('id', op.data.id);
+            result = await (supabase as any).from(op.table).delete().eq('id', op.data.id);
             break;
         }
 
@@ -84,7 +84,7 @@ export const useStateSync = () => {
         console.log(`[StateSync] Executed ${op.operation} on ${op.table}`);
         
         // Invalidate related queries
-        queryClient.invalidateQueries([op.table] as const);
+        queryClient.invalidateQueries({ queryKey: [op.table] });
         
       } catch (error) {
         console.error(`[StateSync] Failed to execute ${op.operation} on ${op.table}:`, error);
@@ -129,7 +129,7 @@ export const useStateSync = () => {
     
     if (localTimestamp > serverTimestamp) {
       // Local data is newer, push to server
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from(table)
         .update(localData)
         .eq('id', localData.id);
@@ -165,7 +165,7 @@ export const useStateSync = () => {
           // Check for conflicts with pending operations
           const conflictingOp = pendingOps.current.find(
             op => op.table === table && 
-                  op.data.id === payload.new?.id &&
+                  op.data.id === (payload.new as any)?.id &&
                   op.timestamp > Date.now() - 5000 // Within last 5 seconds
           );
 
@@ -185,7 +185,7 @@ export const useStateSync = () => {
             });
           } else {
             // No conflict, invalidate queries to refresh
-            queryClient.invalidateQueries([table] as const);
+            queryClient.invalidateQueries({ queryKey: [table] });
           }
         }
       )
@@ -199,7 +199,7 @@ export const useStateSync = () => {
     // Debounce invalidations
     const timeoutId = setTimeout(() => {
       queryKeys.forEach(key => {
-        queryClient.invalidateQueries([key] as const);
+        queryClient.invalidateQueries({ queryKey: [key] });
       });
     }, 100);
 

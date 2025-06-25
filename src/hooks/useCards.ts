@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -210,8 +211,8 @@ export const useCardFavorites = () => {
       }
     },
     onSuccess: (_, { isFavorited }) => {
-      // Fix: Use array syntax to avoid deep type instantiation
-      queryClient.invalidateQueries(['cards'] as const);
+      // Fix: Use proper query invalidation
+      queryClient.invalidateQueries({ queryKey: ['cards'] });
       toast({
         title: isFavorited ? 'Removed from favorites' : 'Added to favorites',
         description: isFavorited ? 'Card removed from your collection' : 'Card added to your favorites',

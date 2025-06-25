@@ -108,8 +108,7 @@ export const useStateFlowMonitor = () => {
   const monitorRealtimeHealth = useCallback(() => {
     const channelStates = supabase.getChannels().map(channel => ({
       topic: channel.topic,
-      state: channel.state,
-      joinRef: channel.joinRef
+      state: channel.state
     }));
 
     logFlowEvent('REALTIME_HEALTH', 'check', { channelStates });
@@ -120,7 +119,7 @@ export const useStateFlowMonitor = () => {
     try {
       if (!user) return;
 
-      // Test card count consistency
+      // Test card count consistency - Fix: Use proper table name
       const [cardsCount, collectionsWithCards] = await Promise.all([
         supabase.from('cards').select('id', { count: 'exact' }).eq('creator_id', user.id),
         supabase.from('collections').select('id, title').eq('user_id', user.id)
@@ -156,7 +155,8 @@ export const useStateFlowMonitor = () => {
   // Verify optimistic updates
   const verifyOptimisticUpdate = useCallback(async (table: string, id: string, expectedData: any) => {
     try {
-      const { data } = await supabase.from(table).select('*').eq('id', id).single();
+      // Fix: Use proper table name with type assertion
+      const { data } = await (supabase as any).from(table).select('*').eq('id', id).single();
       
       const isConsistent = Object.keys(expectedData).every(key => 
         data && data[key] === expectedData[key]
@@ -187,7 +187,7 @@ export const useStateFlowMonitor = () => {
         totalQueries: queries.length,
         staleQueries: queries.filter(q => q.isStale()).length,
         errorQueries: queries.filter(q => q.state.error).length,
-        loadingQueries: queries.filter(q => q.state.status === 'loading').length
+        pendingQueries: queries.filter(q => q.state.status === 'pending').length
       };
 
       logFlowEvent('QUERY_CACHE', 'health_check', cacheMetrics);
