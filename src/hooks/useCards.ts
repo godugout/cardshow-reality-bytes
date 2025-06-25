@@ -61,7 +61,7 @@ export const useCards = (filters: CardFilters = {}) => {
         if (error) throw error;
 
         // Get creator and set info separately to avoid complex joins
-        let cardsWithDetails = data || [];
+        let cardsWithDetails: any[] = data || [];
         
         if (data && data.length > 0) {
           // Get creators
@@ -98,7 +98,7 @@ export const useCards = (filters: CardFilters = {}) => {
         }
 
         // Handle favorites separately for authenticated users
-        let cardsWithFavorites = cardsWithDetails;
+        let finalCards: any[] = cardsWithDetails;
         
         if (user && cardsWithDetails.length > 0) {
           try {
@@ -109,25 +109,25 @@ export const useCards = (filters: CardFilters = {}) => {
 
             const favoriteIds = new Set(favorites?.map(f => f.card_id) || []);
             
-            cardsWithFavorites = cardsWithDetails.map(card => ({
+            finalCards = cardsWithDetails.map(card => ({
               ...card,
               is_favorited: favoriteIds.has(card.id)
             }));
           } catch (favError) {
             console.warn('Failed to fetch favorites:', favError);
-            cardsWithFavorites = cardsWithDetails.map(card => ({
+            finalCards = cardsWithDetails.map(card => ({
               ...card,
               is_favorited: false
             }));
           }
         } else if (cardsWithDetails.length > 0) {
-          cardsWithFavorites = cardsWithDetails.map(card => ({
+          finalCards = cardsWithDetails.map(card => ({
             ...card,
             is_favorited: false
           }));
         }
 
-        return cardsWithFavorites as Card[];
+        return finalCards as Card[];
       } catch (error) {
         handleError(error, { 
           operation: 'fetch_cards',

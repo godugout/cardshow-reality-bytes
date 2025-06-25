@@ -40,7 +40,7 @@ export const useMarketplaceListings = (filters: Record<string, any> = {}) => {
         if (error) throw error;
 
         // Get related data separately to avoid complex joins
-        let enrichedListings = listingsData || [];
+        let enrichedListings: any[] = listingsData || [];
 
         if (listingsData && listingsData.length > 0) {
           const cardIds = [...new Set(listingsData.map(l => l.card_id).filter(Boolean))];
@@ -77,12 +77,15 @@ export const useMarketplaceListings = (filters: Record<string, any> = {}) => {
             profileMap.set(profile.id, profile);
           });
 
-          enrichedListings = listingsData.map(listing => ({
-            ...listing,
-            card: listing.card_id ? cardMap.get(listing.card_id) : null,
-            seller_profiles: listing.seller_id ? sellerMap.get(listing.seller_id) : null,
-            profiles: listing.seller_id ? profileMap.get(listing.seller_id) : null
-          }));
+          enrichedListings = listingsData.map(listing => {
+            const enrichedListing: any = {
+              ...listing,
+              card: listing.card_id ? cardMap.get(listing.card_id) : null,
+              seller_profiles: listing.seller_id ? sellerMap.get(listing.seller_id) : null,
+              profiles: listing.seller_id ? profileMap.get(listing.seller_id) : null
+            };
+            return enrichedListing;
+          });
 
           // Apply search filter if needed
           if (filters.search) {
