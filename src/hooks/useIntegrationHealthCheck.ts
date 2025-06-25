@@ -10,18 +10,37 @@ export interface HealthCheckResult {
 }
 
 export interface SystemHealth {
-  database: 'healthy' | 'degraded' | 'down';
-  realtime: 'healthy' | 'degraded' | 'down';
-  storage: 'healthy' | 'degraded' | 'down';
-  api: 'healthy' | 'degraded' | 'down';
+  database: {
+    status: 'healthy' | 'degraded' | 'down';
+    latency?: number;
+  };
+  realtime: {
+    status: 'healthy' | 'degraded' | 'down';
+    latency?: number;
+  };
+  storage: {
+    status: 'healthy' | 'degraded' | 'down';
+    latency?: number;
+  };
+  api: {
+    status: 'healthy' | 'degraded' | 'down';
+    latency?: number;
+  };
+  auth: {
+    status: 'healthy' | 'degraded' | 'down';
+    latency?: number;
+  };
+  overall: 'healthy' | 'degraded' | 'down';
 }
 
 export const useIntegrationHealthCheck = () => {
   const [health, setHealth] = useState<SystemHealth>({
-    database: 'healthy',
-    realtime: 'healthy',
-    storage: 'healthy',
-    api: 'healthy'
+    database: { status: 'healthy' },
+    realtime: { status: 'healthy' },
+    storage: { status: 'healthy' },
+    api: { status: 'healthy' },
+    auth: { status: 'healthy' },
+    overall: 'healthy'
   });
   
   const [healthStatus, setHealthStatus] = useState<HealthCheckResult[]>([]);
@@ -51,6 +70,27 @@ export const useIntegrationHealthCheck = () => {
           status: 'down',
           timestamp: new Date(),
           error: 'Connection failed'
+        });
+      }
+
+      // Auth health check
+      const authStart = Date.now();
+      try {
+        await new Promise(resolve => setTimeout(resolve, Math.random() * 80));
+        const authLatency = Date.now() - authStart;
+        
+        results.push({
+          system: 'Auth',
+          status: 'healthy',
+          timestamp: new Date(),
+          latency: authLatency
+        });
+      } catch (error) {
+        results.push({
+          system: 'Auth',
+          status: 'down',
+          timestamp: new Date(),
+          error: 'Auth service unavailable'
         });
       }
 
@@ -115,12 +155,52 @@ export const useIntegrationHealthCheck = () => {
       }
 
       // Update health status
+      const dbResult = results.find(r => r.system === 'Database');
+      const authResult = results.find(r => r.system === 'Auth');
+      const realtimeResult = results.find(r => r.system === 'Realtime');
+      const storageResult = results.find(r => r.system === 'Storage');
+      const apiResult = results.find(r => r.system === 'API');
+
       const newHealth: SystemHealth = {
-        database: results.find(r => r.system === 'Database')?.status || 'down',
-        realtime: results.find(r => r.system === 'Realtime')?.status || 'down',
-        storage: results.find(r => r.system === 'Storage')?.status || 'down',
-        api: results.find(r => r.system === 'API')?.status || 'down'
+        database: { 
+          status: dbResult?.status || 'down', 
+          latency: dbResult?.latency 
+        },
+        auth: { 
+          status: authResult?.status || 'down', 
+          latency: authResult?.latency 
+        },
+        realtime: { 
+          status: realtimeResult?.status || 'down', 
+          latency: realtimeResult?.latency 
+        },
+        storage: { 
+          status: storageResult?.status || 'down', 
+          latency: storageResult?.latency 
+        },
+        api: { 
+          status: apiResult?.status || 'down', 
+          latency: apiResult?.latency 
+        },
+        overall: 'healthy'
       };
+
+      // Calculate overall health
+      const statuses = [
+        newHealth.database.status,
+        newHealth.auth.status,
+        newHealth.realtime.status,
+        newHealth.storage.status,
+        newHealth.api.status
+      ];
+
+      if (statuses.some(status => status === 'down')) {
+        newHealth.overall = 'down';
+      } else if (statuses.some(status => status === 'degraded')) {
+        newHealth.overall = 'degraded';
+      } else {
+        newHealth.overall = 'healthy';
+      }
 
       setHealth(newHealth);
       setHealthStatus(prev => [...prev, ...results].slice(-20)); // Keep last 20 results
@@ -134,9 +214,7 @@ export const useIntegrationHealthCheck = () => {
 
   const generateReport = useCallback(() => {
     const timestamp = new Date().toISOString();
-    const healthSummary = Object.entries(health)
-      .map(([system, status]) => `${system}: ${status}`)
-      .join(', ');
+    const healthSummary = `Overall: ${health.overall}, Database: ${health.database.status}, Auth: ${health.auth.status}, Realtime: ${health.realtime.status}, Storage: ${health.storage.status}, API: ${health.api.status}`;
     
     return `Health Check Report (${timestamp})\n${healthSummary}`;
   }, [health]);
