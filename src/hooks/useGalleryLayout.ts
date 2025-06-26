@@ -9,23 +9,31 @@ import {
   type CardPosition
 } from '@/utils/galleryLayouts';
 import type { Card } from '@/types/card';
-import type { GalleryLayoutType } from '@/hooks/useGalleryPreferences';
+
+export type GalleryLayoutType = 'circular' | 'gallery_wall' | 'spiral' | 'grid' | 'random_scatter';
 
 export const useGalleryLayout = (cards: Card[], layoutType: GalleryLayoutType): CardPosition[] => {
   return useMemo((): CardPosition[] => {
-    if (cards.length === 0) return [];
+    if (!cards || cards.length === 0) return [];
     
-    switch (layoutType) {
-      case 'gallery_wall':
-        return calculateGalleryWallLayout(cards);
-      case 'spiral':
-        return calculateSpiralLayout(cards);
-      case 'grid':
-        return calculateGridLayout(cards);
-      case 'random_scatter':
-        return calculateRandomScatterLayout(cards);
-      default:
-        return calculateCircularLayout(cards);
+    try {
+      switch (layoutType) {
+        case 'gallery_wall':
+          return calculateGalleryWallLayout(cards);
+        case 'spiral':
+          return calculateSpiralLayout(cards);
+        case 'grid':
+          return calculateGridLayout(cards);
+        case 'random_scatter':
+          return calculateRandomScatterLayout(cards);
+        case 'circular':
+        default:
+          return calculateCircularLayout(cards);
+      }
+    } catch (error) {
+      console.warn('Failed to calculate gallery layout:', error);
+      // Fallback to simple circular layout
+      return calculateCircularLayout(cards);
     }
   }, [cards, layoutType]);
 };

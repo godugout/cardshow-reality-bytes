@@ -10,6 +10,8 @@ export interface CardPosition {
 }
 
 export const calculateCircularLayout = (cards: Card[], radius: number = 8): CardPosition[] => {
+  if (cards.length === 0) return [];
+  
   return cards.map((card, index) => {
     const angle = (index / cards.length) * Math.PI * 2;
     const x = Math.cos(angle) * radius;
@@ -26,9 +28,11 @@ export const calculateCircularLayout = (cards: Card[], radius: number = 8): Card
 };
 
 export const calculateGalleryWallLayout = (cards: Card[]): CardPosition[] => {
+  if (cards.length === 0) return [];
+  
   const columns = Math.ceil(Math.sqrt(cards.length));
   const rows = Math.ceil(cards.length / columns);
-  const spacing = 3;
+  const spacing = 3.5;
   
   return cards.map((card, index) => {
     const col = index % columns;
@@ -36,7 +40,7 @@ export const calculateGalleryWallLayout = (cards: Card[]): CardPosition[] => {
     
     const x = (col - (columns - 1) / 2) * spacing;
     const y = ((rows - 1) / 2 - row) * spacing;
-    const z = -5;
+    const z = -8;
     
     return {
       card,
@@ -48,26 +52,30 @@ export const calculateGalleryWallLayout = (cards: Card[]): CardPosition[] => {
 };
 
 export const calculateSpiralLayout = (cards: Card[], radius: number = 6): CardPosition[] => {
+  if (cards.length === 0) return [];
+  
   return cards.map((card, index) => {
-    const t = index / cards.length;
-    const angle = t * Math.PI * 8; // Multiple spirals
-    const r = radius * (0.5 + t * 0.5);
+    const t = index / Math.max(cards.length - 1, 1);
+    const angle = t * Math.PI * 6; // Multiple spirals
+    const r = radius * (0.3 + t * 0.7);
     const x = Math.cos(angle) * r;
     const z = Math.sin(angle) * r;
-    const y = t * 10 - 5; // Vertical progression
+    const y = t * 8 - 4; // Vertical progression
     
     return {
       card,
       position: new THREE.Vector3(x, y, z),
       rotation: new THREE.Euler(0, angle, 0),
-      scale: 0.8 + t * 0.4
+      scale: 0.7 + t * 0.6
     };
   });
 };
 
 export const calculateGridLayout = (cards: Card[]): CardPosition[] => {
+  if (cards.length === 0) return [];
+  
   const size = Math.ceil(Math.pow(cards.length, 1/3)); // 3D cube
-  const spacing = 3;
+  const spacing = 4;
   
   return cards.map((card, index) => {
     const x = (index % size) - (size - 1) / 2;
@@ -87,9 +95,11 @@ export const calculateGridLayout = (cards: Card[]): CardPosition[] => {
   });
 };
 
-export const calculateRandomScatterLayout = (cards: Card[], bounds: number = 10): CardPosition[] => {
+export const calculateRandomScatterLayout = (cards: Card[], bounds: number = 12): CardPosition[] => {
+  if (cards.length === 0) return [];
+  
   const positions: THREE.Vector3[] = [];
-  const minDistance = 2.5;
+  const minDistance = 3;
   
   return cards.map((card) => {
     let position: THREE.Vector3;
@@ -98,7 +108,7 @@ export const calculateRandomScatterLayout = (cards: Card[], bounds: number = 10)
     do {
       position = new THREE.Vector3(
         (Math.random() - 0.5) * bounds * 2,
-        (Math.random() - 0.5) * bounds,
+        (Math.random() - 0.5) * bounds * 0.5,
         (Math.random() - 0.5) * bounds * 2
       );
       attempts++;
