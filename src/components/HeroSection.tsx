@@ -1,115 +1,88 @@
 
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
-import InteractiveCardPreview from "@/components/landing/InteractiveCardPreview";
-import QuickActionButtons from "@/components/landing/QuickActionButtons";
-import AnimatedParticles from "@/components/landing/AnimatedParticles";
-import MagneticButton from "@/components/landing/MagneticButton";
-import TypewriterText from "@/components/landing/TypewriterText";
-import AnimatedCounter from "@/components/landing/AnimatedCounter";
-import EarningsSimulator from "@/components/landing/EarningsSimulator";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight, Play, Zap } from "lucide-react";
 
 const HeroSection = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-
-  const typewriterWords = ["Create.", "Collect.", "Trade.", "Earn."];
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0a0a0a] via-[#1a1a1a] to-[#0a0a0a] overflow-hidden">
-      {/* Animated Background */}
-      <AnimatedParticles />
+    <section className="relative overflow-hidden py-20 lg:py-32">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#00C851]/10 via-transparent to-[#00A543]/5" />
       
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-[url('/placeholder.svg')] bg-cover bg-center opacity-5" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]" style={{ zIndex: 2 }} />
-      
-      <div className="container mx-auto px-4 py-20 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <div className="text-center lg:text-left space-y-8">
-            <div className="space-y-6">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight">
-                <TypewriterText 
-                  words={typewriterWords}
-                  className="text-transparent bg-clip-text bg-gradient-to-r from-[#00C851] to-[#00FF66]"
-                />
-                <br />
-                <span className="animate-fade-in">Your Digital Cards</span>
-              </h1>
-              
-              <p className="text-xl text-gray-300 leading-relaxed max-w-lg animate-fade-in" style={{ animationDelay: '0.5s' }}>
-                Enter the future of digital trading cards with stunning 3D visuals, 
-                creator monetization, and a thriving marketplace.
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 opacity-20" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+      }} />
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="text-center max-w-4xl mx-auto">
+          {/* Announcement Badge */}
+          <Badge className="mb-8 bg-[#00C851]/20 text-[#00C851] border-[#00C851]/30 hover:bg-[#00C851]/30">
+            <Zap className="w-3 h-3 mr-1" />
+            Now in Beta - Join Early Access
+          </Badge>
+
+          {/* Main Headline */}
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+            <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
+              Create. Collect.
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-[#00C851] to-[#00A543] bg-clip-text text-transparent">
+              Render Reality.
+            </span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+            The first digital trading card platform that empowers creators with 3D visualization, 
+            real-time trading, and fair monetization tools.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+            <Button size="lg" className="bg-[#00C851] hover:bg-[#00A543] text-white px-8 py-4 text-lg">
+              Start Creating
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+            <Button size="lg" variant="outline" className="border-gray-600 text-white hover:bg-gray-800 px-8 py-4 text-lg">
+              <Play className="w-5 h-5 mr-2" />
+              Watch Demo
+            </Button>
+          </div>
+
+          {/* Feature Preview Cards */}
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 hover:border-[#00C851]/50 transition-all duration-300 group">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#00C851] to-[#00A543] rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-6 h-6 bg-white rounded-md opacity-90" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">3D Card Rendering</h3>
+              <p className="text-gray-400 text-sm">
+                Experience your cards in stunning 3D with interactive physics and lighting effects
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: '1s' }}>
-              <MagneticButton
-                size="lg"
-                onClick={() => navigate(user ? "/creator" : "/auth")}
-                className="bg-[#00C851] hover:bg-[#00A543] text-white font-semibold px-8 py-4 text-lg shadow-lg"
-              >
-                {user ? "Start Creating" : "Get Started Free"}
-              </MagneticButton>
-              
-              <MagneticButton
-                size="lg"
-                variant="outline"
-                onClick={() => navigate("/marketplace")}
-                className="border-[#00C851] text-[#00C851] hover:bg-[#00C851] hover:text-white font-semibold px-8 py-4 text-lg"
-              >
-                Explore Marketplace
-              </MagneticButton>
+            <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 hover:border-[#00C851]/50 transition-all duration-300 group">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#00C851] to-[#00A543] rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-6 h-6 bg-white rounded-md opacity-90" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Creator Tools</h3>
+              <p className="text-gray-400 text-sm">
+                Design, mint, and monetize your digital cards with our intuitive creation suite
+              </p>
             </div>
 
-            {/* Animated Stats */}
-            <div className="grid grid-cols-3 gap-8 pt-8 border-t border-gray-800 animate-fade-in" style={{ animationDelay: '1.5s' }}>
-              <div className="text-center lg:text-left">
-                <div className="text-2xl font-bold text-[#00C851]">
-                  <AnimatedCounter end={10} suffix="K+" />
-                </div>
-                <div className="text-sm text-gray-400">Cards Created</div>
+            <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 hover:border-[#00C851]/50 transition-all duration-300 group">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#00C851] to-[#00A543] rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-6 h-6 bg-white rounded-md opacity-90" />
               </div>
-              <div className="text-center lg:text-left">
-                <div className="text-2xl font-bold text-[#00C851]">
-                  <AnimatedCounter end={2.5} suffix="K+" />
-                </div>
-                <div className="text-sm text-gray-400">Active Creators</div>
-              </div>
-              <div className="text-center lg:text-left">
-                <div className="text-2xl font-bold text-[#00C851]">
-                  $<AnimatedCounter end={500} suffix="K+" />
-                </div>
-                <div className="text-sm text-gray-400">Creator Earnings</div>
-              </div>
+              <h3 className="text-lg font-semibold mb-2">Live Marketplace</h3>
+              <p className="text-gray-400 text-sm">
+                Trade cards in real-time with secure transactions and instant settlements
+              </p>
             </div>
           </div>
-
-          {/* Right Content - Interactive Card Preview */}
-          <div className="flex justify-center animate-fade-in" style={{ animationDelay: '2s' }}>
-            <InteractiveCardPreview />
-          </div>
-        </div>
-
-        {/* Earnings Simulator Section */}
-        <div className="mt-20 animate-fade-in" style={{ animationDelay: '2.5s' }}>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">Calculate Your Potential</h2>
-            <p className="text-gray-400">See how much you could earn as a creator</p>
-          </div>
-          <div className="max-w-2xl mx-auto">
-            <EarningsSimulator />
-          </div>
-        </div>
-
-        {/* Quick Actions Section */}
-        <div className="mt-20 animate-fade-in" style={{ animationDelay: '3s' }}>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">What would you like to do?</h2>
-            <p className="text-gray-400">Jump right in with these popular actions</p>
-          </div>
-          <QuickActionButtons />
         </div>
       </div>
     </section>

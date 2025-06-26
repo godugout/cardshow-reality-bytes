@@ -4,14 +4,11 @@ import type { Card } from '@/types/card';
 
 export const useGallerySearch = (cards: Card[], searchQuery: string) => {
   return useMemo(() => {
-    if (!searchQuery.trim()) return cards;
-    
-    const query = searchQuery.toLowerCase().trim();
-    
+    if (!searchQuery) return cards;
     return cards.filter(card => 
-      card.title?.toLowerCase().includes(query) ||
-      card.description?.toLowerCase().includes(query) ||
-      card.rarity?.toLowerCase().includes(query)
+      card.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      card.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      card.rarity?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [cards, searchQuery]);
 };
