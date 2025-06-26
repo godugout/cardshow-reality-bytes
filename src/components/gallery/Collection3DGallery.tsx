@@ -1,5 +1,5 @@
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import GalleryCanvas from './GalleryCanvas';
 import GalleryAccessibility from './GalleryAccessibility';
@@ -16,6 +16,30 @@ interface Collection3DGalleryProps {
   cards: Card[];
   onCardSelect?: (card: Card) => void;
 }
+
+const GalleryErrorFallback = ({ error, resetErrorBoundary }: { error: Error; resetErrorBoundary: () => void }) => (
+  <div className="w-full h-full flex items-center justify-center bg-gray-900 text-white">
+    <div className="text-center">
+      <h2 className="text-xl font-bold mb-4">Gallery Loading Error</h2>
+      <p className="text-gray-400 mb-4">Something went wrong loading the 3D gallery.</p>
+      <button 
+        onClick={resetErrorBoundary}
+        className="bg-[#00C851] text-white px-4 py-2 rounded hover:bg-[#00a844]"
+      >
+        Try Again
+      </button>
+    </div>
+  </div>
+);
+
+const GalleryLoadingFallback = () => (
+  <div className="w-full h-full flex items-center justify-center bg-gray-900 text-white">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00C851] mx-auto mb-4"></div>
+      <p>Loading 3D Gallery...</p>
+    </div>
+  </div>
+);
 
 const Collection3DGallery = ({ collection, cards, onCardSelect }: Collection3DGalleryProps) => {
   const { preferences, loading } = useGalleryPreferences();
@@ -54,30 +78,31 @@ const Collection3DGallery = ({ collection, cards, onCardSelect }: Collection3DGa
   };
 
   if (loading) {
-    return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-900">
-        <div className="text-white">Loading gallery preferences...</div>
-      </div>
-    );
+    return <GalleryLoadingFallback />;
   }
 
   return (
     <div className="w-full h-full relative bg-black">
-      <ErrorBoundary fallback={<div className="text-white p-4">Gallery failed to load</div>}>
-        <GalleryCanvas
-          cardPositions={cardPositions}
-          selectedCardIndex={selectedCardIndex}
-          onCardClick={handleCardClick}
-          environmentTheme={preferences.environment_theme}
-          enableParticles={preferences.particle_effects}
-          accessibilityMode={preferences.accessibility_mode}
-          dominantColors={dominantColors}
-          selectedCard={cardPositions[selectedCardIndex]?.card}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          onLayoutChange={handleLayoutChange}
-          collectionStats={collectionStats}
-        />
+      <ErrorBoundary 
+        FallbackComponent={GalleryErrorFallback}
+        onReset={() => window.location.reload()}
+      >
+        <Suspense fallback={<GalleryLoadingFallback />}>
+          <GalleryCanvas
+            cardPositions={cardPositions}
+            selectedCardIndex={selectedCardIndex}
+            onCardClick={handleCardClick}
+            environmentTheme={preferences.environment_theme}
+            enableParticles={preferences.particle_effects}
+            accessibilityMode={preferences.accessibility_mode}
+            dominantColors={dominantColors}
+            selectedCard={cardPositions[selectedCardIndex]?.card}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            onLayoutChange={handleLayoutChange}
+            collectionStats={collectionStats}
+          />
+        </Suspense>
       </ErrorBoundary>
 
       {/* Accessibility Instructions */}

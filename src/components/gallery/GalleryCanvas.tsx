@@ -42,11 +42,27 @@ const GalleryCanvas = ({
   onLayoutChange,
   collectionStats
 }: GalleryCanvasProps) => {
+  // Fallback for empty card positions
+  if (!cardPositions || cardPositions.length === 0) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gray-900 text-white">
+        <div className="text-center">
+          <h3 className="text-lg font-semibold mb-2">No Cards Found</h3>
+          <p className="text-gray-400">This collection appears to be empty.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Canvas
       camera={{ position: [0, 2, 8], fov: 60 }}
       gl={{ antialias: true, alpha: true }}
       shadows={!accessibilityMode}
+      onCreated={(state) => {
+        // Ensure camera is properly set up
+        state.camera.lookAt(0, 0, 0);
+      }}
     >
       <Suspense fallback={null}>
         {/* Environmental Effects */}
