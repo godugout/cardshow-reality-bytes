@@ -1,4 +1,3 @@
-
 import { Suspense, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Preload, AdaptiveDpr, AdaptiveEvents, Stats } from '@react-three/drei';
@@ -139,14 +138,14 @@ const GalleryCanvas = ({
   // Check WebGL support
   const webglSupport = detectWebGLSupport();
   
-  // Mobile optimizations - fix dpr and camera position types
+  // Mobile optimizations - fix dpr, camera position, and gl property types
   const canvasProps = useMemo(() => ({
     dpr: (isMobile ? [0.5, 1] : [1, 2]) as [number, number],
     performance: { min: isMobile ? 0.3 : 0.2, max: 1 },
     gl: { 
       antialias: !isMobile && !accessibilityMode,
       alpha: true,
-      powerPreference: isMobile ? 'default' : 'high-performance',
+      powerPreference: (isMobile ? 'default' : 'high-performance') as WebGLPowerPreference,
       stencil: false,
       depth: true
     },
