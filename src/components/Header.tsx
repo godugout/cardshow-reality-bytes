@@ -1,178 +1,102 @@
 
 import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, Search, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import UserMenu from './UserMenu';
-import NotificationCenter from './social/NotificationCenter';
-import { useAuth } from '@/hooks/useAuth';
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import { UserMenu } from "@/components/UserMenu";
+import { Menu, X, Sparkles } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
   const { user } = useAuth();
-  const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
-    }
-  };
-
-  const navigation = [
-    { name: 'Cards', href: '/cards' },
-    { name: 'Collections', href: '/collections' },
-    { name: 'Marketplace', href: '/marketplace' },
-    { name: 'Trading', href: '/trading' },
-    { name: 'Creator', href: '/creator' },
-    { name: 'Community', href: '/community' },
+  const navItems = [
+    { href: "/", label: "Home" },
+    { href: "/cards", label: "Cards" },
+    { href: "/collections", label: "Collections" },
+    { href: "/marketplace", label: "Marketplace" },
+    { href: "/trading", label: "Trading" },
+    { href: "/creator", label: "Creator" },
+    { href: "/community", label: "Community" },
+    { href: "/gallery", label: "Gallery" },
   ];
 
-  const isActiveRoute = (href: string) => {
-    return location.pathname === href;
-  };
+  // Add admin routes for authenticated users
+  if (user) {
+    navItems.push(
+      { href: "/admin", label: "Admin" },
+      { href: "/admin/content-generator", label: "Content Gen" }
+    );
+  }
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="bg-black/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-800 bg-[#0a0a0a]/95 backdrop-blur supports-[backdrop-filter]:bg-[#0a0a0a]/95">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#00C851] to-[#00A543] rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-lg">C</span>
-            </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-[#00C851] to-[#00A543] bg-clip-text text-transparent">
-              Cardshow
-            </span>
+        <div className="flex h-16 items-center justify-between">
+          <Link to="/" className="flex items-center space-x-2">
+            <Sparkles className="h-8 w-8 text-[#00C851]" />
+            <span className="text-xl font-bold text-white">Cardshow</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActiveRoute(item.href)
-                    ? 'bg-[#00C851] text-white shadow-lg'
-                    : 'text-gray-300 hover:text-white hover:bg-gray-800'
-                }`}
-              >
-                {item.name}
+          <nav className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <Link key={item.href} to={item.href}>
+                <Button 
+                  variant={isActive(item.href) ? "default" : "ghost"} 
+                  className={isActive(item.href) ? "bg-[#00C851] hover:bg-[#00a844]" : "text-gray-300 hover:text-white"}
+                  size="sm"
+                >
+                  {item.label}
+                </Button>
               </Link>
             ))}
           </nav>
 
-          {/* Search Bar */}
-          <form onSubmit={handleSearch} className="hidden md:flex items-center flex-1 max-w-md mx-8">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <Input
-                type="search"
-                placeholder="Search cards, collections, creators..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-gray-900 border-gray-700 text-white placeholder-gray-400 focus:border-[#00C851] focus:ring-[#00C851]"
-              />
-            </div>
-          </form>
-
-          {/* Right side actions */}
+          {/* User Menu */}
           <div className="flex items-center space-x-4">
             {user ? (
-              <>
-                <NotificationCenter />
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => navigate('/creator')}
-                  className="hidden sm:flex border-gray-600 text-gray-300 hover:text-white hover:bg-[#00C851] hover:border-[#00C851] transition-colors"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create
-                </Button>
-                <UserMenu />
-              </>
+              <UserMenu />
             ) : (
-              <Button
-                onClick={() => navigate('/auth')}
-                className="bg-[#00C851] hover:bg-[#00A543] text-white"
-              >
-                Sign In
-              </Button>
+              <Link to="/auth">
+                <Button className="bg-[#00C851] hover:bg-[#00a844] text-white">
+                  Sign In
+                </Button>
+              </Link>
             )}
 
-            {/* Mobile menu button */}
+            {/* Mobile Menu Toggle */}
             <Button
               variant="ghost"
               size="sm"
+              className="md:hidden text-gray-300"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden text-gray-300 hover:text-white"
             >
-              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
         </div>
 
-        {/* Mobile Search */}
-        <div className="md:hidden pb-4">
-          <form onSubmit={handleSearch} className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <Input
-              type="search"
-              placeholder="Search cards, collections, creators..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-gray-900 border-gray-700 text-white placeholder-gray-400 focus:border-[#00C851]"
-            />
-          </form>
-        </div>
-
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden pb-4">
-            <nav className="flex flex-col space-y-2">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`py-3 px-4 rounded-lg transition-colors ${
-                    isActiveRoute(item.href)
-                      ? 'bg-[#00C851] text-white'
-                      : 'text-gray-300 hover:text-white hover:bg-gray-800'
+          <nav className="md:hidden py-4 space-y-2">
+            {navItems.map((item) => (
+              <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
+                <Button 
+                  variant={isActive(item.href) ? "default" : "ghost"} 
+                  className={`w-full justify-start ${
+                    isActive(item.href) ? "bg-[#00C851] hover:bg-[#00a844]" : "text-gray-300 hover:text-white"
                   }`}
+                  size="sm"
                 >
-                  {item.name}
-                </Link>
-              ))}
-              {user ? (
-                <Button
-                  onClick={() => {
-                    navigate('/creator');
-                    setIsMenuOpen(false);
-                  }}
-                  className="mt-4 bg-[#00C851] hover:bg-[#00A543] text-white"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Cards
+                  {item.label}
                 </Button>
-              ) : (
-                <Button
-                  onClick={() => {
-                    navigate('/auth');
-                    setIsMenuOpen(false);
-                  }}
-                  className="mt-4 bg-[#00C851] hover:bg-[#00A543] text-white"
-                >
-                  Sign In
-                </Button>
-              )}
-            </nav>
-          </div>
+              </Link>
+            ))}
+          </nav>
         )}
       </div>
     </header>
