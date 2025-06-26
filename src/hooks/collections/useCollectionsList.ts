@@ -76,16 +76,54 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
           return [];
         }
 
-        // Return simple collections data
-        const simpleCollections = data.map(collection => ({
-          ...collection,
-          owner: null,
-          is_following: false,
-          card_count: 0
-        }));
+        // Enhance collections with stats using the new helper functions
+        const enhancedCollections = await Promise.all(
+          data.map(async (collection) => {
+            try {
+              // Get card count using the safe helper function
+              const { data: cardCountData } = await supabase
+                .rpc('get_collection_card_count', { collection_uuid: collection.id });
+              
+              // Get follower count using the safe helper function
+              const { data: followerCountData } = await supabase
+                .rpc('get_collection_follower_count', { collection_uuid: collection.id });
 
-        console.log('Returning collections:', simpleCollections.length);
-        return simpleCollections as Collection[];
+              // Get owner profile separately to avoid joins
+              let owner = null;
+              if (collection.user_id) {
+                const { data: profileData } = await supabase
+                  .from('profiles')
+                  .select('id, username, avatar_url')
+                  .eq('id', collection.user_id)
+                  .single();
+                
+                if (profileData) {
+                  owner = profileData;
+                }
+              }
+
+              return {
+                ...collection,
+                owner,
+                card_count: cardCountData || 0,
+                follower_count: followerCountData || 0,
+                is_following: false // This would need a separate query if needed
+              };
+            } catch (error) {
+              console.warn('Error enhancing collection:', collection.id, error);
+              return {
+                ...collection,
+                owner: null,
+                card_count: 0,
+                follower_count: 0,
+                is_following: false
+              };
+            }
+          })
+        );
+
+        console.log('Returning enhanced collections:', enhancedCollections.length);
+        return enhancedCollections as Collection[];
         
       } catch (error) {
         console.error('Error in useCollectionsList:', error);

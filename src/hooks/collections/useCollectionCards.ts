@@ -28,7 +28,16 @@ export const useCollectionCards = (collectionId: string) => {
           .order('display_order', { ascending: true });
         
         if (error) throw error;
-        return data as CollectionCard[];
+        
+        // Ensure we have the quantity field with proper defaults
+        const enhancedCards = (data || []).map(card => ({
+          ...card,
+          quantity: card.quantity || 1,
+          notes: card.notes || '',
+          added_by: card.added_by || null
+        }));
+        
+        return enhancedCards as CollectionCard[];
       } catch (error) {
         handleError(error, {
           operation: 'fetch_collection_cards',

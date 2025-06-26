@@ -171,6 +171,40 @@ export const useCollectionMutations = () => {
     }
   });
 
+  const updateCardInCollection = useMutation({
+    mutationFn: async (data: {
+      collection_id: string;
+      card_id: string;
+      quantity?: number;
+      notes?: string;
+    }) => {
+      const { error } = await supabase
+        .from('collection_cards')
+        .update({
+          quantity: data.quantity,
+          notes: data.notes
+        })
+        .eq('collection_id', data.collection_id)
+        .eq('card_id', data.card_id);
+      
+      if (error) throw error;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['collection-cards', variables.collection_id] });
+      toast({
+        title: 'Card updated',
+        description: 'Card details have been updated.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
+  });
+
   const followCollection = useMutation({
     mutationFn: async (collectionId: string) => {
       if (!user) throw new Error('Must be logged in');
@@ -234,6 +268,7 @@ export const useCollectionMutations = () => {
     deleteCollection,
     addCardToCollection,
     removeCardFromCollection,
+    updateCardInCollection,
     followCollection,
     unfollowCollection
   };

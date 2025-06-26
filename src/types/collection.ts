@@ -3,7 +3,7 @@ export interface Collection {
   id: string;
   title: string;
   description?: string;
-  user_id: string; // Changed from owner_id to match database schema
+  user_id: string;
   visibility: 'public' | 'private' | 'shared';
   cover_image_url?: string;
   template_id?: string;
@@ -80,7 +80,7 @@ export interface CollectionActivity {
 
 export interface CollectionFilters {
   visibility?: ('public' | 'private' | 'shared')[];
-  user_id?: string; // Changed from owner_id to match database schema
+  user_id?: string;
   is_featured?: boolean;
   search?: string;
 }

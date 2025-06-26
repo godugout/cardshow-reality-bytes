@@ -21,7 +21,7 @@ export const useCollection = (collectionId: string) => {
         
         if (collectionError) throw collectionError;
 
-        // Then get the owner profile separately to avoid complex joins
+        // Get owner profile separately to avoid complex joins
         let owner = null;
         if (collectionData.user_id) {
           const { data: profileData } = await supabase
@@ -35,9 +35,30 @@ export const useCollection = (collectionId: string) => {
           }
         }
 
+        // Get collection stats using the new helper functions
+        let stats = null;
+        try {
+          const { data: statsData } = await supabase
+            .rpc('get_collection_stats', { collection_uuid: collectionId });
+          
+          if (statsData && statsData.length > 0) {
+            const stat = statsData[0];
+            stats = {
+              total_cards: Number(stat.total_cards),
+              unique_cards: Number(stat.unique_cards),
+              total_value: Number(stat.total_value),
+              completion_percentage: Number(stat.completion_percentage),
+              last_updated: stat.last_updated
+            };
+          }
+        } catch (error) {
+          console.warn('Error fetching collection stats:', error);
+        }
+
         return {
           ...collectionData,
-          owner
+          owner,
+          stats
         } as Collection;
       } catch (error) {
         handleError(error, {
