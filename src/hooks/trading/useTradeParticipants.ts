@@ -1,10 +1,11 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { TradeParticipant } from '@/types/trading';
 
 export const useTradeParticipants = (tradeId: string) => {
   const [participants, setParticipants] = useState<TradeParticipant[]>([]);
+  const channelRef = useRef<any>(null);
 
   useEffect(() => {
     if (!tradeId) return;
@@ -36,9 +37,16 @@ export const useTradeParticipants = (tradeId: string) => {
 
     fetchParticipants();
 
-    // Real-time subscription for presence
-    const channel = supabase
-      .channel(`trade-participants-${tradeId}`)
+    // Clean up existing channel first
+    if (channelRef.current) {
+      supabase.removeChannel(channelRef.current);
+      channelRef.current = null;
+    }
+
+    // Real-time subscription for presence - fixed to prevent multiple subscriptions
+    const channelName = `trade-participants-${tradeId}-${Date.now()}`;
+    channelRef.current = supabase
+      .channel(channelName)
       .on(
         'postgres_changes',
         {
@@ -54,7 +62,10 @@ export const useTradeParticipants = (tradeId: string) => {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+      }
     };
   }, [tradeId]);
 

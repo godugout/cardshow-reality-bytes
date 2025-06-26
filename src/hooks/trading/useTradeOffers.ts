@@ -1,12 +1,13 @@
 
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useSupabaseErrorHandler } from '@/hooks/useSupabaseErrorHandler';
 import type { TradeOffer, TradeFilters } from '@/types/trading';
 
 export const useTradeOffers = (userId?: string, filters: TradeFilters = {}) => {
   const { handleError } = useSupabaseErrorHandler();
+  const channelRef = useRef<any>(null);
   
   const { data: offers = [], isLoading, error, refetch } = useQuery({
     queryKey: ['trade-offers', userId, filters],
@@ -99,12 +100,20 @@ export const useTradeOffers = (userId?: string, filters: TradeFilters = {}) => {
     staleTime: 30000, // 30 seconds
   });
 
-  // Real-time subscription for trade offers
+  // Real-time subscription for trade offers - fixed to prevent multiple subscriptions
   useEffect(() => {
     if (!userId) return;
 
-    const channel = supabase
-      .channel('trade-offers-changes')
+    // Clean up existing channel first
+    if (channelRef.current) {
+      supabase.removeChannel(channelRef.current);
+      channelRef.current = null;
+    }
+
+    // Create new channel with unique name
+    const channelName = `trade-offers-${userId}-${Date.now()}`;
+    channelRef.current = supabase
+      .channel(channelName)
       .on(
         'postgres_changes',
         {
@@ -119,14 +128,16 @@ export const useTradeOffers = (userId?: string, filters: TradeFilters = {}) => {
         }
       )
       .subscribe((status) => {
-        // Fixed: Check for 'SUBSCRIPTION_ERROR' status correctly
-        if (status !== 'SUBSCRIBED') {
-          console.error('Failed to subscribe to trade offers changes. Status:', status);
+        if (status === 'SUBSCRIPTION_ERROR') {
+          console.error('Failed to subscribe to trade offers changes');
         }
       });
 
     return () => {
-      supabase.removeChannel(channel);
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+      }
     };
   }, [userId, refetch]);
 

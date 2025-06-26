@@ -1,10 +1,12 @@
 
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { TradeMessage } from '@/types/trading';
 
 export const useTradeMessages = (tradeId: string) => {
+  const channelRef = useRef<any>(null);
+
   const { data: messages = [], refetch } = useQuery({
     queryKey: ['trade-messages', tradeId],
     queryFn: async () => {
@@ -37,12 +39,20 @@ export const useTradeMessages = (tradeId: string) => {
     enabled: !!tradeId,
   });
 
-  // Real-time subscription for messages
+  // Real-time subscription for messages - fixed to prevent multiple subscriptions
   useEffect(() => {
     if (!tradeId) return;
 
-    const channel = supabase
-      .channel(`trade-messages-${tradeId}`)
+    // Clean up existing channel first
+    if (channelRef.current) {
+      supabase.removeChannel(channelRef.current);
+      channelRef.current = null;
+    }
+
+    // Create new channel with unique name
+    const channelName = `trade-messages-${tradeId}-${Date.now()}`;
+    channelRef.current = supabase
+      .channel(channelName)
       .on(
         'postgres_changes',
         {
@@ -58,7 +68,10 @@ export const useTradeMessages = (tradeId: string) => {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+      }
     };
   }, [tradeId, refetch]);
 
