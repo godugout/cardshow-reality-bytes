@@ -14,9 +14,7 @@ import type { CollectionFilters } from '@/types/collection';
 
 const CollectionGrid = () => {
   const { user } = useAuth();
-  const [filters, setFilters] = useState<CollectionFilters>({
-    visibility: ['public']
-  });
+  const [filters, setFilters] = useState<CollectionFilters>({});
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   
   const { collections, isLoading, searchTerm, setSearchTerm } = useCollections(filters);
@@ -26,12 +24,10 @@ const CollectionGrid = () => {
   };
 
   const filterOptions = [
-    { key: 'all', label: 'All Collections', value: ['public', 'shared'] },
-    { key: 'public', label: 'Public', value: ['public'] },
-    { key: 'featured', label: 'Featured', value: ['public'], featured: true },
+    { key: 'all', label: 'All Collections', value: {} },
+    { key: 'featured', label: 'Featured', value: { is_featured: true } },
     ...(user ? [
-      { key: 'mine', label: 'My Collections', value: ['public', 'private', 'shared'], owner: user.id },
-      { key: 'following', label: 'Following', value: ['public'], following: true }
+      { key: 'mine', label: 'My Collections', value: { user_id: user.id } }
     ] : [])
   ];
 
@@ -90,16 +86,10 @@ const CollectionGrid = () => {
             <Button
               key={option.key}
               variant={
-                (filters.visibility?.toString() === option.value.toString() &&
-                 filters.is_featured === option.featured &&
-                 filters.user_id === option.owner) ? "default" : "outline"
+                JSON.stringify(filters) === JSON.stringify(option.value) ? "default" : "outline"
               }
               size="sm"
-              onClick={() => handleFilterChange({
-                visibility: option.value as any,
-                is_featured: option.featured,
-                user_id: option.owner
-              })}
+              onClick={() => handleFilterChange(option.value)}
               className="border-gray-600 text-gray-300 hover:text-white"
             >
               {option.label}

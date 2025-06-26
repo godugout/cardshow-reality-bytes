@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -22,7 +23,6 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
         console.log('Fetching collections with user:', user?.id);
         console.log('Filters:', filters);
         
-        // Start with a basic query to test if RLS is working
         let query = supabase
           .from('collections')
           .select(`
@@ -43,25 +43,22 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
           `)
           .order('updated_at', { ascending: false });
 
-        // Apply filters step by step to identify any issues
-        if (filters.visibility?.length) {
-          console.log('Applying visibility filter:', filters.visibility);
-          query = query.in('visibility', filters.visibility);
+        // Apply search filter
+        if (searchTerm) {
+          console.log('Applying search term:', searchTerm);
+          query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
         }
-        
+
+        // Apply user filter (my collections)
         if (filters.user_id) {
           console.log('Applying user_id filter:', filters.user_id);
           query = query.eq('user_id', filters.user_id);
         }
-        
+
+        // Apply featured filter
         if (filters.is_featured !== undefined) {
           console.log('Applying is_featured filter:', filters.is_featured);
           query = query.eq('is_featured', filters.is_featured);
-        }
-        
-        if (searchTerm) {
-          console.log('Applying search term:', searchTerm);
-          query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
         }
 
         console.log('Executing collections query...');
@@ -79,16 +76,16 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
           return [];
         }
 
-        // For now, return basic collections without complex joins to test RLS
-        const basicCollections = data.map(collection => ({
+        // Return simple collections data
+        const simpleCollections = data.map(collection => ({
           ...collection,
-          owner: null, // We'll add this back later once basic query works
+          owner: null,
           is_following: false,
           card_count: 0
         }));
 
-        console.log('Returning basic collections:', basicCollections.length);
-        return basicCollections as Collection[];
+        console.log('Returning collections:', simpleCollections.length);
+        return simpleCollections as Collection[];
         
       } catch (error) {
         console.error('Error in useCollectionsList:', error);
@@ -107,7 +104,7 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
     }
   });
 
-  // Real-time subscription - keep it simple for now
+  // Real-time subscription
   useEffect(() => {
     if (!user) return;
 
