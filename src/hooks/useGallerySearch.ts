@@ -11,8 +11,7 @@ export const useGallerySearch = (cards: Card[], searchQuery: string) => {
     return cards.filter(card => 
       card.title?.toLowerCase().includes(query) ||
       card.description?.toLowerCase().includes(query) ||
-      card.rarity?.toLowerCase().includes(query) ||
-      card.tags?.some(tag => tag.toLowerCase().includes(query))
+      card.rarity?.toLowerCase().includes(query)
     );
   }, [cards, searchQuery]);
 };
