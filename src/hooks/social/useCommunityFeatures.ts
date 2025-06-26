@@ -99,7 +99,7 @@ export const useNotifications = () => {
         message: notification.message,
         type: notification.type,
         is_read: notification.is_read,
-        metadata: notification.metadata || {}, // Ensure metadata exists
+        metadata: {}, // Provide empty metadata object since it doesn't exist in this table
         created_at: notification.created_at
       })) as Notification[];
     },
