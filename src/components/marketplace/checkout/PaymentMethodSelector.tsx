@@ -116,6 +116,10 @@ const PaymentMethodSelector = ({ onPaymentMethodSelected, onBack }: PaymentMetho
     }
   };
 
+  const handleSaveMethodChange = (checked: boolean | 'indeterminate') => {
+    setSaveNewMethod(checked === true);
+  };
+
   const getCardBrandIcon = (brand: string) => {
     // Return appropriate card brand icon based on brand
     return <CreditCard className="w-5 h-5" />;
@@ -196,7 +200,7 @@ const PaymentMethodSelector = ({ onPaymentMethodSelected, onBack }: PaymentMetho
                     <Checkbox
                       id="save-method"
                       checked={saveNewMethod}
-                      onCheckedChange={setSaveNewMethod}
+                      onCheckedChange={handleSaveMethodChange}
                     />
                     <Label htmlFor="save-method" className="text-sm text-gray-300">
                       Save this payment method for future purchases

@@ -5,7 +5,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import CheckoutForm from './CheckoutForm';
 import PaymentMethodSelector from './PaymentMethodSelector';
 import ShippingForm from './ShippingForm';
 import OrderSummary from './OrderSummary';
@@ -14,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, CreditCard, Truck, CheckCircle } from 'lucide-react';
 import type { MarketplaceListing } from '@/types/marketplace';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '');
+const stripePromise = loadStripe('pk_test_51OLUiLFOZjNdKx5wH8zRqNGdY8D8GzSQzWGk7x9RGp3QPGC4K8nKGzQ8GzH9F1vT1kA1KGz8N8RzG1QPGC4K8nKGzQ8GzH9F1vT1kA1KGz8N8RzG');
 
 interface CheckoutFlowProps {
   listing: MarketplaceListing;
