@@ -48,7 +48,7 @@ const StripeConnectOnboarding = () => {
           description: 'Complete your onboarding to start receiving payouts',
         });
       }
-      queryClient.invalidateQueries(['creator-profile-stripe']);
+      queryClient.invalidateQueries({ queryKey: ['creator-profile-stripe'] });
     },
     onError: (error: any) => {
       toast({
@@ -66,7 +66,7 @@ const StripeConnectOnboarding = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['creator-profile-stripe']);
+      queryClient.invalidateQueries({ queryKey: ['creator-profile-stripe'] });
       toast({
         title: 'Account Status Updated',
         description: 'Your Stripe account status has been refreshed',

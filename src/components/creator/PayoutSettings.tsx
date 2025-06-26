@@ -38,6 +38,25 @@ const PayoutSettings = () => {
     enabled: !!user,
   });
 
+  // Calculate available balance from creator_earnings
+  const { data: availableBalance } = useQuery({
+    queryKey: ['creator-available-balance', creatorProfile?.id],
+    queryFn: async () => {
+      if (!creatorProfile) return 0;
+      
+      const { data, error } = await supabase
+        .from('creator_earnings')
+        .select('net_amount')
+        .eq('creator_id', creatorProfile.id)
+        .eq('status', 'pending');
+      
+      if (error) throw error;
+      
+      return data?.reduce((sum, earning) => sum + Number(earning.net_amount), 0) || 0;
+    },
+    enabled: !!creatorProfile?.id,
+  });
+
   const updatePayoutSettings = useMutation({
     mutationFn: async (settings: any) => {
       if (!creatorProfile) throw new Error('Creator profile not found');
@@ -59,7 +78,7 @@ const PayoutSettings = () => {
         title: 'Settings Updated',
         description: 'Your payout settings have been saved successfully',
       });
-      queryClient.invalidateQueries(['creator-profile-settings']);
+      queryClient.invalidateQueries({ queryKey: ['creator-profile-settings'] });
     },
     onError: (error: any) => {
       toast({
@@ -228,7 +247,7 @@ const PayoutSettings = () => {
             <div className="flex justify-between items-center">
               <span className="text-gray-300">Available Balance:</span>
               <span className="text-white font-semibold text-lg">
-                ${creatorProfile?.available_balance?.toFixed(2) || '0.00'}
+                ${availableBalance?.toFixed(2) || '0.00'}
               </span>
             </div>
           </div>
@@ -238,7 +257,7 @@ const PayoutSettings = () => {
             disabled={
               requestInstantPayout.isPending || 
               !canReceivePayouts || 
-              (creatorProfile?.available_balance || 0) < 1
+              (availableBalance || 0) < 1
             }
             variant="outline"
             className="w-full"
