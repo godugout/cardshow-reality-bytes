@@ -11,7 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Download, Globe, Shuffle, Star, Zap } from 'lucide-react';
 
 interface SourcedCard {
-  name: string;
+  title: string;
   description: string;
   image_url: string;
   rarity: string;
@@ -32,7 +32,7 @@ const CardSourcingTool = () => {
     'Fantasy Warriors': {
       cards: [
         {
-          name: 'Dragon Knight Commander',
+          title: 'Dragon Knight Commander',
           description: 'A legendary warrior who commands the ancient dragons of the realm.',
           image_url: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96',
           rarity: 'legendary',
@@ -42,7 +42,7 @@ const CardSourcingTool = () => {
           abilities: ['Flying', 'Dragon Bond', 'Leadership']
         },
         {
-          name: 'Mystic Forest Guardian',
+          title: 'Mystic Forest Guardian',
           description: 'Protector of the enchanted woods, wielding nature\'s power.',
           image_url: 'https://images.unsplash.com/photo-1441057206919-63d19fac2369',
           rarity: 'rare',
@@ -52,7 +52,7 @@ const CardSourcingTool = () => {
           abilities: ['Regenerate', 'Forest Walk']
         },
         {
-          name: 'Shadow Assassin',
+          title: 'Shadow Assassin',
           description: 'Swift and deadly, striking from the darkness.',
           image_url: 'https://images.unsplash.com/photo-1485833077593-4278bba3f11f',
           rarity: 'uncommon',
@@ -66,7 +66,7 @@ const CardSourcingTool = () => {
     'Sci-Fi Technology': {
       cards: [
         {
-          name: 'Quantum Processing Core',
+          title: 'Quantum Processing Core',
           description: 'Advanced computing system capable of infinite calculations.',
           image_url: 'https://images.unsplash.com/photo-1518770660439-4636190af475',
           rarity: 'mythic',
@@ -76,7 +76,7 @@ const CardSourcingTool = () => {
           abilities: ['Quantum Computing', 'Reality Shift']
         },
         {
-          name: 'Cybernetic Enhancement',
+          title: 'Cybernetic Enhancement',
           description: 'Biotech upgrade that enhances human capabilities.',
           image_url: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e',
           rarity: 'rare',
@@ -86,7 +86,7 @@ const CardSourcingTool = () => {
           abilities: ['Enhancement', 'Tech Boost']
         },
         {
-          name: 'Neural Interface Pilot',
+          title: 'Neural Interface Pilot',
           description: 'Human pilot enhanced with direct machine interface.',
           image_url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
           rarity: 'epic',
@@ -100,7 +100,7 @@ const CardSourcingTool = () => {
     'Wildlife & Nature': {
       cards: [
         {
-          name: 'Majestic Mountain Eagle',
+          title: 'Majestic Mountain Eagle',
           description: 'Soaring high above the peaks, master of the skies.',
           image_url: 'https://images.unsplash.com/photo-1472396961693-142e6e269027',
           rarity: 'rare',
@@ -110,7 +110,7 @@ const CardSourcingTool = () => {
           abilities: ['Flying', 'Keen Sight']
         },
         {
-          name: 'Forest Pack Alpha',
+          title: 'Forest Pack Alpha',
           description: 'Leader of the wilderness pack, fierce and loyal.',
           image_url: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742',
           rarity: 'uncommon',
@@ -120,7 +120,7 @@ const CardSourcingTool = () => {
           abilities: ['Pack Leader', 'Howl']
         },
         {
-          name: 'Ocean Depths Leviathan',
+          title: 'Ocean Depths Leviathan',
           description: 'Ancient creature from the deepest ocean trenches.',
           image_url: 'https://images.unsplash.com/photo-1518877593221-1f28583780b4',
           rarity: 'legendary',
@@ -134,7 +134,7 @@ const CardSourcingTool = () => {
     'Urban Architecture': {
       cards: [
         {
-          name: 'Skyscraper Fortress',
+          title: 'Skyscraper Fortress',
           description: 'Towering structure that dominates the city skyline.',
           image_url: 'https://images.unsplash.com/photo-1527576539890-dfa815648363',
           rarity: 'rare',
@@ -144,7 +144,7 @@ const CardSourcingTool = () => {
           abilities: ['Fortress', 'Urban Defense']
         },
         {
-          name: 'Glass Cathedral',
+          title: 'Glass Cathedral',
           description: 'Modern architectural marvel of glass and steel.',
           image_url: 'https://images.unsplash.com/photo-1497604401993-f2e922e5cb0a',
           rarity: 'epic',
@@ -154,7 +154,7 @@ const CardSourcingTool = () => {
           abilities: ['Inspire', 'Light Refraction']
         },
         {
-          name: 'Bridge of Connections',
+          title: 'Bridge of Connections',
           description: 'Spanning great distances, connecting worlds.',
           image_url: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716',
           rarity: 'uncommon',
@@ -194,7 +194,7 @@ const CardSourcingTool = () => {
         const { error } = await supabase
           .from('cards')
           .insert({
-            name: cardData.name,
+            title: cardData.title,
             description: cardData.description,
             image_url: cardData.image_url,
             rarity: cardData.rarity,
@@ -210,7 +210,7 @@ const CardSourcingTool = () => {
           });
 
         if (error) {
-          console.error(`Error creating card ${cardData.name}:`, error);
+          console.error(`Error creating card ${cardData.title}:`, error);
         } else {
           createdCount++;
         }
@@ -335,7 +335,7 @@ const CardSourcingTool = () => {
                         <Badge variant="secondary">{data.cards.length} cards</Badge>
                       </div>
                       <p className="text-gray-400 text-sm mb-4">
-                        {data.cards.map(card => card.name).join(', ')}
+                        {data.cards.map(card => card.title).join(', ')}
                       </p>
                       <Button
                         onClick={() => generateCards(theme)}
