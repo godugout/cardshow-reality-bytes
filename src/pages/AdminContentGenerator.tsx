@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import Header from '@/components/Header';
 import CardSourcingTool from '@/components/admin/CardSourcingTool';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Database, Star, Collection, Zap } from 'lucide-react';
+import { Database, Star, BookOpen, Zap } from 'lucide-react';
 
 const AdminContentGenerator = () => {
   return (
@@ -37,7 +37,7 @@ const AdminContentGenerator = () => {
           <Card className="bg-gray-900 border-gray-700">
             <CardHeader className="pb-2">
               <CardTitle className="text-white text-sm flex items-center gap-2">
-                <Collection className="w-4 h-4 text-blue-500" />
+                <BookOpen className="w-4 h-4 text-blue-500" />
                 Collections
               </CardTitle>
             </CardHeader>
