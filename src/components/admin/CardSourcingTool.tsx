@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -194,17 +193,17 @@ const CardSourcingTool = () => {
         const { error } = await supabase
           .from('cards')
           .insert({
-            title: cardData.title,
+            name: cardData.title,
             description: cardData.description,
             image_url: cardData.image_url,
-            rarity: cardData.rarity,
-            card_type: cardData.card_type,
+            rarity: cardData.rarity as any,
+            card_type: cardData.card_type as any,
             power: cardData.power,
             toughness: cardData.toughness,
             abilities: cardData.abilities,
             creator_id: user.id,
             is_public: true,
-            visibility: 'public',
+            visibility: 'public' as any,
             current_market_value: Math.floor(Math.random() * 100) + 10,
             tags: [theme, cardData.card_type, cardData.rarity]
           });
@@ -251,7 +250,7 @@ const CardSourcingTool = () => {
           title: `${theme} Collection`,
           description: `A curated collection of ${theme.toLowerCase()} themed cards.`,
           user_id: userId,
-          visibility: 'public',
+          visibility: 'public' as any,
           is_featured: true
         })
         .select()
