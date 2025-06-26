@@ -5,6 +5,8 @@ import CollectionGrid from '@/components/collections/CollectionGrid';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Collections = () => {
+  console.log('Collections page rendering...');
+  
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
       <Header />

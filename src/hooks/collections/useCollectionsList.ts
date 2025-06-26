@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -20,103 +19,79 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
     queryKey: ['collections', filters, searchTerm],
     queryFn: async () => {
       try {
+        console.log('Fetching collections with user:', user?.id);
+        console.log('Filters:', filters);
+        
+        // Start with a basic query to test if RLS is working
         let query = supabase
           .from('collections')
-          .select('*')
+          .select(`
+            id,
+            title,
+            description,
+            user_id,
+            visibility,
+            cover_image_url,
+            template_id,
+            is_featured,
+            is_group,
+            allow_member_card_sharing,
+            group_code,
+            metadata,
+            created_at,
+            updated_at
+          `)
           .order('updated_at', { ascending: false });
 
-        // Apply filters
+        // Apply filters step by step to identify any issues
         if (filters.visibility?.length) {
+          console.log('Applying visibility filter:', filters.visibility);
           query = query.in('visibility', filters.visibility);
         }
         
         if (filters.user_id) {
+          console.log('Applying user_id filter:', filters.user_id);
           query = query.eq('user_id', filters.user_id);
         }
         
         if (filters.is_featured !== undefined) {
+          console.log('Applying is_featured filter:', filters.is_featured);
           query = query.eq('is_featured', filters.is_featured);
         }
         
         if (searchTerm) {
+          console.log('Applying search term:', searchTerm);
           query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
         }
 
+        console.log('Executing collections query...');
         const { data, error } = await query;
         
-        if (error) throw error;
-
-        // Get owner profiles separately to avoid complex joins
-        let collectionsWithOwners = data || [];
-        
-        if (data && data.length > 0) {
-          const userIds = data.map(c => c.user_id).filter(Boolean);
-          
-          if (userIds.length > 0) {
-            const { data: profiles } = await supabase
-              .from('profiles')
-              .select('id, username, avatar_url')
-              .in('id', userIds);
-
-            const profileMap = new Map(profiles?.map(p => [p.id, p]) || []);
-            
-            collectionsWithOwners = data.map(collection => ({
-              ...collection,
-              owner: collection.user_id ? profileMap.get(collection.user_id) : null
-            }));
-          }
+        if (error) {
+          console.error('Collections query error:', error);
+          throw error;
         }
 
-        // Get collection stats and follower info
-        let collectionsWithExtras = collectionsWithOwners;
-        
-        if (user && collectionsWithOwners.length > 0) {
-          try {
-            // Get following status
-            const { data: following } = await supabase
-              .from('collection_followers')
-              .select('collection_id')
-              .eq('follower_id', user.id);
+        console.log('Collections fetched successfully:', data?.length || 0, 'items');
 
-            const followingIds = new Set(following?.map(f => f.collection_id) || []);
-            
-            // Get card counts
-            const collectionIds = collectionsWithOwners.map(c => c.id);
-            const { data: cardCounts } = await supabase
-              .from('collection_cards')
-              .select('collection_id')
-              .in('collection_id', collectionIds);
-
-            // Count cards per collection
-            const cardCountMap = new Map<string, number>();
-            cardCounts?.forEach(cc => {
-              const currentCount = cardCountMap.get(cc.collection_id) || 0;
-              cardCountMap.set(cc.collection_id, currentCount + 1);
-            });
-            
-            collectionsWithExtras = collectionsWithOwners.map(collection => ({
-              ...collection,
-              is_following: followingIds.has(collection.id),
-              card_count: cardCountMap.get(collection.id) || 0
-            }));
-          } catch (extraError) {
-            console.warn('Failed to fetch collection extras:', extraError);
-            collectionsWithExtras = collectionsWithOwners.map(collection => ({
-              ...collection,
-              is_following: false,
-              card_count: 0
-            }));
-          }
-        } else if (collectionsWithOwners.length > 0) {
-          collectionsWithExtras = collectionsWithOwners.map(collection => ({
-            ...collection,
-            is_following: false,
-            card_count: 0
-          }));
+        if (!data || data.length === 0) {
+          console.log('No collections found, returning empty array');
+          return [];
         }
 
-        return collectionsWithExtras as Collection[];
+        // For now, return basic collections without complex joins to test RLS
+        const basicCollections = data.map(collection => ({
+          ...collection,
+          owner: null, // We'll add this back later once basic query works
+          is_following: false,
+          card_count: 0
+        }));
+
+        console.log('Returning basic collections:', basicCollections.length);
+        return basicCollections as Collection[];
+        
       } catch (error) {
+        console.error('Error in useCollectionsList:', error);
         handleError(error, {
           operation: 'fetch_collections',
           table: 'collections'
@@ -126,15 +101,17 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
     },
     enabled: true,
     retry: (failureCount, error: any) => {
+      console.log('Query retry attempt:', failureCount, 'Error:', error);
       if (error?.code === 'PGRST116') return false;
       return failureCount < 2;
     }
   });
 
-  // Real-time subscription
+  // Real-time subscription - keep it simple for now
   useEffect(() => {
     if (!user) return;
 
+    console.log('Setting up realtime subscription for collections');
     const channel = supabase
       .channel('collections-changes')
       .on(
@@ -144,13 +121,15 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
           schema: 'public',
           table: 'collections'
         },
-        () => {
+        (payload) => {
+          console.log('Realtime collections change:', payload);
           refetch();
         }
       )
       .subscribe();
 
     return () => {
+      console.log('Cleaning up realtime subscription');
       supabase.removeChannel(channel);
     };
   }, [user, refetch]);
