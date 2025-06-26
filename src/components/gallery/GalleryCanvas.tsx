@@ -1,3 +1,4 @@
+
 import { Suspense, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Preload, AdaptiveDpr, AdaptiveEvents, Stats } from '@react-three/drei';
@@ -138,9 +139,9 @@ const GalleryCanvas = ({
   // Check WebGL support
   const webglSupport = detectWebGLSupport();
   
-  // Mobile optimizations - fix camera position type
+  // Mobile optimizations - fix dpr and camera position types
   const canvasProps = useMemo(() => ({
-    dpr: isMobile ? [0.5, 1] : [1, 2],
+    dpr: (isMobile ? [0.5, 1] : [1, 2]) as [number, number],
     performance: { min: isMobile ? 0.3 : 0.2, max: 1 },
     gl: { 
       antialias: !isMobile && !accessibilityMode,
@@ -241,7 +242,7 @@ const GalleryCanvas = ({
             />
           )}
 
-          {/* Camera Controls - remove invalid touchAction prop */}
+          {/* Camera Controls */}
           <OrbitControls
             enablePan={!isMobile}
             enableZoom={true}
