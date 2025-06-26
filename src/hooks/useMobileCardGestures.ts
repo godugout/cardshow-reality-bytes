@@ -19,13 +19,15 @@ export const useMobileCardGestures = ({
 }: UseMobileCardGesturesProps) => {
   const { triggerHapticFeedback } = useMobileOptimization();
   const { a11yState, announce } = useAccessibilityFeatures();
-  const { gestureState, startGestureTracking, updateGestureTracking, stopGestureTracking } = useGestureTracking();
+  const { startGestureTracking, updateGestureTracking, stopGestureTracking, getGestureState } = useGestureTracking();
   
   const longPressTimer = useRef<NodeJS.Timeout>();
+  const gestureStartTime = useRef<number>(0);
 
   const handlePointerDown = useCallback((event: React.PointerEvent) => {
     startGestureTracking(event.nativeEvent);
     triggerHapticFeedback('light');
+    gestureStartTime.current = Date.now();
     
     // Start long press timer
     longPressTimer.current = setTimeout(() => {
@@ -49,7 +51,7 @@ export const useMobileCardGestures = ({
     }
     
     // Handle tap/double tap
-    const timeSinceStart = Date.now() - (gestureState.startPosition.x ? Date.now() : Date.now());
+    const timeSinceStart = Date.now() - gestureStartTime.current;
     
     if (timeSinceStart < 300) {
       // Quick tap
@@ -57,7 +59,7 @@ export const useMobileCardGestures = ({
       onTap?.();
       announce(`Selected ${cardTitle}`, 'polite');
     }
-  }, [stopGestureTracking, gestureState.startPosition.x, triggerHapticFeedback, onTap, cardTitle, announce]);
+  }, [stopGestureTracking, triggerHapticFeedback, onTap, cardTitle, announce]);
 
   const handleDoubleClick = useCallback(() => {
     triggerHapticFeedback('heavy');
@@ -85,6 +87,7 @@ export const useMobileCardGestures = ({
     handlePointerUp,
     handleDoubleClick,
     handleKeyDown,
-    handleFocus
+    handleFocus,
+    getGestureState
   };
 };
