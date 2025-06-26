@@ -22,7 +22,7 @@ export const useUserProfile = (userId?: string) => {
 
       if (error) throw error;
       
-      // Ensure all required fields are present with defaults
+      // Map database columns to UserProfile interface
       return {
         id: data.id,
         username: data.username || '',
@@ -31,13 +31,13 @@ export const useUserProfile = (userId?: string) => {
         avatar_url: data.avatar_url || null,
         bio: data.bio || null,
         location: data.location || null,
-        website_url: data.website_url || null,
-        cover_image_url: data.cover_image_url || null,
+        website_url: data.website_url || null, // Map from website_url column
+        cover_image_url: data.cover_image_url || null, // Map from cover_image_url column
         experience_points: data.experience_points || 0,
         level: data.level || 1,
         total_followers: data.total_followers || 0,
         total_following: data.total_following || 0,
-        subscription_tier: data.subscription_tier || 'free',
+        subscription_tier: data.subscription_tier || 'free', // Map from subscription_tier column
         is_verified: data.is_verified || false,
         is_creator: data.is_creator || false,
         created_at: data.created_at,

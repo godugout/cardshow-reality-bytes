@@ -1,3 +1,4 @@
+
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -89,7 +90,18 @@ export const useNotifications = () => {
         .limit(50);
 
       if (error) throw error;
-      return (data || []) as Notification[];
+      
+      // Map the database response to match our Notification type
+      return (data || []).map(notification => ({
+        id: notification.id,
+        user_id: notification.recipient_id, // Map recipient_id to user_id
+        title: notification.title,
+        message: notification.message,
+        type: notification.type,
+        is_read: notification.is_read,
+        metadata: notification.metadata || {}, // Ensure metadata exists
+        created_at: notification.created_at
+      })) as Notification[];
     },
     enabled: !!user
   });
