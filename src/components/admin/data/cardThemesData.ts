@@ -1,4 +1,3 @@
-
 export interface ThemeCard {
   title: string;
   description: string;
@@ -8,6 +7,7 @@ export interface ThemeCard {
   power: number;
   toughness: number;
   abilities: string[];
+  serial_number?: number; // Make this optional
 }
 
 export interface CardTheme {
