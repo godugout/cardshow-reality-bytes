@@ -1,6 +1,5 @@
-
 import { useState, useEffect, useCallback } from 'react';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Mobile3DSettings {
   maxCards: number;
@@ -39,7 +38,7 @@ const DEFAULT_DESKTOP_SETTINGS: Mobile3DSettings = {
 };
 
 export const useMobile3DOptimization = () => {
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const [settings, setSettings] = useState<Mobile3DSettings>(
     isMobile ? DEFAULT_MOBILE_SETTINGS : DEFAULT_DESKTOP_SETTINGS
   );

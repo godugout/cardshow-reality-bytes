@@ -1,4 +1,3 @@
-
 import { Suspense, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Preload, AdaptiveDpr, AdaptiveEvents, Stats } from '@react-three/drei';
@@ -10,7 +9,7 @@ import { useLODSystem } from '@/hooks/useLODSystem';
 import { useProgressiveGalleryLoading } from '@/hooks/useProgressiveGalleryLoading';
 import { use3DResourceManager } from '@/hooks/use3DResourceManager';
 import { detectWebGLSupport } from '@/utils/webglDetection';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 import type { CardPosition } from '@/utils/galleryLayouts';
 import type { Card } from '@/types/card';
 import type { EnvironmentTheme } from '@/hooks/useGalleryPreferences';
@@ -109,7 +108,7 @@ const GalleryCanvas = ({
   onLayoutChange,
   collectionStats
 }: GalleryCanvasProps) => {
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const { disposeAll } = use3DResourceManager();
   
   // LOD system
@@ -139,7 +138,7 @@ const GalleryCanvas = ({
   // Check WebGL support
   const webglSupport = detectWebGLSupport();
   
-  // Mobile optimizations
+  // Mobile optimizations - fix camera position type
   const canvasProps = useMemo(() => ({
     dpr: isMobile ? [0.5, 1] : [1, 2],
     performance: { min: isMobile ? 0.3 : 0.2, max: 1 },
@@ -151,7 +150,7 @@ const GalleryCanvas = ({
       depth: true
     },
     camera: { 
-      position: [0, 2, isMobile ? 10 : 8], 
+      position: [0, 2, isMobile ? 10 : 8] as [number, number, number], 
       fov: isMobile ? 65 : 60,
       near: 0.1,
       far: isMobile ? 100 : 1000
@@ -242,7 +241,7 @@ const GalleryCanvas = ({
             />
           )}
 
-          {/* Camera Controls */}
+          {/* Camera Controls - remove invalid touchAction prop */}
           <OrbitControls
             enablePan={!isMobile}
             enableZoom={true}
@@ -252,7 +251,6 @@ const GalleryCanvas = ({
             enableDamping={true}
             dampingFactor={isMobile ? 0.1 : 0.05}
             maxPolarAngle={Math.PI / 1.8}
-            touchAction="pan-y"
           />
 
           <Preload all />
