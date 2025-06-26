@@ -128,8 +128,9 @@ export const useTradeOffers = (userId?: string, filters: TradeFilters = {}) => {
         }
       )
       .subscribe((status) => {
-        if (status === 'SUBSCRIPTION_ERROR') {
-          console.error('Failed to subscribe to trade offers changes');
+        // Fix: Use the correct enum value instead of string literal
+        if (status !== 'SUBSCRIBED') {
+          console.error('Failed to subscribe to trade offers changes, status:', status);
         }
       });
 
