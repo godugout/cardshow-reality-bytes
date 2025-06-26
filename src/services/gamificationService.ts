@@ -80,7 +80,7 @@ export const gamificationService = {
         return null;
       }
 
-      return data as XPResult;
+      return data as unknown as XPResult;
     } catch (error) {
       console.error('Error in awardXP:', error);
       return null;
@@ -132,7 +132,13 @@ export const gamificationService = {
         return [];
       }
 
-      return data || [];
+      // Transform the data to match our interface
+      return (data || []).map(item => ({
+        ...item,
+        metadata: typeof item.metadata === 'object' && item.metadata !== null 
+          ? item.metadata as Record<string, any>
+          : {}
+      }));
     } catch (error) {
       console.error('Error in getUserAchievements:', error);
       return [];
@@ -154,7 +160,12 @@ export const gamificationService = {
         return [];
       }
 
-      return data || [];
+      return (data || []).map(item => ({
+        ...item,
+        metadata: typeof item.metadata === 'object' && item.metadata !== null 
+          ? item.metadata as Record<string, any>
+          : {}
+      }));
     } catch (error) {
       console.error('Error in getUserXPHistory:', error);
       return [];
