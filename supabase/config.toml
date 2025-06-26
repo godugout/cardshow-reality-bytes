@@ -1,5 +1,5 @@
 
-project_id = "YOUR_PROJECT_ID"
+project_id = "kwxsnkckyjkmpdzrsyxi"
 
 [api]
 enabled = true
@@ -36,4 +36,13 @@ verify_jwt = true
 verify_jwt = true
 
 [functions.process-creator-payout]
+verify_jwt = true
+
+[functions.check-stripe-account-status]
+verify_jwt = true
+
+[functions.generate-tax-report]
+verify_jwt = true
+
+[functions.request-instant-payout]
 verify_jwt = true

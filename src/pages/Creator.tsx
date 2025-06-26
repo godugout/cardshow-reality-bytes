@@ -11,6 +11,7 @@ import CreatorCommunityDashboard from '@/components/creator-community/CreatorCom
 import { AutomationDashboard } from '@/components/advanced-creator/AutomationDashboard';
 import { DesignAssetsLibrary } from '@/components/advanced-creator/DesignAssetsLibrary';
 import { AdvancedAnalytics } from '@/components/advanced-creator/AdvancedAnalytics';
+import CreatorPayoutDashboard from '@/components/creator/CreatorPayoutDashboard';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function Creator() {
@@ -36,9 +37,10 @@ export default function Creator() {
       <Header />
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-9">
+          <TabsList className="grid w-full grid-cols-10">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="designer">Designer</TabsTrigger>
+            <TabsTrigger value="payouts">Payouts</TabsTrigger>
             <TabsTrigger value="automation">Automation</TabsTrigger>
             <TabsTrigger value="assets">Assets</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
@@ -54,6 +56,10 @@ export default function Creator() {
 
           <TabsContent value="designer">
             <CardDesigner />
+          </TabsContent>
+
+          <TabsContent value="payouts">
+            <CreatorPayoutDashboard />
           </TabsContent>
 
           <TabsContent value="automation">
