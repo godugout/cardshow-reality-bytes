@@ -81,17 +81,25 @@ const PaymentMethodSelector = ({ onPaymentMethodSelected, onBack }: PaymentMetho
 
       if (paymentMethodError) throw paymentMethodError;
 
-      if (saveNewMethod) {
-        // Attach payment method to customer for future use
+      if (saveNewMethod && paymentMethod) {
+        // Create setup intent for saving the payment method
         try {
-          await stripe.confirmSetup()
+          const { data: setupData } = await supabase.functions.invoke('manage-payment-methods', {
+            body: { action: 'create_setup_intent' }
+          });
+
+          if (setupData?.client_secret) {
+            await stripe.confirmSetup(setupData.client_secret, {
+              payment_method: paymentMethod.id
+            });
+          }
         } catch (setupError) {
           console.warn('Could not save payment method:', setupError);
         }
       }
 
       onPaymentMethodSelected(paymentMethod.id, saveNewMethod);
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: 'Payment Method Error',
         description: error.message || 'Could not create payment method',
