@@ -16,11 +16,11 @@ export const useTradeParticipants = (tradeId: string) => {
         .select('*')
         .eq('trade_id', tradeId);
 
-      // Get user profiles separately
+      // Get user profiles from user_profiles table
       const participantsWithUsers = await Promise.all(
         (data || []).map(async (participant) => {
           const { data: userProfile } = await supabase
-            .from('profiles')
+            .from('user_profiles')
             .select('username, avatar_url')
             .eq('id', participant.user_id)
             .single();

@@ -18,11 +18,11 @@ export const useTradeMessages = (tradeId: string) => {
 
       if (error) throw error;
       
-      // Get sender profiles separately
+      // Get sender profiles from user_profiles table
       const messagesWithSenders = await Promise.all(
         (data || []).map(async (message) => {
           const { data: senderProfile } = await supabase
-            .from('profiles')
+            .from('user_profiles')
             .select('username, avatar_url')
             .eq('id', message.sender_id)
             .single();

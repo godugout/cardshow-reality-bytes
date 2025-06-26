@@ -21,11 +21,11 @@ export const useCollection = (collectionId: string) => {
         
         if (collectionError) throw collectionError;
 
-        // Get owner profile separately to avoid complex joins
+        // Get owner profile from user_profiles table
         let owner = null;
         if (collectionData.user_id) {
           const { data: profileData } = await supabase
-            .from('profiles')
+            .from('user_profiles')
             .select('id, username, avatar_url')
             .eq('id', collectionData.user_id)
             .single();
@@ -35,7 +35,7 @@ export const useCollection = (collectionId: string) => {
           }
         }
 
-        // Get collection stats using the new helper functions
+        // Get collection stats using the helper functions
         let stats = null;
         try {
           const { data: statsData } = await supabase
@@ -69,7 +69,7 @@ export const useCollection = (collectionId: string) => {
       }
     },
     enabled: !!collectionId,
-    retry: (failureCount, error: any) => {
+    retry:(failureCount, error: any) => {
       if (error?.code === 'PGRST116') return false;
       return failureCount < 2;
     }

@@ -100,7 +100,7 @@ export const useSearchUsers = (searchTerm: string) => {
 
       const { data, error } = await supabase
         .from('user_profiles')
-        .select('id, username, full_name, avatar_url, is_verified, is_creator')
+        .select('id, username, full_name, avatar_url')
         .or(`username.ilike.%${searchTerm}%,full_name.ilike.%${searchTerm}%`)
         .limit(20);
 

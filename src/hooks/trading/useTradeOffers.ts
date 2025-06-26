@@ -36,7 +36,7 @@ export const useTradeOffers = (userId?: string, filters: TradeFilters = {}) => {
         const { data, error } = await query;
         if (error) throw error;
         
-        // Get profile data separately using maybeSingle to handle missing profiles
+        // Get profile data from user_profiles table instead of profiles
         const tradesWithProfiles = await Promise.all(
           (data || []).map(async (trade) => {
             try {
@@ -128,7 +128,6 @@ export const useTradeOffers = (userId?: string, filters: TradeFilters = {}) => {
         }
       )
       .subscribe((status) => {
-        // Fix: Use the correct enum value instead of string literal
         if (status !== 'SUBSCRIBED') {
           console.error('Failed to subscribe to trade offers changes, status:', status);
         }
