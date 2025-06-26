@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { useAuth } from '@/hooks/useAuth';
@@ -94,7 +93,8 @@ const PaymentMethodSelector = ({ onPaymentMethodSelected, onBack }: PaymentMetho
               elements,
               clientSecret: setupData.client_secret,
               confirmParams: {
-                payment_method: paymentMethod.id
+                payment_method: paymentMethod.id,
+                return_url: `${window.location.origin}/checkout/success`
               }
             });
           }
