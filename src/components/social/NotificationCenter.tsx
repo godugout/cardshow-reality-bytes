@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useNotifications } from '@/hooks/social/useCommunityFeatures';
-import type { NotificationData } from '@/types/social';
+import type { Notification } from '@/types/social';
 
 const NotificationCenter = () => {
   const { notifications, unreadCount, markAsRead, markAllAsRead, isMarkingAsRead } = useNotifications();
@@ -18,7 +18,7 @@ const NotificationCenter = () => {
     switch (type) {
       case 'follow':
         return <Users className="w-4 h-4 text-blue-500" />;
-      case 'reaction':
+      case 'like':
         return <Heart className="w-4 h-4 text-red-500" />;
       case 'card_shared':
         return <Trophy className="w-4 h-4 text-yellow-500" />;
@@ -103,7 +103,7 @@ const NotificationCenter = () => {
 };
 
 interface NotificationItemProps {
-  notification: NotificationData;
+  notification: Notification;
   onMarkAsRead: (id: string) => void;
   getIcon: (type: string) => React.ReactNode;
   formatTime: (timestamp: string) => string;

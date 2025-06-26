@@ -102,7 +102,7 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
     <Card className="p-4 bg-gray-900 border-gray-700 hover:border-gray-600 transition-colors">
       <div className="flex items-start space-x-3">
         <Avatar className="w-10 h-10">
-          <AvatarImage src={activity.avatar_url} />
+          <AvatarImage src={activity.avatar_url || ''} />
           <AvatarFallback>
             {activity.username?.charAt(0).toUpperCase() || 'U'}
           </AvatarFallback>

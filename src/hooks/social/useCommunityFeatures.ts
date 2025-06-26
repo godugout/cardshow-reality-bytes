@@ -1,9 +1,8 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import type { CommunityChallenge, ChallengeParticipation, UserAchievement, NotificationData } from '@/types/social';
+import type { CommunityChallenge, ChallengeParticipation, UserAchievement, Notification } from '@/types/social';
 
 export const useCommunityAchievements = (userId?: string) => {
   const { user } = useAuth();
@@ -90,7 +89,7 @@ export const useNotifications = () => {
         .limit(50);
 
       if (error) throw error;
-      return (data || []) as NotificationData[];
+      return (data || []) as Notification[];
     },
     enabled: !!user
   });

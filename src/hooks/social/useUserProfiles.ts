@@ -21,7 +21,28 @@ export const useUserProfile = (userId?: string) => {
         .single();
 
       if (error) throw error;
-      return data as UserProfile;
+      
+      // Ensure all required fields are present with defaults
+      return {
+        id: data.id,
+        username: data.username || '',
+        email: data.email || '',
+        full_name: data.full_name || null,
+        avatar_url: data.avatar_url || null,
+        bio: data.bio || null,
+        location: data.location || null,
+        website_url: data.website_url || null,
+        cover_image_url: data.cover_image_url || null,
+        experience_points: data.experience_points || 0,
+        level: data.level || 1,
+        total_followers: data.total_followers || 0,
+        total_following: data.total_following || 0,
+        subscription_tier: data.subscription_tier || 'free',
+        is_verified: data.is_verified || false,
+        is_creator: data.is_creator || false,
+        created_at: data.created_at,
+        updated_at: data.updated_at
+      } as UserProfile;
     },
     enabled: !!(userId || user?.id)
   });
