@@ -30,16 +30,19 @@ const isValidOnboardingStep = (step: string): step is OnboardingStep => {
   return validSteps.includes(step as OnboardingStep);
 };
 
+const defaultProgress: OnboardingProgress = {
+  currentStep: 'welcome',
+  completedSteps: [],
+  isOnboardingComplete: false,
+  hasCreatedCard: false,
+  hasPublishedCard: false,
+};
+
 export const useCreatorOnboarding = () => {
   const { user } = useAuth();
-  const [progress, setProgress] = useState<OnboardingProgress>({
-    currentStep: 'welcome',
-    completedSteps: [],
-    isOnboardingComplete: false,
-    hasCreatedCard: false,
-    hasPublishedCard: false,
-  });
+  const [progress, setProgress] = useState<OnboardingProgress>(defaultProgress);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Only fetch cards if user exists - prevent unnecessary queries
   const shouldFetchCards = Boolean(user?.id);
@@ -49,6 +52,7 @@ export const useCreatorOnboarding = () => {
   useEffect(() => {
     if (!user) {
       setIsLoading(false);
+      setProgress(defaultProgress);
       return;
     }
 
@@ -56,14 +60,17 @@ export const useCreatorOnboarding = () => {
     
     const loadProgress = async () => {
       try {
+        setError(null);
         const { data, error } = await supabase
           .from('creator_profiles')
           .select('onboarding_step, onboarding_completed')
           .eq('user_id', user.id)
-          .single();
+          .maybeSingle();
 
         if (error && error.code !== 'PGRST116') { // Not found error is OK
           console.error('useCreatorOnboarding: Error loading progress:', error);
+          setError(error.message);
+          return;
         }
 
         if (data) {
@@ -80,16 +87,21 @@ export const useCreatorOnboarding = () => {
             currentStep: validStep,
             isOnboardingComplete: data.onboarding_completed || false,
           }));
+        } else {
+          // No existing progress, use defaults
+          setProgress(defaultProgress);
         }
       } catch (err) {
         console.error('useCreatorOnboarding: Failed to load progress:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load progress');
+        setProgress(defaultProgress);
       } finally {
         setIsLoading(false);
       }
     };
 
     loadProgress();
-  }, [user?.id]); // Only depend on user ID
+  }, [user?.id]);
 
   // Update progress based on user actions
   useEffect(() => {
@@ -108,18 +120,21 @@ export const useCreatorOnboarding = () => {
   const updateStep = useCallback(async (step: OnboardingStep) => {
     if (!user) {
       console.error('useCreatorOnboarding: No user available for updateStep');
-      return;
+      throw new Error('User not authenticated');
     }
 
     console.log('useCreatorOnboarding: Updating step to:', step);
 
-    setProgress(prev => ({
-      ...prev,
-      currentStep: step,
-      completedSteps: [...new Set([...prev.completedSteps, prev.currentStep])],
-    }));
-
     try {
+      setError(null);
+      
+      // Optimistically update UI first
+      setProgress(prev => ({
+        ...prev,
+        currentStep: step,
+        completedSteps: [...new Set([...prev.completedSteps, prev.currentStep])],
+      }));
+
       const { error } = await supabase
         .from('creator_profiles')
         .upsert({
@@ -130,10 +145,16 @@ export const useCreatorOnboarding = () => {
 
       if (error) {
         console.error('useCreatorOnboarding: Error updating step:', error);
+        // Revert optimistic update on error
+        setProgress(prev => ({
+          ...prev,
+          currentStep: prev.completedSteps[prev.completedSteps.length - 1] || 'welcome',
+        }));
         throw error;
       }
     } catch (err) {
       console.error('useCreatorOnboarding: Failed to save step:', err);
+      setError(err instanceof Error ? err.message : 'Failed to update step');
       throw err;
     }
   }, [user?.id]);
@@ -148,19 +169,16 @@ export const useCreatorOnboarding = () => {
   }, [updateStep]);
 
   const resetOnboarding = useCallback(async () => {
-    if (!user) return;
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
 
     console.log('useCreatorOnboarding: Resetting onboarding');
 
-    setProgress({
-      currentStep: 'welcome',
-      completedSteps: [],
-      isOnboardingComplete: false,
-      hasCreatedCard: false,
-      hasPublishedCard: false,
-    });
-
     try {
+      setError(null);
+      setProgress(defaultProgress);
+
       await supabase
         .from('creator_profiles')
         .upsert({
@@ -170,17 +188,20 @@ export const useCreatorOnboarding = () => {
         }, { onConflict: 'user_id' });
     } catch (err) {
       console.error('useCreatorOnboarding: Failed to reset onboarding:', err);
+      setError(err instanceof Error ? err.message : 'Failed to reset onboarding');
+      throw err;
     }
   }, [user?.id]);
 
   // Memoize the return value to prevent unnecessary re-renders
   const returnValue = useMemo(() => ({
-    progress: isLoading ? null : progress,
+    progress,
     updateStep,
     completeOnboarding,
     resetOnboarding,
     isLoading,
-  }), [progress, updateStep, completeOnboarding, resetOnboarding, isLoading]);
+    error,
+  }), [progress, updateStep, completeOnboarding, resetOnboarding, isLoading, error]);
 
   return returnValue;
 };

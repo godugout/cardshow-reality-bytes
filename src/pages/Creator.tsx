@@ -8,21 +8,22 @@ import { useAuth } from '@/hooks/useAuth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Sparkles, Rocket, Users } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Sparkles, Rocket, Users, AlertCircle } from 'lucide-react';
 
 const Creator = () => {
   const { user } = useAuth();
-  const { progress, isLoading: onboardingLoading } = useCreatorOnboarding();
+  const { progress, isLoading: onboardingLoading, error: onboardingError } = useCreatorOnboarding();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showStudio, setShowStudio] = useState(false);
 
   // Show onboarding for new users or those who haven't completed it
   useEffect(() => {
-    if (user && progress && !progress.isOnboardingComplete && !onboardingLoading) {
+    if (user && progress && !progress.isOnboardingComplete && !onboardingLoading && !onboardingError) {
       console.log('Creator: Showing onboarding for user');
       setShowOnboarding(true);
     }
-  }, [user, progress, onboardingLoading]);
+  }, [user, progress, onboardingLoading, onboardingError]);
 
   const handleOnboardingComplete = () => {
     console.log('Creator: Onboarding completed');
@@ -59,6 +60,28 @@ const Creator = () => {
             {Array.from({ length: 3 }).map((_, i) => (
               <Skeleton key={i} className="h-64 w-full" />
             ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if onboarding failed to load
+  if (onboardingError) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container mx-auto px-4 py-8">
+          <Alert variant="destructive" className="max-w-2xl mx-auto">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              Failed to load creator onboarding: {onboardingError}
+            </AlertDescription>
+          </Alert>
+          <div className="text-center mt-8">
+            <Button onClick={() => window.location.reload()}>
+              Try Again
+            </Button>
           </div>
         </div>
       </div>

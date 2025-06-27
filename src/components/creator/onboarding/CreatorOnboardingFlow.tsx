@@ -1,10 +1,11 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCreatorOnboarding } from '@/hooks/useCreatorOnboarding';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import WelcomeStep from './steps/WelcomeStep';
 import InspirationStep from './steps/InspirationStep';
 import FirstCardStep from './steps/FirstCardStep';
@@ -31,13 +32,13 @@ interface CreatorOnboardingFlowProps {
 }
 
 const CreatorOnboardingFlow = ({ onClose, onComplete }: CreatorOnboardingFlowProps) => {
-  const { progress, updateStep, completeOnboarding } = useCreatorOnboarding();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { progress, updateStep, completeOnboarding, isLoading, error: hookError } = useCreatorOnboarding();
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
 
-  // Safety check for progress data
-  if (!progress) {
-    console.log('CreatorOnboardingFlow: No progress data available');
+  // Show loading state while data is being fetched
+  if (isLoading) {
+    console.log('CreatorOnboardingFlow: Loading onboarding data');
     return (
       <div className="min-h-screen bg-background p-4 flex items-center justify-center">
         <div className="text-center">
@@ -48,15 +49,70 @@ const CreatorOnboardingFlow = ({ onClose, onComplete }: CreatorOnboardingFlowPro
     );
   }
 
+  // Handle hook errors
+  if (hookError) {
+    console.error('CreatorOnboardingFlow: Hook error:', hookError);
+    return (
+      <div className="min-h-screen bg-background p-4 flex items-center justify-center">
+        <Card className="max-w-md border-destructive">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-destructive">
+              <AlertCircle className="w-5 h-5" />
+              Error Loading Onboarding
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">{hookError}</p>
+            <div className="flex gap-2">
+              <Button onClick={() => window.location.reload()} variant="outline" size="sm">
+                Refresh Page
+              </Button>
+              {onClose && (
+                <Button onClick={onClose} variant="default" size="sm">
+                  Go Back
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Safety check for progress data
+  if (!progress) {
+    console.error('CreatorOnboardingFlow: No progress data available');
+    return (
+      <div className="min-h-screen bg-background p-4 flex items-center justify-center">
+        <Card className="max-w-md">
+          <CardContent className="p-6 text-center">
+            <div className="text-lg font-semibold mb-2">Unable to Load Onboarding</div>
+            <div className="text-muted-foreground mb-4">There was an issue setting up your onboarding experience</div>
+            <div className="flex gap-2 justify-center">
+              <Button onClick={() => window.location.reload()} variant="outline" size="sm">
+                Try Again
+              </Button>
+              {onClose && (
+                <Button onClick={onClose} variant="default" size="sm">
+                  Go Back
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   // Find current step index with safety checks
   const currentStepIndex = steps.findIndex(step => step.id === progress.currentStep);
   const actualStepIndex = currentStepIndex >= 0 ? currentStepIndex : 0;
 
   const handleNext = async () => {
-    if (isLoading) return;
+    if (isUpdating) return;
     
-    setIsLoading(true);
-    setError(null);
+    setIsUpdating(true);
+    setLocalError(null);
     
     try {
       console.log('CreatorOnboardingFlow: Moving to next step');
@@ -69,17 +125,17 @@ const CreatorOnboardingFlow = ({ onClose, onComplete }: CreatorOnboardingFlowPro
       }
     } catch (err) {
       console.error('CreatorOnboardingFlow: Error in handleNext:', err);
-      setError('Failed to proceed to next step. Please try again.');
+      setLocalError(err instanceof Error ? err.message : 'Failed to proceed to next step. Please try again.');
     } finally {
-      setIsLoading(false);
+      setIsUpdating(false);
     }
   };
 
   const handlePrev = async () => {
-    if (actualStepIndex === 0 || isLoading) return;
+    if (actualStepIndex === 0 || isUpdating) return;
     
-    setIsLoading(true);
-    setError(null);
+    setIsUpdating(true);
+    setLocalError(null);
     
     try {
       console.log('CreatorOnboardingFlow: Moving to previous step');
@@ -87,9 +143,9 @@ const CreatorOnboardingFlow = ({ onClose, onComplete }: CreatorOnboardingFlowPro
       await updateStep(prevStep.id as any);
     } catch (err) {
       console.error('CreatorOnboardingFlow: Error in handlePrev:', err);
-      setError('Failed to go back. Please try again.');
+      setLocalError(err instanceof Error ? err.message : 'Failed to go back. Please try again.');
     } finally {
-      setIsLoading(false);
+      setIsUpdating(false);
     }
   };
 
@@ -101,11 +157,15 @@ const CreatorOnboardingFlow = ({ onClose, onComplete }: CreatorOnboardingFlowPro
     console.error('CreatorOnboardingFlow: No component found for step:', actualStepIndex);
     return (
       <div className="min-h-screen bg-background p-4 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-lg font-semibold mb-2 text-destructive">Something went wrong</div>
-          <div className="text-muted-foreground mb-4">Unable to load the onboarding step</div>
-          <Button onClick={onClose}>Go Back</Button>
-        </div>
+        <Card className="max-w-md border-destructive">
+          <CardContent className="p-6 text-center">
+            <div className="text-lg font-semibold mb-2 text-destructive">Something went wrong</div>
+            <div className="text-muted-foreground mb-4">Unable to load the onboarding step</div>
+            <Button onClick={onClose || (() => window.location.reload())}>
+              {onClose ? 'Go Back' : 'Refresh Page'}
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -121,12 +181,11 @@ const CreatorOnboardingFlow = ({ onClose, onComplete }: CreatorOnboardingFlowPro
           </p>
         </div>
 
-        {error && (
-          <Card className="mb-4 border-destructive">
-            <CardContent className="p-4">
-              <div className="text-destructive text-sm">{error}</div>
-            </CardContent>
-          </Card>
+        {localError && (
+          <Alert className="mb-4" variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{localError}</AlertDescription>
+          </Alert>
         )}
 
         <Card className="mb-8">
@@ -142,7 +201,7 @@ const CreatorOnboardingFlow = ({ onClose, onComplete }: CreatorOnboardingFlowPro
           <Button
             variant="outline"
             onClick={handlePrev}
-            disabled={actualStepIndex === 0 || isLoading}
+            disabled={actualStepIndex === 0 || isUpdating}
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Previous
@@ -150,15 +209,15 @@ const CreatorOnboardingFlow = ({ onClose, onComplete }: CreatorOnboardingFlowPro
           
           <div className="flex gap-2">
             {onClose && (
-              <Button variant="outline" onClick={onClose} disabled={isLoading}>
+              <Button variant="outline" onClick={onClose} disabled={isUpdating}>
                 Skip Tutorial
               </Button>
             )}
             <Button
               onClick={handleNext}
-              disabled={isLoading}
+              disabled={isUpdating}
             >
-              {isLoading ? 'Processing...' : actualStepIndex === steps.length - 1 ? 'Complete' : 'Next'}
+              {isUpdating ? 'Processing...' : actualStepIndex === steps.length - 1 ? 'Complete' : 'Next'}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
