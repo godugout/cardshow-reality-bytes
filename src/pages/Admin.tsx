@@ -1,6 +1,7 @@
 
 import { useAuth } from '@/hooks/useAuth';
 import { Navigate } from 'react-router-dom';
+import Header from '@/components/Header';
 import AdminDashboard from '@/components/admin/AdminDashboard';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -34,6 +35,7 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
+      <Header />
       <div className="container mx-auto px-4 py-8">
         <AdminDashboard />
       </div>

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import UserMenu from "@/components/UserMenu";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, Shield } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
@@ -22,15 +22,14 @@ const Header = () => {
     { href: "/gallery", label: "Gallery" },
   ];
 
-  // Add admin routes for authenticated users
-  if (user) {
-    navItems.push(
-      { href: "/admin", label: "Admin" },
-      { href: "/admin/content-generator", label: "Content Gen" }
-    );
-  }
+  // Admin routes - only show if user is authenticated
+  const adminItems = [
+    { href: "/admin", label: "Admin", isAdmin: true },
+    { href: "/admin/content-generator", label: "Content Gen", isAdmin: true }
+  ];
 
   const isActive = (path: string) => location.pathname === path;
+  const isAdminPage = location.pathname.startsWith('/admin');
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-800 bg-[#0a0a0a]/95 backdrop-blur supports-[backdrop-filter]:bg-[#0a0a0a]/95">
@@ -39,6 +38,12 @@ const Header = () => {
           <Link to="/" className="flex items-center space-x-2">
             <Sparkles className="h-8 w-8 text-[#00C851]" />
             <span className="text-xl font-bold text-white">Cardshow</span>
+            {isAdminPage && (
+              <div className="flex items-center gap-2 ml-4">
+                <Shield className="h-4 w-4 text-amber-500" />
+                <span className="text-sm text-amber-500 font-medium">Admin</span>
+              </div>
+            )}
           </Link>
 
           {/* Desktop Navigation */}
@@ -50,6 +55,24 @@ const Header = () => {
                   className={isActive(item.href) ? "bg-[#00C851] hover:bg-[#00a844]" : "text-gray-300 hover:text-white"}
                   size="sm"
                 >
+                  {item.label}
+                </Button>
+              </Link>
+            ))}
+            
+            {/* Admin Navigation - only show if user is authenticated */}
+            {user && adminItems.map((item) => (
+              <Link key={item.href} to={item.href}>
+                <Button 
+                  variant={isActive(item.href) ? "default" : "ghost"} 
+                  className={
+                    isActive(item.href) 
+                      ? "bg-amber-600 hover:bg-amber-700" 
+                      : "text-amber-400 hover:text-amber-300 border border-amber-600/30"
+                  }
+                  size="sm"
+                >
+                  <Shield className="w-3 h-3 mr-1" />
                   {item.label}
                 </Button>
               </Link>
@@ -92,6 +115,24 @@ const Header = () => {
                   }`}
                   size="sm"
                 >
+                  {item.label}
+                </Button>
+              </Link>
+            ))}
+            
+            {/* Admin Navigation for Mobile */}
+            {user && adminItems.map((item) => (
+              <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
+                <Button 
+                  variant={isActive(item.href) ? "default" : "ghost"} 
+                  className={`w-full justify-start ${
+                    isActive(item.href) 
+                      ? "bg-amber-600 hover:bg-amber-700" 
+                      : "text-amber-400 hover:text-amber-300 border border-amber-600/30"
+                  }`}
+                  size="sm"
+                >
+                  <Shield className="w-3 h-3 mr-2" />
                   {item.label}
                 </Button>
               </Link>
