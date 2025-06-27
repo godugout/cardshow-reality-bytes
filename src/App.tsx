@@ -13,6 +13,8 @@ import Creator from "./pages/Creator";
 import MobileCards from "./pages/MobileCards";
 import Auth from "./pages/Auth";
 import Marketplace from "./pages/Marketplace";
+import Community from "./pages/Community";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +39,8 @@ function App() {
                   <Route path="/mobile-cards" element={<MobileCards />} />
                   <Route path="/creator" element={<Creator />} />
                   <Route path="/marketplace" element={<Marketplace />} />
+                  <Route path="/community" element={<Community />} />
+                  <Route path="/profile" element={<Profile />} />
                   <Route path="/auth" element={<Auth />} />
                 </Routes>
               </ErrorBoundary>
