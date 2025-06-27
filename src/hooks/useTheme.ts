@@ -21,7 +21,7 @@ export const useTheme = (): UseThemeReturn => {
   // Detect system theme preference
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setSystemTheme(mediaQuery.matches ? 'dart' : 'light');
+    setSystemTheme(mediaQuery.matches ? 'dark' : 'light');
 
     const handleChange = (e: MediaQueryListEvent) => {
       setSystemTheme(e.matches ? 'dark' : 'light');
