@@ -144,11 +144,8 @@ export const useCardCreation = () => {
         image_url: finalImageUrl || null,
         creator_id: user.id,
         template_id: cardData.templateId,
-        design_config: cardData.designConfig,
-        creation_mode: cardData.creationMode,
-        is_draft: !publish,
+        design_metadata: cardData.designConfig,
         is_public: publish,
-        verification_status: 'pending',
         rarity: 'common' as const,
       };
 
@@ -188,7 +185,7 @@ export const useCardCreation = () => {
   const loadTemplate = useCallback(async (templateId: string) => {
     try {
       const { data, error } = await supabase
-        .from('card_creation_templates')
+        .from('card_templates')
         .select('*')
         .eq('id', templateId)
         .single();
@@ -200,7 +197,7 @@ export const useCardCreation = () => {
         templateId: data.id,
         designConfig: {
           ...prev.designConfig,
-          ...data.template_config,
+          ...data.template_data,
         }
       }));
 

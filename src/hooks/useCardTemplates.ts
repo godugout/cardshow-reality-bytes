@@ -7,14 +7,13 @@ export interface CardTemplate {
   name: string;
   description: string | null;
   category: string;
-  preview_image_url: string | null;
-  template_config: any;
+  preview_url: string | null;
+  template_data: any;
   creator_id: string | null;
   is_public: boolean;
   is_premium: boolean;
   usage_count: number;
   created_at: string;
-  updated_at: string;
 }
 
 export const useCardTemplates = (category?: string) => {
@@ -22,7 +21,7 @@ export const useCardTemplates = (category?: string) => {
     queryKey: ['card-templates', category],
     queryFn: async () => {
       let query = supabase
-        .from('card_creation_templates')
+        .from('card_templates')
         .select('*')
         .eq('is_public', true)
         .order('usage_count', { ascending: false });
@@ -43,7 +42,7 @@ export const useTemplateCategories = () => {
     queryKey: ['template-categories'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('card_creation_templates')
+        .from('card_templates')
         .select('category')
         .eq('is_public', true);
 
