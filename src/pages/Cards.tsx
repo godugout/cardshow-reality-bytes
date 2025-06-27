@@ -2,9 +2,19 @@
 import { Suspense } from 'react';
 import Header from '@/components/Header';
 import CardGrid from '@/components/cards/CardGrid';
+import MobileCards from './MobileCards';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Cards = () => {
+  const isMobile = useIsMobile();
+
+  // Show mobile-optimized experience on mobile devices
+  if (isMobile) {
+    return <MobileCards />;
+  }
+
+  // Desktop experience
   return (
     <div className="min-h-screen bg-background">
       <Header />
