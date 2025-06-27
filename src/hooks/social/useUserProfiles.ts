@@ -1,3 +1,4 @@
+
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -30,13 +31,13 @@ export const useUserProfile = (userId?: string) => {
         avatar_url: data.avatar_url || null,
         bio: data.bio || null,
         location: data.location || null,
-        website_url: data.website || null, // Map from 'website' column
-        cover_image_url: null, // Set to null as this column doesn't exist yet
+        website_url: data.website || null,
+        cover_image_url: data.cover_image_url || null, // Now available from migration
         experience_points: data.experience_points || 0,
         level: data.level || 1,
         total_followers: data.total_followers || 0,
         total_following: data.total_following || 0,
-        subscription_tier: 'free', // Set to default as this column doesn't exist yet
+        subscription_tier: data.subscription_tier || 'free', // Now available from migration
         is_verified: data.is_verified || false,
         is_creator: data.is_creator || false,
         created_at: data.created_at,
