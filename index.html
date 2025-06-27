@@ -1,138 +1,17 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#00C851" />
-    <meta name="description" content="Premium digital trading card platform with 3D visualization and marketplace" />
-    
-    <!-- PWA Meta Tags -->
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Cardshow" />
-    
-    <!-- Performance Optimization -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://kwxsnkckyjkmpdzrsyxi.supabase.co" />
-    
-    <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://kwxsnkckyjkmpdzrsyxi.supabase.co wss://kwxsnkckyjkmpdzrsyxi.supabase.co; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self';" />
-    
-    <title>Cardshow - Digital Trading Cards</title>
+    <title>Cardshow - Digital Trading Card Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Service Worker Registration -->
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then((registration) => {
-              console.log('SW registered: ', registration);
-              
-              // Check for updates
-              registration.addEventListener('updatefound', () => {
-                const newWorker = registration.installing;
-                if (newWorker) {
-                  newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                      // New version available
-                      if (confirm('New version available! Reload to update?')) {
-                        window.location.reload();
-                      }
-                    }
-                  });
-                }
-              });
-            })
-            .catch((registrationError) => {
-              console.log('SW registration failed: ', registrationError);
-            });
-        });
-      }
-
-      // PWA Install Prompt
-      let deferredPrompt;
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        
-        // Show install button
-        const installButton = document.createElement('button');
-        installButton.textContent = 'Install App';
-        installButton.style.cssText = `
-          position: fixed;
-          bottom: 20px;
-          right: 20px;
-          background: #00C851;
-          color: white;
-          border: none;
-          padding: 12px 20px;
-          border-radius: 6px;
-          font-weight: 600;
-          cursor: pointer;
-          z-index: 1000;
-          box-shadow: 0 4px 12px rgba(0, 200, 81, 0.3);
-        `;
-        
-        installButton.addEventListener('click', async () => {
-          if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`User response to install prompt: ${outcome}`);
-            deferredPrompt = null;
-            installButton.remove();
-          }
-        });
-        
-        document.body.appendChild(installButton);
-        
-        // Auto-hide after 10 seconds
-        setTimeout(() => {
-          if (installButton.parentNode) {
-            installButton.remove();
-          }
-        }, 10000);
-      });
-
-      // Performance monitoring
-      if ('performance' in window) {
-        window.addEventListener('load', () => {
-          setTimeout(() => {
-            const perfData = performance.getEntriesByType('navigation')[0];
-            const loadTime = perfData.loadEventEnd - perfData.loadEventStart;
-            
-            if (loadTime > 3000) {
-              console.warn('Slow page load detected:', loadTime + 'ms');
-            }
-            
-            // Report Core Web Vitals
-            if ('PerformanceObserver' in window) {
-              const observer = new PerformanceObserver((list) => {
-                list.getEntries().forEach((entry) => {
-                  if (entry.entryType === 'largest-contentful-paint') {
-                    console.log('LCP:', entry.startTime);
-                  }
-                  if (entry.entryType === 'first-input') {
-                    console.log('FID:', entry.processingStart - entry.startTime);
-                  }
-                  if (entry.entryType === 'layout-shift' && !entry.hadRecentInput) {
-                    console.log('CLS:', entry.value);
-                  }
-                });
-              });
-              
-              observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] });
-            }
-          }, 0);
-        });
-      }
-    </script>
   </body>
 </html>

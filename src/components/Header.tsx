@@ -32,28 +32,33 @@ const Header = () => {
   const isAdminPage = location.pathname.startsWith('/admin');
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-800 bg-[#0a0a0a]/95 backdrop-blur supports-[backdrop-filter]:bg-[#0a0a0a]/95">
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center space-x-2">
-            <Sparkles className="h-8 w-8 text-[#00C851]" />
-            <span className="text-xl font-bold text-white">Cardshow</span>
+    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur border-b border-neutral-200 shadow-sm">
+      <div className="container mx-auto px-6">
+        <div className="flex h-20 items-center justify-between">
+          <Link to="/" className="flex items-center space-x-3">
+            <div className="p-2 bg-gradient-to-br from-primary to-primary-600 rounded-2xl">
+              <Sparkles className="h-6 w-6 text-white" />
+            </div>
+            <span className="cdg-headline-4 text-neutral-900">Cardshow</span>
             {isAdminPage && (
-              <div className="flex items-center gap-2 ml-4">
-                <Shield className="h-4 w-4 text-amber-500" />
-                <span className="text-sm text-amber-500 font-medium">Admin</span>
+              <div className="flex items-center gap-2 ml-4 px-3 py-1.5 bg-warning-50 rounded-xl border border-warning-200">
+                <Shield className="h-4 w-4 text-warning-600" />
+                <span className="cdg-caption-bold text-warning-700">Admin</span>
               </div>
             )}
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
+          <nav className="hidden md:flex items-center space-x-2">
             {navItems.map((item) => (
               <Link key={item.href} to={item.href}>
                 <Button 
                   variant={isActive(item.href) ? "default" : "ghost"} 
-                  className={isActive(item.href) ? "bg-[#00C851] hover:bg-[#00a844]" : "text-gray-300 hover:text-white"}
                   size="sm"
+                  className={isActive(item.href) 
+                    ? "bg-primary hover:bg-primary-600 text-white" 
+                    : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"
+                  }
                 >
                   {item.label}
                 </Button>
@@ -64,13 +69,13 @@ const Header = () => {
             {user && adminItems.map((item) => (
               <Link key={item.href} to={item.href}>
                 <Button 
-                  variant={isActive(item.href) ? "default" : "ghost"} 
+                  variant={isActive(item.href) ? "default" : "outline"} 
+                  size="sm"
                   className={
                     isActive(item.href) 
-                      ? "bg-amber-600 hover:bg-amber-700" 
-                      : "text-amber-400 hover:text-amber-300 border border-amber-600/30"
+                      ? "bg-warning-500 hover:bg-warning-600 text-white border-warning-500" 
+                      : "text-warning-600 hover:text-warning-700 border-warning-300 hover:bg-warning-50"
                   }
-                  size="sm"
                 >
                   <Shield className="w-3 h-3 mr-1" />
                   {item.label}
@@ -85,7 +90,7 @@ const Header = () => {
               <UserMenu />
             ) : (
               <Link to="/auth">
-                <Button className="bg-[#00C851] hover:bg-[#00a844] text-white">
+                <Button>
                   Sign In
                 </Button>
               </Link>
@@ -95,7 +100,7 @@ const Header = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="md:hidden text-gray-300"
+              className="md:hidden text-neutral-600"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -105,13 +110,15 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 space-y-2">
+          <nav className="md:hidden py-6 space-y-2 border-t border-neutral-200 bg-white">
             {navItems.map((item) => (
               <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
                 <Button 
                   variant={isActive(item.href) ? "default" : "ghost"} 
                   className={`w-full justify-start ${
-                    isActive(item.href) ? "bg-[#00C851] hover:bg-[#00a844]" : "text-gray-300 hover:text-white"
+                    isActive(item.href) 
+                      ? "bg-primary hover:bg-primary-600 text-white" 
+                      : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"
                   }`}
                   size="sm"
                 >
@@ -124,11 +131,11 @@ const Header = () => {
             {user && adminItems.map((item) => (
               <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
                 <Button 
-                  variant={isActive(item.href) ? "default" : "ghost"} 
+                  variant={isActive(item.href) ? "default" : "outline"} 
                   className={`w-full justify-start ${
                     isActive(item.href) 
-                      ? "bg-amber-600 hover:bg-amber-700" 
-                      : "text-amber-400 hover:text-amber-300 border border-amber-600/30"
+                      ? "bg-warning-500 hover:bg-warning-600 text-white border-warning-500" 
+                      : "text-warning-600 hover:text-warning-700 border-warning-300 hover:bg-warning-50"
                   }`}
                   size="sm"
                 >

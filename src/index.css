@@ -1,94 +1,89 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+/* Cardshow Design Guidelines (CDG) - Global Styles */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 250 250 252; /* #FAFAFC - CDG Light Background */
+    --foreground: 35 38 47; /* #23262F - CDG Dark Text */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 255 255 255; /* White cards */
+    --card-foreground: 35 38 47;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 255 255 255;
+    --popover-foreground: 35 38 47;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 255 92 2; /* #ff5c02 - CDG Primary Orange */
+    --primary-foreground: 255 255 255;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 77 0 255; /* #4d00ff - CDG Secondary Purple */
+    --secondary-foreground: 255 255 255;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 232 232 232; /* #e8e8e8 - CDG Neutral 100 */
+    --muted-foreground: 96 96 96; /* #606060 - CDG Neutral 700 */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 232 232 232;
+    --accent-foreground: 35 38 47;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 251 55 72; /* #fb3748 - CDG Red */
+    --destructive-foreground: 255 255 255;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 210 210 210; /* #d2d2d2 - CDG Neutral 200 */
+    --input: 210 210 210;
+    --ring: 255 92 2; /* Primary orange for focus rings */
 
-    --radius: 0.5rem;
+    --radius: 24px; /* CDG uses 24px border radius */
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 255 255 255;
+    --sidebar-foreground: 35 38 47;
+    --sidebar-primary: 255 92 2;
+    --sidebar-primary-foreground: 255 255 255;
+    --sidebar-accent: 232 232 232;
+    --sidebar-accent-foreground: 35 38 47;
+    --sidebar-border: 210 210 210;
+    --sidebar-ring: 255 92 2;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 26 26 26; /* #1a1a1a - Dark mode background */
+    --foreground: 255 255 255;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 51 51 51; /* #333333 - CDG Neutral 900 */
+    --card-foreground: 255 255 255;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 51 51 51;
+    --popover-foreground: 255 255 255;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 255 92 2; /* Keep primary orange in dark mode */
+    --primary-foreground: 255 255 255;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 77 0 255; /* Keep secondary purple in dark mode */
+    --secondary-foreground: 255 255 255;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 74 74 74; /* #4a4a4a - CDG Neutral 800 */
+    --muted-foreground: 164 164 164; /* #a4a4a4 - CDG Neutral 400 */
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 74 74 74;
+    --accent-foreground: 255 255 255;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 251 55 72;
+    --destructive-foreground: 255 255 255;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 74 74 74;
+    --input: 74 74 74;
+    --ring: 255 92 2;
+
+    --sidebar-background: 51 51 51;
+    --sidebar-foreground: 255 255 255;
+    --sidebar-primary: 255 92 2;
+    --sidebar-primary-foreground: 255 255 255;
+    --sidebar-accent: 74 74 74;
+    --sidebar-accent-foreground: 255 255 255;
+    --sidebar-border: 74 74 74;
+    --sidebar-ring: 255 92 2;
   }
 }
 
@@ -98,6 +93,123 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-poppins;
+  }
+
+  /* CDG Typography Classes */
+  .cdg-hero {
+    @apply font-raleway text-hero text-neutral-900;
+  }
+
+  .cdg-headline-1 {
+    @apply font-raleway text-headline-1 text-neutral-900;
+  }
+
+  .cdg-headline-2 {
+    @apply font-raleway text-headline-2 text-neutral-900;
+  }
+
+  .cdg-headline-3 {
+    @apply font-raleway text-headline-3 text-neutral-900;
+  }
+
+  .cdg-headline-4 {
+    @apply font-raleway text-headline-4 text-neutral-900;
+  }
+
+  .cdg-body-1 {
+    @apply font-raleway text-body-1 text-neutral-900;
+  }
+
+  .cdg-body-1-bold {
+    @apply font-raleway text-body-1-bold text-neutral-900;
+  }
+
+  .cdg-body-2 {
+    @apply font-poppins text-body-2 text-neutral-900;
+  }
+
+  .cdg-body-2-bold {
+    @apply font-raleway text-body-2-bold text-neutral-900;
+  }
+
+  .cdg-caption {
+    @apply font-poppins text-caption text-neutral-900;
+  }
+
+  .cdg-caption-bold {
+    @apply font-poppins text-caption-bold text-neutral-900;
+  }
+
+  .cdg-caption-2 {
+    @apply font-poppins text-caption-2 text-neutral-900;
+  }
+
+  .cdg-caption-2-bold {
+    @apply font-poppins text-caption-2-bold text-neutral-900;
+  }
+
+  .cdg-hairline-1 {
+    @apply font-poppins text-hairline-1 text-neutral-900;
+  }
+
+  .cdg-hairline-2 {
+    @apply font-raleway text-hairline-2 text-neutral-900;
+  }
+
+  .cdg-button-1 {
+    @apply font-raleway text-button-1 text-neutral-900;
+  }
+
+  .cdg-button-2 {
+    @apply font-raleway text-button-2 text-neutral-900;
+  }
+
+  /* CDG Card Styles */
+  .cdg-card {
+    @apply bg-white rounded-3xl shadow-sm border border-neutral-200 p-6;
+  }
+
+  .cdg-card-elevated {
+    @apply bg-white rounded-3xl shadow-lg border border-neutral-200 p-6;
+  }
+
+  /* CDG Button Variants */
+  .cdg-button-primary {
+    @apply bg-primary hover:bg-primary-600 text-white rounded-2xl px-6 py-3 transition-colors;
+  }
+
+  .cdg-button-secondary {
+    @apply bg-secondary hover:bg-secondary-600 text-white rounded-2xl px-6 py-3 transition-colors;
+  }
+
+  .cdg-button-outline {
+    @apply border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-2xl px-6 py-3 transition-colors;
+  }
+
+  /* Dark mode adjustments */
+  .dark .cdg-hero,
+  .dark .cdg-headline-1,
+  .dark .cdg-headline-2,
+  .dark .cdg-headline-3,
+  .dark .cdg-headline-4,
+  .dark .cdg-body-1,
+  .dark .cdg-body-1-bold,
+  .dark .cdg-body-2,
+  .dark .cdg-body-2-bold,
+  .dark .cdg-caption,
+  .dark .cdg-caption-bold,
+  .dark .cdg-caption-2,
+  .dark .cdg-caption-2-bold,
+  .dark .cdg-hairline-1,
+  .dark .cdg-hairline-2,
+  .dark .cdg-button-1,
+  .dark .cdg-button-2 {
+    @apply text-white;
+  }
+
+  .dark .cdg-card,
+  .dark .cdg-card-elevated {
+    @apply bg-neutral-900 border-neutral-700;
   }
 }
