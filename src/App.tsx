@@ -35,6 +35,7 @@ function App() {
                   <Route path="/cards" element={<Cards />} />
                   <Route path="/mobile-cards" element={<MobileCards />} />
                   <Route path="/creator" element={<Creator />} />
+                  <Route path="/marketplace" element={<Marketplace />} />
                   <Route path="/auth" element={<Auth />} />
                 </Routes>
               </ErrorBoundary>

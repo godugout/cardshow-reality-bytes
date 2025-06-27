@@ -1,0 +1,153 @@
+
+import { useState, useMemo } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Search, Filter, SlidersHorizontal, X } from 'lucide-react';
+import { useMarketplaceListings } from '@/hooks/useMarketplace';
+import MarketplaceCard from '../MarketplaceCard';
+import DiscoveryFilters from './DiscoveryFilters';
+import type { ListingFilters } from '@/types/marketplace';
+
+const DiscoverySection = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('newest');
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState<ListingFilters>({});
+  
+  const appliedFilters = useMemo(() => {
+    const applied = [];
+    if (filters.min_price) applied.push(`Min: $${filters.min_price}`);
+    if (filters.max_price) applied.push(`Max: $${filters.max_price}`);
+    if (filters.rarity) applied.push(`${filters.rarity} Rarity`);
+    if (filters.condition?.length) applied.push(`${filters.condition.join(', ')} Condition`);
+    return applied;
+  }, [filters]);
+
+  const searchFilters = useMemo(() => ({
+    ...filters,
+    search: searchTerm || undefined
+  }), [filters, searchTerm]);
+
+  const { listings, isLoading } = useMarketplaceListings(searchFilters);
+
+  const handleFiltersChange = (newFilters: Partial<ListingFilters>) => {
+    setFilters(prev => ({ ...prev, ...newFilters }));
+  };
+
+  const clearFilters = () => {
+    setFilters({});
+    setSearchTerm('');
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Search and Controls */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Input
+            placeholder="Search cards, collections, or creators..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        
+        <div className="flex gap-2">
+          <Select value={sortBy} onValueChange={setSortBy}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="newest">Newest First</SelectItem>
+              <SelectItem value="price_low">Price: Low to High</SelectItem>
+              <SelectItem value="price_high">Price: High to Low</SelectItem>
+              <SelectItem value="popular">Most Popular</SelectItem>
+              <SelectItem value="ending_soon">Ending Soon</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Button
+            variant="outline"
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-2"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            Filters
+          </Button>
+        </div>
+      </div>
+
+      {/* Applied Filters */}
+      {appliedFilters.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm text-muted-foreground">Filters:</span>
+          {appliedFilters.map((filter, index) => (
+            <Badge key={index} variant="secondary" className="flex items-center gap-1">
+              {filter}
+              <X className="w-3 h-3 cursor-pointer" onClick={clearFilters} />
+            </Badge>
+          ))}
+          <Button variant="ghost" size="sm" onClick={clearFilters}>
+            Clear all
+          </Button>
+        </div>
+      )}
+
+      {/* Advanced Filters Panel */}
+      {showFilters && (
+        <DiscoveryFilters
+          filters={filters}
+          onFiltersChange={handleFiltersChange}
+          onClose={() => setShowFilters(false)}
+        />
+      )}
+
+      {/* Results */}
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <p className="text-muted-foreground">
+            {isLoading ? 'Loading...' : `${listings.length} cards found`}
+          </p>
+        </div>
+
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="bg-card rounded-lg h-96 animate-pulse border" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {listings.map((listing) => (
+              <MarketplaceCard key={listing.id} listing={listing} />
+            ))}
+          </div>
+        )}
+
+        {!isLoading && listings.length === 0 && (
+          <div className="text-center py-12">
+            <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-lg flex items-center justify-center">
+              <Search className="w-8 h-8 text-muted-foreground" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2">No cards found</h3>
+            <p className="text-muted-foreground mb-4">
+              {searchTerm || Object.keys(filters).length > 0
+                ? 'Try adjusting your search or filters'
+                : 'No cards are currently available'}
+            </p>
+            {(searchTerm || Object.keys(filters).length > 0) && (
+              <Button variant="outline" onClick={clearFilters}>
+                Clear search and filters
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default DiscoverySection;
