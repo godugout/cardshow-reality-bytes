@@ -8,6 +8,7 @@ import type { TradeOffer, TradeFilters } from '@/types/trading';
 export const useTradeOffers = (userId?: string, filters: TradeFilters = {}) => {
   const { handleError } = useSupabaseErrorHandler();
   const channelRef = useRef<any>(null);
+  const isSubscribedRef = useRef(false);
   
   const { data: offers = [], isLoading, error, refetch } = useQuery({
     queryKey: ['trade-offers', userId, filters],
@@ -104,16 +105,26 @@ export const useTradeOffers = (userId?: string, filters: TradeFilters = {}) => {
   useEffect(() => {
     if (!userId) return;
 
-    // Clean up existing channel first
+    // Clean up existing channel and subscription state first
     if (channelRef.current) {
-      supabase.removeChannel(channelRef.current);
+      try {
+        supabase.removeChannel(channelRef.current);
+      } catch (error) {
+        console.warn('Error removing channel:', error);
+      }
       channelRef.current = null;
+      isSubscribedRef.current = false;
     }
 
     // Create new channel with unique name
-    const channelName = `trade-offers-${userId}-${Date.now()}`;
-    channelRef.current = supabase
-      .channel(channelName)
+    const channelName = `trade-offers-user-${userId}-${Date.now()}-${Math.random()}`;
+    const channel = supabase.channel(channelName);
+    
+    // Store channel reference before subscription
+    channelRef.current = channel;
+
+    // Set up the subscription
+    channel
       .on(
         'postgres_changes',
         {
@@ -128,16 +139,26 @@ export const useTradeOffers = (userId?: string, filters: TradeFilters = {}) => {
         }
       )
       .subscribe((status) => {
-        if (status !== 'SUBSCRIBED') {
-          console.error('Failed to subscribe to trade offers changes, status:', status);
+        console.log('Trade offers subscription status:', status);
+        if (status === 'SUBSCRIBED') {
+          isSubscribedRef.current = true;
+        } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
+          isSubscribedRef.current = false;
+          console.error('Trade offers subscription failed, status:', status);
         }
       });
 
+    // Cleanup function
     return () => {
-      if (channelRef.current) {
-        supabase.removeChannel(channelRef.current);
-        channelRef.current = null;
+      if (channelRef.current && isSubscribedRef.current) {
+        try {
+          supabase.removeChannel(channelRef.current);
+        } catch (error) {
+          console.warn('Error during cleanup:', error);
+        }
       }
+      channelRef.current = null;
+      isSubscribedRef.current = false;
     };
   }, [userId, refetch]);
 

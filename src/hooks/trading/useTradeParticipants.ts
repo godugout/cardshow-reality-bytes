@@ -6,6 +6,7 @@ import type { TradeParticipant } from '@/types/trading';
 export const useTradeParticipants = (tradeId: string) => {
   const [participants, setParticipants] = useState<TradeParticipant[]>([]);
   const channelRef = useRef<any>(null);
+  const isSubscribedRef = useRef(false);
 
   useEffect(() => {
     if (!tradeId) return;
@@ -39,14 +40,22 @@ export const useTradeParticipants = (tradeId: string) => {
 
     // Clean up existing channel first
     if (channelRef.current) {
-      supabase.removeChannel(channelRef.current);
+      try {
+        supabase.removeChannel(channelRef.current);
+      } catch (error) {
+        console.warn('Error removing channel:', error);
+      }
       channelRef.current = null;
+      isSubscribedRef.current = false;
     }
 
     // Real-time subscription for presence - fixed to prevent multiple subscriptions
-    const channelName = `trade-participants-${tradeId}-${Date.now()}`;
-    channelRef.current = supabase
-      .channel(channelName)
+    const channelName = `trade-participants-${tradeId}-${Date.now()}-${Math.random()}`;
+    const channel = supabase.channel(channelName);
+    
+    channelRef.current = channel;
+
+    channel
       .on(
         'postgres_changes',
         {
@@ -59,13 +68,24 @@ export const useTradeParticipants = (tradeId: string) => {
           fetchParticipants();
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          isSubscribedRef.current = true;
+        } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
+          isSubscribedRef.current = false;
+        }
+      });
 
     return () => {
-      if (channelRef.current) {
-        supabase.removeChannel(channelRef.current);
-        channelRef.current = null;
+      if (channelRef.current && isSubscribedRef.current) {
+        try {
+          supabase.removeChannel(channelRef.current);
+        } catch (error) {
+          console.warn('Error during cleanup:', error);
+        }
       }
+      channelRef.current = null;
+      isSubscribedRef.current = false;
     };
   }, [tradeId]);
 
