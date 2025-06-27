@@ -13,7 +13,7 @@ const Index = () => {
   const [showDebugPanel, setShowDebugPanel] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-primary">
       <Header />
       <HeroSection />
       <FeaturesSection />
@@ -25,8 +25,7 @@ const Index = () => {
         <>
           <Button
             onClick={() => setShowDebugPanel(!showDebugPanel)}
-            className="fixed bottom-4 right-4 z-50"
-            variant="outline"
+            className="fixed bottom-4 right-4 z-50 btn btn--secondary"
             size="sm"
           >
             <Bug className="w-4 h-4 mr-2" />
@@ -34,12 +33,11 @@ const Index = () => {
           </Button>
           
           {showDebugPanel && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="fixed inset-0 bg-overlay flex items-center justify-center z-50 p-4">
               <div className="relative max-w-6xl w-full max-h-[90vh] overflow-auto">
                 <Button
                   onClick={() => setShowDebugPanel(false)}
-                  className="absolute top-4 right-4 z-10"
-                  variant="outline"
+                  className="absolute top-4 right-4 z-10 btn btn--outline"
                   size="sm"
                 >
                   Close

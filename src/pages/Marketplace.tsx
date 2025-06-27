@@ -4,12 +4,12 @@ import MarketplaceGrid from '@/components/marketplace/MarketplaceGrid';
 
 const Marketplace = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-primary">
       <Header />
-      <main id="main-content" className="cdg-container py-8">
+      <main id="main-content" className="container section">
         <div className="mb-8">
-          <h1 className="cdg-headline-1 mb-4">Marketplace</h1>
-          <p className="cdg-body-1 text-muted-foreground">
+          <h1 className="text-4xl font-bold text-primary mb-4">Marketplace</h1>
+          <p className="text-lg text-secondary">
             Discover and trade premium digital cards from verified creators
           </p>
         </div>

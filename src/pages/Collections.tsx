@@ -6,19 +6,19 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const Collections = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-primary">
       <Header />
-      <main id="main-content" className="cdg-container py-8">
+      <main id="main-content" className="container section">
         <div className="mb-8">
-          <h1 className="cdg-headline-1 mb-4">Collections</h1>
-          <p className="cdg-body-1 text-muted-foreground">
+          <h1 className="text-4xl font-bold text-primary mb-4">Collections</h1>
+          <p className="text-lg text-secondary">
             Discover and explore amazing card collections from creators around the world
           </p>
         </div>
         
         <Suspense fallback={
           <div className="space-y-6" aria-label="Loading collections">
-            <div className="cdg-grid cdg-grid-cols-4">
+            <div className="grid grid--4">
               {Array.from({ length: 8 }).map((_, i) => (
                 <Skeleton key={i} className="h-64 w-full" />
               ))}
