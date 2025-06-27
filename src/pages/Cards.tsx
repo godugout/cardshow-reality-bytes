@@ -5,38 +5,47 @@ import CardGrid from '@/components/cards/CardGrid';
 import MobileCards from './MobileCards';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useIsMobile } from '@/hooks/use-mobile';
+import PageErrorBoundary from '@/components/error-boundaries/PageErrorBoundary';
 
 const Cards = () => {
   const isMobile = useIsMobile();
 
   // Show mobile-optimized experience on mobile devices
   if (isMobile) {
-    return <MobileCards />;
+    return (
+      <PageErrorBoundary pageName="Mobile Cards">
+        <MobileCards />
+      </PageErrorBoundary>
+    );
   }
 
   // Desktop experience
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2 font-display">Trading Cards</h1>
-          <p className="text-muted-foreground">
-            Discover, collect, and trade digital cards from creators around the world
-          </p>
-        </div>
-
-        <Suspense fallback={
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton key={i} className="h-80 w-full" />
-            ))}
+    <PageErrorBoundary pageName="Cards">
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-foreground mb-2 font-display">Trading Cards</h1>
+            <p className="text-muted-foreground">
+              Discover, collect, and trade digital cards from creators around the world
+            </p>
           </div>
-        }>
-          <CardGrid />
-        </Suspense>
+
+          <PageErrorBoundary pageName="Card Grid">
+            <Suspense fallback={
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <Skeleton key={i} className="h-80 w-full" />
+                ))}
+              </div>
+            }>
+              <CardGrid />
+            </Suspense>
+          </PageErrorBoundary>
+        </div>
       </div>
-    </div>
+    </PageErrorBoundary>
   );
 };
 

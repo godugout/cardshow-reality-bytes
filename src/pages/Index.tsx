@@ -4,18 +4,27 @@ import HeroSection from '@/components/HeroSection';
 import FeaturesSection from '@/components/FeaturesSection';
 import StatsSection from '@/components/StatsSection';
 import Footer from '@/components/Footer';
+import PageErrorBoundary from '@/components/error-boundaries/PageErrorBoundary';
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main id="main-content">
-        <HeroSection />
-        <FeaturesSection />
-        <StatsSection />
-      </main>
-      <Footer />
-    </div>
+    <PageErrorBoundary pageName="Home">
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main id="main-content">
+          <PageErrorBoundary pageName="Hero Section">
+            <HeroSection />
+          </PageErrorBoundary>
+          <PageErrorBoundary pageName="Features Section">
+            <FeaturesSection />
+          </PageErrorBoundary>
+          <PageErrorBoundary pageName="Stats Section">
+            <StatsSection />
+          </PageErrorBoundary>
+        </main>
+        <Footer />
+      </div>
+    </PageErrorBoundary>
   );
 };
 
