@@ -1,7 +1,7 @@
 
 import { useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { Upload, X } from 'lucide-react';
+import { Upload, X, Image } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ImageUploadProps {
@@ -53,46 +53,82 @@ export const ImageUpload = ({
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file && file.type.startsWith('image/')) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast({
+          title: "File too large",
+          description: "Please select an image under 10MB",
+          variant: "destructive",
+        });
+        return;
+      }
       onImageSelect(file);
     }
-  }, [onImageSelect]);
+  }, [onImageSelect, toast]);
 
   const handleDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   }, []);
 
+  const progressBarStyle = {
+    width: `${uploadProgress}%`,
+    transition: 'width 0.3s ease-in-out'
+  };
+
   return (
     <div className="space-y-4">
       {currentImage ? (
-        <div className="relative">
+        <div className="relative group">
           <img
             src={currentImage}
             alt="Card preview"
-            className="w-full h-40 object-cover rounded-lg border border-gray-600"
+            className="w-full h-40 object-cover rounded-lg border border-[hsl(var(--color-border-secondary))]"
           />
-          <Button
-            onClick={onImageRemove}
-            variant="destructive"
-            size="sm"
-            className="absolute top-2 right-2"
-          >
-            <X className="h-4 w-4" />
-          </Button>
+          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-200 rounded-lg flex items-center justify-center">
+            <Button
+              onClick={onImageRemove}
+              variant="destructive"
+              size="sm"
+              className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       ) : (
         <div
-          className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center hover:border-gray-500 transition-colors cursor-pointer"
+          className="border-2 border-dashed border-[hsl(var(--color-border-secondary))] rounded-lg p-8 text-center hover:border-[hsl(var(--color-border-focus))] transition-colors cursor-pointer"
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onClick={() => fileInputRef.current?.click()}
         >
-          <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-          <p className="text-gray-400 mb-2">
-            {isUploading ? `Uploading... ${uploadProgress}%` : 'Drop image here or click to upload'}
-          </p>
-          <p className="text-sm text-gray-500">
-            Supports JPG, PNG, WebP up to 10MB
-          </p>
+          <div className="flex flex-col items-center gap-3">
+            {isUploading ? (
+              <>
+                <Upload className="w-8 h-8 text-[hsl(var(--color-primary))] animate-bounce" />
+                <p className="text-[hsl(var(--color-text-primary))] font-medium">
+                  Uploading... {uploadProgress}%
+                </p>
+                <div className="w-full max-w-xs bg-[hsl(var(--color-bg-tertiary))] rounded-full h-2">
+                  <div 
+                    className="bg-[hsl(var(--color-primary))] h-2 rounded-full"
+                    style={progressBarStyle}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <Image className="w-8 h-8 text-[hsl(var(--color-text-tertiary))]" />
+                <div>
+                  <p className="text-[hsl(var(--color-text-secondary))] mb-1">
+                    Drop image here or click to upload
+                  </p>
+                  <p className="text-sm text-[hsl(var(--color-text-tertiary))]">
+                    Supports JPG, PNG, WebP up to 10MB
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       )}
 
@@ -104,15 +140,14 @@ export const ImageUpload = ({
         className="hidden"
       />
 
-      {!currentImage && (
+      {!currentImage && !isUploading && (
         <Button
           onClick={() => fileInputRef.current?.click()}
           variant="outline"
-          className="w-full"
-          disabled={isUploading}
+          className="w-full border-[hsl(var(--color-border-secondary))] text-[hsl(var(--color-text-secondary))] hover:bg-[hsl(var(--color-bg-tertiary))]"
         >
           <Upload className="mr-2 h-4 w-4" />
-          {isUploading ? `Uploading... ${uploadProgress}%` : 'Choose Image'}
+          Choose Image
         </Button>
       )}
     </div>

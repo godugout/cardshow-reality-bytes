@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { useCardTemplates, useTemplateCategories } from '@/hooks/useCardTemplates';
-import { Check } from 'lucide-react';
+import { Check, Sparkles } from 'lucide-react';
 
 interface TemplateSelectorProps {
   selectedTemplateId?: string | null;
@@ -19,9 +19,9 @@ export const TemplateSelector = ({ selectedTemplateId, onTemplateSelect }: Templ
 
   if (categoriesLoading || templatesLoading) {
     return (
-      <Card className="bg-gray-900/50 border-gray-800">
+      <Card className="bg-[hsl(var(--color-bg-secondary))] border-[hsl(var(--color-border-primary))]">
         <CardHeader>
-          <CardTitle className="text-white">Choose Template</CardTitle>
+          <CardTitle className="text-[hsl(var(--color-text-primary))]">Choose Template</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex gap-2 flex-wrap">
@@ -40,9 +40,12 @@ export const TemplateSelector = ({ selectedTemplateId, onTemplateSelect }: Templ
   }
 
   return (
-    <Card className="bg-gray-900/50 border-gray-800">
+    <Card className="bg-[hsl(var(--color-bg-secondary))] border-[hsl(var(--color-border-primary))]">
       <CardHeader>
-        <CardTitle className="text-white">Choose Template</CardTitle>
+        <CardTitle className="text-[hsl(var(--color-text-primary))] flex items-center gap-2">
+          <Sparkles className="w-5 h-5" />
+          Choose Template
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Category filters */}
@@ -51,7 +54,10 @@ export const TemplateSelector = ({ selectedTemplateId, onTemplateSelect }: Templ
             variant={selectedCategory === 'all' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setSelectedCategory('all')}
-            className={selectedCategory === 'all' ? 'bg-[#00C851] hover:bg-[#00A543]' : ''}
+            className={selectedCategory === 'all' 
+              ? 'bg-[hsl(var(--color-primary))] hover:bg-[hsl(var(--color-primary-700))] text-[hsl(var(--color-primary-contrast))]' 
+              : 'border-[hsl(var(--color-border-secondary))] text-[hsl(var(--color-text-secondary))] hover:bg-[hsl(var(--color-bg-tertiary))]'
+            }
           >
             All
           </Button>
@@ -61,7 +67,10 @@ export const TemplateSelector = ({ selectedTemplateId, onTemplateSelect }: Templ
               variant={selectedCategory === category ? 'default' : 'outline'}
               size="sm"
               onClick={() => setSelectedCategory(category)}
-              className={selectedCategory === category ? 'bg-[#00C851] hover:bg-[#00A543]' : ''}
+              className={selectedCategory === category 
+                ? 'bg-[hsl(var(--color-primary))] hover:bg-[hsl(var(--color-primary-700))] text-[hsl(var(--color-primary-contrast))]' 
+                : 'border-[hsl(var(--color-border-secondary))] text-[hsl(var(--color-text-secondary))] hover:bg-[hsl(var(--color-bg-tertiary))]'
+              }
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
             </Button>
@@ -73,28 +82,61 @@ export const TemplateSelector = ({ selectedTemplateId, onTemplateSelect }: Templ
           {templates.map((template) => (
             <div
               key={template.id}
-              className={`relative cursor-pointer rounded-lg border-2 transition-all ${
+              className={`relative cursor-pointer rounded-lg border-2 transition-all hover:scale-[1.02] ${
                 selectedTemplateId === template.id
-                  ? 'border-[#00C851] shadow-lg shadow-[#00C851]/20'
-                  : 'border-gray-700 hover:border-gray-600'
+                  ? 'border-[hsl(var(--color-primary))] shadow-lg shadow-[hsl(var(--color-primary-alpha-20))]'
+                  : 'border-[hsl(var(--color-border-secondary))] hover:border-[hsl(var(--color-border-focus))]'
               }`}
               onClick={() => onTemplateSelect(template.id)}
             >
-              <div className="p-4 bg-gray-800/80 rounded-lg">
+              <div className="p-4 bg-[hsl(var(--color-bg-tertiary))] rounded-lg">
+                {/* Template preview */}
+                {template.preview_url ? (
+                  <div className="w-full h-24 mb-3 rounded bg-[hsl(var(--color-bg-primary))] overflow-hidden">
+                    <img 
+                      src={template.preview_url} 
+                      alt={template.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-full h-24 mb-3 rounded bg-[hsl(var(--color-bg-primary))] flex items-center justify-center">
+                    <Sparkles className="w-8 h-8 text-[hsl(var(--color-text-tertiary))]" />
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-white font-medium text-sm">{template.name}</h3>
+                  <h3 className="text-[hsl(var(--color-text-primary))] font-medium text-sm truncate pr-2">
+                    {template.name}
+                  </h3>
                   {selectedTemplateId === template.id && (
-                    <Check className="w-4 h-4 text-[#00C851]" />
+                    <Check className="w-4 h-4 text-[hsl(var(--color-primary))] flex-shrink-0" />
                   )}
                 </div>
-                <p className="text-gray-400 text-xs mb-2">{template.description}</p>
+                
+                {template.description && (
+                  <p className="text-[hsl(var(--color-text-tertiary))] text-xs mb-2 line-clamp-2">
+                    {template.description}
+                  </p>
+                )}
+                
                 <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="text-xs">
+                  <Badge 
+                    variant="outline" 
+                    className="text-xs border-[hsl(var(--color-border-secondary))] text-[hsl(var(--color-text-tertiary))]"
+                  >
                     {template.category}
                   </Badge>
-                  <span className="text-xs text-gray-500">
-                    Used {template.usage_count} times
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {template.is_premium && (
+                      <Badge className="text-xs bg-[hsl(var(--color-warning))] text-white">
+                        Premium
+                      </Badge>
+                    )}
+                    <span className="text-xs text-[hsl(var(--color-text-tertiary))]">
+                      {template.usage_count} uses
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -102,8 +144,10 @@ export const TemplateSelector = ({ selectedTemplateId, onTemplateSelect }: Templ
         </div>
 
         {templates.length === 0 && (
-          <div className="text-center py-8 text-gray-400">
+          <div className="text-center py-8 text-[hsl(var(--color-text-tertiary))]">
+            <Sparkles className="w-12 h-12 mx-auto mb-3 opacity-50" />
             <p>No templates found for this category</p>
+            <p className="text-sm mt-1">Try selecting a different category</p>
           </div>
         )}
       </CardContent>

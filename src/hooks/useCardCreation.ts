@@ -79,10 +79,11 @@ export const useCardCreation = () => {
     }
 
     try {
-      setUploadProgress(0);
+      setUploadProgress(10);
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}/${Date.now()}.${fileExt}`;
 
+      setUploadProgress(50);
       const { data, error } = await supabase.storage
         .from('card-images')
         .upload(fileName, file, {
@@ -92,6 +93,7 @@ export const useCardCreation = () => {
 
       if (error) throw error;
 
+      setUploadProgress(80);
       const { data: { publicUrl } } = supabase.storage
         .from('card-images')
         .getPublicUrl(data.path);
@@ -106,6 +108,8 @@ export const useCardCreation = () => {
         variant: "destructive",
       });
       return null;
+    } finally {
+      setTimeout(() => setUploadProgress(0), 1000);
     }
   }, [user, toast]);
 
@@ -165,7 +169,9 @@ export const useCardCreation = () => {
       });
 
       // Reset form after successful save
-      setCardData(defaultCardData);
+      if (publish) {
+        setCardData(defaultCardData);
+      }
       
       return data.id;
     } catch (error) {
@@ -178,7 +184,6 @@ export const useCardCreation = () => {
       return null;
     } finally {
       setIsLoading(false);
-      setUploadProgress(0);
     }
   }, [user, cardData, toast, uploadImage]);
 

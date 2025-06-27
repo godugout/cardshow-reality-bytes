@@ -15,35 +15,53 @@ export const CardPreview = ({ cardData, className = '' }: CardPreviewProps) => {
       backgroundImage = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url(${cardData.imageUrl})`;
     }
 
+    let effectClasses = '';
     let overlayStyles = {};
     
     if (effects.holographic) {
+      effectClasses += ' holographic-effect';
       overlayStyles = {
-        background: `linear-gradient(45deg, rgba(255,0,255,${effects.intensity * 0.3}), rgba(0,255,255,${effects.intensity * 0.3}))`,
+        background: `linear-gradient(45deg, 
+          rgba(255,0,255,${effects.intensity * 0.3}), 
+          rgba(0,255,255,${effects.intensity * 0.3}),
+          rgba(255,255,0,${effects.intensity * 0.2}),
+          rgba(255,0,255,${effects.intensity * 0.3}))`,
+        backgroundSize: '200% 200%',
+        animation: 'holographicShimmer 3s ease-in-out infinite',
         mixBlendMode: 'overlay' as const,
       };
     } else if (effects.chrome) {
+      effectClasses += ' chrome-effect';
       overlayStyles = {
-        background: `linear-gradient(135deg, rgba(192,192,192,${effects.intensity * 0.5}), rgba(255,255,255,${effects.intensity * 0.3}))`,
+        background: `linear-gradient(135deg, 
+          rgba(192,192,192,${effects.intensity * 0.5}), 
+          rgba(255,255,255,${effects.intensity * 0.3}),
+          rgba(160,160,160,${effects.intensity * 0.4}))`,
         mixBlendMode: 'overlay' as const,
       };
     } else if (effects.foil) {
+      effectClasses += ' foil-effect';
       overlayStyles = {
-        background: `linear-gradient(90deg, rgba(255,215,0,${effects.intensity * 0.4}), rgba(255,165,0,${effects.intensity * 0.2}))`,
+        background: `linear-gradient(90deg, 
+          rgba(255,215,0,${effects.intensity * 0.4}), 
+          rgba(255,165,0,${effects.intensity * 0.2}),
+          rgba(255,140,0,${effects.intensity * 0.3}))`,
+        backgroundSize: '150% 150%',
+        animation: 'foilShimmer 2s ease-in-out infinite',
         mixBlendMode: 'overlay' as const,
       };
     }
 
-    return { backgroundImage, overlayStyles };
+    return { backgroundImage, overlayStyles, effectClasses };
   };
 
-  const { backgroundImage, overlayStyles } = getEffectStyles();
+  const { backgroundImage, overlayStyles, effectClasses } = getEffectStyles();
   const { designConfig } = cardData;
 
   return (
     <div className={`flex justify-center ${className}`}>
       <div 
-        className="relative w-64 h-80 flex flex-col justify-end p-4 text-white shadow-2xl overflow-hidden"
+        className={`relative w-64 h-80 flex flex-col justify-end p-4 text-white shadow-2xl overflow-hidden transition-transform duration-300 hover:scale-105 ${effectClasses}`}
         style={{
           backgroundColor: designConfig.backgroundColor,
           borderRadius: `${designConfig.borderRadius}px`,
@@ -98,7 +116,48 @@ export const CardPreview = ({ cardData, className = '' }: CardPreviewProps) => {
             </p>
           )}
         </div>
+
+        {/* Effect indicators */}
+        {(designConfig.effects.holographic || designConfig.effects.foil || designConfig.effects.chrome) && (
+          <div className="absolute top-2 right-2 z-20">
+            <div className="flex gap-1">
+              {designConfig.effects.holographic && (
+                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+              )}
+              {designConfig.effects.foil && (
+                <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+              )}
+              {designConfig.effects.chrome && (
+                <div className="w-2 h-2 bg-gray-300 rounded-full animate-pulse"></div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
+
+      <style jsx>{`
+        @keyframes holographicShimmer {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes foilShimmer {
+          0%, 100% { background-position: 0% 0%; }
+          50% { background-position: 100% 100%; }
+        }
+
+        .holographic-effect {
+          box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+
+        .chrome-effect {
+          box-shadow: 0 0 15px rgba(192, 192, 192, 0.4);
+        }
+
+        .foil-effect {
+          box-shadow: 0 0 18px rgba(255, 215, 0, 0.4);
+        }
+      `}</style>
     </div>
   );
 };

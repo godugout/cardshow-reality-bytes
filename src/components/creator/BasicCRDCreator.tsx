@@ -54,39 +54,42 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
   const handleSave = async (publish = false) => {
     const cardId = await saveCard(publish);
     if (cardId && publish) {
-      // Could navigate to card view here
       onBack();
     }
   };
 
   const colorThemes = [
-    { name: 'Dark', bg: '#1a1a1a', text: '#ffffff' },
-    { name: 'Blue', bg: '#1e3a8a', text: '#ffffff' },
-    { name: 'Green', bg: '#166534', text: '#ffffff' },
-    { name: 'Purple', bg: '#7c3aed', text: '#ffffff' },
-    { name: 'Red', bg: '#dc2626', text: '#ffffff' },
-    { name: 'Gold', bg: '#ca8a04', text: '#ffffff' },
+    { name: 'Dark', bg: 'hsl(var(--color-bg-secondary))', text: 'hsl(var(--color-text-primary))' },
+    { name: 'Blue', bg: 'hsl(var(--color-primary-700))', text: 'hsl(var(--color-primary-contrast))' },
+    { name: 'Green', bg: 'hsl(var(--color-success))', text: 'white' },
+    { name: 'Purple', bg: '#7c3aed', text: 'white' },
+    { name: 'Red', bg: 'hsl(var(--color-error))', text: 'white' },
+    { name: 'Gold', bg: '#ca8a04', text: 'white' },
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] p-6">
+    <div className="min-h-screen bg-[hsl(var(--color-bg-primary))] p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={onBack} className="text-gray-400 hover:text-white">
+            <Button 
+              variant="ghost" 
+              onClick={onBack} 
+              className="text-[hsl(var(--color-text-secondary))] hover:text-[hsl(var(--color-text-primary))]"
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Mode Selection
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-white">Create CRD</h1>
-              <p className="text-gray-400">Simple and fast card creation</p>
+              <h1 className="text-3xl font-bold text-[hsl(var(--color-text-primary))]">Create CRD</h1>
+              <p className="text-[hsl(var(--color-text-secondary))]">Simple and fast card creation</p>
             </div>
           </div>
           <div className="flex gap-3">
             <Button 
               variant="outline" 
-              className="border-gray-600 text-gray-300"
+              className="border-[hsl(var(--color-border-primary))] text-[hsl(var(--color-text-secondary))]"
               onClick={() => setActiveTab('preview')}
             >
               <Eye className="w-4 h-4 mr-2" />
@@ -96,18 +99,18 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
               onClick={() => handleSave(false)}
               disabled={isLoading}
               variant="outline"
-              className="border-gray-600 text-gray-300"
+              className="border-[hsl(var(--color-border-primary))] text-[hsl(var(--color-text-secondary))]"
             >
               <Save className="w-4 h-4 mr-2" />
-              Save Draft
+              {isLoading ? 'Saving...' : 'Save Draft'}
             </Button>
             <Button 
-              className="bg-[#00C851] hover:bg-[#00A543]"
+              className="bg-[hsl(var(--color-primary))] hover:bg-[hsl(var(--color-primary-700))] text-[hsl(var(--color-primary-contrast))]"
               onClick={() => handleSave(true)}
               disabled={isLoading || !cardData.title.trim()}
             >
               <Upload className="w-4 h-4 mr-2" />
-              Publish Card
+              {isLoading ? 'Publishing...' : 'Publish Card'}
             </Button>
           </div>
         </div>
@@ -116,7 +119,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
           {/* Creation Panel */}
           <div className="lg:col-span-2 space-y-6">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-5 bg-gray-900">
+              <TabsList className="grid w-full grid-cols-5 bg-[hsl(var(--color-bg-secondary))]">
                 <TabsTrigger value="template">Template</TabsTrigger>
                 <TabsTrigger value="content">Content</TabsTrigger>
                 <TabsTrigger value="image">Image</TabsTrigger>
@@ -132,27 +135,27 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
               </TabsContent>
 
               <TabsContent value="content" className="space-y-4">
-                <Card className="bg-gray-900/50 border-gray-800">
+                <Card className="bg-[hsl(var(--color-bg-secondary))] border-[hsl(var(--color-border-primary))]">
                   <CardHeader>
-                    <CardTitle className="text-white">Card Content</CardTitle>
+                    <CardTitle className="text-[hsl(var(--color-text-primary))]">Card Content</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <Label className="text-gray-300">Title *</Label>
+                      <Label className="text-[hsl(var(--color-text-secondary))]">Title *</Label>
                       <Input
                         value={cardData.title}
                         onChange={(e) => updateCardData({ title: e.target.value })}
                         placeholder="Enter card title"
-                        className="bg-gray-800 border-gray-700 text-white"
+                        className="bg-[hsl(var(--color-bg-tertiary))] border-[hsl(var(--color-border-secondary))] text-[hsl(var(--color-text-primary))]"
                       />
                     </div>
                     <div>
-                      <Label className="text-gray-300">Description</Label>
+                      <Label className="text-[hsl(var(--color-text-secondary))]">Description</Label>
                       <Textarea
                         value={cardData.description}
                         onChange={(e) => updateCardData({ description: e.target.value })}
                         placeholder="Enter card description (optional)"
-                        className="bg-gray-800 border-gray-700 text-white"
+                        className="bg-[hsl(var(--color-bg-tertiary))] border-[hsl(var(--color-border-secondary))] text-[hsl(var(--color-text-primary))]"
                         rows={3}
                       />
                     </div>
@@ -161,9 +164,9 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
               </TabsContent>
 
               <TabsContent value="image" className="space-y-4">
-                <Card className="bg-gray-900/50 border-gray-800">
+                <Card className="bg-[hsl(var(--color-bg-secondary))] border-[hsl(var(--color-border-primary))]">
                   <CardHeader>
-                    <CardTitle className="text-white">Card Image</CardTitle>
+                    <CardTitle className="text-[hsl(var(--color-text-primary))]">Card Image</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ImageUpload
@@ -178,9 +181,9 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
               </TabsContent>
 
               <TabsContent value="style" className="space-y-4">
-                <Card className="bg-gray-900/50 border-gray-800">
+                <Card className="bg-[hsl(var(--color-bg-secondary))] border-[hsl(var(--color-border-primary))]">
                   <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
+                    <CardTitle className="text-[hsl(var(--color-text-primary))] flex items-center gap-2">
                       <Palette className="w-5 h-5" />
                       Design & Effects
                     </CardTitle>
@@ -188,12 +191,12 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
                   <CardContent className="space-y-6">
                     {/* Color Themes */}
                     <div>
-                      <Label className="text-gray-300 mb-3 block">Color Themes</Label>
+                      <Label className="text-[hsl(var(--color-text-secondary))] mb-3 block">Color Themes</Label>
                       <div className="grid grid-cols-3 gap-3">
                         {colorThemes.map((theme, index) => (
                           <div
                             key={index}
-                            className="cursor-pointer p-3 rounded-lg border border-gray-700 hover:border-gray-600 transition-colors"
+                            className="cursor-pointer p-3 rounded-lg border border-[hsl(var(--color-border-secondary))] hover:border-[hsl(var(--color-border-focus))] transition-colors"
                             onClick={() => updateDesignConfig({ 
                               backgroundColor: theme.bg, 
                               titleColor: theme.text 
@@ -203,7 +206,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
                               className="w-full h-8 rounded mb-2"
                               style={{ backgroundColor: theme.bg }}
                             />
-                            <p className="text-white text-sm text-center">{theme.name}</p>
+                            <p className="text-[hsl(var(--color-text-primary))] text-sm text-center">{theme.name}</p>
                           </div>
                         ))}
                       </div>
@@ -211,7 +214,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
 
                     {/* Border Radius */}
                     <div>
-                      <Label className="text-gray-300">Border Radius</Label>
+                      <Label className="text-[hsl(var(--color-text-secondary))]">Border Radius</Label>
                       <Slider
                         value={[cardData.designConfig.borderRadius]}
                         onValueChange={([value]) => updateDesignConfig({ borderRadius: value })}
@@ -219,12 +222,12 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
                         step={1}
                         className="mt-2"
                       />
-                      <p className="text-sm text-gray-400 mt-1">{cardData.designConfig.borderRadius}px</p>
+                      <p className="text-sm text-[hsl(var(--color-text-tertiary))] mt-1">{cardData.designConfig.borderRadius}px</p>
                     </div>
 
                     {/* Effects */}
                     <div>
-                      <Label className="text-gray-300 mb-3 block">Visual Effects</Label>
+                      <Label className="text-[hsl(var(--color-text-secondary))] mb-3 block">Visual Effects</Label>
                       <div className="flex flex-wrap gap-2 mb-4">
                         {Object.entries(cardData.designConfig.effects).map(([effect, enabled]) => {
                           if (effect === "intensity") return null;
@@ -232,8 +235,10 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
                             <Badge
                               key={effect}
                               variant={enabled ? "default" : "outline"}
-                              className={`cursor-pointer ${
-                                enabled ? "bg-[#00C851] hover:bg-[#00A543] text-white" : "border-gray-600 text-gray-400 hover:border-gray-500"
+                              className={`cursor-pointer transition-colors ${
+                                enabled 
+                                  ? "bg-[hsl(var(--color-primary))] hover:bg-[hsl(var(--color-primary-700))] text-[hsl(var(--color-primary-contrast))]" 
+                                  : "border-[hsl(var(--color-border-secondary))] text-[hsl(var(--color-text-tertiary))] hover:border-[hsl(var(--color-border-focus))]"
                               }`}
                               onClick={() => updateDesignConfig({
                                 effects: {
@@ -251,7 +256,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
                       {/* Effect Intensity */}
                       {(cardData.designConfig.effects.holographic || cardData.designConfig.effects.foil || cardData.designConfig.effects.chrome) && (
                         <div>
-                          <Label className="text-gray-300">Effect Intensity</Label>
+                          <Label className="text-[hsl(var(--color-text-secondary))]">Effect Intensity</Label>
                           <Slider
                             value={[cardData.designConfig.effects.intensity]}
                             onValueChange={([value]) => updateDesignConfig({
@@ -262,7 +267,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
                             step={0.1}
                             className="mt-2"
                           />
-                          <p className="text-sm text-gray-400 mt-1">
+                          <p className="text-sm text-[hsl(var(--color-text-tertiary))] mt-1">
                             {Math.round(cardData.designConfig.effects.intensity * 100)}%
                           </p>
                         </div>
@@ -273,9 +278,9 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
               </TabsContent>
 
               <TabsContent value="preview" className="space-y-4">
-                <Card className="bg-gray-900/50 border-gray-800">
+                <Card className="bg-[hsl(var(--color-bg-secondary))] border-[hsl(var(--color-border-primary))]">
                   <CardHeader>
-                    <CardTitle className="text-white">Live Preview</CardTitle>
+                    <CardTitle className="text-[hsl(var(--color-text-primary))]">Live Preview</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <CardPreview cardData={cardData} />
@@ -287,22 +292,22 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            <Card className="bg-gray-900/50 border-gray-800">
+            <Card className="bg-[hsl(var(--color-bg-secondary))] border-[hsl(var(--color-border-primary))]">
               <CardHeader>
-                <CardTitle className="text-white">Quick Preview</CardTitle>
+                <CardTitle className="text-[hsl(var(--color-text-primary))]">Quick Preview</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardPreview cardData={cardData} className="scale-75 origin-top" />
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-900/50 border-gray-800">
+            <Card className="bg-[hsl(var(--color-bg-secondary))] border-[hsl(var(--color-border-primary))]">
               <CardHeader>
-                <CardTitle className="text-white text-sm">Quick Actions</CardTitle>
+                <CardTitle className="text-[hsl(var(--color-text-primary))] text-sm">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button 
-                  className="w-full bg-[#00C851] hover:bg-[#00A543]"
+                  className="w-full bg-[hsl(var(--color-primary))] hover:bg-[hsl(var(--color-primary-700))] text-[hsl(var(--color-primary-contrast))]"
                   onClick={() => handleSave(true)}
                   disabled={isLoading || !cardData.title.trim()}
                 >
@@ -310,7 +315,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="w-full border-gray-600 text-gray-300"
+                  className="w-full border-[hsl(var(--color-border-secondary))] text-[hsl(var(--color-text-secondary))]"
                   onClick={() => handleSave(false)}
                   disabled={isLoading}
                 >
@@ -318,7 +323,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
                 </Button>
                 <Button 
                   variant="ghost" 
-                  className="w-full text-gray-400"
+                  className="w-full text-[hsl(var(--color-text-tertiary))]"
                   onClick={resetCard}
                 >
                   Reset Card
