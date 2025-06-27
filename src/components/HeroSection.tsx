@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Play, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -41,10 +42,12 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <Button size="lg" className="bg-[#00C851] hover:bg-[#00A543] text-white px-8 py-4 text-lg">
-              Start Creating
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
+            <Link to="/creator">
+              <Button size="lg" className="bg-[#00C851] hover:bg-[#00A543] text-white px-8 py-4 text-lg">
+                Start Creating
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
             <Button size="lg" variant="outline" className="border-gray-600 text-white hover:bg-gray-800 px-8 py-4 text-lg">
               <Play className="w-5 h-5 mr-2" />
               Watch Demo
