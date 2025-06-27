@@ -37,11 +37,13 @@ export const useSafeCards = (filters: CardFilters = {}) => {
     }));
   }, [cards, queryLoading, queryError]);
 
-  // Safe refetch function with error handling
+  // Create a stable refetch function
   const refetch = useCallback(() => {
     try {
       console.log('useSafeCards: Refetching cards data');
-      originalRefetch();
+      if (originalRefetch && typeof originalRefetch === 'function') {
+        originalRefetch();
+      }
     } catch (err) {
       console.error('useSafeCards: Error during refetch:', err);
       setSafeState(prev => ({
@@ -51,15 +53,17 @@ export const useSafeCards = (filters: CardFilters = {}) => {
     }
   }, [originalRefetch]);
 
-  // Only use realtime if we have initialized and no errors
+  // Only use realtime if we have initialized successfully and have a working refetch
   const shouldUseRealtime = useMemo(() => {
-    return safeState.hasInitialized && !safeState.isLoading && !safeState.error;
-  }, [safeState.hasInitialized, safeState.isLoading, safeState.error]);
+    return safeState.hasInitialized && 
+           !safeState.isLoading && 
+           !safeState.error && 
+           originalRefetch && 
+           typeof originalRefetch === 'function';
+  }, [safeState.hasInitialized, safeState.isLoading, safeState.error, originalRefetch]);
 
-  // Conditionally use realtime
-  if (shouldUseRealtime) {
-    useCardsRealtime(refetch);
-  }
+  // Always call the hook but conditionally pass the refetch function
+  useCardsRealtime(shouldUseRealtime ? refetch : undefined);
 
   const returnValue = useMemo(() => ({
     cards: safeState.cards,

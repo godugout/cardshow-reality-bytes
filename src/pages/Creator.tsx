@@ -1,3 +1,4 @@
+
 import { Suspense, useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import { CRDStudio } from '@/components/creator/CRDStudio';
@@ -19,7 +20,14 @@ const Creator = () => {
 
   // Show onboarding for new users or those who haven't completed it
   useEffect(() => {
-    if (authInitialized && user && progress && !progress.isOnboardingComplete && !onboardingLoading && !onboardingError) {
+    // Add defensive checks to prevent errors
+    if (authInitialized && 
+        user && 
+        progress && 
+        typeof progress.isOnboardingComplete === 'boolean' &&
+        !progress.isOnboardingComplete && 
+        !onboardingLoading && 
+        !onboardingError) {
       console.log('Creator: Showing onboarding for user');
       setShowOnboarding(true);
     }

@@ -44,15 +44,23 @@ export const useCreatorOnboarding = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Only fetch cards if user exists - prevent unnecessary queries
+  // Only fetch cards if user exists and is authenticated
   const shouldFetchCards = Boolean(user?.id);
-  const { cards } = useCards(shouldFetchCards ? { creator_id: user.id } : {});
+  const cardsFilters = useMemo(() => 
+    shouldFetchCards ? { creator_id: user!.id } : {}, 
+    [shouldFetchCards, user?.id]
+  );
+  
+  // Use empty filters object when user is not available to prevent hook violations
+  const { cards } = useCards(shouldFetchCards ? cardsFilters : {});
 
   // Load onboarding progress from database
   useEffect(() => {
-    if (!user) {
+    if (!user?.id) {
+      console.log('useCreatorOnboarding: No user available, using defaults');
       setIsLoading(false);
       setProgress(defaultProgress);
+      setError(null);
       return;
     }
 
@@ -103,9 +111,11 @@ export const useCreatorOnboarding = () => {
     loadProgress();
   }, [user?.id]);
 
-  // Update progress based on user actions
+  // Update progress based on user actions - only if we have cards data
   useEffect(() => {
-    if (!cards || !Array.isArray(cards)) return;
+    if (!shouldFetchCards || !cards || !Array.isArray(cards)) {
+      return;
+    }
 
     const hasCreated = cards.length > 0;
     const hasPublished = cards.some(card => card.is_public);
@@ -115,10 +125,10 @@ export const useCreatorOnboarding = () => {
       hasCreatedCard: hasCreated,
       hasPublishedCard: hasPublished,
     }));
-  }, [cards]);
+  }, [cards, shouldFetchCards]);
 
   const updateStep = useCallback(async (step: OnboardingStep) => {
-    if (!user) {
+    if (!user?.id) {
       console.error('useCreatorOnboarding: No user available for updateStep');
       throw new Error('User not authenticated');
     }
@@ -169,7 +179,7 @@ export const useCreatorOnboarding = () => {
   }, [updateStep]);
 
   const resetOnboarding = useCallback(async () => {
-    if (!user) {
+    if (!user?.id) {
       throw new Error('User not authenticated');
     }
 

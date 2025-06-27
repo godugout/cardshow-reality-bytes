@@ -14,26 +14,23 @@ export const useCards = (filters: CardFilters = {}) => {
     refetch: originalRefetch
   } = useCardsQuery(filters, searchTerm);
 
-  // Memoize the refetch function to prevent unnecessary re-subscriptions
+  // Create a stable refetch function that's always defined
   const refetch = useCallback(() => {
     console.log('useCards: Refetching cards data');
     try {
-      originalRefetch();
+      if (originalRefetch && typeof originalRefetch === 'function') {
+        originalRefetch();
+      } else {
+        console.warn('useCards: originalRefetch is not available');
+      }
     } catch (err) {
       console.error('useCards: Error during refetch:', err);
     }
   }, [originalRefetch]);
 
-  // Real-time subscription for cards - only if we have valid filters
-  const shouldUseRealtime = useMemo(() => {
-    // Don't use realtime if we're still loading or have errors
-    return !isLoading && !error;
-  }, [isLoading, error]);
-
-  // Conditionally use realtime
-  if (shouldUseRealtime) {
-    useCardsRealtime(refetch);
-  }
+  // Always call the realtime hook, but pass undefined if refetch isn't ready
+  const shouldUseRealtime = !isLoading && !error && originalRefetch;
+  useCardsRealtime(shouldUseRealtime ? refetch : undefined);
 
   const returnValue = useMemo(() => ({
     cards: Array.isArray(cards) ? cards : [],
