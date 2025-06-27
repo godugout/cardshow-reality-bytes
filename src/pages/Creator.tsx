@@ -1,69 +1,36 @@
 
-import { useState } from 'react';
+import { Suspense } from 'react';
 import Header from '@/components/Header';
-import { CreatorModeSelector } from '@/components/creator/CreatorModeSelector';
-import { BasicCRDCreator } from '@/components/creator/BasicCRDCreator';
-import { CRDStudio } from '@/components/creator/CRDStudio';
-import { useAuth } from '@/hooks/useAuth';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import CreatorDashboard from '@/components/creator/CreatorDashboard';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export default function Creator() {
-  const { user } = useAuth();
-  const [selectedMode, setSelectedMode] = useState<'selector' | 'basic' | 'studio'>('selector');
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-[#0a0a0a]">
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center max-w-2xl mx-auto">
-            <h1 className="text-3xl font-bold mb-4 text-white">Welcome to Creator Portal</h1>
-            <p className="text-gray-400 mb-8">
-              Join our community of creators and start designing amazing digital trading cards.
-            </p>
-            <div className="space-y-4">
-              <Link to="/auth">
-                <Button size="lg" className="bg-[#00C851] hover:bg-[#00A543] text-white px-8 py-3">
-                  Sign Up to Start Creating
-                </Button>
-              </Link>
-              <p className="text-sm text-gray-500">
-                Already have an account? <Link to="/auth" className="text-[#00C851] hover:underline">Sign in here</Link>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const handleModeSelect = (mode: 'basic' | 'studio') => {
-    setSelectedMode(mode);
-  };
-
-  const handleBackToSelector = () => {
-    setSelectedMode('selector');
-  };
-
+const Creator = () => {
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
-      {selectedMode === 'selector' && <Header />}
-      
-      {selectedMode === 'selector' && (
-        <CreatorModeSelector 
-          onModeSelect={handleModeSelect}
-          currentMode={undefined}
-        />
-      )}
-      
-      {selectedMode === 'basic' && (
-        <BasicCRDCreator onBack={handleBackToSelector} />
-      )}
-      
-      {selectedMode === 'studio' && (
-        <CRDStudio onBack={handleBackToSelector} />
-      )}
+    <div className="min-h-screen bg-background">
+      <Header />
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-foreground mb-2 font-display">Creator Studio</h1>
+          <p className="text-muted-foreground">
+            Design, create, and monetize your digital trading cards
+          </p>
+        </div>
+
+        <Suspense fallback={
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-32 w-full" />
+              ))}
+            </div>
+            <Skeleton className="h-96 w-full" />
+          </div>
+        }>
+          <CreatorDashboard />
+        </Suspense>
+      </div>
     </div>
   );
-}
+};
+
+export default Creator;
