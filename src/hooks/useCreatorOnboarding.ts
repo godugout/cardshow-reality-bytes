@@ -22,6 +22,14 @@ interface OnboardingProgress {
   hasPublishedCard: boolean;
 }
 
+const isValidOnboardingStep = (step: string): step is OnboardingStep => {
+  const validSteps: OnboardingStep[] = [
+    'welcome', 'inspiration', 'first-card', 'design-tools', 
+    'publish', 'monetization', 'community', 'complete'
+  ];
+  return validSteps.includes(step as OnboardingStep);
+};
+
 export const useCreatorOnboarding = () => {
   const { user } = useAuth();
   const { cards } = useCards({ creator_id: user?.id });
@@ -45,9 +53,12 @@ export const useCreatorOnboarding = () => {
         .single();
 
       if (data && !error) {
+        const stepFromDb = data.onboarding_step || 'welcome';
+        const validStep = isValidOnboardingStep(stepFromDb) ? stepFromDb : 'welcome';
+        
         setProgress(prev => ({
           ...prev,
-          currentStep: data.onboarding_step || 'welcome',
+          currentStep: validStep,
           isOnboardingComplete: data.onboarding_completed || false,
         }));
       }
