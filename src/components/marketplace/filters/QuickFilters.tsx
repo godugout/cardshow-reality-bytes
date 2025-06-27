@@ -30,35 +30,35 @@ const QuickFilters = ({ onFilterChange }: QuickFiltersProps) => {
     <div className="flex flex-wrap gap-2">
       <Badge 
         variant="outline" 
-        className="cursor-pointer hover:bg-[#00C851] hover:text-white transition-colors"
+        className="cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors"
         onClick={() => handleConditionFilter(['mint'])}
       >
         Mint Condition
       </Badge>
       <Badge 
         variant="outline" 
-        className="cursor-pointer hover:bg-[#00C851] hover:text-white transition-colors"
+        className="cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors"
         onClick={() => handlePriceFilter(undefined, 50)}
       >
         Under $50
       </Badge>
       <Badge 
         variant="outline" 
-        className="cursor-pointer hover:bg-[#00C851] hover:text-white transition-colors"
+        className="cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors"
         onClick={() => handlePriceFilter(50, 200)}
       >
         $50 - $200
       </Badge>
       <Badge 
         variant="outline" 
-        className="cursor-pointer hover:bg-[#00C851] hover:text-white transition-colors"
+        className="cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors"
         onClick={() => handleListingTypeFilter(['auction'])}
       >
         Auctions Only
       </Badge>
       <Badge 
         variant="outline" 
-        className="cursor-pointer hover:bg-[#00C851] hover:text-white transition-colors"
+        className="cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors"
         onClick={() => handleListingTypeFilter(['fixed_price'])}
       >
         Buy It Now

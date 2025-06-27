@@ -11,16 +11,25 @@ interface RarityBadgeProps {
 
 const RarityBadge = ({ rarity, size = 'md', animated = false }: RarityBadgeProps) => {
   const sizeClasses = {
-    sm: 'text-xs px-1.5 py-0.5',
-    md: 'text-sm px-2 py-1',
-    lg: 'text-base px-3 py-1.5'
+    sm: 'text-xs px-2 py-0.5',
+    md: 'text-sm px-3 py-1',
+    lg: 'text-base px-4 py-1.5'
+  };
+
+  // Updated rarity colors with better contrast
+  const rarityColors = {
+    common: 'bg-neutral-500 text-white',
+    uncommon: 'bg-success text-white',
+    rare: 'bg-primary text-white',
+    ultra_rare: 'bg-secondary text-white',
+    legendary: 'bg-accent text-white'
   };
 
   return (
     <Badge
       className={cn(
-        'text-white font-semibold border-0 shadow-sm',
-        RARITY_COLORS[rarity],
+        'font-semibold border-0 shadow-sm rounded-lg',
+        rarityColors[rarity] || rarityColors.common,
         sizeClasses[size],
         animated && 'animate-pulse hover:animate-none transition-all duration-200'
       )}

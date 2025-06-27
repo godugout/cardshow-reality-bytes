@@ -3,24 +3,38 @@
 
 /* Card Styles */
 .cdg-card {
-  @apply bg-white rounded-3xl shadow-sm border border-neutral-200 p-6;
+  @apply bg-white rounded-2xl shadow-sm border border-neutral-200 p-6;
 }
 
 .cdg-card-elevated {
-  @apply bg-white rounded-3xl shadow-lg border border-neutral-200 p-6;
+  @apply bg-white rounded-2xl shadow-lg border border-neutral-200 p-6;
 }
 
-/* Button Variants - Updated with softer colors */
+/* Button Variants - Updated with refined border radius */
 .cdg-button-primary {
-  @apply bg-primary hover:bg-primary-600 text-white rounded-2xl px-6 py-3 transition-colors;
+  @apply bg-primary hover:bg-primary-600 text-white rounded-xl px-6 py-3 transition-colors;
 }
 
 .cdg-button-secondary {
-  @apply bg-secondary hover:bg-secondary-600 text-white rounded-2xl px-6 py-3 transition-colors;
+  @apply bg-secondary hover:bg-secondary-600 text-white rounded-xl px-6 py-3 transition-colors;
 }
 
 .cdg-button-outline {
-  @apply border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-2xl px-6 py-3 transition-colors;
+  @apply border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-xl px-6 py-3 transition-colors;
+}
+
+/* Form Elements */
+.cdg-input {
+  @apply rounded-lg border-2 border-neutral-200 focus:border-primary;
+}
+
+/* Badge and Pills */
+.cdg-badge {
+  @apply rounded-lg px-3 py-1;
+}
+
+.cdg-pill {
+  @apply rounded-full px-3 py-1;
 }
 
 /* Dark mode adjustments for components */
