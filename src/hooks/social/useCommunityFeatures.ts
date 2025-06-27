@@ -84,7 +84,7 @@ export const useNotifications = () => {
 
       const { data, error } = await supabase
         .from('notifications')
-        .select('*')
+        .select('id, recipient_id, title, message, type, is_read, metadata, created_at')
         .eq('recipient_id', user.id)
         .order('created_at', { ascending: false })
         .limit(50);
@@ -99,7 +99,7 @@ export const useNotifications = () => {
         message: notification.message,
         type: notification.type,
         is_read: notification.is_read,
-        metadata: notification.metadata || {}, // Use actual metadata from database or empty object
+        metadata: notification.metadata || {}, // Now this field is properly selected
         created_at: notification.created_at
       })) as Notification[];
     },
