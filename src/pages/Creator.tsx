@@ -12,33 +12,58 @@ import { Sparkles, Rocket, Users } from 'lucide-react';
 
 const Creator = () => {
   const { user } = useAuth();
-  const { progress } = useCreatorOnboarding();
+  const { progress, isLoading: onboardingLoading } = useCreatorOnboarding();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showStudio, setShowStudio] = useState(false);
 
   // Show onboarding for new users or those who haven't completed it
   useEffect(() => {
-    if (user && !progress.isOnboardingComplete) {
+    if (user && progress && !progress.isOnboardingComplete && !onboardingLoading) {
+      console.log('Creator: Showing onboarding for user');
       setShowOnboarding(true);
     }
-  }, [user, progress.isOnboardingComplete]);
+  }, [user, progress, onboardingLoading]);
 
   const handleOnboardingComplete = () => {
+    console.log('Creator: Onboarding completed');
     setShowOnboarding(false);
     setShowStudio(true);
   };
 
   const handleOnboardingClose = () => {
+    console.log('Creator: Onboarding closed');
     setShowOnboarding(false);
   };
 
   const enterStudio = () => {
+    console.log('Creator: Entering studio');
     setShowStudio(true);
   };
 
   const exitStudio = () => {
+    console.log('Creator: Exiting studio');
     setShowStudio(false);
   };
+
+  // Show loading state while onboarding data is loading
+  if (onboardingLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center mb-12">
+            <Skeleton className="h-12 w-64 mx-auto mb-4" />
+            <Skeleton className="h-6 w-96 mx-auto" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="h-64 w-full" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Show CRD Studio if user is in studio mode
   if (showStudio) {
@@ -50,7 +75,7 @@ const Creator = () => {
       <Header />
       
       {/* Onboarding Flow */}
-      {showOnboarding && (
+      {showOnboarding && progress && (
         <CreatorOnboardingFlow 
           onClose={handleOnboardingClose}
           onComplete={handleOnboardingComplete}
@@ -132,7 +157,7 @@ const Creator = () => {
           </div>
 
           {/* Progress Overview - Only show if user has some progress */}
-          {progress.isOnboardingComplete && (
+          {progress?.isOnboardingComplete && (
             <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20 mb-8">
               <CardContent className="p-6">
                 <h3 className="font-bold text-xl mb-4">Your Creator Journey</h3>

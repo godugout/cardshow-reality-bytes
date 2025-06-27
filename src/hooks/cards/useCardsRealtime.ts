@@ -1,14 +1,25 @@
-
-import { useEffect, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 export const useCardsRealtime = (refetch: () => void) => {
-  // Memoize the refetch callback to prevent re-subscriptions
-  const memoizedRefetch = useCallback(() => {
-    refetch();
+  const refetchRef = useRef(refetch);
+  const channelRef = useRef<any>(null);
+
+  // Keep refetch function up to date
+  useEffect(() => {
+    refetchRef.current = refetch;
   }, [refetch]);
 
   useEffect(() => {
+    // Cleanup any existing channel first
+    if (channelRef.current) {
+      console.log('Cleaning up existing cards realtime channel');
+      supabase.removeChannel(channelRef.current);
+      channelRef.current = null;
+    }
+
+    console.log('Setting up cards realtime subscription');
+    
     const channel = supabase
       .channel('cards-changes')
       .on(
@@ -19,18 +30,28 @@ export const useCardsRealtime = (refetch: () => void) => {
           table: 'cards',
           filter: 'is_public=eq.true'
         },
-        () => {
-          memoizedRefetch();
+        (payload) => {
+          console.log('Cards realtime update received:', payload);
+          refetchRef.current();
         }
       )
       .subscribe((status) => {
+        console.log('Cards realtime subscription status:', status);
         if (status === 'CLOSED') {
           console.error('Failed to subscribe to cards realtime updates');
+        } else if (status === 'SUBSCRIBED') {
+          console.log('Successfully subscribed to cards realtime updates');
         }
       });
 
+    channelRef.current = channel;
+
     return () => {
-      supabase.removeChannel(channel);
+      console.log('Cleaning up cards realtime subscription');
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+      }
     };
-  }, []); // Remove refetch from dependencies to prevent re-subscriptions
+  }, []); // Empty dependency array to prevent re-subscriptions
 };
