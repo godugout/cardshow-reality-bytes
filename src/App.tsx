@@ -38,6 +38,7 @@ function App() {
                   <Route path="/cards" element={<Cards />} />
                   <Route path="/mobile-cards" element={<MobileCards />} />
                   <Route path="/creator" element={<Creator />} />
+                  <Route path="/creators" element={<Creator />} />
                   <Route path="/marketplace" element={<Marketplace />} />
                   <Route path="/community" element={<Community />} />
                   <Route path="/profile" element={<Profile />} />
