@@ -44,6 +44,20 @@ export interface CRDFrame {
   updated_at: string;
 }
 
+export interface CreateCRDElementInput {
+  name: string;
+  element_type: 'frame' | 'background' | 'logo' | 'color_theme' | 'effect';
+  description?: string;
+  category?: string;
+  preview_image_url?: string;
+  asset_urls?: any;
+  config?: any;
+  is_public?: boolean;
+  is_free?: boolean;
+  price_cents?: number;
+  tags?: string[];
+}
+
 export const useCRDElements = (filters?: {
   element_type?: string;
   category?: string;
@@ -83,12 +97,23 @@ export const useCRDElements = (filters?: {
 export const useCreateCRDElement = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { user } = useAuth();
 
   return useMutation({
-    mutationFn: async (elementData: Partial<CRDElement>) => {
+    mutationFn: async (elementData: CreateCRDElementInput) => {
+      if (!user) throw new Error('User not authenticated');
+
       const { data, error } = await supabase
         .from('crd_elements')
-        .insert([elementData])
+        .insert([{
+          ...elementData,
+          creator_id: user.id,
+          config: elementData.config || {},
+          is_public: elementData.is_public ?? false,
+          is_free: elementData.is_free ?? true,
+          price_cents: elementData.price_cents ?? 0,
+          tags: elementData.tags ?? []
+        }])
         .select()
         .single();
 
