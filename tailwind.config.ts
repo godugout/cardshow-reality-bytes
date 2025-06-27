@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -20,8 +19,9 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'raleway': ['Raleway', 'sans-serif'],
-				'poppins': ['Poppins', 'sans-serif'],
+				'manrope': ['Manrope', 'sans-serif'],
+				'open-sans': ['Open Sans', 'sans-serif'],
+				'space-grotesk': ['Space Grotesk', 'monospace'],
 			},
 			colors: {
 				// CDG Primary Colors
@@ -128,24 +128,24 @@ export default {
 				}
 			},
 			fontSize: {
-				// CDG Typography System
-				'hero': ['96px', { lineHeight: '96px', letterSpacing: '-0.02em', fontWeight: '900' }],
-				'headline-1': ['64px', { lineHeight: '64px', letterSpacing: '-0.02em', fontWeight: '800' }],
-				'headline-2': ['48px', { lineHeight: '56px', letterSpacing: '-0.02em', fontWeight: '700' }],
-				'headline-3': ['40px', { lineHeight: '48px', letterSpacing: '-0.01em', fontWeight: '900' }],
-				'headline-4': ['32px', { lineHeight: '40px', letterSpacing: '-0.01em', fontWeight: '700' }],
-				'body-1': ['24px', { lineHeight: '32px', letterSpacing: '-0.01em', fontWeight: '300' }],
-				'body-1-bold': ['24px', { lineHeight: '32px', fontWeight: '700' }],
+				// CDG Typography System - Updated for Premium Collectibles Feel
+				'hero': ['96px', { lineHeight: '96px', letterSpacing: '-0.02em', fontWeight: '800' }],
+				'headline-1': ['64px', { lineHeight: '64px', letterSpacing: '-0.02em', fontWeight: '700' }],
+				'headline-2': ['48px', { lineHeight: '56px', letterSpacing: '-0.02em', fontWeight: '600' }],
+				'headline-3': ['40px', { lineHeight: '48px', letterSpacing: '-0.01em', fontWeight: '700' }],
+				'headline-4': ['32px', { lineHeight: '40px', letterSpacing: '-0.01em', fontWeight: '600' }],
+				'body-1': ['24px', { lineHeight: '32px', letterSpacing: '-0.01em', fontWeight: '400' }],
+				'body-1-bold': ['24px', { lineHeight: '32px', fontWeight: '600' }],
 				'body-2': ['16px', { lineHeight: '24px', fontWeight: '400' }],
-				'body-2-bold': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+				'body-2-bold': ['16px', { lineHeight: '24px', fontWeight: '500' }],
 				'caption': ['14px', { lineHeight: '24px', fontWeight: '400' }],
-				'caption-bold': ['14px', { lineHeight: '24px', fontWeight: '600' }],
+				'caption-bold': ['14px', { lineHeight: '24px', fontWeight: '500' }],
 				'caption-2': ['12px', { lineHeight: '20px', fontWeight: '400' }],
-				'caption-2-bold': ['12px', { lineHeight: '20px', fontWeight: '600' }],
-				'hairline-1': ['16px', { lineHeight: '16px', fontWeight: '700', textTransform: 'uppercase' }],
-				'hairline-2': ['12px', { lineHeight: '12px', fontWeight: '600', textTransform: 'uppercase' }],
-				'button-1': ['18px', { lineHeight: '16px', fontWeight: '800' }],
-				'button-2': ['14px', { lineHeight: '16px', fontWeight: '800' }],
+				'caption-2-bold': ['12px', { lineHeight: '20px', fontWeight: '500' }],
+				'hairline-1': ['16px', { lineHeight: '16px', fontWeight: '600', textTransform: 'uppercase' }],
+				'hairline-2': ['12px', { lineHeight: '12px', fontWeight: '500', textTransform: 'uppercase' }],
+				'button-1': ['18px', { lineHeight: '16px', fontWeight: '600' }],
+				'button-2': ['14px', { lineHeight: '16px', fontWeight: '500' }],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Cardshow Design Guidelines (CDG) - Global Styles */
+/* Cardshow Design Guidelines (CDG) - Global Styles with Premium Collectibles Typography */
 
 @layer base {
   :root {
@@ -93,76 +93,76 @@
   }
 
   body {
-    @apply bg-background text-foreground font-poppins;
+    @apply bg-background text-foreground font-open-sans;
   }
 
-  /* CDG Typography Classes */
+  /* CDG Typography Classes - Premium Collectibles Feel */
   .cdg-hero {
-    @apply font-raleway text-hero text-neutral-900;
+    @apply font-manrope text-hero text-neutral-900;
   }
 
   .cdg-headline-1 {
-    @apply font-raleway text-headline-1 text-neutral-900;
+    @apply font-manrope text-headline-1 text-neutral-900;
   }
 
   .cdg-headline-2 {
-    @apply font-raleway text-headline-2 text-neutral-900;
+    @apply font-manrope text-headline-2 text-neutral-900;
   }
 
   .cdg-headline-3 {
-    @apply font-raleway text-headline-3 text-neutral-900;
+    @apply font-manrope text-headline-3 text-neutral-900;
   }
 
   .cdg-headline-4 {
-    @apply font-raleway text-headline-4 text-neutral-900;
+    @apply font-manrope text-headline-4 text-neutral-900;
   }
 
   .cdg-body-1 {
-    @apply font-raleway text-body-1 text-neutral-900;
+    @apply font-open-sans text-body-1 text-neutral-900;
   }
 
   .cdg-body-1-bold {
-    @apply font-raleway text-body-1-bold text-neutral-900;
+    @apply font-open-sans text-body-1-bold text-neutral-900;
   }
 
   .cdg-body-2 {
-    @apply font-poppins text-body-2 text-neutral-900;
+    @apply font-open-sans text-body-2 text-neutral-900;
   }
 
   .cdg-body-2-bold {
-    @apply font-raleway text-body-2-bold text-neutral-900;
+    @apply font-open-sans text-body-2-bold text-neutral-900;
   }
 
   .cdg-caption {
-    @apply font-poppins text-caption text-neutral-900;
+    @apply font-open-sans text-caption text-neutral-900;
   }
 
   .cdg-caption-bold {
-    @apply font-poppins text-caption-bold text-neutral-900;
+    @apply font-open-sans text-caption-bold text-neutral-900;
   }
 
   .cdg-caption-2 {
-    @apply font-poppins text-caption-2 text-neutral-900;
+    @apply font-space-grotesk text-caption-2 text-neutral-900;
   }
 
   .cdg-caption-2-bold {
-    @apply font-poppins text-caption-2-bold text-neutral-900;
+    @apply font-space-grotesk text-caption-2-bold text-neutral-900;
   }
 
   .cdg-hairline-1 {
-    @apply font-poppins text-hairline-1 text-neutral-900;
+    @apply font-space-grotesk text-hairline-1 text-neutral-900;
   }
 
   .cdg-hairline-2 {
-    @apply font-raleway text-hairline-2 text-neutral-900;
+    @apply font-space-grotesk text-hairline-2 text-neutral-900;
   }
 
   .cdg-button-1 {
-    @apply font-raleway text-button-1 text-neutral-900;
+    @apply font-manrope text-button-1 text-neutral-900;
   }
 
   .cdg-button-2 {
-    @apply font-raleway text-button-2 text-neutral-900;
+    @apply font-manrope text-button-2 text-neutral-900;
   }
 
   /* CDG Card Styles */

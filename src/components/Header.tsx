@@ -39,13 +39,13 @@ const Header = () => {
             <div className="p-2.5 bg-gradient-to-br from-primary to-primary-600 rounded-2xl shadow-lg">
               <Sparkles className="h-7 w-7 text-white" />
             </div>
-            <span className="font-raleway text-headline-4 font-black text-white tracking-tight">
+            <span className="font-manrope text-headline-4 font-bold text-white tracking-tight">
               Cardshow
             </span>
             {isAdminPage && (
               <div className="flex items-center gap-2 ml-4 px-3 py-1.5 bg-warning-100/10 rounded-xl border border-warning-500/30">
                 <Shield className="h-4 w-4 text-warning-400" />
-                <span className="font-poppins text-caption-bold text-warning-300">Admin</span>
+                <span className="font-space-grotesk text-caption-bold text-warning-300">Admin</span>
               </div>
             )}
           </Link>
@@ -58,8 +58,8 @@ const Header = () => {
                   variant={isActive(item.href) ? "default" : "ghost"} 
                   size="sm"
                   className={isActive(item.href) 
-                    ? "bg-primary hover:bg-primary-600 text-white font-raleway font-bold" 
-                    : "text-neutral-300 hover:text-white hover:bg-neutral-800/50 font-raleway font-semibold"
+                    ? "bg-primary hover:bg-primary-600 text-white font-manrope font-semibold" 
+                    : "text-neutral-300 hover:text-white hover:bg-neutral-800/50 font-open-sans font-medium"
                   }
                 >
                   {item.label}
@@ -75,8 +75,8 @@ const Header = () => {
                   size="sm"
                   className={
                     isActive(item.href) 
-                      ? "bg-warning-500 hover:bg-warning-600 text-white border-warning-500 font-raleway font-bold" 
-                      : "text-warning-400 hover:text-warning-300 border-warning-500/50 hover:bg-warning-500/10 font-raleway font-semibold"
+                      ? "bg-warning-500 hover:bg-warning-600 text-white border-warning-500 font-manrope font-semibold" 
+                      : "text-warning-400 hover:text-warning-300 border-warning-500/50 hover:bg-warning-500/10 font-open-sans font-medium"
                   }
                 >
                   <Shield className="w-3 h-3 mr-1" />
@@ -92,7 +92,7 @@ const Header = () => {
               <UserMenu />
             ) : (
               <Link to="/auth">
-                <Button className="font-raleway font-bold">
+                <Button className="font-manrope font-semibold">
                   Sign In
                 </Button>
               </Link>
@@ -117,7 +117,7 @@ const Header = () => {
               <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
                 <Button 
                   variant={isActive(item.href) ? "default" : "ghost"} 
-                  className={`w-full justify-start font-raleway font-semibold ${
+                  className={`w-full justify-start font-open-sans font-medium ${
                     isActive(item.href) 
                       ? "bg-primary hover:bg-primary-600 text-white" 
                       : "text-neutral-300 hover:text-white hover:bg-neutral-800/50"
@@ -134,7 +134,7 @@ const Header = () => {
               <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
                 <Button 
                   variant={isActive(item.href) ? "default" : "outline"} 
-                  className={`w-full justify-start font-raleway font-semibold ${
+                  className={`w-full justify-start font-open-sans font-medium ${
                     isActive(item.href) 
                       ? "bg-warning-500 hover:bg-warning-600 text-white border-warning-500" 
                       : "text-warning-400 hover:text-warning-300 border-warning-500/50 hover:bg-warning-500/10"
