@@ -43,34 +43,32 @@ export const useTheme = (): UseThemeReturn => {
     if (savedMode && ['light', 'dark'].includes(savedMode)) {
       setModeState(savedMode);
     } else {
-      // Default to system preference
       setModeState(systemTheme);
     }
   }, [systemTheme]);
 
-  // Apply theme and mode to document
+  // Apply theme and mode to document immediately
   useEffect(() => {
     const root = document.documentElement;
     
-    // Remove all existing theme and mode classes
-    root.classList.remove('dark');
-    root.removeAttribute('data-theme');
-    
-    // Apply new theme and mode
+    // Set data-theme attribute
     root.setAttribute('data-theme', theme);
     
+    // Handle dark mode class
     if (mode === 'dark') {
       root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
     }
 
-    // Save preferences
+    // Save to localStorage
     localStorage.setItem('cardshow-theme', theme);
     localStorage.setItem('cardshow-mode', mode);
     
-    // Force a small delay to ensure CSS variables update
-    setTimeout(() => {
-      document.body.style.transition = 'background-color 0.3s ease, color 0.3s ease';
-    }, 10);
+    // Force a repaint to ensure changes are applied
+    document.body.style.display = 'none';
+    document.body.offsetHeight; // trigger reflow
+    document.body.style.display = '';
   }, [theme, mode]);
 
   const setTheme = (newTheme: Theme) => {
