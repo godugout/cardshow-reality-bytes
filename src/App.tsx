@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import Cards from "./pages/Cards";
 import Creator from "./pages/Creator";
@@ -24,19 +25,21 @@ function App() {
         disableTransitionOnChange
       >
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <ErrorBoundary>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/cards" element={<Cards />} />
-                <Route path="/mobile-cards" element={<MobileCards />} />
-                <Route path="/creator" element={<Creator />} />
-                <Route path="/auth" element={<Auth />} />
-              </Routes>
-            </ErrorBoundary>
-          </BrowserRouter>
+          <AuthProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ErrorBoundary>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/cards" element={<Cards />} />
+                  <Route path="/mobile-cards" element={<MobileCards />} />
+                  <Route path="/creator" element={<Creator />} />
+                  <Route path="/auth" element={<Auth />} />
+                </Routes>
+              </ErrorBoundary>
+            </BrowserRouter>
+          </AuthProvider>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
