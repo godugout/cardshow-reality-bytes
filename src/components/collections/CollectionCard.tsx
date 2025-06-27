@@ -45,7 +45,7 @@ const CollectionCard = ({ collection }: CollectionCardProps) => {
   };
 
   const visibilityColors = {
-    public: 'bg-green-500/20 text-green-400 border-green-500/30',
+    public: 'bg-success-500/20 text-success-400 border-success-500/30',
     private: 'bg-gray-500/20 text-gray-400 border-gray-500/30',
     shared: 'bg-blue-500/20 text-blue-400 border-blue-500/30'
   };
@@ -76,7 +76,7 @@ const CollectionCard = ({ collection }: CollectionCardProps) => {
                 {collection.visibility}
               </Badge>
               {collection.is_featured && (
-                <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">
+                <Badge className="bg-accent-500/20 text-accent-400 border-accent-500/30">
                   <Star className="w-3 h-3 mr-1" />
                   Featured
                 </Badge>

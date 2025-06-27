@@ -61,7 +61,7 @@ const CollectionGrid = () => {
         {user && (
           <Button 
             onClick={() => setShowCreateDialog(true)}
-            className="bg-[#00C851] hover:bg-[#00a844] text-white"
+            className="bg-success hover:bg-success-600 text-white"
           >
             <Plus className="w-4 h-4 mr-2" />
             Create Collection
@@ -109,7 +109,7 @@ const CollectionGrid = () => {
           {user && (
             <Button 
               onClick={() => setShowCreateDialog(true)}
-              className="bg-[#00C851] hover:bg-[#00a844] text-white mt-4"
+              className="bg-success hover:bg-success-600 text-white mt-4"
             >
               Create Your First Collection
             </Button>

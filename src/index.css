@@ -16,7 +16,7 @@
     --popover: 255 255 255;
     --popover-foreground: 35 38 47;
 
-    --primary: 255 92 2; /* #ff5c02 - CDG Primary Orange */
+    --primary: 232 116 74; /* #e8744a - Updated softer orange */
     --primary-foreground: 255 255 255;
 
     --secondary: 77 0 255; /* #4d00ff - CDG Secondary Purple */
@@ -33,18 +33,18 @@
 
     --border: 210 210 210; /* #d2d2d2 - CDG Neutral 200 */
     --input: 210 210 210;
-    --ring: 255 92 2; /* Primary orange for focus rings */
+    --ring: 232 116 74; /* Updated softer orange for focus rings */
 
     --radius: 24px; /* CDG uses 24px border radius */
 
     --sidebar-background: 255 255 255;
     --sidebar-foreground: 35 38 47;
-    --sidebar-primary: 255 92 2;
+    --sidebar-primary: 232 116 74; /* Updated softer orange */
     --sidebar-primary-foreground: 255 255 255;
     --sidebar-accent: 232 232 232;
     --sidebar-accent-foreground: 35 38 47;
     --sidebar-border: 210 210 210;
-    --sidebar-ring: 255 92 2;
+    --sidebar-ring: 232 116 74; /* Updated softer orange */
   }
 
   .dark {
@@ -57,7 +57,7 @@
     --popover: 51 51 51;
     --popover-foreground: 255 255 255;
 
-    --primary: 255 92 2; /* Keep primary orange in dark mode */
+    --primary: 232 116 74; /* Keep softer orange in dark mode */
     --primary-foreground: 255 255 255;
 
     --secondary: 77 0 255; /* Keep secondary purple in dark mode */
@@ -74,16 +74,16 @@
 
     --border: 74 74 74;
     --input: 74 74 74;
-    --ring: 255 92 2;
+    --ring: 232 116 74; /* Updated softer orange */
 
     --sidebar-background: 51 51 51;
     --sidebar-foreground: 255 255 255;
-    --sidebar-primary: 255 92 2;
+    --sidebar-primary: 232 116 74; /* Updated softer orange */
     --sidebar-primary-foreground: 255 255 255;
     --sidebar-accent: 74 74 74;
     --sidebar-accent-foreground: 255 255 255;
     --sidebar-border: 74 74 74;
-    --sidebar-ring: 255 92 2;
+    --sidebar-ring: 232 116 74; /* Updated softer orange */
   }
 }
 
@@ -174,7 +174,7 @@
     @apply bg-white rounded-3xl shadow-lg border border-neutral-200 p-6;
   }
 
-  /* CDG Button Variants */
+  /* CDG Button Variants - Updated with softer colors */
   .cdg-button-primary {
     @apply bg-primary hover:bg-primary-600 text-white rounded-2xl px-6 py-3 transition-colors;
   }

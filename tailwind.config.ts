@@ -24,19 +24,19 @@ export default {
 				'space-grotesk': ['Space Grotesk', 'monospace'],
 			},
 			colors: {
-				// CDG Primary Colors
+				// CDG Primary Colors - Updated to softer orange
 				primary: {
-					50: '#fff4f0',
-					100: '#ffc9ab',
-					200: '#ff9256',
-					300: '#ff5c02',
-					400: '#ff5c02',
-					500: '#ff5c02',
-					600: '#c74700',
-					700: '#8d3200',
-					800: '#5c2100',
-					900: '#2e1100',
-					DEFAULT: '#ff5c02',
+					50: '#fef7f3',
+					100: '#fde4d3', 
+					200: '#fbc5a6',
+					300: '#f69d6e',
+					400: '#e8744a', // Updated main primary color
+					500: '#e8744a',
+					600: '#c85a38',
+					700: '#a3472a',
+					800: '#7d3520',
+					900: '#5c2616',
+					DEFAULT: '#e8744a',
 					foreground: '#ffffff'
 				},
 				// CDG Secondary Colors
@@ -69,22 +69,31 @@ export default {
 					950: '#1a1a1a',
 					DEFAULT: '#333333',
 				},
-				// CDG Feedback Colors
+				// CDG Feedback Colors - Updated to softer tones
 				success: {
 					50: '#f0fdf4',
-					100: '#84ebb4',
-					500: '#1fc16b',
-					600: '#16a085',
-					DEFAULT: '#1fc16b',
+					100: '#bbf7d0',
+					500: '#22c55e', // Updated to softer green
+					600: '#16a34a',
+					DEFAULT: '#22c55e',
 					foreground: '#ffffff'
 				},
 				warning: {
 					50: '#fffbeb',
-					100: '#ffdb43',
-					500: '#dfb400',
-					600: '#ca8a04',
-					DEFAULT: '#ffdb43',
-					foreground: '#000000'
+					100: '#fef3c7',
+					500: '#f59e0b', // Updated to gold/amber
+					600: '#d97706',
+					DEFAULT: '#f59e0b',
+					foreground: '#ffffff'
+				},
+				// New accent color for featured items
+				accent: {
+					50: '#f0fdfa',
+					100: '#ccfbf1',
+					500: '#14b8a6', // Teal for featured badges
+					600: '#0d9488',
+					DEFAULT: '#14b8a6',
+					foreground: '#ffffff'
 				},
 				destructive: {
 					50: '#fef2f2',
@@ -111,10 +120,6 @@ export default {
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
 					foreground: 'hsl(var(--muted-foreground))'
-				},
-				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
