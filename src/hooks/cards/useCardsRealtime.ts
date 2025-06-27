@@ -1,8 +1,13 @@
 
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 export const useCardsRealtime = (refetch: () => void) => {
+  // Memoize the refetch callback to prevent re-subscriptions
+  const memoizedRefetch = useCallback(() => {
+    refetch();
+  }, [refetch]);
+
   useEffect(() => {
     const channel = supabase
       .channel('cards-changes')
@@ -15,13 +20,17 @@ export const useCardsRealtime = (refetch: () => void) => {
           filter: 'is_public=eq.true'
         },
         () => {
-          refetch();
+          memoizedRefetch();
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === 'SUBSCRIPTION_ERROR') {
+          console.error('Failed to subscribe to cards realtime updates');
+        }
+      });
 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [refetch]);
+  }, []); // Remove refetch from dependencies to prevent re-subscriptions
 };
