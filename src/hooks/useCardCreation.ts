@@ -192,12 +192,15 @@ export const useCardCreation = () => {
 
       if (error) throw error;
 
+      // Safely handle template_data - ensure it's an object before spreading
+      const templateData = data.template_data && typeof data.template_data === 'object' ? data.template_data : {};
+
       setCardData(prev => ({
         ...prev,
         templateId: data.id,
         designConfig: {
           ...prev.designConfig,
-          ...data.template_data,
+          ...templateData,
         }
       }));
 
