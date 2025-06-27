@@ -182,7 +182,7 @@ const MarketplaceFilters = ({
                 </Label>
                 <Select value={selectedCondition} onValueChange={(value) => {
                   setSelectedCondition(value);
-                  onFiltersChange({ condition: value || undefined });
+                  onFiltersChange({ condition: value ? [value] : undefined });
                 }}>
                   <SelectTrigger id="condition-select">
                     <SelectValue placeholder="Any Condition" />
@@ -205,7 +205,7 @@ const MarketplaceFilters = ({
                   Listing Type
                 </Label>
                 <Select onValueChange={(value) => {
-                  onFiltersChange({ listing_type: value || undefined });
+                  onFiltersChange({ listing_type: value ? [value] : undefined });
                 }}>
                   <SelectTrigger id="listing-type-select">
                     <SelectValue placeholder="Any Type" />

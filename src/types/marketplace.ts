@@ -28,6 +28,7 @@ export interface ListingFilters {
   search?: string;
   min_price?: number;
   max_price?: number;
+  rarity?: string;
   condition?: string[];
   listing_type?: string[];
   location?: string;
