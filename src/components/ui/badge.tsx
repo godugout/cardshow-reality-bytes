@@ -5,23 +5,22 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-lg px-3 py-1 font-open-sans font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
     variants: {
       variant: {
-        default: "border-transparent bg-primary text-white hover:bg-primary-600",
-        secondary: "border-transparent bg-neutral-100 text-neutral-900 hover:bg-neutral-200",
-        destructive: "border-transparent bg-destructive text-white hover:bg-destructive/90",
-        success: "border-transparent bg-success text-white hover:bg-success-600",
-        warning: "border-transparent bg-neutral-800 text-white hover:bg-neutral-700",
-        accent: "border-transparent bg-accent text-white hover:bg-accent-600",
-        outline: "text-neutral-700 border border-neutral-300 hover:bg-neutral-50",
-        neutral: "border-transparent bg-neutral-200 text-neutral-800 hover:bg-neutral-300",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        success: "bg-success text-success-foreground hover:bg-success/90",
+        warning: "bg-warning text-warning-foreground hover:bg-warning/90",
+        outline: "border border-border text-foreground hover:bg-muted",
+        neutral: "bg-muted text-muted-foreground hover:bg-muted/80",
       },
       size: {
-        default: "text-caption-2-bold",
+        default: "text-xs px-3 py-1",
         sm: "text-xs px-2 py-0.5",
-        lg: "text-caption-bold px-4 py-2",
+        lg: "text-sm px-4 py-1.5",
       },
     },
     defaultVariants: {

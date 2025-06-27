@@ -2,47 +2,21 @@
 import { useState } from 'react';
 import Header from '@/components/Header';
 import MarketplaceGrid from '@/components/marketplace/MarketplaceGrid';
-import MarketplaceFilters from '@/components/marketplace/filters/MarketplaceFilters';
 import type { ListingFilters } from '@/types/marketplace';
 
 const Marketplace = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('newest');
-  
-  const handleFiltersChange = (filters: Partial<ListingFilters>) => {
-    // Handle filter changes here if needed
-    console.log('Filters changed:', filters);
-  };
-
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-background">
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#00C851] to-[#00A543] bg-clip-text text-transparent">
-              Marketplace
-            </h1>
-            <p className="text-gray-400 text-lg">
-              Discover and trade premium digital cards
-            </p>
-          </div>
+      <div className="cdg-container py-8">
+        <div className="mb-8">
+          <h1 className="cdg-headline-1 mb-4">Marketplace</h1>
+          <p className="cdg-body-1 text-muted-foreground">
+            Discover and trade premium digital cards from verified creators
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <div className="lg:col-span-1">
-            <MarketplaceFilters
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              sortBy={sortBy}
-              setSortBy={setSortBy}
-              onFiltersChange={handleFiltersChange}
-            />
-          </div>
-          <div className="lg:col-span-3">
-            <MarketplaceGrid />
-          </div>
-        </div>
+        <MarketplaceGrid />
       </div>
     </div>
   );

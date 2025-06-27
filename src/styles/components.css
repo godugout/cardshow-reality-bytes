@@ -1,44 +1,92 @@
 
-/* CDG Component Styles */
+/* Cardshow Component Styles - Clean & Modern */
 
-/* Card Styles */
+/* Card Components */
 .cdg-card {
-  @apply bg-white rounded-2xl shadow-sm border border-neutral-200 p-6;
+  @apply bg-card border border-border rounded-lg shadow-sm p-6;
 }
 
 .cdg-card-elevated {
-  @apply bg-white rounded-2xl shadow-lg border border-neutral-200 p-6;
+  @apply bg-card border border-border rounded-lg shadow-md p-6;
 }
 
-/* Button Variants - Updated with refined border radius */
+/* Button System */
 .cdg-button-primary {
-  @apply bg-primary hover:bg-primary-600 text-white rounded-xl px-6 py-3 transition-colors;
+  @apply bg-primary hover:bg-primary/90 text-primary-foreground rounded-md px-4 py-2 transition-colors;
 }
 
 .cdg-button-secondary {
-  @apply bg-secondary hover:bg-secondary-600 text-white rounded-xl px-6 py-3 transition-colors;
+  @apply bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-md px-4 py-2 transition-colors;
 }
 
 .cdg-button-outline {
-  @apply border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-xl px-6 py-3 transition-colors;
+  @apply border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-md px-4 py-2 transition-colors;
 }
 
 /* Form Elements */
 .cdg-input {
-  @apply rounded-lg border-2 border-neutral-200 focus:border-primary;
+  @apply rounded-md border-2 border-input bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20;
 }
 
-/* Badge and Pills */
+/* Badge System */
 .cdg-badge {
-  @apply rounded-lg px-3 py-1;
+  @apply rounded-full px-3 py-1 text-sm font-medium;
 }
 
-.cdg-pill {
-  @apply rounded-full px-3 py-1;
+.cdg-badge-primary {
+  @apply bg-primary text-primary-foreground;
 }
 
-/* Dark mode adjustments for components */
-.dark .cdg-card,
-.dark .cdg-card-elevated {
-  @apply bg-neutral-900 border-neutral-700;
+.cdg-badge-secondary {
+  @apply bg-secondary text-secondary-foreground;
+}
+
+.cdg-badge-success {
+  @apply bg-success text-success-foreground;
+}
+
+.cdg-badge-warning {
+  @apply bg-warning text-warning-foreground;
+}
+
+.cdg-badge-outline {
+  @apply border border-border text-foreground hover:bg-muted;
+}
+
+/* Navigation */
+.cdg-nav-item {
+  @apply px-3 py-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors;
+}
+
+.cdg-nav-item-active {
+  @apply px-3 py-2 rounded-md bg-primary text-primary-foreground;
+}
+
+/* Layout Utilities */
+.cdg-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.cdg-section {
+  @apply py-12 lg:py-16;
+}
+
+.cdg-grid {
+  @apply grid gap-6;
+}
+
+.cdg-grid-cols-1 {
+  @apply grid-cols-1;
+}
+
+.cdg-grid-cols-2 {
+  @apply grid-cols-1 md:grid-cols-2;
+}
+
+.cdg-grid-cols-3 {
+  @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+}
+
+.cdg-grid-cols-4 {
+  @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
 }

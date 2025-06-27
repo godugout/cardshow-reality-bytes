@@ -5,19 +5,20 @@ import CollectionGrid from '@/components/collections/CollectionGrid';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Collections = () => {
-  console.log('Collections page rendering...');
-  
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-background">
       <Header />
-      <div className="container mx-auto px-4 py-8">
+      <div className="cdg-container py-8">
+        <div className="mb-8">
+          <h1 className="cdg-headline-1 mb-4">Collections</h1>
+          <p className="cdg-body-1 text-muted-foreground">
+            Discover and explore amazing card collections from creators around the world
+          </p>
+        </div>
+        
         <Suspense fallback={
           <div className="space-y-6">
-            <div className="flex justify-between items-center">
-              <Skeleton className="h-8 w-48" />
-              <Skeleton className="h-10 w-32" />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="cdg-grid cdg-grid-cols-4">
               {Array.from({ length: 8 }).map((_, i) => (
                 <Skeleton key={i} className="h-64 w-full" />
               ))}

@@ -14,7 +14,7 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { useCollectionMutations } from '@/hooks/useCollections';
 import type { Collection } from '@/types/collection';
-import { Heart, Eye, Users, MoreVertical, Edit, Trash2, Star } from 'lucide-react';
+import { Heart, Eye, Users, MoreVertical, Star } from 'lucide-react';
 
 interface CollectionCardProps {
   collection: Collection;
@@ -45,17 +45,17 @@ const CollectionCard = ({ collection }: CollectionCardProps) => {
   };
 
   const visibilityColors = {
-    public: 'bg-success text-white border-0',
-    private: 'bg-neutral-500 text-white border-0',
-    shared: 'bg-primary text-white border-0'
-  };
+    public: 'success',
+    private: 'neutral',
+    shared: 'default'
+  } as const;
 
   return (
-    <Card className="bg-gray-900 border-gray-700 hover:border-gray-600 transition-all duration-200 group overflow-hidden">
+    <Card className="hover:shadow-md transition-all duration-200 group overflow-hidden">
       <Link to={`/collections/${collection.id}`}>
         <div className="relative">
           {/* Cover Image */}
-          <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden">
+          <div className="aspect-video bg-muted relative overflow-hidden">
             {collection.cover_image_url ? (
               <img
                 src={collection.cover_image_url}
@@ -64,7 +64,7 @@ const CollectionCard = ({ collection }: CollectionCardProps) => {
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <div className="text-4xl font-bold text-gray-600 opacity-50">
+                <div className="text-4xl font-bold text-muted-foreground opacity-50">
                   {collection.title.charAt(0).toUpperCase()}
                 </div>
               </div>
@@ -72,11 +72,11 @@ const CollectionCard = ({ collection }: CollectionCardProps) => {
             
             {/* Overlay Badges */}
             <div className="absolute top-3 left-3 flex gap-2">
-              <Badge className={visibilityColors[collection.visibility]}>
+              <Badge variant={visibilityColors[collection.visibility]}>
                 {collection.visibility}
               </Badge>
               {collection.is_featured && (
-                <Badge className="bg-accent text-white border-0">
+                <Badge variant="warning">
                   <Star className="w-3 h-3 mr-1" />
                   Featured
                 </Badge>
@@ -90,23 +90,19 @@ const CollectionCard = ({ collection }: CollectionCardProps) => {
                   <Button
                     size="sm"
                     variant="secondary"
-                    className="bg-black/50 hover:bg-black/70 text-white border-0"
                     onClick={(e) => e.preventDefault()}
                   >
                     <MoreVertical className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="bg-gray-800 border-gray-700">
-                  <DropdownMenuItem className="text-gray-300 hover:text-white hover:bg-gray-700">
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>
                     <Eye className="w-4 h-4 mr-2" />
                     View Details
                   </DropdownMenuItem>
                   {user && user.id !== collection.user_id && (
-                    <DropdownMenuItem 
-                      className="text-gray-300 hover:text-white hover:bg-gray-700"
-                      onClick={handleFollowToggle}
-                    >
-                      <Heart className={`w-4 h-4 mr-2 ${isFollowing ? 'fill-current text-red-500' : ''}`} />
+                    <DropdownMenuItem onClick={handleFollowToggle}>
+                      <Heart className={`w-4 h-4 mr-2 ${isFollowing ? 'fill-current text-destructive' : ''}`} />
                       {isFollowing ? 'Unfollow' : 'Follow'}
                     </DropdownMenuItem>
                   )}
@@ -118,11 +114,11 @@ const CollectionCard = ({ collection }: CollectionCardProps) => {
           <CardContent className="p-4">
             {/* Title and Description */}
             <div className="mb-3">
-              <h3 className="font-semibold text-white text-lg mb-1 line-clamp-1">
+              <h3 className="font-semibold text-lg mb-1 line-clamp-1">
                 {collection.title}
               </h3>
               {collection.description && (
-                <p className="text-gray-400 text-sm line-clamp-2">
+                <p className="text-muted-foreground text-sm line-clamp-2">
                   {collection.description}
                 </p>
               )}
@@ -132,17 +128,17 @@ const CollectionCard = ({ collection }: CollectionCardProps) => {
             <div className="flex items-center gap-2 mb-3">
               <Avatar className="w-6 h-6">
                 <AvatarImage src={collection.owner?.avatar_url} />
-                <AvatarFallback className="bg-gray-700 text-xs">
+                <AvatarFallback>
                   {collection.owner?.username?.[0]?.toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-gray-400 text-sm">
+              <span className="text-muted-foreground text-sm">
                 {collection.owner?.username || 'Unknown'}
               </span>
             </div>
 
             {/* Stats */}
-            <div className="flex items-center justify-between text-sm text-gray-400">
+            <div className="flex items-center justify-between text-sm text-muted-foreground">
               <div className="flex items-center gap-4">
                 <span className="flex items-center gap-1">
                   <Eye className="w-4 h-4" />
@@ -159,11 +155,7 @@ const CollectionCard = ({ collection }: CollectionCardProps) => {
                   size="sm"
                   variant="ghost"
                   onClick={handleFollowToggle}
-                  className={`h-7 px-2 ${
-                    isFollowing 
-                      ? 'text-red-400 hover:text-red-300' 
-                      : 'text-gray-400 hover:text-white'
-                  }`}
+                  className={isFollowing ? 'text-destructive hover:text-destructive' : ''}
                 >
                   <Heart className={`w-4 h-4 ${isFollowing ? 'fill-current' : ''}`} />
                 </Button>

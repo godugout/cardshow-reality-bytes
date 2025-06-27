@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -24,86 +25,60 @@ export default {
 				'space-grotesk': ['Space Grotesk', 'monospace'],
 			},
 			colors: {
-				// CDG Primary Colors - Updated to softer orange
+				// Modern Professional Palette
 				primary: {
-					50: '#fef7f3',
-					100: '#fde4d3', 
-					200: '#fbc5a6',
-					300: '#f69d6e',
-					400: '#e8744a', // Updated main primary color
-					500: '#e8744a',
-					600: '#c85a38',
-					700: '#a3472a',
-					800: '#7d3520',
-					900: '#5c2616',
-					DEFAULT: '#e8744a',
+					50: '#eff6ff',
+					100: '#dbeafe',
+					200: '#bfdbfe',
+					300: '#93c5fd',
+					400: '#60a5fa',
+					500: '#3b82f6', // Main primary
+					600: '#2563eb',
+					700: '#1d4ed8',
+					800: '#1e40af',
+					900: '#1e3a8a',
+					DEFAULT: '#3b82f6',
 					foreground: '#ffffff'
 				},
-				// CDG Secondary Colors
 				secondary: {
-					50: '#f4f1ff',
-					100: '#c4aaff',
-					200: '#8855ff',
-					300: '#4d00ff',
-					400: '#4d00ff',
-					500: '#4d00ff',
-					600: '#3c00c6',
-					700: '#2a008c',
-					800: '#1a0059',
-					900: '#0d002c',
-					DEFAULT: '#4d00ff',
+					50: '#f5f3ff',
+					100: '#ede9fe',
+					200: '#ddd6fe',
+					300: '#c4b5fd',
+					400: '#a78bfa',
+					500: '#8b5cf6', // Main secondary
+					600: '#7c3aed',
+					700: '#6d28d9',
+					800: '#5b21b6',
+					900: '#4c1d95',
+					DEFAULT: '#8b5cf6',
 					foreground: '#ffffff'
 				},
-				// CDG Neutral Colors
-				neutral: {
-					50: '#ffffff',
-					100: '#e8e8e8',
-					200: '#d2d2d2',
-					300: '#bbbbbb',
-					400: '#a4a4a4',
-					500: '#8e8e8e',
-					600: '#777777',
-					700: '#606060',
-					800: '#4a4a4a',
-					900: '#333333',
-					950: '#1a1a1a',
-					DEFAULT: '#333333',
-				},
-				// CDG Feedback Colors - Updated to softer tones
 				success: {
-					50: '#f0fdf4',
-					100: '#bbf7d0',
-					500: '#22c55e', // Updated to softer green
-					600: '#16a34a',
-					DEFAULT: '#22c55e',
+					50: '#ecfdf5',
+					100: '#d1fae5',
+					500: '#10b981', // Main success
+					600: '#059669',
+					DEFAULT: '#10b981',
 					foreground: '#ffffff'
 				},
 				warning: {
 					50: '#fffbeb',
 					100: '#fef3c7',
-					500: '#f59e0b', // Updated to gold/amber
+					500: '#f59e0b', // Main warning
 					600: '#d97706',
 					DEFAULT: '#f59e0b',
 					foreground: '#ffffff'
 				},
-				// New accent color for featured items
-				accent: {
-					50: '#f0fdfa',
-					100: '#ccfbf1',
-					500: '#14b8a6', // Teal for featured badges
-					600: '#0d9488',
-					DEFAULT: '#14b8a6',
-					foreground: '#ffffff'
-				},
 				destructive: {
 					50: '#fef2f2',
-					100: '#fb3748',
-					500: '#d00416',
-					600: '#b91c1c',
-					DEFAULT: '#fb3748',
+					100: '#fecaca',
+					500: '#ef4444', // Main destructive
+					600: '#dc2626',
+					DEFAULT: '#ef4444',
 					foreground: '#ffffff'
 				},
-				// Legacy color mappings for existing components
+				// Design system colors
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -121,6 +96,10 @@ export default {
 					DEFAULT: 'hsl(var(--muted))',
 					foreground: 'hsl(var(--muted-foreground))'
 				},
+				accent: {
+					DEFAULT: 'hsl(var(--accent))',
+					foreground: 'hsl(var(--accent-foreground))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -131,26 +110,6 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
-			},
-			fontSize: {
-				// CDG Typography System - Updated for Premium Collectibles Feel
-				'hero': ['96px', { lineHeight: '96px', letterSpacing: '-0.02em', fontWeight: '800' }],
-				'headline-1': ['64px', { lineHeight: '64px', letterSpacing: '-0.02em', fontWeight: '700' }],
-				'headline-2': ['48px', { lineHeight: '56px', letterSpacing: '-0.02em', fontWeight: '600' }],
-				'headline-3': ['40px', { lineHeight: '48px', letterSpacing: '-0.01em', fontWeight: '700' }],
-				'headline-4': ['32px', { lineHeight: '40px', letterSpacing: '-0.01em', fontWeight: '600' }],
-				'body-1': ['24px', { lineHeight: '32px', letterSpacing: '-0.01em', fontWeight: '400' }],
-				'body-1-bold': ['24px', { lineHeight: '32px', fontWeight: '600' }],
-				'body-2': ['16px', { lineHeight: '24px', fontWeight: '400' }],
-				'body-2-bold': ['16px', { lineHeight: '24px', fontWeight: '500' }],
-				'caption': ['14px', { lineHeight: '24px', fontWeight: '400' }],
-				'caption-bold': ['14px', { lineHeight: '24px', fontWeight: '500' }],
-				'caption-2': ['12px', { lineHeight: '20px', fontWeight: '400' }],
-				'caption-2-bold': ['12px', { lineHeight: '20px', fontWeight: '500' }],
-				'hairline-1': ['16px', { lineHeight: '16px', fontWeight: '600', textTransform: 'uppercase' }],
-				'hairline-2': ['12px', { lineHeight: '12px', fontWeight: '500', textTransform: 'uppercase' }],
-				'button-1': ['18px', { lineHeight: '16px', fontWeight: '600' }],
-				'button-2': ['14px', { lineHeight: '16px', fontWeight: '500' }],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

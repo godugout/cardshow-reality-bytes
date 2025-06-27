@@ -24,7 +24,7 @@ const MarketplaceGrid = () => {
       setFilters(prev => ({ ...prev, search: searchTerm || undefined }));
     }, 500);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, [searchTerm]);
 
   const handleFiltersChange = (newFilters: Partial<ListingFilters>) => {
@@ -34,16 +34,15 @@ const MarketplaceGrid = () => {
   if (error) {
     return (
       <div className="text-center py-8">
-        <p className="text-red-500">Error loading marketplace: {error.message}</p>
+        <p className="text-destructive">Error loading marketplace: {error.message}</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      {/* Navigation Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-gray-900">
+        <TabsList className="grid w-full grid-cols-3 bg-muted">
           <TabsTrigger value="listings" className="flex items-center gap-2">
             <Search className="w-4 h-4" />
             Marketplace
@@ -59,7 +58,6 @@ const MarketplaceGrid = () => {
         </TabsList>
 
         <TabsContent value="listings" className="space-y-6">
-          {/* Search and Filters */}
           <MarketplaceFilters
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -68,10 +66,8 @@ const MarketplaceGrid = () => {
             onFiltersChange={handleFiltersChange}
           />
 
-          {/* Quick Filters */}
           <QuickFilters onFilterChange={handleFiltersChange} />
 
-          {/* Results */}
           <MarketplaceResults listings={listings} isLoading={isLoading} />
         </TabsContent>
 
