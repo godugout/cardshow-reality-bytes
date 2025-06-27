@@ -32,32 +32,34 @@ const Header = () => {
   const isAdminPage = location.pathname.startsWith('/admin');
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur border-b border-neutral-200 shadow-sm">
+    <header className="sticky top-0 z-50 w-full bg-neutral-950/95 backdrop-blur border-b border-neutral-800 shadow-lg">
       <div className="container mx-auto px-6">
         <div className="flex h-20 items-center justify-between">
           <Link to="/" className="flex items-center space-x-3">
-            <div className="p-2 bg-gradient-to-br from-primary to-primary-600 rounded-2xl">
-              <Sparkles className="h-6 w-6 text-white" />
+            <div className="p-2.5 bg-gradient-to-br from-primary to-primary-600 rounded-2xl shadow-lg">
+              <Sparkles className="h-7 w-7 text-white" />
             </div>
-            <span className="cdg-headline-4 text-neutral-900">Cardshow</span>
+            <span className="font-raleway text-headline-4 font-black text-white tracking-tight">
+              Cardshow
+            </span>
             {isAdminPage && (
-              <div className="flex items-center gap-2 ml-4 px-3 py-1.5 bg-warning-50 rounded-xl border border-warning-200">
-                <Shield className="h-4 w-4 text-warning-600" />
-                <span className="cdg-caption-bold text-warning-700">Admin</span>
+              <div className="flex items-center gap-2 ml-4 px-3 py-1.5 bg-warning-100/10 rounded-xl border border-warning-500/30">
+                <Shield className="h-4 w-4 text-warning-400" />
+                <span className="font-poppins text-caption-bold text-warning-300">Admin</span>
               </div>
             )}
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-2">
+          <nav className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => (
               <Link key={item.href} to={item.href}>
                 <Button 
                   variant={isActive(item.href) ? "default" : "ghost"} 
                   size="sm"
                   className={isActive(item.href) 
-                    ? "bg-primary hover:bg-primary-600 text-white" 
-                    : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"
+                    ? "bg-primary hover:bg-primary-600 text-white font-raleway font-bold" 
+                    : "text-neutral-300 hover:text-white hover:bg-neutral-800/50 font-raleway font-semibold"
                   }
                 >
                   {item.label}
@@ -73,8 +75,8 @@ const Header = () => {
                   size="sm"
                   className={
                     isActive(item.href) 
-                      ? "bg-warning-500 hover:bg-warning-600 text-white border-warning-500" 
-                      : "text-warning-600 hover:text-warning-700 border-warning-300 hover:bg-warning-50"
+                      ? "bg-warning-500 hover:bg-warning-600 text-white border-warning-500 font-raleway font-bold" 
+                      : "text-warning-400 hover:text-warning-300 border-warning-500/50 hover:bg-warning-500/10 font-raleway font-semibold"
                   }
                 >
                   <Shield className="w-3 h-3 mr-1" />
@@ -90,7 +92,7 @@ const Header = () => {
               <UserMenu />
             ) : (
               <Link to="/auth">
-                <Button>
+                <Button className="font-raleway font-bold">
                   Sign In
                 </Button>
               </Link>
@@ -100,7 +102,7 @@ const Header = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="md:hidden text-neutral-600"
+              className="md:hidden text-neutral-300 hover:text-white hover:bg-neutral-800/50"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -110,15 +112,15 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-6 space-y-2 border-t border-neutral-200 bg-white">
+          <nav className="md:hidden py-6 space-y-2 border-t border-neutral-800 bg-neutral-950/95">
             {navItems.map((item) => (
               <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
                 <Button 
                   variant={isActive(item.href) ? "default" : "ghost"} 
-                  className={`w-full justify-start ${
+                  className={`w-full justify-start font-raleway font-semibold ${
                     isActive(item.href) 
                       ? "bg-primary hover:bg-primary-600 text-white" 
-                      : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"
+                      : "text-neutral-300 hover:text-white hover:bg-neutral-800/50"
                   }`}
                   size="sm"
                 >
@@ -132,10 +134,10 @@ const Header = () => {
               <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
                 <Button 
                   variant={isActive(item.href) ? "default" : "outline"} 
-                  className={`w-full justify-start ${
+                  className={`w-full justify-start font-raleway font-semibold ${
                     isActive(item.href) 
                       ? "bg-warning-500 hover:bg-warning-600 text-white border-warning-500" 
-                      : "text-warning-600 hover:text-warning-700 border-warning-300 hover:bg-warning-50"
+                      : "text-warning-400 hover:text-warning-300 border-warning-500/50 hover:bg-warning-500/10"
                   }`}
                   size="sm"
                 >
