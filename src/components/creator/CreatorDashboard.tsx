@@ -1,10 +1,10 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { useCards, useCardStats } from '@/hooks/useCards';
+import { useCards } from '@/hooks/useCards';
+import { useCardStats } from '@/hooks/useCardStats';
 import { useAuth } from '@/hooks/useAuth';
 import CardPhysics from '@/components/cards/CardPhysics';
 import SpatialLayout from '@/components/ui/SpatialLayout';
@@ -22,7 +22,7 @@ import {
 export const CreatorDashboard = () => {
   const { user } = useAuth();
   const { cards, isLoading } = useCards({ creator_id: user?.id });
-  const { stats } = useCardStats(user?.id);
+  const { data: stats } = useCardStats(user?.id);
   const [selectedGoal, setSelectedGoal] = useState<'showcase' | 'create' | 'trade'>('create');
 
   const goals = [
