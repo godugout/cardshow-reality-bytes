@@ -1,0 +1,245 @@
+
+/* Cardshow Card Physics Design System */
+/* Treats digital cards as physical objects with consistent spatial relationships */
+
+@layer base {
+  :root {
+    /* Physical Card Dimensions - Based on real trading card proportions */
+    --card-width-base: 2.5in; /* 63.5mm standard trading card width */
+    --card-height-base: 3.5in; /* 88.9mm standard trading card height */
+    --card-aspect-ratio: 0.714; /* height/width ratio */
+    --card-thickness: 0.012in; /* ~0.3mm card thickness */
+    --card-corner-radius: 0.125in; /* ~3mm corner radius */
+    
+    /* Digital Card Scale Variations */
+    --card-scale-xs: 0.3; /* 48px wide */
+    --card-scale-sm: 0.5; /* 80px wide */
+    --card-scale-md: 0.8; /* 128px wide */
+    --card-scale-lg: 1.0; /* 160px wide */
+    --card-scale-xl: 1.5; /* 240px wide */
+    --card-scale-xxl: 2.0; /* 320px wide */
+    
+    /* Physical Lighting System */
+    --light-ambient: rgba(255, 255, 255, 0.1);
+    --light-key: rgba(255, 255, 255, 0.8);
+    --light-fill: rgba(255, 255, 255, 0.3);
+    --light-rim: rgba(255, 255, 255, 0.6);
+    
+    /* Shadow System - Simulates real card shadows */
+    --shadow-card-rest: 
+      0 1px 3px rgba(0, 0, 0, 0.12),
+      0 1px 2px rgba(0, 0, 0, 0.24);
+    --shadow-card-hover: 
+      0 3px 6px rgba(0, 0, 0, 0.16),
+      0 3px 6px rgba(0, 0, 0, 0.23);
+    --shadow-card-active: 
+      0 1px 3px rgba(0, 0, 0, 0.12),
+      0 1px 2px rgba(0, 0, 0, 0.24);
+    --shadow-card-floating: 
+      0 10px 20px rgba(0, 0, 0, 0.19),
+      0 6px 6px rgba(0, 0, 0, 0.23);
+    --shadow-card-premium: 
+      0 14px 28px rgba(0, 0, 0, 0.25),
+      0 10px 10px rgba(0, 0, 0, 0.22);
+    
+    /* Surface Reflectance - Based on card finish types */
+    --surface-matte: 0.1;
+    --surface-satin: 0.3;
+    --surface-gloss: 0.6;
+    --surface-foil: 0.9;
+    --surface-holographic: 1.0;
+    
+    /* Spatial Depth Layers */
+    --depth-flat: 0px;
+    --depth-raised: 2px;
+    --depth-floating: 8px;
+    --depth-elevated: 16px;
+    --depth-modal: 24px;
+  }
+  
+  /* Physical Card Base Classes */
+  .card-physical {
+    position: relative;
+    border-radius: calc(var(--card-corner-radius) * var(--card-scale, 1));
+    aspect-ratio: var(--card-aspect-ratio);
+    transform-style: preserve-3d;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  .card-physical::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--light-key) 0%,
+      transparent 30%,
+      transparent 70%,
+      var(--light-fill) 100%
+    );
+    opacity: 0.1;
+    pointer-events: none;
+  }
+  
+  .card-physical::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+  }
+  
+  /* Card Size Variations */
+  .card-xs { 
+    width: calc(160px * var(--card-scale-xs));
+    box-shadow: var(--shadow-card-rest);
+  }
+  .card-sm { 
+    width: calc(160px * var(--card-scale-sm));
+    box-shadow: var(--shadow-card-rest);
+  }
+  .card-md { 
+    width: calc(160px * var(--card-scale-md));
+    box-shadow: var(--shadow-card-hover);
+  }
+  .card-lg { 
+    width: calc(160px * var(--card-scale-lg));
+    box-shadow: var(--shadow-card-hover);
+  }
+  .card-xl { 
+    width: calc(160px * var(--card-scale-xl));
+    box-shadow: var(--shadow-card-floating);
+  }
+  .card-xxl { 
+    width: calc(160px * var(--card-scale-xxl));
+    box-shadow: var(--shadow-card-floating);
+  }
+  
+  /* Physical States */
+  .card-physical.card-resting {
+    transform: translateZ(var(--depth-flat));
+    box-shadow: var(--shadow-card-rest);
+  }
+  
+  .card-physical.card-hovered {
+    transform: translateZ(var(--depth-raised)) rotateX(2deg) rotateY(2deg);
+    box-shadow: var(--shadow-card-hover);
+  }
+  
+  .card-physical.card-active {
+    transform: translateZ(var(--depth-flat)) scale(0.98);
+    box-shadow: var(--shadow-card-active);
+  }
+  
+  .card-physical.card-floating {
+    transform: translateZ(var(--depth-floating));
+    box-shadow: var(--shadow-card-floating);
+    animation: cardFloat 3s ease-in-out infinite;
+  }
+  
+  .card-physical.card-premium {
+    transform: translateZ(var(--depth-elevated));
+    box-shadow: var(--shadow-card-premium);
+  }
+  
+  /* Surface Finishes */
+  .card-surface-matte {
+    --surface-reflectance: var(--surface-matte);
+  }
+  
+  .card-surface-satin {
+    --surface-reflectance: var(--surface-satin);
+  }
+  
+  .card-surface-gloss {
+    --surface-reflectance: var(--surface-gloss);
+  }
+  
+  .card-surface-foil {
+    --surface-reflectance: var(--surface-foil);
+    background: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0.1)
+    );
+  }
+  
+  .card-surface-holographic {
+    --surface-reflectance: var(--surface-holographic);
+    background: linear-gradient(
+      45deg,
+      hsl(0, 100%, 70%),
+      hsl(60, 100%, 70%),
+      hsl(120, 100%, 70%),
+      hsl(180, 100%, 70%),
+      hsl(240, 100%, 70%),
+      hsl(300, 100%, 70%)
+    );
+    background-size: 200% 200%;
+    animation: holographicShift 3s linear infinite;
+  }
+  
+  /* Rarity-Based Physical Properties */
+  .card-rarity-common {
+    @apply card-surface-matte;
+  }
+  
+  .card-rarity-uncommon {
+    @apply card-surface-satin;
+  }
+  
+  .card-rarity-rare {
+    @apply card-surface-gloss;
+  }
+  
+  .card-rarity-epic {
+    @apply card-surface-foil;
+  }
+  
+  .card-rarity-legendary,
+  .card-rarity-mythic {
+    @apply card-surface-holographic;
+  }
+  
+  /* Physics Animations */
+  @keyframes cardFloat {
+    0%, 100% { 
+      transform: translateZ(var(--depth-floating)) translateY(0px) rotateX(0deg);
+    }
+    50% { 
+      transform: translateZ(var(--depth-floating)) translateY(-4px) rotateX(1deg);
+    }
+  }
+  
+  @keyframes holographicShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Interactive Physics */
+  .card-physical:hover {
+    @apply card-hovered;
+  }
+  
+  .card-physical:active {
+    @apply card-active;
+  }
+  
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .card-physical,
+    .card-physical::before,
+    .card-physical::after {
+      transition: none;
+      animation: none;
+    }
+    
+    .card-physical.card-hovered {
+      transform: none;
+    }
+  }
+}
