@@ -59,9 +59,16 @@ const EnhancedMarketplaceCard = ({
     return colors[rarity as keyof typeof colors] || 'border-gray-500';
   };
 
+  // Create a Card-compatible object for InteractiveCard
+  const cardForInteraction = listing.card ? {
+    ...listing.card,
+    creator_id: 'marketplace-card', // Default value for marketplace cards
+    title: listing.card.title
+  } : undefined;
+
   return (
     <InteractiveCard
-      card={listing.card}
+      card={cardForInteraction}
       size="md"
       onCardTap={onView}
       onCardDoubleTap={isAuction ? undefined : handleQuickBuy}
