@@ -51,19 +51,26 @@ export const useTheme = (): UseThemeReturn => {
   // Apply theme and mode to document
   useEffect(() => {
     const root = document.documentElement;
+    
+    // Remove all existing theme and mode classes
+    root.classList.remove('dark');
+    root.removeAttribute('data-theme');
+    
+    // Apply new theme and mode
     root.setAttribute('data-theme', theme);
-    root.setAttribute('data-mode', mode);
-
-    // Also update Tailwind's dark mode class for compatibility
+    
     if (mode === 'dark') {
       root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
     }
 
     // Save preferences
     localStorage.setItem('cardshow-theme', theme);
     localStorage.setItem('cardshow-mode', mode);
+    
+    // Force a small delay to ensure CSS variables update
+    setTimeout(() => {
+      document.body.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+    }, 10);
   }, [theme, mode]);
 
   const setTheme = (newTheme: Theme) => {

@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    /* Light theme colors */
+    /* Default Classic Red Theme */
     --background: 255 255 255;
     --foreground: 15 23 42;
     --card: 255 255 255;
@@ -50,20 +50,37 @@
     --ring: 220 38 38;
   }
 
-  /* Theme variations */
+  /* Royal Blue Theme */
   [data-theme="royal"] {
     --primary: 29 78 216;
     --ring: 29 78 216;
   }
 
+  [data-theme="royal"].dark {
+    --primary: 59 130 246;
+    --ring: 59 130 246;
+  }
+
+  /* Vibrant Orange Theme */
   [data-theme="vibrant"] {
     --primary: 234 88 12;
     --ring: 234 88 12;
   }
 
+  [data-theme="vibrant"].dark {
+    --primary: 251 146 60;
+    --ring: 251 146 60;
+  }
+
+  /* Fresh Green Theme */
   [data-theme="fresh"] {
     --primary: 5 150 105;
     --ring: 5 150 105;
+  }
+
+  [data-theme="fresh"].dark {
+    --primary: 16 185 129;
+    --ring: 16 185 129;
   }
 
   * {
@@ -72,5 +89,6 @@
 
   body {
     @apply bg-background text-foreground;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }

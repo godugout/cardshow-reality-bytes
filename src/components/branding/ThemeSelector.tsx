@@ -20,11 +20,23 @@ const ThemeSelector = () => {
     { id: 'fresh', name: 'Fresh Green', color: '#059669' }
   ] as const;
 
+  const handleThemeChange = (themeId: string) => {
+    setTheme(themeId as any);
+    // Force re-render by triggering a small visual change
+    document.body.style.transition = 'all 0.3s ease';
+  };
+
+  const handleModeChange = (newMode: 'light' | 'dark') => {
+    setMode(newMode);
+    // Force re-render
+    document.body.style.transition = 'all 0.3s ease';
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm">
-          <Palette className="w-4 h-4 mr-2" />
+        <Button variant="ghost" size="sm" className="gap-2">
+          <Palette className="w-4 h-4" />
           Theme
         </Button>
       </DropdownMenuTrigger>
@@ -41,9 +53,9 @@ const ThemeSelector = () => {
           {themes.map((themeOption) => (
             <DropdownMenuItem
               key={themeOption.id}
-              onClick={() => setTheme(themeOption.id as any)}
-              className={`flex items-center gap-3 px-3 py-2 rounded cursor-pointer ${
-                theme === themeOption.id ? 'bg-accent' : ''
+              onClick={() => handleThemeChange(themeOption.id)}
+              className={`flex items-center gap-3 px-3 py-2 rounded cursor-pointer transition-colors ${
+                theme === themeOption.id ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50'
               }`}
             >
               <div 
@@ -63,21 +75,21 @@ const ThemeSelector = () => {
         <DropdownMenuSeparator />
         
         <div className="p-2">
-          <p className="text-xs font-medium px-3 py-1">Appearance</p>
+          <p className="text-xs font-medium px-3 py-1 text-muted-foreground">Appearance</p>
           <div className="grid grid-cols-2 gap-1 mt-1">
             <DropdownMenuItem
-              onClick={() => setMode('light')}
-              className={`flex items-center gap-2 px-3 py-2 rounded cursor-pointer ${
-                mode === 'light' ? 'bg-accent' : ''
+              onClick={() => handleModeChange('light')}
+              className={`flex items-center gap-2 px-3 py-2 rounded cursor-pointer transition-colors ${
+                mode === 'light' ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50'
               }`}
             >
               <Sun className="w-4 h-4" />
               <span className="text-sm">Light</span>
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => setMode('dark')}
-              className={`flex items-center gap-2 px-3 py-2 rounded cursor-pointer ${
-                mode === 'dark' ? 'bg-accent' : ''
+              onClick={() => handleModeChange('dark')}
+              className={`flex items-center gap-2 px-3 py-2 rounded cursor-pointer transition-colors ${
+                mode === 'dark' ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50'
               }`}
             >
               <Moon className="w-4 h-4" />
