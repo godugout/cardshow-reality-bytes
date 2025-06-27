@@ -1,0 +1,90 @@
+
+/* CDG Typography Classes - Premium Collectibles Feel */
+.cdg-hero {
+  @apply font-manrope text-hero text-neutral-900;
+}
+
+.cdg-headline-1 {
+  @apply font-manrope text-headline-1 text-neutral-900;
+}
+
+.cdg-headline-2 {
+  @apply font-manrope text-headline-2 text-neutral-900;
+}
+
+.cdg-headline-3 {
+  @apply font-manrope text-headline-3 text-neutral-900;
+}
+
+.cdg-headline-4 {
+  @apply font-manrope text-headline-4 text-neutral-900;
+}
+
+.cdg-body-1 {
+  @apply font-open-sans text-body-1 text-neutral-900;
+}
+
+.cdg-body-1-bold {
+  @apply font-open-sans text-body-1-bold text-neutral-900;
+}
+
+.cdg-body-2 {
+  @apply font-open-sans text-body-2 text-neutral-900;
+}
+
+.cdg-body-2-bold {
+  @apply font-open-sans text-body-2-bold text-neutral-900;
+}
+
+.cdg-caption {
+  @apply font-open-sans text-caption text-neutral-900;
+}
+
+.cdg-caption-bold {
+  @apply font-open-sans text-caption-bold text-neutral-900;
+}
+
+.cdg-caption-2 {
+  @apply font-space-grotesk text-caption-2 text-neutral-900;
+}
+
+.cdg-caption-2-bold {
+  @apply font-space-grotesk text-caption-2-bold text-neutral-900;
+}
+
+.cdg-hairline-1 {
+  @apply font-space-grotesk text-hairline-1 text-neutral-900;
+}
+
+.cdg-hairline-2 {
+  @apply font-space-grotesk text-hairline-2 text-neutral-900;
+}
+
+.cdg-button-1 {
+  @apply font-manrope text-button-1 text-neutral-900;
+}
+
+.cdg-button-2 {
+  @apply font-manrope text-button-2 text-neutral-900;
+}
+
+/* Dark mode adjustments */
+.dark .cdg-hero,
+.dark .cdg-headline-1,
+.dark .cdg-headline-2,
+.dark .cdg-headline-3,
+.dark .cdg-headline-4,
+.dark .cdg-body-1,
+.dark .cdg-body-1-bold,
+.dark .cdg-body-2,
+.dark .cdg-body-2-bold,
+.dark .cdg-caption,
+.dark .cdg-caption-bold,
+.dark .cdg-caption-2,
+.dark .cdg-caption-2-bold,
+.dark .cdg-hairline-1,
+.dark .cdg-hairline-2,
+.dark .cdg-button-1,
+.dark .cdg-button-2 {
+  @apply text-white;
+}

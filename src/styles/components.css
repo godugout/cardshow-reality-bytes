@@ -1,0 +1,30 @@
+
+/* CDG Component Styles */
+
+/* Card Styles */
+.cdg-card {
+  @apply bg-white rounded-3xl shadow-sm border border-neutral-200 p-6;
+}
+
+.cdg-card-elevated {
+  @apply bg-white rounded-3xl shadow-lg border border-neutral-200 p-6;
+}
+
+/* Button Variants - Updated with softer colors */
+.cdg-button-primary {
+  @apply bg-primary hover:bg-primary-600 text-white rounded-2xl px-6 py-3 transition-colors;
+}
+
+.cdg-button-secondary {
+  @apply bg-secondary hover:bg-secondary-600 text-white rounded-2xl px-6 py-3 transition-colors;
+}
+
+.cdg-button-outline {
+  @apply border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-2xl px-6 py-3 transition-colors;
+}
+
+/* Dark mode adjustments for components */
+.dark .cdg-card,
+.dark .cdg-card-elevated {
+  @apply bg-neutral-900 border-neutral-700;
+}
