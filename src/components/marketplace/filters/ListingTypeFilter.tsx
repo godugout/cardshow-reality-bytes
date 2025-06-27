@@ -17,7 +17,7 @@ const ListingTypeFilter = ({ onListingTypeChange }: ListingTypeFilterProps) => {
           <SelectValue placeholder="Any Type" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">Any Type</SelectItem>
+          <SelectItem value="all">Any Type</SelectItem>
           <SelectItem value="fixed_price">Buy Now</SelectItem>
           <SelectItem value="auction">Auction</SelectItem>
           <SelectItem value="best_offer">Best Offer</SelectItem>

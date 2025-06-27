@@ -160,12 +160,12 @@ const CardGrid = () => {
             {/* Set Filter */}
             <div>
               <Label htmlFor="set-filter" className="text-sm font-medium mb-2 block">Set</Label>
-              <Select value={filters.set_id || ""} onValueChange={(value) => updateFilter('set_id', value || undefined)}>
+              <Select value={filters.set_id || "all"} onValueChange={(value) => updateFilter('set_id', value === "all" ? undefined : value)}>
                 <SelectTrigger id="set-filter">
                   <SelectValue placeholder="All Sets" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Sets</SelectItem>
+                  <SelectItem value="all">All Sets</SelectItem>
                   {sets.map(set => (
                     <SelectItem key={set.id} value={set.id}>
                       {set.name}

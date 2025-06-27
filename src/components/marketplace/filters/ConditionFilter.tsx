@@ -18,7 +18,7 @@ const ConditionFilter = ({ selectedCondition, onConditionChange }: ConditionFilt
           <SelectValue placeholder="Any Condition" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">Any Condition</SelectItem>
+          <SelectItem value="all">Any Condition</SelectItem>
           <SelectItem value="mint">Mint</SelectItem>
           <SelectItem value="near_mint">Near Mint</SelectItem>
           <SelectItem value="lightly_played">Lightly Played</SelectItem>

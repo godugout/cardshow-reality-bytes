@@ -18,7 +18,7 @@ const RarityFilter = ({ selectedRarity, onRarityChange }: RarityFilterProps) => 
           <SelectValue placeholder="Any Rarity" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">Any Rarity</SelectItem>
+          <SelectItem value="all">Any Rarity</SelectItem>
           <SelectItem value="common">Common</SelectItem>
           <SelectItem value="uncommon">Uncommon</SelectItem>
           <SelectItem value="rare">Rare</SelectItem>
