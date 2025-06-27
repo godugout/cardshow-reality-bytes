@@ -2,7 +2,7 @@
 import { Suspense, useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import { CRDStudio } from '@/components/creator/CRDStudio';
-import { CreatorOnboardingFlow } from '@/components/creator/onboarding/CreatorOnboardingFlow';
+import CreatorOnboardingFlow from '@/components/creator/onboarding/CreatorOnboardingFlow';
 import { useCreatorOnboarding } from '@/hooks/useCreatorOnboarding';
 import { useAuth } from '@/hooks/useAuth';
 import { Skeleton } from '@/components/ui/skeleton';

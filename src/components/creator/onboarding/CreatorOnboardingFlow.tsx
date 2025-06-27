@@ -25,43 +25,63 @@ const steps = [
   { id: 'complete', title: 'Complete', component: CompleteStep },
 ];
 
-const CreatorOnboardingFlow = () => {
-  const { currentStep, nextStep, prevStep, completeOnboarding, isLoading } = useCreatorOnboarding();
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+interface CreatorOnboardingFlowProps {
+  onClose?: () => void;
+  onComplete?: () => void;
+}
 
-  const handleNext = () => {
-    if (currentStepIndex < steps.length - 1) {
-      setCurrentStepIndex(currentStepIndex + 1);
-      nextStep();
-    } else {
-      completeOnboarding();
+const CreatorOnboardingFlow = ({ onClose, onComplete }: CreatorOnboardingFlowProps) => {
+  const { progress, updateStep, completeOnboarding } = useCreatorOnboarding();
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Find current step index
+  const currentStepIndex = steps.findIndex(step => step.id === progress.currentStep);
+  const actualStepIndex = currentStepIndex >= 0 ? currentStepIndex : 0;
+
+  const handleNext = async () => {
+    setIsLoading(true);
+    try {
+      if (actualStepIndex < steps.length - 1) {
+        const nextStep = steps[actualStepIndex + 1];
+        await updateStep(nextStep.id as any);
+      } else {
+        await completeOnboarding();
+        onComplete?.();
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handlePrev = () => {
-    if (currentStepIndex > 0) {
-      setCurrentStepIndex(currentStepIndex - 1);
-      prevStep();
+  const handlePrev = async () => {
+    if (actualStepIndex > 0) {
+      setIsLoading(true);
+      try {
+        const prevStep = steps[actualStepIndex - 1];
+        await updateStep(prevStep.id as any);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
-  const CurrentStepComponent = steps[currentStepIndex].component;
-  const progress = ((currentStepIndex + 1) / steps.length) * 100;
+  const CurrentStepComponent = steps[actualStepIndex].component;
+  const progressValue = ((actualStepIndex + 1) / steps.length) * 100;
 
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-center mb-4">Creator Onboarding</h1>
-          <Progress value={progress} className="w-full mb-2" />
+          <Progress value={progressValue} className="w-full mb-2" />
           <p className="text-center text-muted-foreground">
-            Step {currentStepIndex + 1} of {steps.length}: {steps[currentStepIndex].title}
+            Step {actualStepIndex + 1} of {steps.length}: {steps[actualStepIndex].title}
           </p>
         </div>
 
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>{steps[currentStepIndex].title}</CardTitle>
+            <CardTitle>{steps[actualStepIndex].title}</CardTitle>
           </CardHeader>
           <CardContent>
             <CurrentStepComponent onNext={handleNext} />
@@ -72,19 +92,26 @@ const CreatorOnboardingFlow = () => {
           <Button
             variant="outline"
             onClick={handlePrev}
-            disabled={currentStepIndex === 0}
+            disabled={actualStepIndex === 0 || isLoading}
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Previous
           </Button>
           
-          <Button
-            onClick={handleNext}
-            disabled={isLoading}
-          >
-            {currentStepIndex === steps.length - 1 ? 'Complete' : 'Next'}
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
+          <div className="flex gap-2">
+            {onClose && (
+              <Button variant="outline" onClick={onClose} disabled={isLoading}>
+                Skip Tutorial
+              </Button>
+            )}
+            <Button
+              onClick={handleNext}
+              disabled={isLoading}
+            >
+              {actualStepIndex === steps.length - 1 ? 'Complete' : 'Next'}
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>
