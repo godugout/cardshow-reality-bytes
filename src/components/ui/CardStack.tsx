@@ -73,7 +73,7 @@ const CardStack = ({
   }, [onStackShuffle]);
   
   // Drag gesture for stack manipulation
-  const bindDrag = useDrag(({ down, movement: [mx, my], velocity, direction: [dx] }) => {
+  const dragHandlers = useDrag(({ down, movement: [mx, my], velocity, direction: [dx] }) => {
     // Implement swipe-to-shuffle
     if (!down && Math.abs(velocity[0]) > 0.5 && Math.abs(dx) > 0.5) {
       handleStackShuffle();
@@ -109,7 +109,7 @@ const CardStack = ({
                 filter: `brightness(${1 - index * 0.1})`,
               }}
               onClick={() => handleCardClick(card, index)}
-              {...(isTop ? bindDrag() : {})}
+              {...(isTop ? dragHandlers : {})}
             >
               {/* Card content */}
               <div className="relative w-full h-full">
