@@ -31,12 +31,12 @@ export const useUserProfile = (userId?: string) => {
         bio: data.bio || null,
         location: data.location || null,
         website_url: data.website || null, // Map from 'website' column
-        cover_image_url: data.cover_image || null, // Map from 'cover_image' column
+        cover_image_url: null, // Set to null as this column doesn't exist yet
         experience_points: data.experience_points || 0,
         level: data.level || 1,
         total_followers: data.total_followers || 0,
         total_following: data.total_following || 0,
-        subscription_tier: data.subscription || 'free', // Map from 'subscription' column
+        subscription_tier: 'free', // Set to default as this column doesn't exist yet
         is_verified: data.is_verified || false,
         is_creator: data.is_creator || false,
         created_at: data.created_at,
