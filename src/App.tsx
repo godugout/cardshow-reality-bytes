@@ -12,6 +12,7 @@ import Cards from "./pages/Cards";
 import Creator from "./pages/Creator";
 import MobileCards from "./pages/MobileCards";
 import Auth from "./pages/Auth";
+import Marketplace from "./pages/Marketplace";
 
 const queryClient = new QueryClient();
 
