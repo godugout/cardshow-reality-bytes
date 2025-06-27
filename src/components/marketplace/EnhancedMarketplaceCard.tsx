@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -7,6 +6,7 @@ import { Heart, Eye, Clock, Star } from 'lucide-react';
 import InteractiveCard from '@/components/ui/InteractiveCard';
 import { cn } from '@/lib/utils';
 import type { MarketplaceListing } from '@/types/marketplace';
+import type { CardRarity } from '@/types/card';
 import { formatDistanceToNow } from 'date-fns';
 
 interface EnhancedMarketplaceCardProps {
@@ -59,11 +59,12 @@ const EnhancedMarketplaceCard = ({
     return colors[rarity as keyof typeof colors] || 'border-gray-500';
   };
 
-  // Create a Card-compatible object for InteractiveCard
+  // Create a Card-compatible object for InteractiveCard with proper type casting
   const cardForInteraction = listing.card ? {
     ...listing.card,
     creator_id: 'marketplace-card', // Default value for marketplace cards
-    title: listing.card.title
+    title: listing.card.title,
+    rarity: (listing.card.rarity as CardRarity) || 'common' // Cast to proper rarity type
   } : undefined;
 
   return (
