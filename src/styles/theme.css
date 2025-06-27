@@ -1,5 +1,5 @@
 
-/* Cardshow Design System - Clean Modern Theme */
+/* Cardshow Design System - Modern Professional Theme */
 
 @layer base {
   :root {
@@ -94,5 +94,57 @@
     --sidebar-accent-foreground: 248 250 252;
     --sidebar-border: 51 65 85;
     --sidebar-ring: 59 130 246;
+  }
+
+  /* Screen Reader Only - Accessibility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .sr-only:focus,
+  .sr-only:active {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  /* Focus Visible - Improved Accessibility */
+  .focus-visible:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
+
+  /* High Contrast Mode Support */
+  @media (prefers-contrast: high) {
+    :root {
+      --border: 0 0 0; /* Black borders for high contrast */
+      --input: 0 0 0;
+      --muted-foreground: 51 65 85; /* Darker text for better contrast */
+    }
+  }
+
+  /* Reduced Motion Support */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }

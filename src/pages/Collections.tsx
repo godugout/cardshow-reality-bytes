@@ -8,7 +8,7 @@ const Collections = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="cdg-container py-8">
+      <main id="main-content" className="cdg-container py-8">
         <div className="mb-8">
           <h1 className="cdg-headline-1 mb-4">Collections</h1>
           <p className="cdg-body-1 text-muted-foreground">
@@ -17,7 +17,7 @@ const Collections = () => {
         </div>
         
         <Suspense fallback={
-          <div className="space-y-6">
+          <div className="space-y-6" aria-label="Loading collections">
             <div className="cdg-grid cdg-grid-cols-4">
               {Array.from({ length: 8 }).map((_, i) => (
                 <Skeleton key={i} className="h-64 w-full" />
@@ -27,7 +27,7 @@ const Collections = () => {
         }>
           <CollectionGrid />
         </Suspense>
-      </div>
+      </main>
     </div>
   );
 };

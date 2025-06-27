@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Filter, X } from 'lucide-react';
 import { useCards, useCardSets } from '@/hooks/useCards';
@@ -47,7 +48,7 @@ const CardGrid = () => {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="w-64 h-80 bg-gray-800 animate-pulse rounded-lg" />
+          <div key={i} className="w-64 h-80 bg-muted animate-pulse rounded-lg" />
         ))}
       </div>
     );
@@ -58,22 +59,31 @@ const CardGrid = () => {
       {/* Search and Filter Header */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Label htmlFor="card-search" className="sr-only">
+            Search cards
+          </Label>
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" aria-hidden="true" />
           <Input
+            id="card-search"
             placeholder="Search cards by name or description..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-gray-900 border-gray-700 text-white"
+            className="pl-10"
+            aria-describedby="card-search-help"
           />
+          <div id="card-search-help" className="sr-only">
+            Search through available cards by name or description
+          </div>
         </div>
         
         <div className="flex gap-2">
           <Button
             variant="outline"
             onClick={() => setShowFilters(!showFilters)}
-            className="border-gray-700 text-gray-300"
+            aria-expanded={showFilters}
+            aria-controls="filter-panel"
           >
-            <Filter className="w-4 h-4 mr-2" />
+            <Filter className="w-4 h-4 mr-2" aria-hidden="true" />
             Filters
             {activeFilterCount > 0 && (
               <Badge variant="secondary" className="ml-2 text-xs">
@@ -84,7 +94,7 @@ const CardGrid = () => {
           
           {activeFilterCount > 0 && (
             <Button variant="ghost" onClick={clearFilters} size="sm">
-              <X className="w-4 h-4 mr-1" />
+              <X className="w-4 h-4 mr-1" aria-hidden="true" />
               Clear
             </Button>
           )}
@@ -93,18 +103,27 @@ const CardGrid = () => {
 
       {/* Filter Panel */}
       {showFilters && (
-        <div className="bg-gray-900 border border-gray-800 rounded-lg p-4 space-y-4">
+        <div id="filter-panel" className="bg-card border border-border rounded-lg p-4 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Rarity Filter */}
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">Rarity</label>
-              <div className="flex flex-wrap gap-1">
+              <Label className="text-sm font-medium mb-2 block">Rarity</Label>
+              <div className="flex flex-wrap gap-1" role="group" aria-label="Rarity filters">
                 {Object.entries(RARITY_LABELS).map(([rarity, label]) => (
                   <Badge
                     key={rarity}
                     variant={filters.rarity?.includes(rarity as CardRarity) ? "default" : "outline"}
-                    className="cursor-pointer hover:opacity-80"
+                    className="cursor-pointer hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     onClick={() => toggleRarity(rarity as CardRarity)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleRarity(rarity as CardRarity);
+                      }
+                    }}
+                    aria-pressed={filters.rarity?.includes(rarity as CardRarity)}
                   >
                     {label}
                   </Badge>
@@ -114,14 +133,23 @@ const CardGrid = () => {
 
             {/* Card Type Filter */}
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">Type</label>
-              <div className="flex flex-wrap gap-1">
+              <Label className="text-sm font-medium mb-2 block">Type</Label>
+              <div className="flex flex-wrap gap-1" role="group" aria-label="Card type filters">
                 {Object.entries(CARD_TYPE_LABELS).map(([type, label]) => (
                   <Badge
                     key={type}
                     variant={filters.card_type?.includes(type as CardType) ? "default" : "outline"}
-                    className="cursor-pointer hover:opacity-80"
+                    className="cursor-pointer hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     onClick={() => toggleCardType(type as CardType)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleCardType(type as CardType);
+                      }
+                    }}
+                    aria-pressed={filters.card_type?.includes(type as CardType)}
                   >
                     {label}
                   </Badge>
@@ -131,9 +159,9 @@ const CardGrid = () => {
 
             {/* Set Filter */}
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">Set</label>
+              <Label htmlFor="set-filter" className="text-sm font-medium mb-2 block">Set</Label>
               <Select value={filters.set_id || ""} onValueChange={(value) => updateFilter('set_id', value || undefined)}>
-                <SelectTrigger className="bg-gray-800 border-gray-700">
+                <SelectTrigger id="set-filter">
                   <SelectValue placeholder="All Sets" />
                 </SelectTrigger>
                 <SelectContent>
@@ -149,22 +177,32 @@ const CardGrid = () => {
 
             {/* Price Range */}
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">Price Range</label>
+              <Label className="text-sm font-medium mb-2 block">Price Range</Label>
               <div className="flex gap-2">
-                <Input
-                  type="number"
-                  placeholder="Min"
-                  value={filters.min_price || ''}
-                  onChange={(e) => updateFilter('min_price', e.target.value ? Number(e.target.value) : undefined)}
-                  className="bg-gray-800 border-gray-700 text-white"
-                />
-                <Input
-                  type="number"
-                  placeholder="Max"
-                  value={filters.max_price || ''}
-                  onChange={(e) => updateFilter('max_price', e.target.value ? Number(e.target.value) : undefined)}
-                  className="bg-gray-800 border-gray-700 text-white"
-                />
+                <div>
+                  <Label htmlFor="min-price" className="sr-only">Minimum price</Label>
+                  <Input
+                    id="min-price"
+                    type="number"
+                    placeholder="Min"
+                    value={filters.min_price || ''}
+                    onChange={(e) => updateFilter('min_price', e.target.value ? Number(e.target.value) : undefined)}
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="max-price" className="sr-only">Maximum price</Label>
+                  <Input
+                    id="max-price"
+                    type="number"
+                    placeholder="Max"
+                    value={filters.max_price || ''}
+                    onChange={(e) => updateFilter('max_price', e.target.value ? Number(e.target.value) : undefined)}
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -172,27 +210,32 @@ const CardGrid = () => {
       )}
 
       {/* Results Count */}
-      <div className="text-gray-400 text-sm">
+      <div className="text-muted-foreground text-sm" aria-live="polite">
         {cards.length} card{cards.length !== 1 ? 's' : ''} found
       </div>
 
       {/* Card Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
-        {cards.map(card => (
-          <CardDisplay
-            key={card.id}
-            card={card}
-            size="md"
-            showStats={true}
-          />
+      <div 
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6"
+        role="grid"
+        aria-label="Cards grid"
+      >
+        {cards.map((card, index) => (
+          <div key={card.id} role="gridcell">
+            <CardDisplay
+              card={card}
+              size="md"
+              showStats={true}
+            />
+          </div>
         ))}
       </div>
 
       {/* Empty State */}
       {cards.length === 0 && !isLoading && (
         <div className="text-center py-12">
-          <div className="text-gray-400 text-lg mb-2">No cards found</div>
-          <div className="text-gray-500 text-sm">
+          <div className="text-muted-foreground text-lg mb-2">No cards found</div>
+          <div className="text-muted-foreground text-sm">
             Try adjusting your search criteria or filters
           </div>
         </div>

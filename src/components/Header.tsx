@@ -32,34 +32,46 @@ const Header = () => {
   const isAdminPage = location.pathname.startsWith('/admin');
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-neutral-950/95 backdrop-blur border-b border-neutral-800 shadow-lg">
+    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur border-b border-border shadow-sm">
+      {/* Skip to main content link for screen readers */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-[100] focus:bg-primary focus:text-primary-foreground focus:px-4 focus:py-2 focus:rounded-md focus:m-2"
+      >
+        Skip to main content
+      </a>
+      
       <div className="container mx-auto px-6">
         <div className="flex h-20 items-center justify-between">
-          <Link to="/" className="flex items-center space-x-3">
+          <Link 
+            to="/" 
+            className="flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md p-1"
+            aria-label="Cardshow Home"
+          >
             <div className="p-2.5 bg-gradient-to-br from-primary to-primary-600 rounded-2xl shadow-lg">
               <Sparkles className="h-7 w-7 text-white" />
             </div>
-            <span className="font-manrope text-headline-4 font-bold text-white tracking-tight">
+            <span className="font-manrope text-headline-4 font-bold text-foreground tracking-tight">
               Cardshow
             </span>
             {isAdminPage && (
-              <div className="flex items-center gap-2 ml-4 px-3 py-1.5 bg-warning-100/10 rounded-xl border border-warning-500/30">
-                <Shield className="h-4 w-4 text-warning-400" />
-                <span className="font-space-grotesk text-caption-bold text-warning-300">Admin</span>
+              <div className="flex items-center gap-2 ml-4 px-3 py-1.5 bg-warning-50 rounded-xl border border-warning-200">
+                <Shield className="h-4 w-4 text-warning-600" />
+                <span className="font-space-grotesk text-caption-bold text-warning-700">Admin</span>
               </div>
             )}
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
+          <nav className="hidden md:flex items-center space-x-1" role="navigation" aria-label="Main navigation">
             {navItems.map((item) => (
               <Link key={item.href} to={item.href}>
                 <Button 
                   variant={isActive(item.href) ? "default" : "ghost"} 
                   size="sm"
                   className={isActive(item.href) 
-                    ? "bg-primary hover:bg-primary-600 text-white font-manrope font-semibold" 
-                    : "text-neutral-300 hover:text-white hover:bg-neutral-800/50 font-open-sans font-medium"
+                    ? "bg-primary hover:bg-primary/90 text-primary-foreground font-manrope font-semibold" 
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent font-open-sans font-medium"
                   }
                 >
                   {item.label}
@@ -75,11 +87,11 @@ const Header = () => {
                   size="sm"
                   className={
                     isActive(item.href) 
-                      ? "bg-warning-500 hover:bg-warning-600 text-white border-warning-500 font-manrope font-semibold" 
-                      : "text-warning-400 hover:text-warning-300 border-warning-500/50 hover:bg-warning-500/10 font-open-sans font-medium"
+                      ? "bg-warning hover:bg-warning/90 text-warning-foreground border-warning font-manrope font-semibold" 
+                      : "text-warning hover:text-warning/90 border-warning/50 hover:bg-warning/10 font-open-sans font-medium"
                   }
                 >
-                  <Shield className="w-3 h-3 mr-1" />
+                  <Shield className="w-3 h-3 mr-1" aria-hidden="true" />
                   {item.label}
                 </Button>
               </Link>
@@ -102,8 +114,11 @@ const Header = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="md:hidden text-neutral-300 hover:text-white hover:bg-neutral-800/50"
+              className="md:hidden text-muted-foreground hover:text-foreground hover:bg-accent"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
@@ -112,15 +127,20 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-6 space-y-2 border-t border-neutral-800 bg-neutral-950/95">
+          <nav 
+            id="mobile-menu"
+            className="md:hidden py-6 space-y-2 border-t border-border bg-background/95"
+            role="navigation"
+            aria-label="Mobile navigation"
+          >
             {navItems.map((item) => (
               <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
                 <Button 
                   variant={isActive(item.href) ? "default" : "ghost"} 
                   className={`w-full justify-start font-open-sans font-medium ${
                     isActive(item.href) 
-                      ? "bg-primary hover:bg-primary-600 text-white" 
-                      : "text-neutral-300 hover:text-white hover:bg-neutral-800/50"
+                      ? "bg-primary hover:bg-primary/90 text-primary-foreground" 
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent"
                   }`}
                   size="sm"
                 >
@@ -136,12 +156,12 @@ const Header = () => {
                   variant={isActive(item.href) ? "default" : "outline"} 
                   className={`w-full justify-start font-open-sans font-medium ${
                     isActive(item.href) 
-                      ? "bg-warning-500 hover:bg-warning-600 text-white border-warning-500" 
-                      : "text-warning-400 hover:text-warning-300 border-warning-500/50 hover:bg-warning-500/10"
+                      ? "bg-warning hover:bg-warning/90 text-warning-foreground border-warning" 
+                      : "text-warning hover:text-warning/90 border-warning/50 hover:bg-warning/10"
                   }`}
                   size="sm"
                 >
-                  <Shield className="w-3 h-3 mr-2" />
+                  <Shield className="w-3 h-3 mr-2" aria-hidden="true" />
                   {item.label}
                 </Button>
               </Link>
