@@ -4,8 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Search, SlidersHorizontal, X } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Search, SlidersHorizontal } from 'lucide-react';
+import AdvancedFiltersPanel from './AdvancedFiltersPanel';
 import type { ListingFilters } from '@/types/marketplace';
 
 interface MarketplaceFiltersProps {
@@ -103,124 +103,17 @@ const MarketplaceFilters = ({
 
       {/* Advanced Filters Panel */}
       {showAdvancedFilters && (
-        <Card id="advanced-filters">
-          <CardContent className="p-4">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">Advanced Filters</h3>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearFilters}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <X className="w-4 h-4 mr-1" aria-hidden="true" />
-                Clear All
-              </Button>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Price Range */}
-              <div>
-                <Label className="text-sm font-medium mb-2 block">Price Range</Label>
-                <div className="flex gap-2">
-                  <div>
-                    <Label htmlFor="min-price" className="sr-only">Minimum price</Label>
-                    <Input
-                      id="min-price"
-                      type="number"
-                      placeholder="Min $"
-                      value={priceRange.min}
-                      onChange={(e) => handlePriceChange('min', e.target.value)}
-                      className="text-sm"
-                      min="0"
-                      step="0.01"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="max-price" className="sr-only">Maximum price</Label>
-                    <Input
-                      id="max-price"
-                      type="number"
-                      placeholder="Max $"
-                      value={priceRange.max}
-                      onChange={(e) => handlePriceChange('max', e.target.value)}
-                      className="text-sm"
-                      min="0"
-                      step="0.01"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Rarity Filter */}
-              <div>
-                <Label htmlFor="rarity-select" className="text-sm font-medium mb-2 block">
-                  Rarity
-                </Label>
-                <Select value={selectedRarity} onValueChange={(value) => {
-                  setSelectedRarity(value);
-                  onFiltersChange({ rarity: value || undefined });
-                }}>
-                  <SelectTrigger id="rarity-select">
-                    <SelectValue placeholder="Any Rarity" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">Any Rarity</SelectItem>
-                    <SelectItem value="common">Common</SelectItem>
-                    <SelectItem value="uncommon">Uncommon</SelectItem>
-                    <SelectItem value="rare">Rare</SelectItem>
-                    <SelectItem value="ultra_rare">Ultra Rare</SelectItem>
-                    <SelectItem value="legendary">Legendary</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Condition Filter */}
-              <div>
-                <Label htmlFor="condition-select" className="text-sm font-medium mb-2 block">
-                  Condition
-                </Label>
-                <Select value={selectedCondition} onValueChange={(value) => {
-                  setSelectedCondition(value);
-                  onFiltersChange({ condition: value ? [value] : undefined });
-                }}>
-                  <SelectTrigger id="condition-select">
-                    <SelectValue placeholder="Any Condition" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">Any Condition</SelectItem>
-                    <SelectItem value="mint">Mint</SelectItem>
-                    <SelectItem value="near_mint">Near Mint</SelectItem>
-                    <SelectItem value="lightly_played">Lightly Played</SelectItem>
-                    <SelectItem value="moderately_played">Moderately Played</SelectItem>
-                    <SelectItem value="heavily_played">Heavily Played</SelectItem>
-                    <SelectItem value="damaged">Damaged</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Listing Type Filter */}
-              <div>
-                <Label htmlFor="listing-type-select" className="text-sm font-medium mb-2 block">
-                  Listing Type
-                </Label>
-                <Select onValueChange={(value) => {
-                  onFiltersChange({ listing_type: value ? [value] : undefined });
-                }}>
-                  <SelectTrigger id="listing-type-select">
-                    <SelectValue placeholder="Any Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">Any Type</SelectItem>
-                    <SelectItem value="fixed_price">Buy Now</SelectItem>
-                    <SelectItem value="auction">Auction</SelectItem>
-                    <SelectItem value="best_offer">Best Offer</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <AdvancedFiltersPanel
+          priceRange={priceRange}
+          selectedRarity={selectedRarity}
+          selectedCondition={selectedCondition}
+          onPriceChange={handlePriceChange}
+          onRarityChange={setSelectedRarity}
+          onConditionChange={setSelectedCondition}
+          onListingTypeChange={() => {}}
+          onClearFilters={clearFilters}
+          onFiltersChange={onFiltersChange}
+        />
       )}
     </div>
   );
