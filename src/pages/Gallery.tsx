@@ -7,10 +7,17 @@ import { Skeleton } from '@/components/ui/skeleton';
 // Mock data for the gallery - in a real app this would come from props or API
 const mockCollection = {
   id: '1',
-  name: 'Featured Collection',
+  title: 'Featured Collection',
   description: 'A showcase of premium cards',
-  owner_id: 'user1',
-  is_public: true,
+  user_id: 'user1',
+  visibility: 'public' as const,
+  cover_image_url: '/placeholder.svg',
+  template_id: null,
+  is_featured: false,
+  is_group: false,
+  allow_member_card_sharing: false,
+  group_code: null,
+  metadata: {},
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString()
 };
@@ -20,31 +27,29 @@ const mockCards = [
     id: '1',
     title: 'Sample Card 1',
     description: 'A premium trading card',
-    imageUrl: '/placeholder.svg',
-    creatorId: 'creator1',
+    image_url: '/placeholder.svg',
+    thumbnail_url: '/placeholder.svg',
+    creator_id: 'creator1',
     rarity: 'rare' as const,
-    isPublic: true,
-    metadata: {
-      effects: { holographic: true, chrome: false, foil: true, intensity: 0.8 },
-      rendering: { shaderType: 'holographic', animationPreset: 'hover', textureQuality: 'high' as const }
-    },
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    card_type: 'character' as const,
+    visibility: 'public' as const,
+    is_public: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
     id: '2',
-    title: 'Sample Card 2',
+    title: 'Sample Card 2', 
     description: 'Another premium trading card',
-    imageUrl: '/placeholder.svg',
-    creatorId: 'creator2',
+    image_url: '/placeholder.svg',
+    thumbnail_url: '/placeholder.svg',
+    creator_id: 'creator2',
     rarity: 'legendary' as const,
-    isPublic: true,
-    metadata: {
-      effects: { holographic: false, chrome: true, foil: false, intensity: 0.6 },
-      rendering: { shaderType: 'chrome', animationPreset: 'spin', textureQuality: 'high' as const }
-    },
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    card_type: 'character' as const,
+    visibility: 'public' as const,
+    is_public: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   }
 ];
 
