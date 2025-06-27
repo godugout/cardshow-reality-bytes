@@ -6,12 +6,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const Community = () => {
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-background">
       <Header />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Community</h1>
-          <p className="text-gray-400">
+          <h1 className="text-4xl font-bold text-foreground mb-2 font-display">Community</h1>
+          <p className="text-muted-foreground">
             Connect with creators, collectors, and fellow enthusiasts in the Cardshow community
           </p>
         </div>

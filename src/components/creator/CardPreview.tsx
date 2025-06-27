@@ -22,10 +22,9 @@ export const CardPreview = ({ cardData, className = '' }: CardPreviewProps) => {
       effectClasses += ' holographic-effect';
       overlayStyles = {
         background: `linear-gradient(45deg, 
-          rgba(255,0,255,${effects.intensity * 0.3}), 
-          rgba(0,255,255,${effects.intensity * 0.3}),
-          rgba(255,255,0,${effects.intensity * 0.2}),
-          rgba(255,0,255,${effects.intensity * 0.3}))`,
+          hsl(var(--primary) / ${effects.intensity * 0.3}), 
+          hsl(var(--primary) / ${effects.intensity * 0.2}),
+          hsl(var(--primary) / ${effects.intensity * 0.4}))`,
         backgroundSize: '200% 200%',
         animation: 'holographicShimmer 3s ease-in-out infinite',
         mixBlendMode: 'overlay' as const,
@@ -34,18 +33,18 @@ export const CardPreview = ({ cardData, className = '' }: CardPreviewProps) => {
       effectClasses += ' chrome-effect';
       overlayStyles = {
         background: `linear-gradient(135deg, 
-          rgba(192,192,192,${effects.intensity * 0.5}), 
-          rgba(255,255,255,${effects.intensity * 0.3}),
-          rgba(160,160,160,${effects.intensity * 0.4}))`,
+          hsl(var(--muted-foreground) / ${effects.intensity * 0.5}), 
+          hsl(var(--muted-foreground) / ${effects.intensity * 0.3}),
+          hsl(var(--muted-foreground) / ${effects.intensity * 0.4}))`,
         mixBlendMode: 'overlay' as const,
       };
     } else if (effects.foil) {
       effectClasses += ' foil-effect';
       overlayStyles = {
         background: `linear-gradient(90deg, 
-          rgba(255,215,0,${effects.intensity * 0.4}), 
-          rgba(255,165,0,${effects.intensity * 0.2}),
-          rgba(255,140,0,${effects.intensity * 0.3}))`,
+          hsl(var(--primary) / ${effects.intensity * 0.4}), 
+          hsl(var(--primary) / ${effects.intensity * 0.2}),
+          hsl(var(--primary) / ${effects.intensity * 0.3}))`,
         backgroundSize: '150% 150%',
         animation: 'foilShimmer 2s ease-in-out infinite',
         mixBlendMode: 'overlay' as const,
@@ -73,15 +72,15 @@ export const CardPreview = ({ cardData, className = '' }: CardPreviewProps) => {
           }
 
           .holographic-effect {
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+            box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
           }
 
           .chrome-effect {
-            box-shadow: 0 0 15px rgba(192, 192, 192, 0.4);
+            box-shadow: 0 0 15px hsl(var(--muted-foreground) / 0.4);
           }
 
           .foil-effect {
-            box-shadow: 0 0 18px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 18px hsl(var(--primary) / 0.4);
           }
         `}
       </style>
@@ -110,14 +109,14 @@ export const CardPreview = ({ cardData, className = '' }: CardPreviewProps) => {
 
           {/* Placeholder for image if no image uploaded */}
           {!cardData.imageUrl && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
+            <div className="absolute inset-0 flex items-center justify-center bg-muted/80">
               <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-2 bg-gray-600 rounded-lg flex items-center justify-center">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 mx-auto mb-2 bg-muted rounded-lg flex items-center justify-center">
+                  <svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <p className="text-sm text-gray-300">Upload an image</p>
+                <p className="text-sm text-muted-foreground">Upload an image</p>
               </div>
             </div>
           )}
@@ -149,13 +148,13 @@ export const CardPreview = ({ cardData, className = '' }: CardPreviewProps) => {
             <div className="absolute top-2 right-2 z-20">
               <div className="flex gap-1">
                 {designConfig.effects.holographic && (
-                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                 )}
                 {designConfig.effects.foil && (
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-primary/80 rounded-full animate-pulse"></div>
                 )}
                 {designConfig.effects.chrome && (
-                  <div className="w-2 h-2 bg-gray-300 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-muted-foreground rounded-full animate-pulse"></div>
                 )}
               </div>
             </div>

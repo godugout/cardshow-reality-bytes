@@ -81,7 +81,7 @@ export const ImageUpload = ({
           <img
             src={currentImage}
             alt="Card preview"
-            className="w-full h-40 object-cover rounded-lg border border-[hsl(var(--color-border-secondary))]"
+            className="w-full h-40 object-cover rounded-lg border border-border"
           />
           <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-200 rounded-lg flex items-center justify-center">
             <Button
@@ -96,7 +96,7 @@ export const ImageUpload = ({
         </div>
       ) : (
         <div
-          className="border-2 border-dashed border-[hsl(var(--color-border-secondary))] rounded-lg p-8 text-center hover:border-[hsl(var(--color-border-focus))] transition-colors cursor-pointer"
+          className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary transition-colors cursor-pointer bg-card"
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onClick={() => fileInputRef.current?.click()}
@@ -104,25 +104,25 @@ export const ImageUpload = ({
           <div className="flex flex-col items-center gap-3">
             {isUploading ? (
               <>
-                <Upload className="w-8 h-8 text-[hsl(var(--color-primary))] animate-bounce" />
-                <p className="text-[hsl(var(--color-text-primary))] font-medium">
+                <Upload className="w-8 h-8 text-primary animate-bounce" />
+                <p className="text-foreground font-medium">
                   Uploading... {uploadProgress}%
                 </p>
-                <div className="w-full max-w-xs bg-[hsl(var(--color-bg-tertiary))] rounded-full h-2">
+                <div className="w-full max-w-xs bg-muted rounded-full h-2">
                   <div 
-                    className="bg-[hsl(var(--color-primary))] h-2 rounded-full"
+                    className="bg-primary h-2 rounded-full"
                     style={progressBarStyle}
                   />
                 </div>
               </>
             ) : (
               <>
-                <Image className="w-8 h-8 text-[hsl(var(--color-text-tertiary))]" />
+                <Image className="w-8 h-8 text-muted-foreground" />
                 <div>
-                  <p className="text-[hsl(var(--color-text-secondary))] mb-1">
+                  <p className="text-foreground mb-1">
                     Drop image here or click to upload
                   </p>
-                  <p className="text-sm text-[hsl(var(--color-text-tertiary))]">
+                  <p className="text-sm text-muted-foreground">
                     Supports JPG, PNG, WebP up to 10MB
                   </p>
                 </div>
@@ -144,7 +144,7 @@ export const ImageUpload = ({
         <Button
           onClick={() => fileInputRef.current?.click()}
           variant="outline"
-          className="w-full border-[hsl(var(--color-border-secondary))] text-[hsl(var(--color-text-secondary))] hover:bg-[hsl(var(--color-bg-tertiary))]"
+          className="w-full"
         >
           <Upload className="mr-2 h-4 w-4" />
           Choose Image

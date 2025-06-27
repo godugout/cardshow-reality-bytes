@@ -59,17 +59,17 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
   };
 
   const colorThemes = [
-    { name: 'Dark', bg: '#1a1a1a', text: '#ffffff' },
-    { name: 'Blue', bg: '#1e40af', text: '#ffffff' },
-    { name: 'Green', bg: '#059669', text: '#ffffff' },
-    { name: 'Purple', bg: '#7c3aed', text: '#ffffff' },
-    { name: 'Red', bg: '#dc2626', text: '#ffffff' },
-    { name: 'Gold', bg: '#ca8a04', text: '#ffffff' },
+    { name: 'Dark', bg: 'hsl(var(--card))', text: 'hsl(var(--card-foreground))' },
+    { name: 'Primary', bg: 'hsl(var(--primary))', text: 'hsl(var(--primary-foreground))' },
+    { name: 'Secondary', bg: 'hsl(var(--secondary))', text: 'hsl(var(--secondary-foreground))' },
+    { name: 'Muted', bg: 'hsl(var(--muted))', text: 'hsl(var(--muted-foreground))' },
+    { name: 'Accent', bg: 'hsl(var(--accent))', text: 'hsl(var(--accent-foreground))' },
+    { name: 'Destructive', bg: 'hsl(var(--destructive))', text: 'hsl(var(--destructive-foreground))' },
   ];
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-background">
+      <div className="max-w-7xl mx-auto p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
@@ -82,7 +82,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
               Back to Mode Selection
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-foreground">Create CRD</h1>
+              <h1 className="text-3xl font-bold text-foreground font-display">Create CRD</h1>
               <p className="text-muted-foreground">Simple and fast card creation</p>
             </div>
           </div>
@@ -116,7 +116,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
           {/* Creation Panel */}
           <div className="lg:col-span-2 space-y-6">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-5">
+              <TabsList className="grid w-full grid-cols-5 bg-muted">
                 <TabsTrigger value="template">Template</TabsTrigger>
                 <TabsTrigger value="content">Content</TabsTrigger>
                 <TabsTrigger value="image">Image</TabsTrigger>
@@ -132,26 +132,28 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
               </TabsContent>
 
               <TabsContent value="content" className="space-y-4">
-                <Card>
+                <Card className="bg-card border-border">
                   <CardHeader>
-                    <CardTitle>Card Content</CardTitle>
+                    <CardTitle className="text-card-foreground">Card Content</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <Label>Title *</Label>
+                      <Label className="text-card-foreground">Title *</Label>
                       <Input
                         value={cardData.title}
                         onChange={(e) => updateCardData({ title: e.target.value })}
                         placeholder="Enter card title"
+                        className="bg-background border-border text-foreground"
                       />
                     </div>
                     <div>
-                      <Label>Description</Label>
+                      <Label className="text-card-foreground">Description</Label>
                       <Textarea
                         value={cardData.description}
                         onChange={(e) => updateCardData({ description: e.target.value })}
                         placeholder="Enter card description (optional)"
                         rows={3}
+                        className="bg-background border-border text-foreground"
                       />
                     </div>
                   </CardContent>
@@ -159,9 +161,9 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
               </TabsContent>
 
               <TabsContent value="image" className="space-y-4">
-                <Card>
+                <Card className="bg-card border-border">
                   <CardHeader>
-                    <CardTitle>Card Image</CardTitle>
+                    <CardTitle className="text-card-foreground">Card Image</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ImageUpload
@@ -176,9 +178,9 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
               </TabsContent>
 
               <TabsContent value="style" className="space-y-4">
-                <Card>
+                <Card className="bg-card border-border">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-card-foreground">
                       <Palette className="w-5 h-5" />
                       Design & Effects
                     </CardTitle>
@@ -186,12 +188,12 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
                   <CardContent className="space-y-6">
                     {/* Color Themes */}
                     <div>
-                      <Label className="mb-3 block">Color Themes</Label>
+                      <Label className="mb-3 block text-card-foreground">Color Themes</Label>
                       <div className="grid grid-cols-3 gap-3">
                         {colorThemes.map((theme, index) => (
                           <div
                             key={index}
-                            className="cursor-pointer p-3 rounded-lg border hover:border-primary transition-colors"
+                            className="cursor-pointer p-3 rounded-lg border border-border hover:border-primary transition-colors"
                             onClick={() => updateDesignConfig({ 
                               backgroundColor: theme.bg, 
                               titleColor: theme.text 
@@ -201,7 +203,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
                               className="w-full h-8 rounded mb-2"
                               style={{ backgroundColor: theme.bg }}
                             />
-                            <p className="text-sm text-center">{theme.name}</p>
+                            <p className="text-sm text-center text-card-foreground">{theme.name}</p>
                           </div>
                         ))}
                       </div>
@@ -209,7 +211,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
 
                     {/* Border Radius */}
                     <div>
-                      <Label>Border Radius</Label>
+                      <Label className="text-card-foreground">Border Radius</Label>
                       <Slider
                         value={[cardData.designConfig.borderRadius]}
                         onValueChange={([value]) => updateDesignConfig({ borderRadius: value })}
@@ -222,7 +224,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
 
                     {/* Effects */}
                     <div>
-                      <Label className="mb-3 block">Visual Effects</Label>
+                      <Label className="mb-3 block text-card-foreground">Visual Effects</Label>
                       <div className="flex flex-wrap gap-2 mb-4">
                         {Object.entries(cardData.designConfig.effects).map(([effect, enabled]) => {
                           if (effect === "intensity") return null;
@@ -247,7 +249,7 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
                       {/* Effect Intensity */}
                       {(cardData.designConfig.effects.holographic || cardData.designConfig.effects.foil || cardData.designConfig.effects.chrome) && (
                         <div>
-                          <Label>Effect Intensity</Label>
+                          <Label className="text-card-foreground">Effect Intensity</Label>
                           <Slider
                             value={[cardData.designConfig.effects.intensity]}
                             onValueChange={([value]) => updateDesignConfig({
@@ -269,9 +271,9 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
               </TabsContent>
 
               <TabsContent value="preview" className="space-y-4">
-                <Card>
+                <Card className="bg-card border-border">
                   <CardHeader>
-                    <CardTitle>Live Preview</CardTitle>
+                    <CardTitle className="text-card-foreground">Live Preview</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <CardPreview cardData={cardData} />
@@ -283,18 +285,18 @@ export const BasicCRDCreator = ({ onBack }: BasicCRDCreatorProps) => {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            <Card>
+            <Card className="bg-card border-border">
               <CardHeader>
-                <CardTitle>Quick Preview</CardTitle>
+                <CardTitle className="text-card-foreground">Quick Preview</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardPreview cardData={cardData} className="scale-75 origin-top" />
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-card border-border">
               <CardHeader>
-                <CardTitle className="text-sm">Quick Actions</CardTitle>
+                <CardTitle className="text-sm text-card-foreground">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button 

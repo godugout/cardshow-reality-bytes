@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import UserMenu from "@/components/UserMenu";
-import CardshowLogo from "@/components/branding/CardshowLogo";
-import ThemeSelector from "@/components/branding/ThemeSelector";
+import LogoThemeSelector from "@/components/branding/LogoThemeSelector";
 import { Menu, X, Shield } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -33,38 +32,37 @@ const Header = () => {
   const isAdminPage = location.pathname.startsWith('/admin');
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-elevated backdrop-blur border-b border-primary shadow-sm">
+    <header className="sticky top-0 z-50 w-full bg-card backdrop-blur border-b border-border shadow-sm">
       <a 
         href="#main-content" 
-        className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-max focus:bg-brand focus:text-inverse focus:p-4 focus:rounded focus:m-2"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-max focus:bg-primary focus:text-primary-foreground focus:p-4 focus:rounded focus:m-2"
       >
         Skip to main content
       </a>
       
-      <div className="container mx-auto p-6">
-        <div className="flex h-20 items-center justify-between">
-          <Link 
-            to="/" 
-            className="focus-ring rounded p-1"
-            aria-label="Cardshow Home"
-          >
-            <CardshowLogo size="md" />
+      <div className="container mx-auto px-6">
+        <div className="flex h-16 items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link to="/" className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
+              <LogoThemeSelector />
+            </Link>
+            
             {isAdminPage && (
-              <div className="flex items-center gap-2 ml-4 badge badge--warning">
+              <div className="flex items-center gap-2 px-3 py-1 bg-destructive/10 text-destructive rounded-md border border-destructive/20">
                 <Shield className="w-4 h-4" />
-                <span>Admin</span>
+                <span className="text-sm font-medium">Admin</span>
               </div>
             )}
-          </Link>
+          </div>
 
           {/* Desktop Navigation */}
-          <nav className="hide-mobile nav" role="navigation" aria-label="Main navigation">
+          <nav className="hidden md:flex items-center gap-2" role="navigation" aria-label="Main navigation">
             {navItems.map((item) => (
               <Link key={item.href} to={item.href}>
                 <Button 
                   variant={isActive(item.href) ? "default" : "ghost"} 
                   size="sm"
-                  className={isActive(item.href) ? "btn btn--primary" : "nav__item"}
+                  className="transition-colors"
                 >
                   {item.label}
                 </Button>
@@ -77,11 +75,7 @@ const Header = () => {
                 <Button 
                   variant={isActive(item.href) ? "default" : "outline"} 
                   size="sm"
-                  className={
-                    isActive(item.href) 
-                      ? "btn btn--primary" 
-                      : "btn btn--outline text-warning border-warning hover:bg-warning hover:text-inverse"
-                  }
+                  className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
                 >
                   <Shield className="w-3 h-3 mr-1" aria-hidden="true" />
                   {item.label}
@@ -92,13 +86,11 @@ const Header = () => {
 
           {/* User Menu & Controls */}
           <div className="flex items-center gap-4">
-            <ThemeSelector />
-            
             {user ? (
               <UserMenu />
             ) : (
               <Link to="/auth">
-                <Button className="btn btn--primary">
+                <Button>
                   Sign In
                 </Button>
               </Link>
@@ -108,7 +100,7 @@ const Header = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="show-mobile btn btn--ghost"
+              className="md:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-expanded={isMenuOpen}
               aria-controls="mobile-menu"
@@ -123,7 +115,7 @@ const Header = () => {
         {isMenuOpen && (
           <nav 
             id="mobile-menu"
-            className="show-mobile py-6 space-y-2 border-t border-primary bg-elevated animate-fade-in"
+            className="md:hidden py-6 space-y-2 border-t border-border bg-card animate-fade-in"
             role="navigation"
             aria-label="Mobile navigation"
           >
@@ -131,9 +123,7 @@ const Header = () => {
               <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
                 <Button 
                   variant={isActive(item.href) ? "default" : "ghost"} 
-                  className={`w-full justify-start ${
-                    isActive(item.href) ? "btn btn--primary" : "nav__item"
-                  }`}
+                  className="w-full justify-start"
                   size="sm"
                 >
                   {item.label}
@@ -146,11 +136,7 @@ const Header = () => {
               <Link key={item.href} to={item.href} onClick={() => setIsMenuOpen(false)}>
                 <Button 
                   variant={isActive(item.href) ? "default" : "outline"} 
-                  className={`w-full justify-start ${
-                    isActive(item.href) 
-                      ? "btn btn--primary" 
-                      : "btn btn--outline text-warning border-warning"
-                  }`}
+                  className="w-full justify-start border-destructive text-destructive"
                   size="sm"
                 >
                   <Shield className="w-3 h-3 mr-2" aria-hidden="true" />
