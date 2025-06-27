@@ -3,22 +3,13 @@ import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { CardDesigner } from './CardDesigner';
-import { CRDElementsMarketplace } from './CRDElementsMarketplace';
-import { CRDElementCreator } from './CRDElementCreator';
 import { CreatorDashboard } from './CreatorDashboard';
-import { RevenueAnalytics } from './RevenueAnalytics';
-import { AdvancedAnalytics } from '@/components/advanced-creator/AdvancedAnalytics';
-import { AutomationDashboard } from '@/components/advanced-creator/AutomationDashboard';
-import { DesignAssetsLibrary } from '@/components/advanced-creator/DesignAssetsLibrary';
 import { 
   ArrowLeft, 
   Sparkles, 
   Palette, 
-  ShoppingBag, 
   BarChart3,
-  Settings,
-  Layers,
-  Zap
+  Home
 } from 'lucide-react';
 
 interface CRDStudioProps {
@@ -26,7 +17,7 @@ interface CRDStudioProps {
 }
 
 export const CRDStudio = ({ onBack }: CRDStudioProps) => {
-  const [activeTab, setActiveTab] = useState('designer');
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -45,84 +36,46 @@ export const CRDStudio = ({ onBack }: CRDStudioProps) => {
                 <span className="px-2 py-1 bg-gradient-to-r from-[#00C851] to-[#00A543] text-xs font-semibold rounded-full text-white">PRO</span>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Button variant="outline" size="sm" className="border-gray-600 text-gray-300">
-                <Settings className="w-4 h-4 mr-2" />
-                Studio Settings
-              </Button>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Studio Content */}
+      {/* Card-Centric Navigation */}
       <div className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8 bg-gray-900">
-            <TabsTrigger value="designer" className="flex items-center gap-2">
-              <Palette className="w-4 h-4" />
-              Designer
-            </TabsTrigger>
-            <TabsTrigger value="elements" className="flex items-center gap-2">
-              <Layers className="w-4 h-4" />
-              Elements
-            </TabsTrigger>
-            <TabsTrigger value="marketplace" className="flex items-center gap-2">
-              <ShoppingBag className="w-4 h-4" />
-              Marketplace
-            </TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 bg-gray-900 max-w-md mx-auto">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
-              <BarChart3 className="w-4 h-4" />
+              <Home className="w-4 h-4" />
               Dashboard
             </TabsTrigger>
-            <TabsTrigger value="assets" className="flex items-center gap-2">
-              <Layers className="w-4 h-4" />
-              Assets
-            </TabsTrigger>
-            <TabsTrigger value="automation" className="flex items-center gap-2">
-              <Zap className="w-4 h-4" />
-              Automation
+            <TabsTrigger value="designer" className="flex items-center gap-2">
+              <Palette className="w-4 h-4" />
+              Create
             </TabsTrigger>
             <TabsTrigger value="analytics" className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
               Analytics
             </TabsTrigger>
-            <TabsTrigger value="revenue" className="flex items-center gap-2">
-              <BarChart3 className="w-4 h-4" />
-              Revenue
-            </TabsTrigger>
           </TabsList>
-
-          <TabsContent value="designer">
-            <CardDesigner />
-          </TabsContent>
-
-          <TabsContent value="elements">
-            <CRDElementCreator />
-          </TabsContent>
-
-          <TabsContent value="marketplace">
-            <CRDElementsMarketplace />
-          </TabsContent>
 
           <TabsContent value="dashboard">
             <CreatorDashboard />
           </TabsContent>
 
-          <TabsContent value="assets">
-            <DesignAssetsLibrary />
-          </TabsContent>
-
-          <TabsContent value="automation">
-            <AutomationDashboard />
+          <TabsContent value="designer">
+            <CardDesigner />
           </TabsContent>
 
           <TabsContent value="analytics">
-            <AdvancedAnalytics />
-          </TabsContent>
-
-          <TabsContent value="revenue">
-            <RevenueAnalytics />
+            <div className="text-center py-12">
+              <BarChart3 className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                Card Analytics
+              </h3>
+              <p className="text-muted-foreground">
+                Coming soon - Track your card performance and earnings
+              </p>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
