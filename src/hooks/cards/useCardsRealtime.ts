@@ -24,7 +24,7 @@ export const useCardsRealtime = (refetch: () => void) => {
         }
       )
       .subscribe((status) => {
-        if (status === 'SUBSCRIPTION_ERROR') {
+        if (status === 'CLOSED') {
           console.error('Failed to subscribe to cards realtime updates');
         }
       });
