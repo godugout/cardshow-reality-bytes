@@ -1,7 +1,31 @@
 
+import { useState } from 'react';
 import AuthForm from '@/components/auth/AuthForm';
+import { useAuth } from '@/hooks/useAuth';
+import { Navigate } from 'react-router-dom';
 
 const Auth = () => {
+  const { user } = useAuth();
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Redirect if already authenticated
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    // TODO: Implement actual authentication logic
+    console.log('Auth form submitted', { isLogin, email, password, username, fullName });
+    setLoading(false);
+  };
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -11,7 +35,29 @@ const Auth = () => {
             Sign in to your account or create a new one
           </p>
         </div>
-        <AuthForm />
+        
+        <div className="mb-6 text-center">
+          <button
+            onClick={() => setIsLogin(!isLogin)}
+            className="text-primary hover:text-primary-hover underline"
+          >
+            {isLogin ? "Need an account? Sign up" : "Already have an account? Sign in"}
+          </button>
+        </div>
+
+        <AuthForm
+          isLogin={isLogin}
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          username={username}
+          setUsername={setUsername}
+          fullName={fullName}
+          setFullName={setFullName}
+          loading={loading}
+          onSubmit={handleSubmit}
+        />
       </div>
     </div>
   );

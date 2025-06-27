@@ -1,7 +1,7 @@
 
 import { Suspense } from 'react';
 import Header from '@/components/Header';
-import CreatorDashboard from '@/components/creator/CreatorDashboard';
+import { CreatorDashboard } from '@/components/creator/CreatorDashboard';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Creator = () => {
