@@ -1,7 +1,7 @@
 
 import { useTheme } from '@/hooks/useTheme';
 import { Button } from '@/components/ui/button';
-import { Palette, Sun, Moon, Monitor } from 'lucide-react';
+import { Palette, Sun, Moon } from 'lucide-react';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -11,33 +11,28 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const ThemeSelector = () => {
-  const { theme, mode, setTheme, setMode, toggleMode } = useTheme();
+  const { theme, mode, setTheme, setMode } = useTheme();
 
   const themes = [
-    { id: 'classic', name: 'Classic Red', color: '#DC2626', description: 'Bold and energetic' },
-    { id: 'royal', name: 'Royal Blue', color: '#1D4ED8', description: 'Professional and trust' },
-    { id: 'vibrant', name: 'Vibrant Orange', color: '#EA580C', description: 'Creative and dynamic' },
-    { id: 'fresh', name: 'Fresh Green', color: '#059669', description: 'Growth and harmony' }
-  ] as const;
-
-  const modes = [
-    { id: 'light', name: 'Light', icon: Sun },
-    { id: 'dark', name: 'Dark', icon: Moon },
+    { id: 'classic', name: 'Classic Red', color: '#DC2626' },
+    { id: 'royal', name: 'Royal Blue', color: '#1D4ED8' },
+    { id: 'vibrant', name: 'Vibrant Orange', color: '#EA580C' },
+    { id: 'fresh', name: 'Fresh Green', color: '#059669' }
   ] as const;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="focus-ring">
-          <Palette className="w-4 h-4" />
-          <span className="hide-mobile ml-2">Theme</span>
+        <Button variant="ghost" size="sm">
+          <Palette className="w-4 h-4 mr-2" />
+          Theme
         </Button>
       </DropdownMenuTrigger>
       
-      <DropdownMenuContent align="end" className="w-56 bg-elevated shadow-xl border border-primary">
+      <DropdownMenuContent align="end" className="w-56">
         <div className="px-3 py-2">
-          <p className="text-sm font-medium text-primary">Choose Theme</p>
-          <p className="text-xs text-secondary">Customize your experience</p>
+          <p className="text-sm font-medium">Choose Theme</p>
+          <p className="text-xs text-muted-foreground">Customize your experience</p>
         </div>
         
         <DropdownMenuSeparator />
@@ -47,10 +42,8 @@ const ThemeSelector = () => {
             <DropdownMenuItem
               key={themeOption.id}
               onClick={() => setTheme(themeOption.id as any)}
-              className={`flex items-center gap-3 px-3 py-2 rounded cursor-pointer transition-colors ${
-                theme === themeOption.id 
-                  ? 'bg-brand text-inverse' 
-                  : 'hover:bg-secondary'
+              className={`flex items-center gap-3 px-3 py-2 rounded cursor-pointer ${
+                theme === themeOption.id ? 'bg-accent' : ''
               }`}
             >
               <div 
@@ -59,10 +52,9 @@ const ThemeSelector = () => {
               />
               <div className="flex-1">
                 <div className="text-sm font-medium">{themeOption.name}</div>
-                <div className="text-xs opacity-70">{themeOption.description}</div>
               </div>
               {theme === themeOption.id && (
-                <div className="w-2 h-2 bg-current rounded-full" />
+                <div className="w-2 h-2 bg-primary rounded-full" />
               )}
             </DropdownMenuItem>
           ))}
@@ -71,25 +63,26 @@ const ThemeSelector = () => {
         <DropdownMenuSeparator />
         
         <div className="p-2">
-          <p className="text-xs font-medium text-primary px-3 py-1">Appearance</p>
+          <p className="text-xs font-medium px-3 py-1">Appearance</p>
           <div className="grid grid-cols-2 gap-1 mt-1">
-            {modes.map((modeOption) => {
-              const Icon = modeOption.icon;
-              return (
-                <DropdownMenuItem
-                  key={modeOption.id}
-                  onClick={() => setMode(modeOption.id as any)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded cursor-pointer transition-colors ${
-                    mode === modeOption.id 
-                      ? 'bg-brand text-inverse' 
-                      : 'hover:bg-secondary'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span className="text-sm">{modeOption.name}</span>
-                </DropdownMenuItem>
-              );
-            })}
+            <DropdownMenuItem
+              onClick={() => setMode('light')}
+              className={`flex items-center gap-2 px-3 py-2 rounded cursor-pointer ${
+                mode === 'light' ? 'bg-accent' : ''
+              }`}
+            >
+              <Sun className="w-4 h-4" />
+              <span className="text-sm">Light</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setMode('dark')}
+              className={`flex items-center gap-2 px-3 py-2 rounded cursor-pointer ${
+                mode === 'dark' ? 'bg-accent' : ''
+              }`}
+            >
+              <Moon className="w-4 h-4" />
+              <span className="text-sm">Dark</span>
+            </DropdownMenuItem>
           </div>
         </div>
       </DropdownMenuContent>
