@@ -23,7 +23,7 @@ const defaultCanvasState: CanvasCustomizerState = {
   gridOpacity: 0.3,
   gridColor: '#334155',
   backgroundSize: 120,
-  backgroundOpacity: 0.12,
+  backgroundOpacity: 0.25, // Increased default opacity for better visibility
 };
 
 export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -55,7 +55,7 @@ export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> =
         gridOpacity: theme.gridOpacity,
         gridColor: theme.gridColor,
         backgroundSize: theme.backgroundSize || 120,
-        backgroundOpacity: theme.backgroundOpacity || 0.12,
+        backgroundOpacity: Math.max(theme.backgroundOpacity || 0.25, 0.25), // Ensure minimum visibility
       };
       console.log('Theme selected, updating state to:', newState);
       setCanvasState(newState);

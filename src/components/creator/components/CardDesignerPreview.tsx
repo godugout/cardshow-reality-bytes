@@ -44,10 +44,10 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     position: 'absolute',
     inset: 0,
     pointerEvents: 'none',
-    zIndex: 2,
+    zIndex: 10, // Increased z-index to be above background layers
   };
 
-  // Background pattern style (for CRD logo or other patterns)  
+  // Background pattern style for CRD logo - with higher opacity and proper z-index
   const backgroundPatternStyle: React.CSSProperties = currentTheme?.backgroundImage ? {
     position: 'absolute',
     inset: 0,
@@ -55,9 +55,9 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     backgroundSize: `${canvasState.backgroundSize}px ${canvasState.backgroundSize}px`,
     backgroundRepeat: 'repeat',
     backgroundPosition: 'center',
-    opacity: canvasState.backgroundOpacity,
-    zIndex: 1,
-    filter: 'brightness(0.9) contrast(1.1)',
+    opacity: Math.max(canvasState.backgroundOpacity, 0.25), // Ensure minimum visibility
+    zIndex: 3, // Higher z-index to be visible
+    filter: 'brightness(1.1) contrast(1.2)', // Enhanced visibility
   } : {};
 
   return (
@@ -79,7 +79,16 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           className="absolute inset-0 transition-all duration-500 ease-out"
           style={workspaceStyle}
         >
-          {/* Background Pattern Layer (CRD Logo, etc.) */}
+          {/* Base Background Layer - z-index 1 */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              backgroundColor: canvasState.customBackgroundColor,
+              zIndex: 1,
+            }}
+          />
+          
+          {/* Background Pattern Layer (CRD Logo) - z-index 3 */}
           {currentTheme?.backgroundImage && (
             <div 
               style={backgroundPatternStyle}
@@ -87,27 +96,28 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
             />
           )}
           
-          {/* Pattern Overlay Layer (for special patterns) */}
+          {/* Pattern Overlay Layer (for special patterns) - z-index 5 */}
           {currentTheme?.patternOverlay && (
             <div 
-              className="absolute inset-0 z-1"
+              className="absolute inset-0"
               style={{
                 backgroundImage: currentTheme.patternOverlay,
                 backgroundSize: `${canvasState.gridSize}px ${canvasState.gridSize}px`,
                 opacity: 0.3,
+                zIndex: 5,
               }}
             />
           )}
           
-          {/* Grid Overlay Layer */}
+          {/* Grid Overlay Layer - z-index 10 */}
           {canvasState.showGrid && (
             <div style={gridOverlayStyle} />
           )}
           
-          {/* Theme-specific decorative elements */}
+          {/* Theme-specific decorative elements - z-index 12 */}
           {currentTheme?.id === 'crd-branded' && (
-            <div className="absolute top-4 right-4 z-10">
-              <div className="text-xs text-white/50 font-bold bg-gradient-to-r from-orange-500/20 to-blue-500/20 px-3 py-1 rounded-full backdrop-blur-sm border border-white/10">
+            <div className="absolute top-4 right-4" style={{ zIndex: 12 }}>
+              <div className="text-xs text-white/70 font-bold bg-gradient-to-r from-orange-500/30 to-blue-500/30 px-3 py-1 rounded-full backdrop-blur-sm border border-white/20">
                 CRD Studio
               </div>
             </div>
@@ -115,31 +125,31 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           
           {currentTheme?.id === 'blueprint-blue' && (
             <>
-              <div className="absolute top-4 left-4 z-10 text-blue-300/60 text-xs font-mono">
+              <div className="absolute top-4 left-4 text-blue-300/60 text-xs font-mono" style={{ zIndex: 12 }}>
                 BLUEPRINT v2.1
               </div>
-              <div className="absolute bottom-4 right-4 z-10 text-blue-300/40 text-xs">
+              <div className="absolute bottom-4 right-4 text-blue-300/40 text-xs" style={{ zIndex: 12 }}>
                 SCALE 1:1
               </div>
             </>
           )}
           
           {currentTheme?.id === 'architect-green' && (
-            <div className="absolute bottom-4 left-4 z-10 text-yellow-400/60 text-xs font-mono">
+            <div className="absolute bottom-4 left-4 text-yellow-400/60 text-xs font-mono" style={{ zIndex: 12 }}>
               DRAFTING TABLE
             </div>
           )}
         </div>
         
-        {/* Card Preview - Positioned above the themed workspace */}
-        <div className="relative z-20 p-8 flex items-start justify-center w-full h-full">
+        {/* Card Preview - Positioned above everything else - z-index 20 */}
+        <div className="relative p-8 flex items-start justify-center w-full h-full" style={{ zIndex: 20 }}>
           <div className="transform scale-110 mt-8 transition-transform duration-300 hover:scale-115">
             <CardPreview cardData={cardData} />
           </div>
         </div>
 
-        {/* Theme transition overlay for smooth changes */}
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-transparent via-transparent to-black/5 z-30" />
+        {/* Theme transition overlay for smooth changes - z-index 30 */}
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-transparent via-transparent to-black/5" style={{ zIndex: 30 }} />
       </CardContent>
     </Card>
   );
