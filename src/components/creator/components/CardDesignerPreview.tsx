@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye } from 'lucide-react';
 import { CardPreview } from '../CardPreview';
-import { useCanvasCustomizer } from '../hooks/useCanvasCustomizer';
+import { useCanvasCustomizer } from '../contexts/CanvasCustomizerContext';
 import { CardCreationData } from '@/hooks/useCardCreation';
 
 interface CardDesignerPreviewProps {
@@ -16,11 +16,18 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
   const canvasStyles = getCanvasStyles();
   const gridStyles = getGridStyles();
 
+  console.log('CardDesignerPreview rendering with:', {
+    selectedTheme: canvasState.selectedTheme,
+    currentTheme: currentTheme?.name,
+    canvasStyles,
+    gridStyles
+  });
+
   // Create a comprehensive themed workspace style
-  const workspaceStyle = {
+  const workspaceStyle: React.CSSProperties = {
     ...canvasStyles,
     minHeight: '100%',
-    position: 'relative' as const,
+    position: 'relative',
     borderRadius: '12px',
     overflow: 'hidden',
     // Add theme-specific border and shadow effects
@@ -31,17 +38,17 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
   };
 
   // Enhanced grid overlay style
-  const gridOverlayStyle = {
+  const gridOverlayStyle: React.CSSProperties = {
     ...gridStyles,
-    position: 'absolute' as const,
+    position: 'absolute',
     inset: 0,
-    pointerEvents: 'none' as const,
+    pointerEvents: 'none',
     zIndex: 1,
   };
 
   // Background pattern style (for CRD logo or other patterns)
-  const backgroundPatternStyle = currentTheme?.backgroundImage ? {
-    position: 'absolute' as const,
+  const backgroundPatternStyle: React.CSSProperties = currentTheme?.backgroundImage ? {
+    position: 'absolute',
     inset: 0,
     backgroundImage: `url(${currentTheme.backgroundImage})`,
     backgroundSize: `${canvasState.backgroundSize}px ${canvasState.backgroundSize}px`,

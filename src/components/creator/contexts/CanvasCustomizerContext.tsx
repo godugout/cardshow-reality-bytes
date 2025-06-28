@@ -1,7 +1,19 @@
 
-import { useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import type { CanvasCustomizerState, CanvasTheme } from '../types/canvasTypes';
 import { canvasThemes } from '../data/canvasThemes';
+
+interface CanvasCustomizerContextValue {
+  canvasState: CanvasCustomizerState;
+  updateCanvasState: (updates: Partial<CanvasCustomizerState>) => void;
+  selectTheme: (themeId: string) => void;
+  getCurrentTheme: () => CanvasTheme | null;
+  getCanvasStyles: () => React.CSSProperties;
+  getGridStyles: () => React.CSSProperties;
+  availableThemes: CanvasTheme[];
+}
+
+const CanvasCustomizerContext = createContext<CanvasCustomizerContextValue | null>(null);
 
 const defaultCanvasState: CanvasCustomizerState = {
   selectedTheme: 'crd-branded',
@@ -14,17 +26,23 @@ const defaultCanvasState: CanvasCustomizerState = {
   backgroundOpacity: 0.15,
 };
 
-export const useCanvasCustomizer = () => {
+export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [canvasState, setCanvasState] = useState<CanvasCustomizerState>(defaultCanvasState);
 
   const updateCanvasState = useCallback((updates: Partial<CanvasCustomizerState>) => {
-    setCanvasState(prev => ({ ...prev, ...updates }));
+    console.log('Canvas state updating:', updates);
+    setCanvasState(prev => {
+      const newState = { ...prev, ...updates };
+      console.log('New canvas state:', newState);
+      return newState;
+    });
   }, []);
 
   const selectTheme = useCallback((themeId: string) => {
+    console.log('Selecting theme:', themeId);
     const theme = canvasThemes.find(t => t.id === themeId);
     if (theme) {
-      setCanvasState({
+      const newState = {
         selectedTheme: themeId,
         customBackgroundColor: theme.backgroundColor,
         showGrid: theme.showGrid,
@@ -33,7 +51,9 @@ export const useCanvasCustomizer = () => {
         gridColor: theme.gridColor,
         backgroundSize: theme.backgroundSize || 120,
         backgroundOpacity: theme.backgroundOpacity || 0.15,
-      });
+      };
+      console.log('Theme selected, updating state to:', newState);
+      setCanvasState(newState);
     }
   }, []);
 
@@ -41,10 +61,11 @@ export const useCanvasCustomizer = () => {
     return canvasThemes.find(t => t.id === canvasState.selectedTheme) || null;
   }, [canvasState.selectedTheme]);
 
-  const getCanvasStyles = useCallback(() => {
+  const getCanvasStyles = useCallback((): React.CSSProperties => {
     const theme = getCurrentTheme();
-    const baseStyles = {
+    const baseStyles: React.CSSProperties = {
       backgroundColor: canvasState.customBackgroundColor,
+      transition: 'all 0.5s ease-out',
     };
 
     // Handle background image (like CRD logo)
@@ -55,7 +76,6 @@ export const useCanvasCustomizer = () => {
         backgroundSize: `${canvasState.backgroundSize || 120}px ${canvasState.backgroundSize || 120}px`,
         backgroundRepeat: 'repeat',
         backgroundPosition: 'center',
-        opacity: canvasState.backgroundOpacity || 0.15,
       };
     }
 
@@ -71,7 +91,7 @@ export const useCanvasCustomizer = () => {
     return baseStyles;
   }, [canvasState, getCurrentTheme]);
 
-  const getGridStyles = useCallback(() => {
+  const getGridStyles = useCallback((): React.CSSProperties => {
     if (!canvasState.showGrid) return {};
 
     return {
@@ -84,7 +104,7 @@ export const useCanvasCustomizer = () => {
     };
   }, [canvasState]);
 
-  return {
+  const value: CanvasCustomizerContextValue = {
     canvasState,
     updateCanvasState,
     selectTheme,
@@ -93,4 +113,18 @@ export const useCanvasCustomizer = () => {
     getGridStyles,
     availableThemes: canvasThemes,
   };
+
+  return (
+    <CanvasCustomizerContext.Provider value={value}>
+      {children}
+    </CanvasCustomizerContext.Provider>
+  );
+};
+
+export const useCanvasCustomizer = (): CanvasCustomizerContextValue => {
+  const context = useContext(CanvasCustomizerContext);
+  if (!context) {
+    throw new Error('useCanvasCustomizer must be used within a CanvasCustomizerProvider');
+  }
+  return context;
 };

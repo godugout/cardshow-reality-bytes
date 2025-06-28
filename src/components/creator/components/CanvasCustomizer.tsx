@@ -6,7 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { useCanvasCustomizer } from '../hooks/useCanvasCustomizer';
+import { useCanvasCustomizer } from '../contexts/CanvasCustomizerContext';
 import { Palette, Grid3x3, Image } from 'lucide-react';
 
 export const CanvasCustomizer = () => {
@@ -18,8 +18,15 @@ export const CanvasCustomizer = () => {
     getCurrentTheme,
   } = useCanvasCustomizer();
 
+  console.log('CanvasCustomizer rendering with state:', canvasState);
+
   const currentTheme = getCurrentTheme();
   const hasBackgroundImage = currentTheme?.backgroundImage;
+
+  const handleThemeSelect = (themeId: string) => {
+    console.log('Theme selected in CanvasCustomizer:', themeId);
+    selectTheme(themeId);
+  };
 
   return (
     <div className="space-y-6">
@@ -38,7 +45,7 @@ export const CanvasCustomizer = () => {
                   ? 'ring-2 ring-emerald-500 bg-emerald-500/10 border-emerald-500/50'
                   : 'hover:bg-slate-700/50 bg-slate-700/30 border-slate-600'
               }`}
-              onClick={() => selectTheme(theme.id)}
+              onClick={() => handleThemeSelect(theme.id)}
             >
               <CardContent className="p-3">
                 <div className="flex items-center gap-3">
