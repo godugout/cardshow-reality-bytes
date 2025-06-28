@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye } from 'lucide-react';
 import { CardPreview } from '../CardPreview';
@@ -19,7 +20,8 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     selectedTheme: canvasState.selectedTheme,
     currentTheme: currentTheme?.name,
     canvasStyles,
-    gridStyles
+    gridStyles,
+    backgroundImage: currentTheme?.backgroundImage
   });
 
   // Create a comprehensive themed workspace style
@@ -42,10 +44,10 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     position: 'absolute',
     inset: 0,
     pointerEvents: 'none',
-    zIndex: 1,
+    zIndex: 2,
   };
 
-  // Background pattern style (for CRD logo or other patterns)
+  // Background pattern style (for CRD logo or other patterns)  
   const backgroundPatternStyle: React.CSSProperties = currentTheme?.backgroundImage ? {
     position: 'absolute',
     inset: 0,
@@ -54,8 +56,8 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     backgroundRepeat: 'repeat',
     backgroundPosition: 'center',
     opacity: canvasState.backgroundOpacity,
-    zIndex: 0,
-    filter: 'brightness(0.9) contrast(1.1)', // Subtle enhancement for better theme effect
+    zIndex: 1,
+    filter: 'brightness(0.9) contrast(1.1)',
   } : {};
 
   return (
@@ -79,18 +81,20 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
         >
           {/* Background Pattern Layer (CRD Logo, etc.) */}
           {currentTheme?.backgroundImage && (
-            <div style={backgroundPatternStyle} />
+            <div 
+              style={backgroundPatternStyle}
+              className="absolute inset-0"
+            />
           )}
           
           {/* Pattern Overlay Layer (for special patterns) */}
           {currentTheme?.patternOverlay && (
             <div 
-              className="absolute inset-0"
+              className="absolute inset-0 z-1"
               style={{
                 backgroundImage: currentTheme.patternOverlay,
                 backgroundSize: `${canvasState.gridSize}px ${canvasState.gridSize}px`,
                 opacity: 0.3,
-                zIndex: 1,
               }}
             />
           )}

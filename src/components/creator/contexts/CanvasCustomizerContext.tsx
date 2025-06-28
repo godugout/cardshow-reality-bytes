@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import type { CanvasCustomizerState, CanvasTheme } from '../types/canvasTypes';
 import { canvasThemes } from '../data/canvasThemes';
 
@@ -23,11 +23,16 @@ const defaultCanvasState: CanvasCustomizerState = {
   gridOpacity: 0.3,
   gridColor: '#334155',
   backgroundSize: 120,
-  backgroundOpacity: 0.15,
+  backgroundOpacity: 0.12,
 };
 
 export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [canvasState, setCanvasState] = useState<CanvasCustomizerState>(defaultCanvasState);
+
+  // Debug logging
+  useEffect(() => {
+    console.log('CanvasCustomizerProvider initialized with state:', canvasState);
+  }, []);
 
   const updateCanvasState = useCallback((updates: Partial<CanvasCustomizerState>) => {
     console.log('Canvas state updating:', updates);
@@ -50,7 +55,7 @@ export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> =
         gridOpacity: theme.gridOpacity,
         gridColor: theme.gridColor,
         backgroundSize: theme.backgroundSize || 120,
-        backgroundOpacity: theme.backgroundOpacity || 0.15,
+        backgroundOpacity: theme.backgroundOpacity || 0.12,
       };
       console.log('Theme selected, updating state to:', newState);
       setCanvasState(newState);
@@ -58,7 +63,9 @@ export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> =
   }, []);
 
   const getCurrentTheme = useCallback((): CanvasTheme | null => {
-    return canvasThemes.find(t => t.id === canvasState.selectedTheme) || null;
+    const theme = canvasThemes.find(t => t.id === canvasState.selectedTheme);
+    console.log('Getting current theme:', theme?.name || 'None found');
+    return theme || null;
   }, [canvasState.selectedTheme]);
 
   const getCanvasStyles = useCallback((): React.CSSProperties => {
@@ -68,6 +75,8 @@ export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> =
       transition: 'all 0.5s ease-out',
     };
 
+    console.log('Getting canvas styles for theme:', theme?.name, 'with backgroundImage:', theme?.backgroundImage);
+
     // Handle background image (like CRD logo)
     if (theme?.backgroundImage) {
       return {
@@ -76,6 +85,7 @@ export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> =
         backgroundSize: `${canvasState.backgroundSize || 120}px ${canvasState.backgroundSize || 120}px`,
         backgroundRepeat: 'repeat',
         backgroundPosition: 'center',
+        backgroundBlendMode: 'multiply',
       };
     }
 
@@ -124,6 +134,7 @@ export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> =
 export const useCanvasCustomizer = (): CanvasCustomizerContextValue => {
   const context = useContext(CanvasCustomizerContext);
   if (!context) {
+    console.error('useCanvasCustomizer must be used within a CanvasCustomizerProvider');
     throw new Error('useCanvasCustomizer must be used within a CanvasCustomizerProvider');
   }
   return context;
