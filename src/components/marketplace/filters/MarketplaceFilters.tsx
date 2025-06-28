@@ -47,20 +47,20 @@ const MarketplaceFilters = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Main Search and Sort Row */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col lg:flex-row gap-6">
         <div className="relative flex-1">
           <Label htmlFor="marketplace-search" className="sr-only">
             Search marketplace
           </Label>
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" aria-hidden="true" />
+          <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" aria-hidden="true" />
           <Input
             id="marketplace-search"
             placeholder="Search cards, collections, or creators..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-12 h-12 rounded-3xl border-0 bg-background/50 backdrop-blur-sm"
+            className="pl-16 h-16 rounded-3xl border-0 bg-background/50 backdrop-blur-xl text-lg"
             aria-describedby="search-help"
           />
           <div id="search-help" className="sr-only">
@@ -68,13 +68,13 @@ const MarketplaceFilters = ({
           </div>
         </div>
         
-        <div className="flex gap-3">
-          <div className="min-w-[160px]">
+        <div className="flex gap-4">
+          <div className="min-w-[200px]">
             <Label htmlFor="sort-select" className="sr-only">
               Sort listings by
             </Label>
             <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger id="sort-select" className="h-12 rounded-3xl border-0 bg-background/50 backdrop-blur-sm">
+              <SelectTrigger id="sort-select" className="h-16 rounded-3xl border-0 bg-background/50 backdrop-blur-xl">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent className="rounded-3xl border-0 bg-card/90 backdrop-blur-xl">
@@ -91,11 +91,11 @@ const MarketplaceFilters = ({
           <Button
             variant="outline"
             onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-            className="flex items-center gap-2 h-12 rounded-3xl border-0 bg-background/50 backdrop-blur-sm"
+            className="flex items-center gap-3 h-16 px-6 rounded-3xl border-0 bg-background/50 backdrop-blur-xl font-bold"
             aria-expanded={showAdvancedFilters}
             aria-controls="advanced-filters"
           >
-            <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
+            <SlidersHorizontal className="w-5 h-5" aria-hidden="true" />
             Filters
           </Button>
         </div>
@@ -103,17 +103,19 @@ const MarketplaceFilters = ({
 
       {/* Advanced Filters Panel */}
       {showAdvancedFilters && (
-        <AdvancedFiltersPanel
-          priceRange={priceRange}
-          selectedRarity={selectedRarity}
-          selectedCondition={selectedCondition}
-          onPriceChange={handlePriceChange}
-          onRarityChange={setSelectedRarity}
-          onConditionChange={setSelectedCondition}
-          onListingTypeChange={() => {}}
-          onClearFilters={clearFilters}
-          onFiltersChange={onFiltersChange}
-        />
+        <div className="animate-modern-slide-up">
+          <AdvancedFiltersPanel
+            priceRange={priceRange}
+            selectedRarity={selectedRarity}
+            selectedCondition={selectedCondition}
+            onPriceChange={handlePriceChange}
+            onRarityChange={setSelectedRarity}
+            onConditionChange={setSelectedCondition}
+            onListingTypeChange={() => {}}
+            onClearFilters={clearFilters}
+            onFiltersChange={onFiltersChange}
+          />
+        </div>
       )}
     </div>
   );
