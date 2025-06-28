@@ -1,9 +1,8 @@
-
 import { Link } from 'react-router-dom';
 import { 
   Github, 
   Twitter, 
-  Discord, 
+  MessageCircle, 
   Instagram,
   Mail,
   MapPin,
@@ -54,7 +53,7 @@ const Footer = () => {
 
   const socialLinks = [
     { name: "Twitter", icon: Twitter, href: "https://twitter.com/cardshow", color: "hover:text-blue-400" },
-    { name: "Discord", icon: Discord, href: "https://discord.gg/cardshow", color: "hover:text-purple-400" },
+    { name: "Discord", icon: MessageCircle, href: "https://discord.gg/cardshow", color: "hover:text-purple-400" },
     { name: "Instagram", icon: Instagram, href: "https://instagram.com/cardshow", color: "hover:text-pink-400" },
     { name: "GitHub", icon: Github, href: "https://github.com/cardshow", color: "hover:text-gray-400" }
   ];
