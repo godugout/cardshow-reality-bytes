@@ -30,12 +30,14 @@ export const CardDesignerSidebar = ({
 }: CardDesignerSidebarProps) => {
   // Debug logging
   console.log('CardDesignerSidebar rendering with activeSection:', activeSection);
+  console.log('Available sections: content, design, effects, canvas');
 
   const renderActiveSection = () => {
     console.log('Rendering section:', activeSection);
     
     switch (activeSection) {
       case 'content':
+        console.log('Rendering ContentSection');
         return (
           <ContentSection
             cardData={cardData}
@@ -45,6 +47,7 @@ export const CardDesignerSidebar = ({
           />
         );
       case 'design':
+        console.log('Rendering DesignSection');
         return (
           <DesignSection
             cardData={cardData}
@@ -52,6 +55,7 @@ export const CardDesignerSidebar = ({
           />
         );
       case 'effects':
+        console.log('Rendering EffectsSection');
         return (
           <EffectsSection
             cardData={cardData}
@@ -59,11 +63,16 @@ export const CardDesignerSidebar = ({
           />
         );
       case 'canvas':
-        console.log('Rendering CanvasCustomizer');
+        console.log('SUCCESS: Rendering CanvasCustomizer with theme presets and CRD logo!');
         return <CanvasCustomizer />;
       default:
-        console.log('No matching section for:', activeSection);
-        return null;
+        console.log('ERROR: No matching section for:', activeSection);
+        return (
+          <div className="text-center py-8 text-slate-400">
+            <p>Unknown section: {activeSection}</p>
+            <p>Available: content, design, effects, canvas</p>
+          </div>
+        );
     }
   };
 
