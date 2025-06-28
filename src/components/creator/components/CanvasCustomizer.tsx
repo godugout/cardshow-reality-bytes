@@ -21,7 +21,7 @@ export const CanvasCustomizer = () => {
     <div className="space-y-6">
       {/* Theme Presets */}
       <div>
-        <Label className="text-sm font-semibold text-slate-900 mb-3 block">
+        <Label className="text-sm font-semibold text-slate-200 mb-3 block">
           <Palette className="w-4 h-4 inline mr-2" />
           Canvas Themes
         </Label>
@@ -31,8 +31,8 @@ export const CanvasCustomizer = () => {
               key={theme.id}
               className={`cursor-pointer transition-all duration-200 ${
                 canvasState.selectedTheme === theme.id
-                  ? 'ring-2 ring-blue-500 bg-blue-50'
-                  : 'hover:bg-slate-50'
+                  ? 'ring-2 ring-emerald-500 bg-emerald-500/10 border-emerald-500/50'
+                  : 'hover:bg-slate-700/50 bg-slate-700/30 border-slate-600'
               }`}
               onClick={() => selectTheme(theme.id)}
             >
@@ -40,7 +40,7 @@ export const CanvasCustomizer = () => {
                 <div className="flex items-center gap-3">
                   {/* Theme Preview */}
                   <div 
-                    className="w-12 h-8 rounded border-2 border-slate-200 flex-shrink-0"
+                    className="w-12 h-8 rounded border-2 border-slate-500 flex-shrink-0"
                     style={{
                       backgroundColor: theme.backgroundColor,
                       backgroundImage: theme.patternOverlay,
@@ -65,16 +65,16 @@ export const CanvasCustomizer = () => {
                   {/* Theme Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-medium text-slate-900 text-sm truncate">
+                      <h3 className="font-medium text-slate-200 text-sm truncate">
                         {theme.name}
                       </h3>
                       {canvasState.selectedTheme === theme.id && (
-                        <Badge variant="default" className="text-xs bg-blue-600">
+                        <Badge variant="default" className="text-xs bg-emerald-600 text-white">
                           Active
                         </Badge>
                       )}
                     </div>
-                    <p className="text-xs text-slate-600 line-clamp-1">
+                    <p className="text-xs text-slate-400 line-clamp-1">
                       {theme.description}
                     </p>
                   </div>
@@ -85,11 +85,11 @@ export const CanvasCustomizer = () => {
         </div>
       </div>
 
-      <Separator className="bg-slate-200" />
+      <Separator className="bg-slate-600" />
 
       {/* Custom Background Color */}
       <div>
-        <Label className="text-sm font-semibold text-slate-900 mb-3 block">
+        <Label className="text-sm font-semibold text-slate-200 mb-3 block">
           Custom Background
         </Label>
         <div className="flex items-center gap-3">
@@ -97,22 +97,22 @@ export const CanvasCustomizer = () => {
             type="color"
             value={canvasState.customBackgroundColor}
             onChange={(e) => updateCanvasState({ customBackgroundColor: e.target.value })}
-            className="w-12 h-10 rounded-lg border border-slate-200 cursor-pointer"
+            className="w-12 h-10 rounded-lg border border-slate-600 cursor-pointer bg-slate-700"
           />
           <Input
             value={canvasState.customBackgroundColor}
             onChange={(e) => updateCanvasState({ customBackgroundColor: e.target.value })}
-            className="flex-1 bg-white border-slate-200 text-slate-900"
+            className="flex-1 bg-slate-700 border-slate-600 text-slate-100 focus:border-emerald-500"
             placeholder="#1a2332"
           />
         </div>
       </div>
 
-      <Separator className="bg-slate-200" />
+      <Separator className="bg-slate-600" />
 
       {/* Grid Settings */}
       <div>
-        <Label className="text-sm font-semibold text-slate-900 mb-3 block">
+        <Label className="text-sm font-semibold text-slate-200 mb-3 block">
           <Grid3x3 className="w-4 h-4 inline mr-2" />
           Grid Settings
         </Label>
@@ -120,7 +120,7 @@ export const CanvasCustomizer = () => {
         <div className="space-y-4">
           {/* Show Grid Toggle */}
           <div className="flex items-center justify-between">
-            <Label className="text-sm text-slate-700">Show Grid</Label>
+            <Label className="text-sm text-slate-300">Show Grid</Label>
             <Switch
               checked={canvasState.showGrid}
               onCheckedChange={(checked) => updateCanvasState({ showGrid: checked })}
@@ -132,8 +132,8 @@ export const CanvasCustomizer = () => {
               {/* Grid Size */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <Label className="text-sm text-slate-700">Grid Size</Label>
-                  <span className="text-xs font-medium text-slate-900 bg-slate-100 px-2 py-1 rounded">
+                  <Label className="text-sm text-slate-300">Grid Size</Label>
+                  <span className="text-xs font-medium text-slate-200 bg-slate-700 px-2 py-1 rounded">
                     {canvasState.gridSize}px
                   </span>
                 </div>
@@ -150,8 +150,8 @@ export const CanvasCustomizer = () => {
               {/* Grid Opacity */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <Label className="text-sm text-slate-700">Grid Opacity</Label>
-                  <span className="text-xs font-medium text-slate-900 bg-slate-100 px-2 py-1 rounded">
+                  <Label className="text-sm text-slate-300">Grid Opacity</Label>
+                  <span className="text-xs font-medium text-slate-200 bg-slate-700 px-2 py-1 rounded">
                     {Math.round(canvasState.gridOpacity * 100)}%
                   </span>
                 </div>
@@ -167,18 +167,18 @@ export const CanvasCustomizer = () => {
 
               {/* Grid Color */}
               <div>
-                <Label className="text-sm text-slate-700 mb-2 block">Grid Color</Label>
+                <Label className="text-sm text-slate-300 mb-2 block">Grid Color</Label>
                 <div className="flex items-center gap-3">
                   <input
                     type="color"
                     value={canvasState.gridColor}
                     onChange={(e) => updateCanvasState({ gridColor: e.target.value })}
-                    className="w-10 h-10 rounded-lg border border-slate-200 cursor-pointer"
+                    className="w-10 h-10 rounded-lg border border-slate-600 cursor-pointer bg-slate-700"
                   />
                   <Input
                     value={canvasState.gridColor}
                     onChange={(e) => updateCanvasState({ gridColor: e.target.value })}
-                    className="flex-1 bg-white border-slate-200 text-slate-900"
+                    className="flex-1 bg-slate-700 border-slate-600 text-slate-100 focus:border-emerald-500"
                     placeholder="#3a5a7a"
                   />
                 </div>
