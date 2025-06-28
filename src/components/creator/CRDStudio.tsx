@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { CardDesigner } from './CardDesigner';
+import { ModernCardDesigner } from './ModernCardDesigner';
 import { CreatorDashboard } from './CreatorDashboard';
 import { 
   ArrowLeft, 
@@ -17,42 +17,46 @@ interface CRDStudioProps {
 }
 
 export const CRDStudio = ({ onBack }: CRDStudioProps) => {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('designer');
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-background">
       {/* Studio Header */}
-      <div className="border-b border-gray-800 bg-gray-900/50 backdrop-blur-sm">
+      <div className="border-b border-border/50 bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button variant="ghost" onClick={onBack} className="text-gray-400 hover:text-white">
+              <Button 
+                variant="ghost" 
+                onClick={onBack} 
+                className="text-muted-foreground hover:text-foreground rounded-2xl"
+              >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Exit Studio
               </Button>
               <div className="flex items-center gap-2">
-                <Sparkles className="w-6 h-6 text-[#00C851]" />
-                <h1 className="text-2xl font-bold text-white">CRD Studio</h1>
-                <span className="px-2 py-1 bg-gradient-to-r from-[#00C851] to-[#00A543] text-xs font-semibold rounded-full text-white">PRO</span>
+                <Sparkles className="w-6 h-6 text-primary" />
+                <h1 className="text-2xl font-bold text-foreground">CRD Studio</h1>
+                <span className="px-3 py-1 bg-gradient-to-r from-primary to-primary/80 text-xs font-semibold rounded-2xl text-white">PRO</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Card-Centric Navigation */}
+      {/* Navigation */}
       <div className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-gray-900 max-w-md mx-auto">
-            <TabsTrigger value="dashboard" className="flex items-center gap-2">
+          <TabsList className="grid w-full grid-cols-3 bg-card/50 backdrop-blur-sm max-w-md mx-auto rounded-3xl p-2 border-0">
+            <TabsTrigger value="dashboard" className="flex items-center gap-2 rounded-2xl">
               <Home className="w-4 h-4" />
               Dashboard
             </TabsTrigger>
-            <TabsTrigger value="designer" className="flex items-center gap-2">
+            <TabsTrigger value="designer" className="flex items-center gap-2 rounded-2xl">
               <Palette className="w-4 h-4" />
               Create
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2">
+            <TabsTrigger value="analytics" className="flex items-center gap-2 rounded-2xl">
               <BarChart3 className="w-4 h-4" />
               Analytics
             </TabsTrigger>
@@ -63,7 +67,7 @@ export const CRDStudio = ({ onBack }: CRDStudioProps) => {
           </TabsContent>
 
           <TabsContent value="designer">
-            <CardDesigner />
+            <ModernCardDesigner />
           </TabsContent>
 
           <TabsContent value="analytics">
