@@ -1,16 +1,16 @@
 
 import { Suspense } from 'react';
-import Header from '@/components/Header';
+import Navigation from '@/components/layout/Navigation';
 import IntegratedCommunityDashboard from '@/components/social/IntegratedCommunityDashboard';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Community = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Navigation />
       
       <Suspense fallback={
-        <div className="max-w-7xl mx-auto p-6">
+        <div className="container-xl mx-auto p-6">
           <div className="mb-8">
             <Skeleton className="h-8 w-64 mb-2" />
             <Skeleton className="h-4 w-96 mb-6" />

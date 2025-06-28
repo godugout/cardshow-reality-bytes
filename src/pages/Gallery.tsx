@@ -1,6 +1,6 @@
 
 import { Suspense } from 'react';
-import Header from '@/components/Header';
+import Navigation from '@/components/layout/Navigation';
 import Collection3DGallery from '@/components/gallery/Collection3DGallery';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -56,11 +56,11 @@ const mockCards = [
 const Gallery = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      <div className="container mx-auto px-4 py-8">
+      <Navigation />
+      <div className="container-xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2 font-display">3D Gallery</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-display-lg text-foreground mb-2">3D Gallery</h1>
+          <p className="text-body-lg text-muted-foreground">
             Experience your card collection in immersive 3D environments
           </p>
         </div>

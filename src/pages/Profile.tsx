@@ -1,16 +1,16 @@
 
 import { Suspense } from 'react';
-import Header from '@/components/Header';
+import Navigation from '@/components/layout/Navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Profile = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      <div className="container mx-auto px-4 py-8">
+      <Navigation />
+      <div className="container-xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2 font-display">My Profile</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-display-lg text-foreground mb-2">My Profile</h1>
+          <p className="text-body-lg text-muted-foreground">
             Manage your account settings and view your activity
           </p>
         </div>

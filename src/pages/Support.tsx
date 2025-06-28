@@ -1,12 +1,12 @@
 
-import Header from '@/components/Header';
+import Navigation from '@/components/layout/Navigation';
 import SupportCenter from '@/components/support/SupportCenter';
 
 const Support = () => {
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
-      <Header />
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <div className="container-xl mx-auto px-4 py-8">
         <SupportCenter />
       </div>
     </div>
