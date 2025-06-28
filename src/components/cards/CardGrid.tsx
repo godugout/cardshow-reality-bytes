@@ -11,11 +11,19 @@ import CardDisplay from './CardDisplay';
 import type { CardFilters, CardRarity, CardType } from '@/types/card';
 import { RARITY_LABELS, CARD_TYPE_LABELS } from '@/types/card';
 
-const CardGrid = () => {
+interface CardGridProps {
+  skipFirst?: number;
+  showTitle?: boolean;
+}
+
+const CardGrid = ({ skipFirst = 6, showTitle = true }: CardGridProps) => {
   const [filters, setFilters] = useState<CardFilters>({});
   const [showFilters, setShowFilters] = useState(false);
   const { cards, isLoading, searchTerm, setSearchTerm } = useCards(filters);
   const { sets } = useCardSets();
+
+  // Skip the first N cards if they're shown elsewhere
+  const displayCards = cards.slice(skipFirst);
 
   const updateFilter = <K extends keyof CardFilters>(key: K, value: CardFilters[K]) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -56,6 +64,14 @@ const CardGrid = () => {
 
   return (
     <div className="space-y-6 p-6">
+      {/* Section Title */}
+      {showTitle && (
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-foreground mb-2">Browse All Cards</h2>
+          <p className="text-muted-foreground">Explore our complete collection of digital trading cards</p>
+        </div>
+      )}
+
       {/* Search and Filter Header */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
@@ -211,7 +227,12 @@ const CardGrid = () => {
 
       {/* Results Count */}
       <div className="text-muted-foreground text-sm" aria-live="polite">
-        {cards.length} card{cards.length !== 1 ? 's' : ''} found
+        {displayCards.length} card{displayCards.length !== 1 ? 's' : ''} found
+        {skipFirst > 0 && cards.length > skipFirst && (
+          <span className="ml-2 text-xs opacity-70">
+            (showing {skipFirst + 1}-{cards.length} of {cards.length})
+          </span>
+        )}
       </div>
 
       {/* Card Grid */}
@@ -220,7 +241,7 @@ const CardGrid = () => {
         role="grid"
         aria-label="Cards grid"
       >
-        {cards.map((card, index) => (
+        {displayCards.map((card, index) => (
           <div key={card.id} role="gridcell">
             <CardDisplay
               card={card}
@@ -232,7 +253,7 @@ const CardGrid = () => {
       </div>
 
       {/* Empty State */}
-      {cards.length === 0 && !isLoading && (
+      {displayCards.length === 0 && !isLoading && (
         <div className="text-center py-12">
           <div className="text-muted-foreground text-lg mb-2">No cards found</div>
           <div className="text-muted-foreground text-sm">

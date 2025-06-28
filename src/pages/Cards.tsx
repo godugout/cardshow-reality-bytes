@@ -2,15 +2,18 @@
 import { Suspense } from 'react';
 import Header from '@/components/Header';
 import CardGrid from '@/components/cards/CardGrid';
+import CardShowcase from '@/components/cards/CardShowcase';
 import MobileCards from './MobileCards';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useCards } from '@/hooks/useCards';
 import PageErrorBoundary from '@/components/error-boundaries/PageErrorBoundary';
 import { Sparkles, Zap } from 'lucide-react';
 
 const Cards = () => {
   const isMobile = useIsMobile();
+  const { cards, isLoading } = useCards();
 
   // Show mobile-optimized experience on mobile devices
   if (isMobile) {
@@ -58,6 +61,22 @@ const Cards = () => {
               Experience stunning 3D visualization and real-time trading.
             </p>
           </div>
+
+          <PageErrorBoundary pageName="Card Showcase">
+            <Suspense fallback={
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center mb-12">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 animate-pulse w-80 h-96">
+                    <Skeleton className="h-56 w-full mb-4 rounded-xl" />
+                    <Skeleton className="h-4 w-3/4 mb-2" />
+                    <Skeleton className="h-3 w-1/2" />
+                  </div>
+                ))}
+              </div>
+            }>
+              {!isLoading && cards.length > 0 && <CardShowcase cards={cards} />}
+            </Suspense>
+          </PageErrorBoundary>
 
           <PageErrorBoundary pageName="Card Grid">
             <Suspense fallback={
