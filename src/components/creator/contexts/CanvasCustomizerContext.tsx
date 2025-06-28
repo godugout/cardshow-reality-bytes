@@ -15,14 +15,14 @@ interface CanvasCustomizerContextValue {
 const CanvasCustomizerContext = createContext<CanvasCustomizerContextValue | null>(null);
 
 const defaultCanvasState: CanvasCustomizerState = {
-  selectedTheme: 'crd-branded',
+  selectedTheme: 'crd',
   customBackgroundColor: '#0f172a',
   showGrid: true,
   gridSize: 20,
   gridOpacity: 0.3,
   gridColor: '#334155',
-  backgroundSize: 100,
-  backgroundOpacity: 0.4, // Increased for better logo visibility
+  backgroundSize: 80,
+  backgroundOpacity: 0.7,
 };
 
 export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -31,6 +31,8 @@ export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> =
   // Debug logging
   useEffect(() => {
     console.log('CanvasCustomizerProvider initialized with state:', canvasState);
+    const currentTheme = canvasThemes.find(t => t.id === canvasState.selectedTheme);
+    console.log('Current theme found:', currentTheme?.name, 'with backgroundImage:', currentTheme?.backgroundImage);
   }, []);
 
   const updateCanvasState = useCallback((updates: Partial<CanvasCustomizerState>) => {
@@ -46,6 +48,7 @@ export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> =
     console.log('Selecting theme:', themeId);
     const theme = canvasThemes.find(t => t.id === themeId);
     if (theme) {
+      console.log('Theme found:', theme.name, 'backgroundImage:', theme.backgroundImage);
       const newState = {
         selectedTheme: themeId,
         customBackgroundColor: theme.backgroundColor,
@@ -53,11 +56,13 @@ export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> =
         gridSize: theme.gridSize,
         gridOpacity: theme.gridOpacity,
         gridColor: theme.gridColor,
-        backgroundSize: theme.backgroundSize || 100,
-        backgroundOpacity: Math.max(theme.backgroundOpacity || 0.4, 0.4), // Ensure good visibility
+        backgroundSize: theme.backgroundSize || 80,
+        backgroundOpacity: Math.max(theme.backgroundOpacity || 0.7, 0.7),
       };
       console.log('Theme selected, updating state to:', newState);
       setCanvasState(newState);
+    } else {
+      console.warn('Theme not found:', themeId);
     }
   }, []);
 

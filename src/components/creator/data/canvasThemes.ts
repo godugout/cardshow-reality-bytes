@@ -1,9 +1,8 @@
-
 import type { CanvasTheme } from '../types/canvasTypes';
 
 export const canvasThemes: CanvasTheme[] = [
   {
-    id: 'crd-branded',
+    id: 'crd',
     name: 'CRD',
     description: 'Professional CRD gradient logo watermark pattern',
     backgroundColor: '#0f172a',
@@ -11,9 +10,9 @@ export const canvasThemes: CanvasTheme[] = [
     gridSize: 20,
     gridOpacity: 0.3,
     showGrid: true,
-    backgroundImage: '/lovable-uploads/89e707ec-1b1c-40b1-b8ce-2a14ad5b00bb.png',
-    backgroundSize: 100,
-    backgroundOpacity: 0.4,
+    backgroundImage: '/lovable-uploads/6716b01b-c91c-476f-b1e1-9d5f0672939d.png',
+    backgroundSize: 80,
+    backgroundOpacity: 0.7,
     shadowColor: 'rgba(249, 115, 22, 0.2)',
     borderColor: '#1e293b'
   },

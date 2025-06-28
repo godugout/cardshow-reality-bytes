@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye } from 'lucide-react';
 import { CardPreview } from '../CardPreview';
@@ -19,9 +18,9 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
   console.log('CardDesignerPreview rendering with:', {
     selectedTheme: canvasState.selectedTheme,
     currentTheme: currentTheme?.name,
-    canvasStyles,
-    gridStyles,
-    backgroundImage: currentTheme?.backgroundImage
+    backgroundImage: currentTheme?.backgroundImage,
+    backgroundSize: canvasState.backgroundSize,
+    backgroundOpacity: canvasState.backgroundOpacity
   });
 
   // Create a comprehensive themed workspace style
@@ -47,7 +46,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     zIndex: 15,
   };
 
-  // Background pattern style for CRD logo - with higher opacity and proper z-index
+  // Enhanced background pattern style for CRD logo
   const backgroundPatternStyle: React.CSSProperties = currentTheme?.backgroundImage ? {
     position: 'absolute',
     inset: 0,
@@ -57,8 +56,12 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     backgroundPosition: 'center',
     opacity: canvasState.backgroundOpacity,
     zIndex: 5,
-    filter: 'brightness(1.2) contrast(1.3)', // Enhanced visibility
+    filter: 'brightness(1.4) contrast(1.5) saturate(1.2)',
+    mixBlendMode: 'normal',
   } : {};
+
+  // Log the actual style being applied
+  console.log('Background pattern style:', backgroundPatternStyle);
 
   return (
     <Card className="bg-slate-800 border-slate-700 shadow-lg h-full">
@@ -69,6 +72,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           {currentTheme && (
             <span className="text-sm font-normal text-slate-400 ml-auto">
               Theme: {currentTheme.name}
+              {currentTheme.backgroundImage && ' (with logo)'}
             </span>
           )}
         </CardTitle>
@@ -92,7 +96,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           {currentTheme?.backgroundImage && (
             <div 
               style={backgroundPatternStyle}
-              className="absolute inset-0"
+              className="absolute inset-0 logo-pattern"
             />
           )}
           
@@ -129,6 +133,13 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           {currentTheme?.id === 'architect-green' && (
             <div className="absolute bottom-4 left-4 text-yellow-400/60 text-xs font-mono" style={{ zIndex: 18 }}>
               DRAFTING TABLE
+            </div>
+          )}
+
+          {/* CRD Logo indicator */}
+          {currentTheme?.id === 'crd' && (
+            <div className="absolute top-4 right-4 text-emerald-400/60 text-xs font-mono" style={{ zIndex: 18 }}>
+              CRD STUDIO
             </div>
           )}
         </div>
