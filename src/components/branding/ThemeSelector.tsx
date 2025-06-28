@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Palette, Sun, Moon, Sparkles, Gem, Leaf } from 'lucide-react';
 import { 
