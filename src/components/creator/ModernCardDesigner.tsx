@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,9 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useCardCreation } from '@/hooks/useCardCreation';
+import { useCanvasCustomizer } from './hooks/useCanvasCustomizer';
 import { CardPreview } from './CardPreview';
+import { CanvasCustomizer } from './components/CanvasCustomizer';
 import { 
   Upload, 
   Palette, 
@@ -21,7 +22,7 @@ import {
   Image,
   Type,
   Settings,
-  ArrowLeft
+  Grid3x3
 } from 'lucide-react';
 
 export const ModernCardDesigner = () => {
@@ -35,7 +36,9 @@ export const ModernCardDesigner = () => {
     uploadImage
   } = useCardCreation();
 
-  const [activeSection, setActiveSection] = useState<'content' | 'design' | 'effects'>('content');
+  const { getCanvasStyles, getGridStyles } = useCanvasCustomizer();
+
+  const [activeSection, setActiveSection] = useState<'content' | 'design' | 'effects' | 'canvas'>('content');
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -99,40 +102,53 @@ export const ModernCardDesigner = () => {
                     variant={activeSection === 'content' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => setActiveSection('content')}
-                    className={`flex-1 h-9 text-sm ${
+                    className={`flex-1 h-9 text-xs ${
                       activeSection === 'content' 
                         ? 'bg-white text-slate-900 shadow-sm' 
                         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                     }`}
                   >
-                    <Type className="w-4 h-4 mr-2" />
+                    <Type className="w-3 h-3 mr-1" />
                     Content
                   </Button>
                   <Button
                     variant={activeSection === 'design' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => setActiveSection('design')}
-                    className={`flex-1 h-9 text-sm ${
+                    className={`flex-1 h-9 text-xs ${
                       activeSection === 'design' 
                         ? 'bg-white text-slate-900 shadow-sm' 
                         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                     }`}
                   >
-                    <Palette className="w-4 h-4 mr-2" />
+                    <Palette className="w-3 h-3 mr-1" />
                     Design
                   </Button>
                   <Button
                     variant={activeSection === 'effects' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => setActiveSection('effects')}
-                    className={`flex-1 h-9 text-sm ${
+                    className={`flex-1 h-9 text-xs ${
                       activeSection === 'effects' 
                         ? 'bg-white text-slate-900 shadow-sm' 
                         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                     }`}
                   >
-                    <Sparkles className="w-4 h-4 mr-2" />
+                    <Sparkles className="w-3 h-3 mr-1" />
                     Effects
+                  </Button>
+                  <Button
+                    variant={activeSection === 'canvas' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setActiveSection('canvas')}
+                    className={`flex-1 h-9 text-xs ${
+                      activeSection === 'canvas' 
+                        ? 'bg-white text-slate-900 shadow-sm' 
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    }`}
+                  >
+                    <Grid3x3 className="w-3 h-3 mr-1" />
+                    Canvas
                   </Button>
                 </div>
               </CardContent>
@@ -422,11 +438,13 @@ export const ModernCardDesigner = () => {
                     </div>
                   </div>
                 )}
+
+                {activeSection === 'canvas' && <CanvasCustomizer />}
               </CardContent>
             </Card>
           </div>
 
-          {/* Right Side - Live Preview (Top Aligned and Prominent) */}
+          {/* Right Side - Live Preview with Canvas Background */}
           <div className="flex-1">
             <Card className="bg-white border-slate-200 shadow-sm h-full">
               <CardHeader className="pb-4 border-b border-slate-100">
@@ -435,9 +453,24 @@ export const ModernCardDesigner = () => {
                   Live Preview
                 </CardTitle>
               </CardHeader>
-              <CardContent className="flex items-start justify-center p-8 h-full">
-                <div className="transform scale-110 mt-8">
-                  <CardPreview cardData={cardData} />
+              <CardContent className="flex items-start justify-center p-0 h-full relative overflow-hidden">
+                {/* Canvas Background with Grid */}
+                <div 
+                  className="absolute inset-0"
+                  style={getCanvasStyles()}
+                >
+                  {/* Grid Overlay */}
+                  <div 
+                    className="absolute inset-0"
+                    style={getGridStyles()}
+                  />
+                </div>
+                
+                {/* Card Preview */}
+                <div className="relative z-10 p-8 flex items-start justify-center w-full h-full">
+                  <div className="transform scale-110 mt-8">
+                    <CardPreview cardData={cardData} />
+                  </div>
                 </div>
               </CardContent>
             </Card>
