@@ -32,10 +32,10 @@ const CardInfoDrawer = ({
     <div 
       className={cn(
         'absolute bottom-0 left-0 right-0 z-20 rounded-b-3xl transform overflow-hidden',
-        'transition-all duration-[1200ms] ease-[cubic-bezier(0.23,1,0.32,1)]',
+        'transition-all duration-[2400ms] ease-[cubic-bezier(0.15,0.8,0.25,1)]',
         SIZE_CLASSES[size],
         DRAWER_STYLES[drawerStyle as keyof typeof DRAWER_STYLES] || DRAWER_STYLES.default,
-        // Ultra smooth backdrop animation - much slower
+        // Ultra slow backdrop animation - premium luxury timing
         showExpanded 
           ? 'backdrop-blur-3xl bg-opacity-98' 
           : 'backdrop-blur-xl bg-opacity-90'
@@ -47,7 +47,7 @@ const CardInfoDrawer = ({
               rgba(30,30,30,0.95) 50%, 
               rgba(0,0,0,0.98) 100%)`
           : undefined,
-        transition: 'all 1.2s cubic-bezier(0.23, 1, 0.32, 1), background 1.4s ease-out'
+        transition: 'all 2.4s cubic-bezier(0.15, 0.8, 0.25, 1), background 2.8s ease-out'
       }}
     >
       {/* Always visible basic info */}
