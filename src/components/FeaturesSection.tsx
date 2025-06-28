@@ -2,15 +2,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   Palette, 
-  Zap, 
-  Globe, 
+  Eye, 
+  TrendingUp, 
   Shield, 
-  Sparkles, 
-  Trophy,
   Users,
-  TrendingUp,
-  Eye,
-  Gamepad2
+  Gamepad2,
+  Sparkles,
+  Zap,
+  Globe,
+  Trophy
 } from 'lucide-react';
 
 const FeaturesSection = () => {
@@ -18,52 +18,63 @@ const FeaturesSection = () => {
     {
       icon: Palette,
       title: "AI-Powered Creation",
-      description: "Create stunning cards with advanced AI tools and professional templates",
+      description: "Create stunning cards with advanced AI tools, professional templates, and intuitive design systems that bring your vision to life.",
       gradient: "from-purple-500 to-pink-500",
       bgGradient: "from-purple-500/10 to-pink-500/10"
     },
     {
       icon: Eye,
-      title: "Immersive 3D View",
-      description: "Experience your cards in stunning 3D with realistic lighting and effects",
+      title: "Immersive 3D Experience",
+      description: "Experience your cards in stunning 3D with realistic lighting, dynamic effects, and interactive viewing that makes every card come alive.",
       gradient: "from-blue-500 to-cyan-500",
       bgGradient: "from-blue-500/10 to-cyan-500/10"
     },
     {
       icon: TrendingUp,
       title: "Dynamic Marketplace",
-      description: "Trade and discover rare cards with real-time pricing and analytics",
+      description: "Trade and discover rare cards with real-time pricing, advanced analytics, and market insights that help you make informed decisions.",
       gradient: "from-green-500 to-emerald-500",
       bgGradient: "from-green-500/10 to-emerald-500/10"
     },
     {
       icon: Shield,
       title: "Blockchain Verified",
-      description: "Each card is authenticated and secured with blockchain technology",
+      description: "Each card is authenticated and secured with blockchain technology, ensuring provenance, ownership, and protection against fraud.",
       gradient: "from-orange-500 to-red-500",
       bgGradient: "from-orange-500/10 to-red-500/10"
     },
     {
       icon: Users,
       title: "Creator Economy",
-      description: "Monetize your creativity with our revenue-sharing creator program",
+      description: "Monetize your creativity with our revenue-sharing program, royalty systems, and direct fan engagement tools that reward artistic excellence.",
       gradient: "from-indigo-500 to-purple-500",
       bgGradient: "from-indigo-500/10 to-purple-500/10"
     },
     {
       icon: Gamepad2,
       title: "Interactive Gaming",
-      description: "Use your cards in mini-games and competitive tournaments",
+      description: "Use your cards in competitive tournaments, mini-games, and interactive experiences that add utility beyond just collecting.",
       gradient: "from-pink-500 to-rose-500",
       bgGradient: "from-pink-500/10 to-rose-500/10"
     }
   ];
 
-  const stats = [
-    { label: "Active Users", value: "50K+", icon: Users },
-    { label: "Cards Created", value: "500K+", icon: Sparkles },
-    { label: "Total Volume", value: "$2M+", icon: TrendingUp },
-    { label: "Creators Paid", value: "5K+", icon: Trophy }
+  const platformBenefits = [
+    {
+      icon: Zap,
+      title: "Lightning Fast",
+      description: "Optimized performance for instant loading and smooth 3D rendering"
+    },
+    {
+      icon: Globe,
+      title: "Global Community",
+      description: "Connect with collectors and creators from around the world"
+    },
+    {
+      icon: Trophy,
+      title: "Premium Quality",
+      description: "Curated collections of high-quality, verified digital artwork"
+    }
   ];
 
   return (
@@ -91,25 +102,12 @@ const FeaturesSection = () => {
           
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
             Discover the most advanced digital trading card platform with cutting-edge 
-            technology and creator-focused tools.
+            technology, creator-focused tools, and a passionate global community.
           </p>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-          {stats.map((stat, index) => (
-            <div key={index} className="text-center group">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                <stat.icon className="w-8 h-8 text-white" />
-              </div>
-              <div className="text-3xl font-bold text-slate-900 mb-1">{stat.value}</div>
-              <div className="text-sm text-slate-600">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Main Features Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
           {features.map((feature, index) => (
             <Card 
               key={index} 
@@ -138,6 +136,28 @@ const FeaturesSection = () => {
               </div>
             </Card>
           ))}
+        </div>
+
+        {/* Platform Benefits */}
+        <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-3xl p-12">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-slate-900 mb-4">Why Choose Cardshow?</h3>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              Built for creators, collectors, and traders who demand the best in digital collectibles.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {platformBenefits.map((benefit, index) => (
+              <div key={index} className="text-center group">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <benefit.icon className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-xl font-bold text-slate-900 mb-2">{benefit.title}</h4>
+                <p className="text-slate-600 leading-relaxed">{benefit.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

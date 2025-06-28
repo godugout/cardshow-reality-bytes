@@ -90,7 +90,8 @@ const HeroSection = () => {
 
             <p className="text-xl lg:text-2xl text-slate-300 leading-relaxed max-w-2xl">
               Enter the future of digital collectibles with stunning 3D cards, 
-              immersive experiences, and a thriving creator economy.
+              immersive experiences, and a thriving creator economy. Where art meets technology 
+              and passion drives value.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -100,7 +101,7 @@ const HeroSection = () => {
                   className="group relative overflow-hidden bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold px-8 py-4 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
                 >
                   <span className="relative z-10 flex items-center gap-2">
-                    Start Collecting
+                    Start Your Collection
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -114,30 +115,24 @@ const HeroSection = () => {
                   className="group border-2 border-purple-400/50 bg-slate-900/50 backdrop-blur-sm hover:bg-purple-500/20 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 hover:border-purple-400 hover:shadow-lg hover:shadow-purple-500/25"
                 >
                   <Zap className="w-5 h-5 mr-2 group-hover:text-purple-400 transition-colors" />
-                  Create Cards
+                  Become a Creator
                 </Button>
               </Link>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 pt-12">
-              <div className="text-center">
-                <div className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  50K+
-                </div>
-                <div className="text-slate-400 text-sm">Active Collectors</div>
+            {/* Value Propositions */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8">
+              <div className="text-center lg:text-left">
+                <div className="text-lg font-semibold text-white mb-1">3D Visualization</div>
+                <div className="text-slate-400 text-sm">Experience cards in stunning detail</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                  500K+
-                </div>
-                <div className="text-slate-400 text-sm">Cards Created</div>
+              <div className="text-center lg:text-left">
+                <div className="text-lg font-semibold text-white mb-1">Creator Economy</div>
+                <div className="text-slate-400 text-sm">Monetize your artistic talents</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                  $2M+
-                </div>
-                <div className="text-slate-400 text-sm">Creator Earnings</div>
+              <div className="text-center lg:text-left">
+                <div className="text-lg font-semibold text-white mb-1">Global Marketplace</div>
+                <div className="text-slate-400 text-sm">Trade with collectors worldwide</div>
               </div>
             </div>
           </div>

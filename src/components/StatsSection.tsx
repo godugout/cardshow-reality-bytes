@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { TrendingUp, Users, Sparkles, Trophy, DollarSign, Star } from 'lucide-react';
+import { TrendingUp, Users, Sparkles, Trophy, DollarSign, Star, Globe, Award } from 'lucide-react';
 
 const StatsSection = () => {
   const [counters, setCounters] = useState({
@@ -46,12 +46,12 @@ const StatsSection = () => {
     return `$${num}`;
   };
 
-  const stats = [
+  const mainStats = [
     {
       icon: Users,
       label: "Active Collectors",
       value: formatNumber(counters.users),
-      description: "Growing community of passionate collectors",
+      description: "Passionate collectors from 120+ countries building amazing collections",
       gradient: "from-blue-500 to-cyan-500",
       bgGradient: "from-blue-500/10 to-cyan-500/10"
     },
@@ -59,7 +59,7 @@ const StatsSection = () => {
       icon: Sparkles,
       label: "Cards Created",
       value: formatNumber(counters.cards),
-      description: "Unique digital collectibles minted",
+      description: "Unique digital masterpieces minted by talented creators worldwide",
       gradient: "from-purple-500 to-pink-500",
       bgGradient: "from-purple-500/10 to-pink-500/10"
     },
@@ -67,7 +67,7 @@ const StatsSection = () => {
       icon: DollarSign,
       label: "Trading Volume",
       value: formatCurrency(counters.volume),
-      description: "Total marketplace transactions",
+      description: "Total marketplace value exchanged in our thriving economy",
       gradient: "from-green-500 to-emerald-500",
       bgGradient: "from-green-500/10 to-emerald-500/10"
     },
@@ -75,10 +75,17 @@ const StatsSection = () => {
       icon: Trophy,
       label: "Verified Creators",
       value: formatNumber(counters.creators),
-      description: "Artists earning from their creations",
+      description: "Professional artists earning sustainable income from their art",
       gradient: "from-orange-500 to-red-500",
       bgGradient: "from-orange-500/10 to-red-500/10"
     }
+  ];
+
+  const achievementStats = [
+    { icon: Globe, label: "Global Reach", value: "120+ Countries", color: "text-blue-400" },
+    { icon: Award, label: "Awards Won", value: "15 Industry", color: "text-yellow-400" },
+    { icon: Star, label: "User Rating", value: "4.9/5 Stars", color: "text-purple-400" },
+    { icon: TrendingUp, label: "Growth Rate", value: "300% YoY", color: "text-green-400" }
   ];
 
   return (
@@ -103,7 +110,7 @@ const StatsSection = () => {
         <div className="text-center mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/20 backdrop-blur-sm rounded-full border border-purple-500/30 mb-6">
             <TrendingUp className="w-4 h-4 text-purple-400" />
-            <span className="text-sm font-medium text-purple-300">Platform Statistics</span>
+            <span className="text-sm font-medium text-purple-300">Community Impact</span>
           </div>
           
           <h2 className="text-5xl lg:text-6xl font-black mb-6">
@@ -117,13 +124,14 @@ const StatsSection = () => {
           </h2>
           
           <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-            Join thousands of creators and collectors in the most vibrant digital trading card ecosystem.
+            Join a thriving ecosystem where creators earn, collectors discover treasures, 
+            and digital art reaches new heights of value and appreciation.
           </p>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, index) => (
+        {/* Main Stats Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          {mainStats.map((stat, index) => (
             <div 
               key={index} 
               className="group relative overflow-hidden rounded-3xl bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 p-8 hover:scale-105 transition-all duration-500 hover:shadow-2xl"
@@ -141,7 +149,7 @@ const StatsSection = () => {
                   {stat.value}
                 </div>
                 
-                <div className="text-lg font-semibold text-slate-300 mb-2 group-hover:text-slate-200 transition-colors">
+                <div className="text-lg font-semibold text-slate-300 mb-3 group-hover:text-slate-200 transition-colors">
                   {stat.label}
                 </div>
                 
@@ -163,11 +171,26 @@ const StatsSection = () => {
           ))}
         </div>
 
+        {/* Achievement Stats */}
+        <div className="bg-slate-800/30 backdrop-blur-sm rounded-3xl border border-slate-700/50 p-8 mb-12">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {achievementStats.map((achievement, index) => (
+              <div key={index} className="text-center group">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-slate-700/50 rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <achievement.icon className={`w-6 h-6 ${achievement.color}`} />
+                </div>
+                <div className="text-2xl font-bold text-white mb-1">{achievement.value}</div>
+                <div className="text-sm text-slate-400">{achievement.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Call to Action */}
-        <div className="text-center mt-20">
-          <div className="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105">
+        <div className="text-center">
+          <div className="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105 cursor-pointer">
             <Sparkles className="w-6 h-6 text-white" />
-            <span className="text-white font-semibold text-lg">Join the revolution today</span>
+            <span className="text-white font-semibold text-lg">Be part of this revolution</span>
           </div>
         </div>
       </div>
