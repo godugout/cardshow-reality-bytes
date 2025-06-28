@@ -54,13 +54,13 @@ const MarketplaceFilters = ({
           <Label htmlFor="marketplace-search" className="sr-only">
             Search marketplace
           </Label>
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" aria-hidden="true" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" aria-hidden="true" />
           <Input
             id="marketplace-search"
             placeholder="Search cards, collections, or creators..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-12 h-12 rounded-3xl border-0 bg-background/50 backdrop-blur-sm"
             aria-describedby="search-help"
           />
           <div id="search-help" className="sr-only">
@@ -68,22 +68,22 @@ const MarketplaceFilters = ({
           </div>
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <div className="min-w-[160px]">
             <Label htmlFor="sort-select" className="sr-only">
               Sort listings by
             </Label>
             <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger id="sort-select">
+              <SelectTrigger id="sort-select" className="h-12 rounded-3xl border-0 bg-background/50 backdrop-blur-sm">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="newest">Newest First</SelectItem>
-                <SelectItem value="oldest">Oldest First</SelectItem>
-                <SelectItem value="price_low">Price: Low to High</SelectItem>
-                <SelectItem value="price_high">Price: High to Low</SelectItem>
-                <SelectItem value="popular">Most Popular</SelectItem>
-                <SelectItem value="ending_soon">Ending Soon</SelectItem>
+              <SelectContent className="rounded-3xl border-0 bg-card/90 backdrop-blur-xl">
+                <SelectItem value="newest" className="rounded-2xl">Newest First</SelectItem>
+                <SelectItem value="oldest" className="rounded-2xl">Oldest First</SelectItem>
+                <SelectItem value="price_low" className="rounded-2xl">Price: Low to High</SelectItem>
+                <SelectItem value="price_high" className="rounded-2xl">Price: High to Low</SelectItem>
+                <SelectItem value="popular" className="rounded-2xl">Most Popular</SelectItem>
+                <SelectItem value="ending_soon" className="rounded-2xl">Ending Soon</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -91,7 +91,7 @@ const MarketplaceFilters = ({
           <Button
             variant="outline"
             onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 h-12 rounded-3xl border-0 bg-background/50 backdrop-blur-sm"
             aria-expanded={showAdvancedFilters}
             aria-controls="advanced-filters"
           >
