@@ -28,7 +28,12 @@ export const CardDesignerSidebar = ({
   updateDesignConfig,
   uploadImage
 }: CardDesignerSidebarProps) => {
+  // Debug logging
+  console.log('CardDesignerSidebar rendering with activeSection:', activeSection);
+
   const renderActiveSection = () => {
+    console.log('Rendering section:', activeSection);
+    
     switch (activeSection) {
       case 'content':
         return (
@@ -54,8 +59,10 @@ export const CardDesignerSidebar = ({
           />
         );
       case 'canvas':
+        console.log('Rendering CanvasCustomizer');
         return <CanvasCustomizer />;
       default:
+        console.log('No matching section for:', activeSection);
         return null;
     }
   };

@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCardCreation } from '@/hooks/useCardCreation';
 import { CardDesignerHeader } from './components/CardDesignerHeader';
 import { CardDesignerSidebar } from './components/CardDesignerSidebar';
@@ -20,6 +20,16 @@ export const ModernCardDesigner = () => {
 
   const [activeSection, setActiveSection] = useState<ActiveSection>('content');
 
+  // Debug logging
+  useEffect(() => {
+    console.log('ModernCardDesigner activeSection changed to:', activeSection);
+  }, [activeSection]);
+
+  const handleSectionChange = (section: ActiveSection) => {
+    console.log('Changing section from', activeSection, 'to', section);
+    setActiveSection(section);
+  };
+
   const handleSave = () => saveCard(false);
   const handlePublish = () => saveCard(true);
 
@@ -36,7 +46,7 @@ export const ModernCardDesigner = () => {
         <div className="flex gap-6 h-[calc(100vh-12rem)]">
           <CardDesignerSidebar
             activeSection={activeSection}
-            onSectionChange={setActiveSection}
+            onSectionChange={handleSectionChange}
             cardData={cardData}
             uploadProgress={uploadProgress}
             updateCardData={updateCardData}

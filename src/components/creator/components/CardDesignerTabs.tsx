@@ -11,6 +11,9 @@ interface CardDesignerTabsProps {
 }
 
 export const CardDesignerTabs = ({ activeSection, onSectionChange }: CardDesignerTabsProps) => {
+  // Debug logging
+  console.log('CardDesignerTabs rendering with activeSection:', activeSection);
+  
   const getButtonClasses = (section: ActiveSection) => 
     `flex-1 h-9 text-xs ${
       activeSection === section 
@@ -21,11 +24,14 @@ export const CardDesignerTabs = ({ activeSection, onSectionChange }: CardDesigne
   return (
     <Card className="bg-slate-800 border-slate-700 shadow-lg">
       <CardContent className="p-4">
-        <div className="flex bg-slate-700/50 p-1 rounded-lg">
+        <div className="grid grid-cols-4 bg-slate-700/50 p-1 rounded-lg gap-1">
           <Button
             variant={activeSection === 'content' ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => onSectionChange('content')}
+            onClick={() => {
+              console.log('Content tab clicked');
+              onSectionChange('content');
+            }}
             className={getButtonClasses('content')}
           >
             <Type className="w-3 h-3 mr-1" />
@@ -34,7 +40,10 @@ export const CardDesignerTabs = ({ activeSection, onSectionChange }: CardDesigne
           <Button
             variant={activeSection === 'design' ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => onSectionChange('design')}
+            onClick={() => {
+              console.log('Design tab clicked');
+              onSectionChange('design');
+            }}
             className={getButtonClasses('design')}
           >
             <Palette className="w-3 h-3 mr-1" />
@@ -43,7 +52,10 @@ export const CardDesignerTabs = ({ activeSection, onSectionChange }: CardDesigne
           <Button
             variant={activeSection === 'effects' ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => onSectionChange('effects')}
+            onClick={() => {
+              console.log('Effects tab clicked');
+              onSectionChange('effects');
+            }}
             className={getButtonClasses('effects')}
           >
             <Sparkles className="w-3 h-3 mr-1" />
@@ -52,7 +64,10 @@ export const CardDesignerTabs = ({ activeSection, onSectionChange }: CardDesigne
           <Button
             variant={activeSection === 'canvas' ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => onSectionChange('canvas')}
+            onClick={() => {
+              console.log('Canvas tab clicked');
+              onSectionChange('canvas');
+            }}
             className={getButtonClasses('canvas')}
           >
             <Grid3x3 className="w-3 h-3 mr-1" />
