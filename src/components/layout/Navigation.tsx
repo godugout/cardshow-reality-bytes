@@ -23,13 +23,15 @@ const Navigation = () => {
   const isActive = (href: string) => location.pathname === href;
 
   return (
-    <nav className="nav-base">
-      <div className="nav-container">
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between px-4">
         {/* Brand */}
-        <LogoThemeSelector variant="descriptive" />
+        <div className="flex items-center">
+          <LogoThemeSelector variant="descriptive" />
+        </div>
 
         {/* Desktop Navigation */}
-        <div className="nav-menu">
+        <div className="hidden md:flex items-center space-x-1">
           {navigation.map((item) => {
             const Icon = item.icon;
             return (
@@ -37,11 +39,13 @@ const Navigation = () => {
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  'nav-item',
-                  isActive(item.href) && 'active'
+                  'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                  isActive(item.href)
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 )}
               >
-                <Icon className="w-4 h-4 mr-2" />
+                <Icon className="w-4 h-4" />
                 {item.name}
               </Link>
             );
@@ -49,17 +53,19 @@ const Navigation = () => {
         </div>
 
         {/* Actions */}
-        <div className="nav-actions">
+        <div className="flex items-center space-x-2">
           <ThemeSelector />
           
           {user ? (
             <Button variant="ghost" size="sm" className="gap-2">
               <User className="w-4 h-4" />
-              <span className="hidden sm:inline">{user.email}</span>
+              <span className="hidden sm:inline text-sm">
+                {user.email?.split('@')[0] || 'User'}
+              </span>
             </Button>
           ) : (
             <Link to="/auth">
-              <Button size="sm">Sign In</Button>
+              <Button size="sm" className="text-sm">Sign In</Button>
             </Link>
           )}
 
@@ -67,7 +73,7 @@ const Navigation = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="nav-mobile"
+            className="md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -77,24 +83,40 @@ const Navigation = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="nav-mobile-menu animate-slide-in-down">
-          {navigation.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={cn(
-                  'nav-mobile-item',
-                  isActive(item.href) && 'active'
-                )}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Icon className="w-4 h-4 mr-3" />
-                {item.name}
-              </Link>
-            );
-          })}
+        <div className="md:hidden border-t bg-background">
+          <div className="container px-4 py-4">
+            <div className="flex flex-col space-y-2">
+              {navigation.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={cn(
+                      'flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors',
+                      isActive(item.href)
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                    )}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {item.name}
+                  </Link>
+                );
+              })}
+              
+              {!user && (
+                <Link
+                  to="/auth"
+                  className="mt-4 flex items-center justify-center px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </nav>
