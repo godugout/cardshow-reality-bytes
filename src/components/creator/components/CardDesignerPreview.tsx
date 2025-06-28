@@ -44,7 +44,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     position: 'absolute',
     inset: 0,
     pointerEvents: 'none',
-    zIndex: 10, // Increased z-index to be above background layers
+    zIndex: 15,
   };
 
   // Background pattern style for CRD logo - with higher opacity and proper z-index
@@ -55,9 +55,9 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     backgroundSize: `${canvasState.backgroundSize}px ${canvasState.backgroundSize}px`,
     backgroundRepeat: 'repeat',
     backgroundPosition: 'center',
-    opacity: Math.max(canvasState.backgroundOpacity, 0.25), // Ensure minimum visibility
-    zIndex: 3, // Higher z-index to be visible
-    filter: 'brightness(1.1) contrast(1.2)', // Enhanced visibility
+    opacity: canvasState.backgroundOpacity,
+    zIndex: 5,
+    filter: 'brightness(1.2) contrast(1.3)', // Enhanced visibility
   } : {};
 
   return (
@@ -88,7 +88,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
             }}
           />
           
-          {/* Background Pattern Layer (CRD Logo) - z-index 3 */}
+          {/* Background Pattern Layer (CRD Logo) - z-index 5 */}
           {currentTheme?.backgroundImage && (
             <div 
               style={backgroundPatternStyle}
@@ -96,7 +96,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
             />
           )}
           
-          {/* Pattern Overlay Layer (for special patterns) - z-index 5 */}
+          {/* Pattern Overlay Layer (for special patterns) - z-index 8 */}
           {currentTheme?.patternOverlay && (
             <div 
               className="absolute inset-0"
@@ -104,45 +104,37 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
                 backgroundImage: currentTheme.patternOverlay,
                 backgroundSize: `${canvasState.gridSize}px ${canvasState.gridSize}px`,
                 opacity: 0.3,
-                zIndex: 5,
+                zIndex: 8,
               }}
             />
           )}
           
-          {/* Grid Overlay Layer - z-index 10 */}
+          {/* Grid Overlay Layer - z-index 15 */}
           {canvasState.showGrid && (
             <div style={gridOverlayStyle} />
           )}
           
-          {/* Theme-specific decorative elements - z-index 12 */}
-          {currentTheme?.id === 'crd-branded' && (
-            <div className="absolute top-4 right-4" style={{ zIndex: 12 }}>
-              <div className="text-xs text-white/70 font-bold bg-gradient-to-r from-orange-500/30 to-blue-500/30 px-3 py-1 rounded-full backdrop-blur-sm border border-white/20">
-                CRD Studio
-              </div>
-            </div>
-          )}
-          
+          {/* Theme-specific decorative elements - z-index 18 */}
           {currentTheme?.id === 'blueprint-blue' && (
             <>
-              <div className="absolute top-4 left-4 text-blue-300/60 text-xs font-mono" style={{ zIndex: 12 }}>
+              <div className="absolute top-4 left-4 text-blue-300/60 text-xs font-mono" style={{ zIndex: 18 }}>
                 BLUEPRINT v2.1
               </div>
-              <div className="absolute bottom-4 right-4 text-blue-300/40 text-xs" style={{ zIndex: 12 }}>
+              <div className="absolute bottom-4 right-4 text-blue-300/40 text-xs" style={{ zIndex: 18 }}>
                 SCALE 1:1
               </div>
             </>
           )}
           
           {currentTheme?.id === 'architect-green' && (
-            <div className="absolute bottom-4 left-4 text-yellow-400/60 text-xs font-mono" style={{ zIndex: 12 }}>
+            <div className="absolute bottom-4 left-4 text-yellow-400/60 text-xs font-mono" style={{ zIndex: 18 }}>
               DRAFTING TABLE
             </div>
           )}
         </div>
         
-        {/* Card Preview - Positioned above everything else - z-index 20 */}
-        <div className="relative p-8 flex items-start justify-center w-full h-full" style={{ zIndex: 20 }}>
+        {/* Card Preview - Positioned above everything else - z-index 25 */}
+        <div className="relative p-8 flex items-start justify-center w-full h-full" style={{ zIndex: 25 }}>
           <div className="transform scale-110 mt-8 transition-transform duration-300 hover:scale-115">
             <CardPreview cardData={cardData} />
           </div>

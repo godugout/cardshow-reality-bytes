@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import type { CanvasCustomizerState, CanvasTheme } from '../types/canvasTypes';
 import { canvasThemes } from '../data/canvasThemes';
@@ -22,8 +21,8 @@ const defaultCanvasState: CanvasCustomizerState = {
   gridSize: 20,
   gridOpacity: 0.3,
   gridColor: '#334155',
-  backgroundSize: 120,
-  backgroundOpacity: 0.25, // Increased default opacity for better visibility
+  backgroundSize: 100,
+  backgroundOpacity: 0.4, // Increased for better logo visibility
 };
 
 export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -54,8 +53,8 @@ export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> =
         gridSize: theme.gridSize,
         gridOpacity: theme.gridOpacity,
         gridColor: theme.gridColor,
-        backgroundSize: theme.backgroundSize || 120,
-        backgroundOpacity: Math.max(theme.backgroundOpacity || 0.25, 0.25), // Ensure minimum visibility
+        backgroundSize: theme.backgroundSize || 100,
+        backgroundOpacity: Math.max(theme.backgroundOpacity || 0.4, 0.4), // Ensure good visibility
       };
       console.log('Theme selected, updating state to:', newState);
       setCanvasState(newState);
@@ -77,19 +76,13 @@ export const CanvasCustomizerProvider: React.FC<{ children: React.ReactNode }> =
 
     console.log('Getting canvas styles for theme:', theme?.name, 'with backgroundImage:', theme?.backgroundImage);
 
-    // Handle background image (like CRD logo)
+    // For CRD theme, don't apply background image to canvas styles
+    // Let the preview component handle the layering
     if (theme?.backgroundImage) {
-      return {
-        ...baseStyles,
-        backgroundImage: `url(${theme.backgroundImage})`,
-        backgroundSize: `${canvasState.backgroundSize || 120}px ${canvasState.backgroundSize || 120}px`,
-        backgroundRepeat: 'repeat',
-        backgroundPosition: 'center',
-        backgroundBlendMode: 'multiply',
-      };
+      return baseStyles;
     }
 
-    // Handle pattern overlay
+    // Handle pattern overlay for non-logo themes
     if (theme?.patternOverlay) {
       return {
         ...baseStyles,

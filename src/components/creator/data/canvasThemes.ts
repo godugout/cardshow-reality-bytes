@@ -1,3 +1,4 @@
+
 import type { CanvasTheme } from '../types/canvasTypes';
 
 export const canvasThemes: CanvasTheme[] = [
@@ -10,9 +11,9 @@ export const canvasThemes: CanvasTheme[] = [
     gridSize: 20,
     gridOpacity: 0.3,
     showGrid: true,
-    backgroundImage: '/lovable-uploads/e5dc6d9e-ef9f-4668-90db-95f7df88132a.png',
-    backgroundSize: 120,
-    backgroundOpacity: 0.12,
+    backgroundImage: '/lovable-uploads/89e707ec-1b1c-40b1-b8ce-2a14ad5b00bb.png',
+    backgroundSize: 100,
+    backgroundOpacity: 0.4,
     shadowColor: 'rgba(249, 115, 22, 0.2)',
     borderColor: '#1e293b'
   },
