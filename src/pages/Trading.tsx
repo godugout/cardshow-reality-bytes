@@ -1,17 +1,17 @@
 
 import { Suspense } from 'react';
-import Navigation from '@/components/layout/Navigation';
+import Header from '@/components/Header';
 import TradesList from '@/components/trading/TradesList';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Trading = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
-      <div className="container-xl mx-auto px-4 py-8">
+      <Header />
+      <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-display-lg text-foreground mb-2">Trading Hub</h1>
-          <p className="text-body-lg text-muted-foreground">
+          <h1 className="text-4xl font-bold text-foreground mb-2 font-display">Trading Hub</h1>
+          <p className="text-muted-foreground">
             Connect with other collectors and make trades to complete your collection
           </p>
         </div>

@@ -1,163 +1,100 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Palette, 
-  Eye, 
-  TrendingUp, 
-  Shield, 
-  Users,
-  Gamepad2,
-  Sparkles,
-  Zap,
-  Globe,
-  Trophy
-} from 'lucide-react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Palette, Users, TrendingUp, Zap, Shield, Globe } from "lucide-react";
 
 const FeaturesSection = () => {
   const features = [
     {
       icon: Palette,
-      title: "AI-Powered Creation",
-      description: "Create stunning cards with advanced AI tools, professional templates, and intuitive design systems that bring your vision to life.",
-      gradient: "from-purple-500 to-pink-500",
-      bgGradient: "from-purple-500/10 to-pink-500/10"
-    },
-    {
-      icon: Eye,
-      title: "Immersive 3D Experience",
-      description: "Experience your cards in stunning 3D with realistic lighting, dynamic effects, and interactive viewing that makes every card come alive.",
-      gradient: "from-blue-500 to-cyan-500",
-      bgGradient: "from-blue-500/10 to-cyan-500/10"
-    },
-    {
-      icon: TrendingUp,
-      title: "Dynamic Marketplace",
-      description: "Trade and discover rare cards with real-time pricing, advanced analytics, and market insights that help you make informed decisions.",
-      gradient: "from-green-500 to-emerald-500",
-      bgGradient: "from-green-500/10 to-emerald-500/10"
-    },
-    {
-      icon: Shield,
-      title: "Blockchain Verified",
-      description: "Each card is authenticated and secured with blockchain technology, ensuring provenance, ownership, and protection against fraud.",
-      gradient: "from-orange-500 to-red-500",
-      bgGradient: "from-orange-500/10 to-red-500/10"
+      title: "Creator Studio",
+      description: "Design stunning cards with our AI-powered tools, 3D templates, and collaborative workspace.",
+      badge: "70/30 Revenue Split",
+      gradient: "from-purple-500 to-pink-500"
     },
     {
       icon: Users,
-      title: "Creator Economy",
-      description: "Monetize your creativity with our revenue-sharing program, royalty systems, and direct fan engagement tools that reward artistic excellence.",
-      gradient: "from-indigo-500 to-purple-500",
-      bgGradient: "from-indigo-500/10 to-purple-500/10"
+      title: "Community Hub",
+      description: "Connect with collectors, showcase your work, and build your following in dedicated creator spaces.",
+      badge: "Social Features",
+      gradient: "from-blue-500 to-cyan-500"
     },
     {
-      icon: Gamepad2,
-      title: "Interactive Gaming",
-      description: "Use your cards in competitive tournaments, mini-games, and interactive experiences that add utility beyond just collecting.",
-      gradient: "from-pink-500 to-rose-500",
-      bgGradient: "from-pink-500/10 to-rose-500/10"
-    }
-  ];
-
-  const platformBenefits = [
+      icon: TrendingUp,
+      title: "Smart Trading",
+      description: "Real-time market analytics, price predictions, and automated trading suggestions.",
+      badge: "AI-Powered",
+      gradient: "from-[#00C851] to-[#00A543]"
+    },
     {
       icon: Zap,
-      title: "Lightning Fast",
-      description: "Optimized performance for instant loading and smooth 3D rendering"
+      title: "Instant Rendering",
+      description: "View and interact with cards in real-time 3D. Rotate, zoom, and explore every detail.",
+      badge: "WebGL 3D",
+      gradient: "from-orange-500 to-red-500"
+    },
+    {
+      icon: Shield,
+      title: "Secure Ownership",
+      description: "Blockchain-verified authenticity with secure wallet integration and fraud protection.",
+      badge: "Verified",
+      gradient: "from-green-500 to-emerald-500"
     },
     {
       icon: Globe,
-      title: "Global Community",
-      description: "Connect with collectors and creators from around the world"
-    },
-    {
-      icon: Trophy,
-      title: "Premium Quality",
-      description: "Curated collections of high-quality, verified digital artwork"
+      title: "Global Marketplace",
+      description: "Trade with collectors worldwide. Multi-currency support and instant settlements.",
+      badge: "Worldwide",
+      gradient: "from-indigo-500 to-purple-500"
     }
   ];
 
   return (
-    <section className="relative py-32 bg-gradient-to-b from-slate-50 to-white overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,_rgba(120,119,198,0.3),_rgba(255,255,255,0))]"></div>
-      </div>
-
-      <div className="relative z-10 container-xl mx-auto px-6">
-        {/* Header */}
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 rounded-full mb-6">
-            <Sparkles className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-700">Platform Features</span>
-          </div>
-          
-          <h2 className="text-5xl lg:text-6xl font-black mb-6">
-            <span className="bg-gradient-to-r from-slate-900 via-purple-800 to-pink-800 bg-clip-text text-transparent">
-              Everything you need
-            </span>
-            <br />
-            <span className="text-slate-600">to create and collect</span>
+    <section id="features" className="py-20 lg:py-32 bg-gray-900/20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <Badge className="mb-4 bg-[#00C851]/20 text-[#00C851] border-[#00C851]/30">
+            Features
+          </Badge>
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">
+            Everything you need to{" "}
+            <span className="bg-gradient-to-r from-[#00C851] to-[#00A543] bg-clip-text text-transparent">
+              dominate
+            </span>{" "}
+            the market
           </h2>
-          
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            Discover the most advanced digital trading card platform with cutting-edge 
-            technology, creator-focused tools, and a passionate global community.
+          <p className="text-xl text-gray-300 leading-relaxed">
+            From creation to collection, our platform provides all the tools you need 
+            to succeed in the digital trading card revolution.
           </p>
         </div>
 
-        {/* Main Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <Card 
               key={index} 
-              className="group relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-white/80 backdrop-blur-sm"
+              className="bg-gray-900/50 border-gray-800 hover:border-[#00C851]/50 transition-all duration-300 group hover:scale-105"
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${feature.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
-              
-              <CardHeader className="relative z-10 pb-4">
-                <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-2xl mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  <feature.icon className="w-8 h-8 text-white" />
+              <CardContent className="p-8">
+                <div className="flex items-start justify-between mb-6">
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                    <feature.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <Badge variant="secondary" className="text-xs bg-gray-800 text-gray-300">
+                    {feature.badge}
+                  </Badge>
                 </div>
-                <CardTitle className="text-xl font-bold text-slate-900 group-hover:text-slate-800 transition-colors">
+                
+                <h3 className="text-xl font-semibold mb-3 text-white group-hover:text-[#00C851] transition-colors">
                   {feature.title}
-                </CardTitle>
-              </CardHeader>
-              
-              <CardContent className="relative z-10">
-                <p className="text-slate-600 leading-relaxed group-hover:text-slate-700 transition-colors">
+                </h3>
+                
+                <p className="text-gray-400 leading-relaxed">
                   {feature.description}
                 </p>
               </CardContent>
-              
-              {/* Shine Effect */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-              </div>
             </Card>
           ))}
-        </div>
-
-        {/* Platform Benefits */}
-        <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-3xl p-12">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-slate-900 mb-4">Why Choose Cardshow?</h3>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Built for creators, collectors, and traders who demand the best in digital collectibles.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {platformBenefits.map((benefit, index) => (
-              <div key={index} className="text-center group">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                  <benefit.icon className="w-8 h-8 text-white" />
-                </div>
-                <h4 className="text-xl font-bold text-slate-900 mb-2">{benefit.title}</h4>
-                <p className="text-slate-600 leading-relaxed">{benefit.description}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>

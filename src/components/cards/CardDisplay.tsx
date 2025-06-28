@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Heart, Eye, DollarSign, User, Sparkles } from 'lucide-react';
+import { Heart, Eye, DollarSign, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { useCardFavorites } from '@/hooks/useCards';
@@ -28,9 +28,9 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
   const [view3DLoaded, setView3DLoaded] = useState(false);
 
   const sizeClasses = {
-    sm: 'w-64 h-80',
-    md: 'w-72 h-96',
-    lg: 'w-80 h-[28rem]'
+    sm: 'w-48 h-64',
+    md: 'w-64 h-80',
+    lg: 'w-80 h-96'
   };
 
   const handleFavoriteToggle = () => {
@@ -50,68 +50,56 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
   };
 
   return (
-    <Card 
-      variant="premium"
-      interactive
-      className={cn(
-        'trading-card-premium group relative overflow-hidden',
-        sizeClasses[size],
-        className
-      )}
-    >
-      <CardContent className="p-0 h-full flex flex-col">
-        {/* Card Image/3D View Container */}
-        <div className="relative flex-1 overflow-hidden rounded-t-2xl">
+    <Card className={cn(
+      'group relative overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-gray-900 border-gray-800',
+      sizeClasses[size],
+      className
+    )}>
+      <CardContent className="p-0 h-full">
+        {/* Card Image/3D View */}
+        <div className="relative h-2/3 overflow-hidden">
           {/* 3D/2D Toggle */}
-          <div className="absolute top-3 left-3 z-10">
+          <div className="absolute top-2 left-2 z-10">
             <Card3DToggle
               is3D={is3D}
               onToggle={setIs3D}
             />
           </div>
 
-          {/* Premium Badge */}
-          <div className="absolute top-3 right-3 z-10">
-            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-lg backdrop-blur-sm">
-              <Sparkles className="w-3 h-3 mr-1" />
-              Premium
-            </Badge>
-          </div>
-
           {/* 2D Image */}
           {!is3D && (
-            <div className="relative w-full h-full">
+            <>
               {!imageLoaded && (
-                <div className="absolute inset-0 skeleton rounded-t-2xl" />
+                <div className="absolute inset-0 bg-gray-800 animate-pulse" />
               )}
               <img
                 src={card.image_url || '/placeholder.svg'}
                 alt={card.title}
                 className={cn(
-                  'w-full h-full object-cover transition-all duration-500 group-hover:scale-110',
+                  'w-full h-full object-cover transition-opacity duration-300',
                   imageLoaded ? 'opacity-100' : 'opacity-0'
                 )}
                 onLoad={() => setImageLoaded(true)}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-            </div>
+            </>
           )}
 
           {/* Premium 3D View */}
           {is3D && (
-            <div className="w-full h-full bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900">
+            <div className="w-full h-full">
               <Card3DViewerPremium
                 card={card}
                 interactive
                 onLoad={() => setView3DLoaded(true)}
                 onFlip={() => {
+                  // Add flip sound effect here if enabled
                   console.log('Card flipped:', card.title);
                 }}
               />
               
               {!view3DLoaded && (
-                <div className="absolute inset-0 skeleton flex items-center justify-center">
-                  <div className="text-muted-foreground text-sm animate-pulse">Loading 3D view...</div>
+                <div className="absolute inset-0 bg-gray-800 animate-pulse flex items-center justify-center">
+                  <div className="text-gray-400 text-sm">Loading premium 3D...</div>
                 </div>
               )}
             </div>
@@ -119,15 +107,15 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
           
           {/* Rarity Badge */}
           {card.rarity && (
-            <div className="absolute bottom-3 left-3">
+            <div className="absolute top-2 right-2">
               <RarityBadge rarity={card.rarity} size="sm" animated />
             </div>
           )}
 
           {/* Serial Number */}
           {card.serial_number && (
-            <div className="absolute bottom-3 right-3">
-              <Badge variant="secondary" className="text-xs font-mono bg-black/50 text-white border-white/20">
+            <div className="absolute top-12 right-2">
+              <Badge variant="secondary" className="text-xs font-mono">
                 #{card.serial_number}
               </Badge>
             </div>
@@ -136,16 +124,16 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
           {/* Favorite Button */}
           {user && (
             <Button
-              variant="ghost" 
-              size="icon"
-              className="absolute top-12 right-3 bg-black/30 hover:bg-black/50 text-white backdrop-blur-sm"
+              variant="ghost"
+              size="sm"
+              className="absolute bottom-2 right-2 bg-black/50 hover:bg-black/70 text-white"
               onClick={handleFavoriteToggle}
               disabled={toggleFavorite.isPending}
             >
               <Heart 
                 className={cn(
-                  'w-4 h-4 transition-all',
-                  card.is_favorited ? 'fill-red-500 text-red-500 scale-110' : 'text-white hover:text-red-400'
+                  'w-4 h-4',
+                  card.is_favorited ? 'fill-red-500 text-red-500' : 'text-white'
                 )}
               />
             </Button>
@@ -153,21 +141,22 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
         </div>
 
         {/* Card Info */}
-        <div className="p-4 bg-gradient-to-b from-card/90 to-card backdrop-blur-sm">
-          <div className="space-y-3">
-            <div>
-              <h3 className="font-bold text-foreground text-lg truncate" title={card.title}>
-                {card.title}
-              </h3>
-              
-              {card.description && (
-                <p className="text-sm text-muted-foreground line-clamp-2 mt-1 leading-relaxed">
-                  {card.description}
-                </p>
-              )}
-            </div>
+        <div className="p-3 h-1/3 flex flex-col justify-between">
+          <div>
+            <h3 className="font-bold text-white text-sm truncate" title={card.title}>
+              {card.title}
+            </h3>
+            
+            {card.description && (
+              <p className="text-xs text-gray-400 line-clamp-2 mt-1">
+                {card.description}
+              </p>
+            )}
+          </div>
 
-            {/* Stats Row */}
+          {/* Bottom Row */}
+          <div className="flex items-center justify-between mt-2">
+            {/* Stats */}
             {showStats && (card.power !== undefined || card.toughness !== undefined) && (
               <CardStats 
                 stats={{
@@ -180,42 +169,40 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
               />
             )}
 
-            {/* Bottom Row - Price and Engagement */}
-            <div className="flex items-center justify-between pt-2 border-t border-border/20">
-              <div className="flex items-center gap-3 text-xs">
-                {card.current_market_value && (
-                  <div className="flex items-center gap-1 font-semibold text-success">
-                    <DollarSign className="w-3 h-3" />
-                    <span>{formatPrice(card.current_market_value)}</span>
-                  </div>
-                )}
-              </div>
+            {/* Price and Stats */}
+            <div className="flex items-center gap-2 text-xs text-gray-400">
+              {card.current_market_value && (
+                <div className="flex items-center gap-1">
+                  <DollarSign className="w-3 h-3" />
+                  <span className="font-semibold text-[#00C851]">
+                    {formatPrice(card.current_market_value)}
+                  </span>
+                </div>
+              )}
               
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                {card.view_count !== undefined && (
-                  <div className="flex items-center gap-1">
-                    <Eye className="w-3 h-3" />
-                    <span>{card.view_count}</span>
-                  </div>
-                )}
-                
-                {card.favorite_count !== undefined && card.favorite_count > 0 && (
-                  <div className="flex items-center gap-1">
-                    <Heart className="w-3 h-3" />
-                    <span>{card.favorite_count}</span>
-                  </div>
-                )}
-              </div>
+              {card.view_count !== undefined && (
+                <div className="flex items-center gap-1">
+                  <Eye className="w-3 h-3" />
+                  <span>{card.view_count}</span>
+                </div>
+              )}
+              
+              {card.favorite_count !== undefined && card.favorite_count > 0 && (
+                <div className="flex items-center gap-1">
+                  <Heart className="w-3 h-3" />
+                  <span>{card.favorite_count}</span>
+                </div>
+              )}
             </div>
-
-            {/* Creator Info */}
-            {card.creator && (
-              <div className="flex items-center gap-2 pt-2 text-xs text-muted-foreground border-t border-border/10">
-                <User className="w-3 h-3" />
-                <span>by <span className="font-medium text-foreground">{card.creator.username}</span></span>
-              </div>
-            )}
           </div>
+
+          {/* Creator Info */}
+          {card.creator && (
+            <div className="flex items-center gap-1 mt-1 text-xs text-gray-500">
+              <User className="w-3 h-3" />
+              <span>by {card.creator.username}</span>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

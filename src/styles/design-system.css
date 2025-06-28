@@ -1,80 +1,120 @@
 
-/* CRD Design System - Next Generation Interface */
+/* Cardshow Unified Design System - Enhanced with Physical Card Physics */
 
-@import './foundations/colors.css';
-@import './foundations/typography.css';
-@import './foundations/layout.css';
-@import './foundations/animations.css';
-@import './foundations/shadows.css';
-@import './components/cards.css';
-@import './components/buttons.css';
-@import './components/navigation.css';
+@import './card-physics.css';
+@import './lighting-system.css';
 
 @layer base {
   :root {
-    /* CRD Design Foundation */
-    --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    /* Enhanced Core Design Tokens with Physical Properties */
+    --font-display: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-body: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'Space Grotesk', 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
 
-    /* Advanced Spacing System */
-    --space-px: 1px;
-    --space-0: 0;
-    --space-1: 0.25rem;   /* 4px */
-    --space-2: 0.5rem;    /* 8px */
-    --space-3: 0.75rem;   /* 12px */
-    --space-4: 1rem;      /* 16px */
-    --space-5: 1.25rem;   /* 20px */
-    --space-6: 1.5rem;    /* 24px */
-    --space-7: 1.75rem;   /* 28px */
-    --space-8: 2rem;      /* 32px */
-    --space-10: 2.5rem;   /* 40px */
-    --space-12: 3rem;     /* 48px */
-    --space-16: 4rem;     /* 64px */
-    --space-20: 5rem;     /* 80px */
-    --space-24: 6rem;     /* 96px */
-    --space-32: 8rem;     /* 128px */
+    /* Physical Spacing Scale - Based on card dimensions */
+    --space-card-1: calc(var(--card-width-base) * 0.05); /* 0.125in */
+    --space-card-2: calc(var(--card-width-base) * 0.1);  /* 0.25in */
+    --space-card-3: calc(var(--card-width-base) * 0.15); /* 0.375in */
+    --space-card-4: calc(var(--card-width-base) * 0.2);  /* 0.5in */
+    
+    /* Traditional spacing maintained for non-card elements */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
 
-    /* Modern Border Radius */
-    --radius-none: 0;
-    --radius-xs: 0.125rem;
-    --radius-sm: 0.25rem;
-    --radius-md: 0.375rem;
-    --radius-lg: 0.5rem;
-    --radius-xl: 0.75rem;
-    --radius-2xl: 1rem;
-    --radius-3xl: 1.5rem;
+    /* Enhanced Border Radius with Card Physics */
+    --radius-card: var(--card-corner-radius);
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
     --radius-full: 9999px;
 
-    /* Enhanced Shadow System */
-    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-    --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+    /* Physical Shadow System Integration */
+    --shadow-sm: var(--shadow-card-rest);
+    --shadow-md: var(--shadow-card-hover); 
+    --shadow-lg: var(--shadow-card-floating);
+    --shadow-xl: var(--shadow-card-premium);
 
-    /* Transition System */
-    --transition-all: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-colors: color 150ms cubic-bezier(0.4, 0, 0.2, 1), background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), border-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-opacity: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-shadow: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-transform: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    /* Base Colors - Enhanced for Physical Lighting */
+    --background: 15 23 42;
+    --foreground: 248 250 252;
+    --card: 30 41 59;
+    --card-foreground: 248 250 252;
+    --popover: 30 41 59;
+    --popover-foreground: 248 250 252;
+    --secondary: 51 65 85;
+    --secondary-foreground: 248 250 252;
+    --muted: 51 65 85;
+    --muted-foreground: 148 163 184;
+    --accent: 51 65 85;
+    --accent-foreground: 248 250 252;
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
+    --success: 34 197 94;
+    --success-foreground: 255 255 255;
+    --border: 51 65 85;
+    --input: 51 65 85;
+    --ring: 59 130 246;
 
-    /* Z-Index Scale */
-    --z-hide: -1;
-    --z-auto: auto;
-    --z-base: 0;
-    --z-docked: 10;
-    --z-dropdown: 1000;
-    --z-sticky: 1100;
-    --z-banner: 1200;
-    --z-overlay: 1300;
-    --z-modal: 1400;
-    --z-popover: 1500;
-    --z-tooltip: 1600;
-    --z-toast: 1700;
+    /* Theme Colors - Enhanced with Physical Properties */
+    --primary: 220 38 38;
+    --primary-foreground: 255 255 255;
+    --primary-hover: 185 28 28;
+    --primary-active: 153 27 27;
+  }
+
+  .light {
+    --background: 255 255 255;
+    --foreground: 15 23 42;
+    --card: 255 255 255;
+    --card-foreground: 15 23 42;
+    --popover: 255 255 255;
+    --popover-foreground: 15 23 42;
+    --secondary: 248 250 252;
+    --secondary-foreground: 15 23 42;
+    --muted: 248 250 252;
+    --muted-foreground: 100 116 139;
+    --accent: 248 250 252;
+    --accent-foreground: 15 23 42;
+    --border: 226 232 240;
+    --input: 226 232 240;
+  }
+
+  /* Theme Variants with Physical Enhancement */
+  [data-theme="classic"] {
+    --primary: 220 38 38;
+    --primary-hover: 185 28 28;
+    --primary-active: 153 27 27;
+    --ring: 220 38 38;
+  }
+
+  [data-theme="royal"] {
+    --primary: 29 78 216;
+    --primary-hover: 30 64 175;
+    --primary-active: 30 58 138;
+    --ring: 29 78 216;
+  }
+
+  [data-theme="vibrant"] {
+    --primary: 234 88 12;
+    --primary-hover: 194 65 12;
+    --primary-active: 154 52 18;
+    --ring: 234 88 12;
+  }
+
+  [data-theme="fresh"] {
+    --primary: 5 150 105;
+    --primary-hover: 4 120 87;
+    --primary-active: 6 95 70;
+    --ring: 5 150 105;
   }
 
   * {
@@ -82,42 +122,54 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground font-body;
+    transition: background-color 0.3s ease, color 0.3s ease;
     font-family: var(--font-body);
-    font-feature-settings: 'cv11', 'ss01';
-    font-variation-settings: 'opsz' 32;
   }
 
-  /* Typography Hierarchy */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: -0.025em;
   }
 
-  /* Focus Styles */
-  .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  /* Enhanced Global Component Overrides with Physical Properties */
+  .bg-surface-dark { @apply bg-card lit-surface; }
+  .bg-surface-medium { @apply bg-muted lit-surface; }
+  .bg-surface-light { @apply bg-accent lit-surface; }
+  .bg-surface-accent { @apply bg-secondary lit-surface; }
+  
+  .text-primary-contrast { @apply text-primary-foreground; }
+  .border-surface-accent { @apply border-border; }
+  
+  /* Physical Animation Support */
+  @keyframes fadeIn {
+    from { 
+      opacity: 0; 
+      transform: translateY(10px) translateZ(-10px);
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0) translateZ(0);
+    }
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 
-  /* Scrollbar Styling */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  /* Physical Card Integration Classes */
+  .card-container {
+    @apply lit-interface;
+    perspective: 1000px;
+    transform-style: preserve-3d;
   }
 
-  ::-webkit-scrollbar-track {
-    @apply bg-muted/20;
-    border-radius: var(--radius-md);
+  .physical-interface {
+    @apply lit-surface;
+    transform-style: preserve-3d;
   }
 
-  ::-webkit-scrollbar-thumb {
-    @apply bg-muted/60 hover:bg-muted/80;
-    border-radius: var(--radius-md);
-  }
-
-  /* Selection Styling */
-  ::selection {
-    @apply bg-primary/20 text-primary-foreground;
+  .interactive-surface {
+    @apply lit-hover lit-active lit-focus;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 }

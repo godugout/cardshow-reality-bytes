@@ -1,19 +1,19 @@
 
 import { Suspense } from 'react';
-import Navigation from '@/components/layout/Navigation';
+import Header from '@/components/Header';
 import MarketplaceHub from '@/components/marketplace/MarketplaceHub';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Marketplace = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
-      <div className="container-xl mx-auto px-4 py-8">
+      <Header />
+      <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-display-lg text-foreground mb-2">
+          <h1 className="text-4xl font-bold text-foreground mb-2 font-display">
             Digital Card Marketplace
           </h1>
-          <p className="text-body-lg text-muted-foreground">
+          <p className="text-muted-foreground text-lg">
             Discover, analyze, and collect premium digital trading cards
           </p>
         </div>
