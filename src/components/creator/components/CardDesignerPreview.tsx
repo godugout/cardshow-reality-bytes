@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye } from 'lucide-react';
 import { CardPreview } from '../CardPreview';
@@ -56,7 +55,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     backgroundPosition: 'center',
     opacity: canvasState.backgroundOpacity,
     zIndex: 0,
-    filter: 'brightness(0.8) contrast(1.1)', // Subtle enhancement for better theme effect
+    filter: 'brightness(0.9) contrast(1.1)', // Subtle enhancement for better theme effect
   } : {};
 
   return (
@@ -104,7 +103,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           {/* Theme-specific decorative elements */}
           {currentTheme?.id === 'crd-branded' && (
             <div className="absolute top-4 right-4 z-10">
-              <div className="text-xs text-white/40 font-mono bg-black/20 px-2 py-1 rounded backdrop-blur-sm">
+              <div className="text-xs text-white/50 font-bold bg-gradient-to-r from-orange-500/20 to-blue-500/20 px-3 py-1 rounded-full backdrop-blur-sm border border-white/10">
                 CRD Studio
               </div>
             </div>
