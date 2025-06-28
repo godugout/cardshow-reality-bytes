@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useCanvasCustomizer } from '../hooks/useCanvasCustomizer';
-import { Palette, Grid3x3, Eye } from 'lucide-react';
+import { Palette, Grid3x3, Image } from 'lucide-react';
 
 export const CanvasCustomizer = () => {
   const {
@@ -15,7 +15,11 @@ export const CanvasCustomizer = () => {
     updateCanvasState,
     selectTheme,
     availableThemes,
+    getCurrentTheme,
   } = useCanvasCustomizer();
+
+  const currentTheme = getCurrentTheme();
+  const hasBackgroundImage = currentTheme?.backgroundImage;
 
   return (
     <div className="space-y-6">
@@ -40,16 +44,39 @@ export const CanvasCustomizer = () => {
                 <div className="flex items-center gap-3">
                   {/* Theme Preview */}
                   <div 
-                    className="w-12 h-8 rounded border-2 border-slate-500 flex-shrink-0"
+                    className="w-12 h-8 rounded border-2 border-slate-500 flex-shrink-0 relative overflow-hidden"
                     style={{
                       backgroundColor: theme.backgroundColor,
-                      backgroundImage: theme.patternOverlay,
-                      backgroundSize: '8px 8px',
                     }}
                   >
+                    {/* Background Image Preview */}
+                    {theme.backgroundImage && (
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          backgroundImage: `url(${theme.backgroundImage})`,
+                          backgroundSize: '16px 16px',
+                          backgroundRepeat: 'repeat',
+                          opacity: theme.backgroundOpacity || 0.15,
+                        }}
+                      />
+                    )}
+                    
+                    {/* Pattern Overlay Preview */}
+                    {theme.patternOverlay && (
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          backgroundImage: theme.patternOverlay,
+                          backgroundSize: '8px 8px',
+                        }}
+                      />
+                    )}
+                    
+                    {/* Grid Preview */}
                     {theme.showGrid && (
                       <div
-                        className="w-full h-full"
+                        className="absolute inset-0"
                         style={{
                           backgroundImage: `
                             linear-gradient(${theme.gridColor} 1px, transparent 1px),
@@ -103,12 +130,64 @@ export const CanvasCustomizer = () => {
             value={canvasState.customBackgroundColor}
             onChange={(e) => updateCanvasState({ customBackgroundColor: e.target.value })}
             className="flex-1 bg-slate-700 border-slate-600 text-slate-100 focus:border-emerald-500"
-            placeholder="#1a2332"
+            placeholder="#0f172a"
           />
         </div>
       </div>
 
       <Separator className="bg-slate-600" />
+
+      {/* Background Image Controls */}
+      {hasBackgroundImage && (
+        <>
+          <div>
+            <Label className="text-sm font-semibold text-slate-200 mb-3 block">
+              <Image className="w-4 h-4 inline mr-2" />
+              Logo Pattern Settings
+            </Label>
+            
+            <div className="space-y-4">
+              {/* Logo Size */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <Label className="text-sm text-slate-300">Logo Size</Label>
+                  <span className="text-xs font-medium text-slate-200 bg-slate-700 px-2 py-1 rounded">
+                    {canvasState.backgroundSize || 120}px
+                  </span>
+                </div>
+                <Slider
+                  value={[canvasState.backgroundSize || 120]}
+                  onValueChange={([value]) => updateCanvasState({ backgroundSize: value })}
+                  min={60}
+                  max={300}
+                  step={10}
+                  className="w-full"
+                />
+              </div>
+
+              {/* Logo Opacity */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <Label className="text-sm text-slate-300">Logo Opacity</Label>
+                  <span className="text-xs font-medium text-slate-200 bg-slate-700 px-2 py-1 rounded">
+                    {Math.round((canvasState.backgroundOpacity || 0.15) * 100)}%
+                  </span>
+                </div>
+                <Slider
+                  value={[canvasState.backgroundOpacity || 0.15]}
+                  onValueChange={([value]) => updateCanvasState({ backgroundOpacity: value })}
+                  min={0.05}
+                  max={0.5}
+                  step={0.05}
+                  className="w-full"
+                />
+              </div>
+            </div>
+          </div>
+
+          <Separator className="bg-slate-600" />
+        </>
+      )}
 
       {/* Grid Settings */}
       <div>
@@ -179,7 +258,7 @@ export const CanvasCustomizer = () => {
                     value={canvasState.gridColor}
                     onChange={(e) => updateCanvasState({ gridColor: e.target.value })}
                     className="flex-1 bg-slate-700 border-slate-600 text-slate-100 focus:border-emerald-500"
-                    placeholder="#3a5a7a"
+                    placeholder="#334155"
                   />
                 </div>
               </div>

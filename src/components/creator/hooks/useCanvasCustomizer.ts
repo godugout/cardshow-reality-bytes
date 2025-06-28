@@ -4,12 +4,14 @@ import type { CanvasCustomizerState, CanvasTheme } from '../types/canvasTypes';
 import { canvasThemes } from '../data/canvasThemes';
 
 const defaultCanvasState: CanvasCustomizerState = {
-  selectedTheme: 'drafting-classic',
-  customBackgroundColor: '#1a2332',
+  selectedTheme: 'crd-branded',
+  customBackgroundColor: '#0f172a',
   showGrid: true,
   gridSize: 20,
   gridOpacity: 0.3,
-  gridColor: '#3a5a7a',
+  gridColor: '#334155',
+  backgroundSize: 120,
+  backgroundOpacity: 0.15,
 };
 
 export const useCanvasCustomizer = () => {
@@ -29,6 +31,8 @@ export const useCanvasCustomizer = () => {
         gridSize: theme.gridSize,
         gridOpacity: theme.gridOpacity,
         gridColor: theme.gridColor,
+        backgroundSize: theme.backgroundSize || 120,
+        backgroundOpacity: theme.backgroundOpacity || 0.15,
       });
     }
   }, []);
@@ -43,6 +47,19 @@ export const useCanvasCustomizer = () => {
       backgroundColor: canvasState.customBackgroundColor,
     };
 
+    // Handle background image (like CRD logo)
+    if (theme?.backgroundImage) {
+      return {
+        ...baseStyles,
+        backgroundImage: `url(${theme.backgroundImage})`,
+        backgroundSize: `${canvasState.backgroundSize || 120}px ${canvasState.backgroundSize || 120}px`,
+        backgroundRepeat: 'repeat',
+        backgroundPosition: 'center',
+        opacity: canvasState.backgroundOpacity || 0.15,
+      };
+    }
+
+    // Handle pattern overlay
     if (theme?.patternOverlay) {
       return {
         ...baseStyles,

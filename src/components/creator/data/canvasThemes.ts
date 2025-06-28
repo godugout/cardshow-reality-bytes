@@ -1,7 +1,21 @@
-
 import type { CanvasTheme } from '../types/canvasTypes';
 
 export const canvasThemes: CanvasTheme[] = [
+  {
+    id: 'crd-branded',
+    name: 'CRD Branded',
+    description: 'Professional CRD logo watermark pattern',
+    backgroundColor: '#0f172a',
+    gridColor: '#334155',
+    gridSize: 20,
+    gridOpacity: 0.3,
+    showGrid: true,
+    backgroundImage: '/lovable-uploads/ee2692c5-a584-445e-8845-81fc3e9c57f1.png',
+    backgroundSize: 120,
+    backgroundOpacity: 0.15,
+    shadowColor: 'rgba(0, 0, 0, 0.3)',
+    borderColor: '#1e293b'
+  },
   {
     id: 'drafting-classic',
     name: 'Drafting Table Classic',

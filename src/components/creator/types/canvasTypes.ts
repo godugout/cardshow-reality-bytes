@@ -5,6 +5,8 @@ export interface CanvasTheme {
   description: string;
   backgroundColor: string;
   backgroundImage?: string;
+  backgroundSize?: number;
+  backgroundOpacity?: number;
   gridColor: string;
   gridSize: number;
   gridOpacity: number;
@@ -21,4 +23,6 @@ export interface CanvasCustomizerState {
   gridSize: number;
   gridOpacity: number;
   gridColor: string;
+  backgroundSize?: number;
+  backgroundOpacity?: number;
 }
