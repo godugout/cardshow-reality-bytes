@@ -38,14 +38,6 @@ const CardOverlayControls = ({ card, is3D, onToggle3D, user }: CardOverlayContro
         {card.rarity && (
           <RarityBadge rarity={card.rarity} size="sm" animated />
         )}
-
-        {/* Featured Badge */}
-        {card.featured && (
-          <Badge className="bg-yellow-600 hover:bg-yellow-700">
-            <Star className="w-3 h-3 mr-1" />
-            Featured
-          </Badge>
-        )}
       </div>
 
       {/* Serial Number */}
