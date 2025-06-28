@@ -46,33 +46,33 @@ const DiscoverySection = () => {
       {/* Search and Controls */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
             placeholder="Search cards, collections, or creators..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-12 h-14 rounded-3xl"
           />
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-[160px]">
+            <SelectTrigger className="w-[160px] h-14 rounded-3xl border-0 bg-background/50 backdrop-blur-sm">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="newest">Newest First</SelectItem>
-              <SelectItem value="price_low">Price: Low to High</SelectItem>
-              <SelectItem value="price_high">Price: High to Low</SelectItem>
-              <SelectItem value="popular">Most Popular</SelectItem>
-              <SelectItem value="ending_soon">Ending Soon</SelectItem>
+            <SelectContent className="rounded-3xl border-0 bg-card/90 backdrop-blur-xl">
+              <SelectItem value="newest" className="rounded-2xl">Newest First</SelectItem>
+              <SelectItem value="price_low" className="rounded-2xl">Price: Low to High</SelectItem>
+              <SelectItem value="price_high" className="rounded-2xl">Price: High to Low</SelectItem>
+              <SelectItem value="popular" className="rounded-2xl">Most Popular</SelectItem>
+              <SelectItem value="ending_soon" className="rounded-2xl">Ending Soon</SelectItem>
             </SelectContent>
           </Select>
           
           <Button
             variant="outline"
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 h-14 px-6 rounded-3xl"
           >
             <SlidersHorizontal className="w-4 h-4" />
             Filters
@@ -82,15 +82,15 @@ const DiscoverySection = () => {
 
       {/* Applied Filters */}
       {appliedFilters.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm text-muted-foreground">Filters:</span>
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-sm text-muted-foreground font-medium">Filters:</span>
           {appliedFilters.map((filter, index) => (
-            <Badge key={index} variant="secondary" className="flex items-center gap-1">
+            <Badge key={index} variant="secondary" className="flex items-center gap-2 px-4 py-2 rounded-2xl">
               {filter}
-              <X className="w-3 h-3 cursor-pointer" onClick={clearFilters} />
+              <X className="w-3 h-3 cursor-pointer hover:text-destructive transition-colors" onClick={clearFilters} />
             </Badge>
           ))}
-          <Button variant="ghost" size="sm" onClick={clearFilters}>
+          <Button variant="ghost" size="sm" onClick={clearFilters} className="rounded-2xl">
             Clear all
           </Button>
         </div>
@@ -98,17 +98,19 @@ const DiscoverySection = () => {
 
       {/* Advanced Filters Panel */}
       {showFilters && (
-        <DiscoveryFilters
-          filters={filters}
-          onFiltersChange={handleFiltersChange}
-          onClose={() => setShowFilters(false)}
-        />
+        <div className="bg-card/80 backdrop-blur-xl rounded-3xl p-6 border-0">
+          <DiscoveryFilters
+            filters={filters}
+            onFiltersChange={handleFiltersChange}
+            onClose={() => setShowFilters(false)}
+          />
+        </div>
       )}
 
       {/* Results */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground font-medium">
             {isLoading ? 'Loading...' : `${listings.length} cards found`}
           </p>
         </div>
@@ -116,7 +118,7 @@ const DiscoverySection = () => {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="bg-card rounded-lg h-96 animate-pulse border" />
+              <div key={i} className="bg-card/50 backdrop-blur-xl rounded-3xl h-96 animate-pulse border-0" />
             ))}
           </div>
         ) : (
@@ -128,18 +130,18 @@ const DiscoverySection = () => {
         )}
 
         {!isLoading && listings.length === 0 && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-lg flex items-center justify-center">
-              <Search className="w-8 h-8 text-muted-foreground" />
+          <div className="text-center py-16">
+            <div className="w-20 h-20 mx-auto mb-6 bg-muted/50 rounded-3xl flex items-center justify-center">
+              <Search className="w-10 h-10 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">No cards found</h3>
-            <p className="text-muted-foreground mb-4">
+            <h3 className="text-2xl font-bold mb-3">No cards found</h3>
+            <p className="text-muted-foreground mb-6 text-lg">
               {searchTerm || Object.keys(filters).length > 0
                 ? 'Try adjusting your search or filters'
                 : 'No cards are currently available'}
             </p>
             {(searchTerm || Object.keys(filters).length > 0) && (
-              <Button variant="outline" onClick={clearFilters}>
+              <Button variant="outline" onClick={clearFilters} className="rounded-3xl px-8 py-3">
                 Clear search and filters
               </Button>
             )}

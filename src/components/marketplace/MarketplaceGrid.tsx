@@ -42,16 +42,16 @@ const MarketplaceGrid = () => {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-muted">
-          <TabsTrigger value="listings" className="flex items-center gap-2">
+        <TabsList className="grid w-full grid-cols-3 bg-background/50 backdrop-blur-xl border-0 rounded-3xl p-2">
+          <TabsTrigger value="listings" className="flex items-center gap-2 rounded-2xl data-[state=active]:bg-primary/20 data-[state=active]:text-primary transition-all duration-200">
             <Search className="w-4 h-4" />
             Marketplace
           </TabsTrigger>
-          <TabsTrigger value="analytics" className="flex items-center gap-2">
+          <TabsTrigger value="analytics" className="flex items-center gap-2 rounded-2xl data-[state=active]:bg-primary/20 data-[state=active]:text-primary transition-all duration-200">
             <BarChart3 className="w-4 h-4" />
             Analytics
           </TabsTrigger>
-          <TabsTrigger value="portfolio" className="flex items-center gap-2">
+          <TabsTrigger value="portfolio" className="flex items-center gap-2 rounded-2xl data-[state=active]:bg-primary/20 data-[state=active]:text-primary transition-all duration-200">
             <Briefcase className="w-4 h-4" />
             Portfolio
           </TabsTrigger>

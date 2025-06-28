@@ -9,21 +9,21 @@ interface RarityFilterProps {
 
 const RarityFilter = ({ selectedRarity, onRarityChange }: RarityFilterProps) => {
   return (
-    <div>
-      <Label htmlFor="rarity-select" className="text-sm font-medium mb-2 block">
+    <div className="space-y-3">
+      <Label htmlFor="rarity-select" className="text-sm font-semibold">
         Rarity
       </Label>
       <Select value={selectedRarity} onValueChange={onRarityChange}>
-        <SelectTrigger id="rarity-select">
+        <SelectTrigger id="rarity-select" className="rounded-3xl border-0 bg-background/50 backdrop-blur-sm">
           <SelectValue placeholder="Any Rarity" />
         </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Any Rarity</SelectItem>
-          <SelectItem value="common">Common</SelectItem>
-          <SelectItem value="uncommon">Uncommon</SelectItem>
-          <SelectItem value="rare">Rare</SelectItem>
-          <SelectItem value="ultra_rare">Ultra Rare</SelectItem>
-          <SelectItem value="legendary">Legendary</SelectItem>
+        <SelectContent className="rounded-3xl border-0 bg-card/90 backdrop-blur-xl">
+          <SelectItem value="all" className="rounded-2xl">Any Rarity</SelectItem>
+          <SelectItem value="common" className="rounded-2xl">Common</SelectItem>
+          <SelectItem value="uncommon" className="rounded-2xl">Uncommon</SelectItem>
+          <SelectItem value="rare" className="rounded-2xl">Rare</SelectItem>
+          <SelectItem value="ultra_rare" className="rounded-2xl">Ultra Rare</SelectItem>
+          <SelectItem value="legendary" className="rounded-2xl">Legendary</SelectItem>
         </SelectContent>
       </Select>
     </div>

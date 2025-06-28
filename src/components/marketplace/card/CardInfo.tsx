@@ -11,14 +11,14 @@ interface CardInfoProps {
 
 const CardInfo = ({ title, rarity, condition }: CardInfoProps) => {
   return (
-    <div>
-      <h3 className="font-semibold text-lg mb-1 line-clamp-1">
+    <div className="space-y-3">
+      <h3 className="font-bold text-lg leading-tight line-clamp-1">
         {title || 'Unknown Card'}
       </h3>
       
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         {rarity && <RarityBadge rarity={rarity as CardRarity} />}
-        <Badge variant="outline" className="text-xs">
+        <Badge variant="outline" className="text-xs rounded-2xl border-0 bg-muted/50">
           {condition}
         </Badge>
       </div>

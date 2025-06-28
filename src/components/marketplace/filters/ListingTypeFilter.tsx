@@ -8,19 +8,19 @@ interface ListingTypeFilterProps {
 
 const ListingTypeFilter = ({ onListingTypeChange }: ListingTypeFilterProps) => {
   return (
-    <div>
-      <Label htmlFor="listing-type-select" className="text-sm font-medium mb-2 block">
+    <div className="space-y-3">
+      <Label htmlFor="listing-type-select" className="text-sm font-semibold">
         Listing Type
       </Label>
       <Select onValueChange={onListingTypeChange}>
-        <SelectTrigger id="listing-type-select">
+        <SelectTrigger id="listing-type-select" className="rounded-3xl border-0 bg-background/50 backdrop-blur-sm">
           <SelectValue placeholder="Any Type" />
         </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Any Type</SelectItem>
-          <SelectItem value="fixed_price">Buy Now</SelectItem>
-          <SelectItem value="auction">Auction</SelectItem>
-          <SelectItem value="best_offer">Best Offer</SelectItem>
+        <SelectContent className="rounded-3xl border-0 bg-card/90 backdrop-blur-xl">
+          <SelectItem value="all" className="rounded-2xl">Any Type</SelectItem>
+          <SelectItem value="fixed_price" className="rounded-2xl">Buy Now</SelectItem>
+          <SelectItem value="auction" className="rounded-2xl">Auction</SelectItem>
+          <SelectItem value="best_offer" className="rounded-2xl">Best Offer</SelectItem>
         </SelectContent>
       </Select>
     </div>

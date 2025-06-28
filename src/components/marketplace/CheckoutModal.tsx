@@ -19,9 +19,9 @@ const CheckoutModal = ({ isOpen, onClose, listing }: CheckoutModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gray-900 border-gray-800">
-        <DialogHeader>
-          <DialogTitle className="text-white">Complete Purchase</DialogTitle>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-card/90 backdrop-blur-xl border-0 rounded-3xl">
+        <DialogHeader className="pb-6">
+          <DialogTitle className="text-2xl font-bold text-foreground">Complete Purchase</DialogTitle>
         </DialogHeader>
         
         <CheckoutFlow
