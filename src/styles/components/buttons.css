@@ -1,0 +1,103 @@
+
+/* CRD Button Component System */
+
+@layer components {
+  .btn-base {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-medium text-body-sm transition-all duration-200 ease-out focus-ring disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn-base bg-primary text-primary-foreground shadow-md hover:bg-primary/90 hover:shadow-lg hover:scale-105 active:scale-95;
+    background: var(--gradient-primary);
+  }
+
+  .btn-secondary {
+    @apply btn-base bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border/50;
+  }
+
+  .btn-ghost {
+    @apply btn-base hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .btn-outline {
+    @apply btn-base border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-primary;
+  }
+
+  .btn-destructive {
+    @apply btn-base bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:shadow-danger;
+  }
+
+  .btn-success {
+    @apply btn-base bg-success text-success-foreground hover:bg-success/90 hover:shadow-success;
+  }
+
+  .btn-gradient {
+    @apply btn-base text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95;
+    background: var(--gradient-accent);
+  }
+
+  /* Button Sizes */
+  .btn-xs { @apply px-2 py-1 text-xs rounded-lg; }
+  .btn-sm { @apply px-3 py-1.5 text-sm rounded-lg; }
+  .btn-md { @apply px-4 py-2 text-base rounded-xl; }
+  .btn-lg { @apply px-6 py-3 text-lg rounded-xl; }
+  .btn-xl { @apply px-8 py-4 text-xl rounded-2xl; }
+
+  /* Icon Buttons */
+  .btn-icon {
+    @apply btn-base p-2 rounded-xl;
+  }
+
+  .btn-icon-sm {
+    @apply btn-base p-1.5 rounded-lg;
+  }
+
+  .btn-icon-lg {
+    @apply btn-base p-3 rounded-xl;
+  }
+
+  /* Floating Action Button */
+  .btn-fab {
+    @apply btn-primary rounded-full p-4 shadow-xl hover:shadow-2xl fixed bottom-6 right-6 z-50;
+    background: var(--gradient-primary);
+  }
+
+  /* Button Groups */
+  .btn-group {
+    @apply flex rounded-xl overflow-hidden border border-border/50;
+  }
+
+  .btn-group .btn-base {
+    @apply rounded-none border-0;
+  }
+
+  .btn-group .btn-base:not(:last-child) {
+    @apply border-r border-border/50;
+  }
+
+  .btn-group .btn-base:first-child {
+    @apply rounded-l-xl;
+  }
+
+  .btn-group .btn-base:last-child {
+    @apply rounded-r-xl;
+  }
+
+  /* Loading State */
+  .btn-loading {
+    @apply relative text-transparent pointer-events-none;
+  }
+
+  .btn-loading::after {
+    content: '';
+    @apply absolute inset-0 flex items-center justify-center;
+    background: inherit;
+    border-radius: inherit;
+  }
+
+  .btn-loading::before {
+    content: '';
+    @apply absolute top-1/2 left-1/2 w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin;
+    transform: translate(-50%, -50%);
+  }
+}

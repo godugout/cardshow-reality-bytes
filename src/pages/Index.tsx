@@ -1,5 +1,5 @@
 
-import Header from '@/components/Header';
+import Navigation from '@/components/layout/Navigation';
 import HeroSection from '@/components/HeroSection';
 import FeaturesSection from '@/components/FeaturesSection';
 import StatsSection from '@/components/StatsSection';
@@ -10,7 +10,7 @@ const Index = () => {
   return (
     <PageErrorBoundary pageName="Home">
       <div className="min-h-screen bg-background">
-        <Header />
+        <Navigation />
         <main id="main-content">
           <PageErrorBoundary pageName="Hero Section">
             <HeroSection />

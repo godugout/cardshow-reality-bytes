@@ -1,6 +1,6 @@
 
 import { Suspense } from 'react';
-import Header from '@/components/Header';
+import Navigation from '@/components/layout/Navigation';
 import CardGrid from '@/components/cards/CardGrid';
 import MobileCards from './MobileCards';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -19,31 +19,37 @@ const Cards = () => {
     );
   }
 
-  // Desktop experience
+  // Desktop experience with new design system
   return (
     <PageErrorBoundary pageName="Cards">
       <div className="min-h-screen bg-background">
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-2 font-display">Trading Cards</h1>
-            <p className="text-muted-foreground">
-              Discover, collect, and trade digital cards from creators around the world
+        <Navigation />
+        <main className="container-xl py-8">
+          {/* Hero Section */}
+          <div className="mb-12 text-center animate-fade-in">
+            <h1 className="text-display-lg bg-gradient-to-r from-primary via-accent-purple-500 to-accent-pink-500 bg-clip-text text-transparent mb-4">
+              Discover Amazing Cards
+            </h1>
+            <p className="text-body-lg text-muted-foreground max-w-2xl mx-auto">
+              Explore, collect, and trade digital cards from creators around the world. 
+              Find rare gems and build your ultimate collection.
             </p>
           </div>
 
           <PageErrorBoundary pageName="Card Grid">
             <Suspense fallback={
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid-cards stagger-children">
                 {Array.from({ length: 8 }).map((_, i) => (
-                  <Skeleton key={i} className="h-80 w-full" />
+                  <div key={i} className="trading-card">
+                    <Skeleton className="w-full h-full rounded-2xl" />
+                  </div>
                 ))}
               </div>
             }>
               <CardGrid />
             </Suspense>
           </PageErrorBoundary>
-        </div>
+        </main>
       </div>
     </PageErrorBoundary>
   );
