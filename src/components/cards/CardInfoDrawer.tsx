@@ -26,7 +26,7 @@ const CardInfoDrawer = ({
   size 
 }: CardInfoDrawerProps) => {
   const { toggleFavorite } = useCardFavorites();
-  const showDrawer = isHovered || isPinned;
+  const showExpanded = isHovered || isPinned;
 
   const formatPrice = (price?: number) => {
     if (!price) return 'N/A';
@@ -60,48 +60,43 @@ const CardInfoDrawer = ({
   };
 
   return (
-    <>
-      {/* Basic Info - Always Visible */}
-      <div className={cn(
-        'absolute bottom-0 left-0 right-0 z-20 transition-transform duration-200 ease-out rounded-b-3xl',
-        sizeClasses[size],
-        drawerStyles[drawerStyle as keyof typeof drawerStyles] || drawerStyles.default,
-        animationPhase === 'lifting' && '-translate-y-16',
-        animationPhase === 'expanding' && '-translate-y-32'
-      )}>
-        <div className="space-y-1">
-          <h3 className="font-bold truncate" title={card.title}>
-            {card.title}
-          </h3>
+    <div className={cn(
+      'absolute bottom-0 left-0 right-0 z-20 transition-all duration-300 ease-out rounded-b-3xl transform',
+      sizeClasses[size],
+      drawerStyles[drawerStyle as keyof typeof drawerStyles] || drawerStyles.default,
+      showExpanded ? '-translate-y-0' : 'translate-y-0'
+    )}>
+      {/* Always visible basic info */}
+      <div className="space-y-1">
+        <h3 className="font-bold truncate" title={card.title}>
+          {card.title}
+        </h3>
+        
+        <div className="flex items-center justify-between">
+          {card.creator && (
+            <div className="flex items-center gap-1 opacity-80">
+              <User className="w-3 h-3" />
+              <span className="text-xs truncate">{card.creator.username}</span>
+            </div>
+          )}
           
-          <div className="flex items-center justify-between">
-            {card.creator && (
-              <div className="flex items-center gap-1 opacity-80">
-                <User className="w-3 h-3" />
-                <span className="text-xs truncate">{card.creator.username}</span>
-              </div>
-            )}
-            
-            {card.current_market_value && (
-              <div className="flex items-center gap-1 font-semibold text-green-400">
-                <DollarSign className="w-3 h-3" />
-                <span>{formatPrice(card.current_market_value)}</span>
-              </div>
-            )}
-          </div>
+          {card.current_market_value && (
+            <div className="flex items-center gap-1 font-semibold text-green-400">
+              <DollarSign className="w-3 h-3" />
+              <span>{formatPrice(card.current_market_value)}</span>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Expanded Drawer - On Hover/Pin */}
+      {/* Expanded content - slides up smoothly as one unit */}
       <div className={cn(
-        'absolute bottom-0 left-0 right-0 z-10 transform transition-all duration-300 ease-out rounded-b-3xl',
-        sizeClasses[size],
-        drawerStyles[drawerStyle as keyof typeof drawerStyles] || drawerStyles.default,
-        showDrawer && animationPhase === 'expanding' 
-          ? 'translate-y-0 opacity-100' 
-          : 'translate-y-full opacity-0'
+        'overflow-hidden transition-all duration-300 ease-out',
+        showExpanded 
+          ? 'max-h-96 opacity-100 mt-4' 
+          : 'max-h-0 opacity-0 mt-0'
       )}>
-        <div className="pt-12 space-y-3">
+        <div className="space-y-3">
           {/* Description */}
           {card.description && (
             <p className="text-xs opacity-80 line-clamp-2">
@@ -167,7 +162,7 @@ const CardInfoDrawer = ({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
