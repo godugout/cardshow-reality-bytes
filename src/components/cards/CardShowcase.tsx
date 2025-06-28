@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles } from 'lucide-react';
@@ -151,6 +150,34 @@ const sampleCards: CardType[] = [
     view_count: 789,
     favorite_count: 45,
     creator: { id: 'demo', username: 'WorkspaceWiz', avatar_url: undefined }
+  },
+  {
+    id: '11',
+    title: 'Neon Dreams',
+    description: 'Electric visions from a cyberpunk future',
+    image_url: 'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=560&fit=crop',
+    creator_id: 'demo',
+    rarity: 'rare',
+    serial_number: 99,
+    total_supply: 800,
+    current_market_value: 159.99,
+    view_count: 1234,
+    favorite_count: 78,
+    creator: { id: 'demo', username: 'NeonArtist', avatar_url: undefined }
+  },
+  {
+    id: '12',
+    title: 'Vintage Code',
+    description: 'Classic programming aesthetics meet modern design',
+    image_url: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=560&fit=crop',
+    creator_id: 'demo',
+    rarity: 'uncommon',
+    serial_number: 321,
+    total_supply: 2000,
+    current_market_value: 79.99,
+    view_count: 567,
+    favorite_count: 29,
+    creator: { id: 'demo', username: 'VintageCode', avatar_url: undefined }
   }
 ];
 

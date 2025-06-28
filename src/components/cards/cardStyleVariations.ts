@@ -68,5 +68,19 @@ export const cardStyleVariations: CardStyleVariant[] = [
     imageClasses: 'brightness-110 contrast-105',
     drawerStyle: 'holographic',
     overlayClasses: 'bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.1)_0%,transparent_70%)]'
+  },
+  {
+    name: 'Retro Arcade',
+    containerClasses: 'bg-gradient-to-b from-lime-400 to-green-500 border-4 border-lime-600 shadow-lg',
+    imageClasses: 'pixelated contrast-125 saturate-150',
+    drawerStyle: 'default',
+    overlayClasses: 'bg-[linear-gradient(45deg,rgba(0,255,0,0.1)_25%,transparent_25%,transparent_75%,rgba(0,255,0,0.1)_75%)] bg-[length:8px_8px]'
+  },
+  {
+    name: 'Steampunk Bronze',
+    containerClasses: 'bg-gradient-to-br from-amber-800/40 to-orange-900/40 backdrop-blur-sm border-2 border-amber-600/60 shadow-2xl',
+    imageClasses: 'sepia-[0.4] hue-rotate-[30deg] contrast-110',
+    drawerStyle: 'default',
+    overlayClasses: 'bg-[radial-gradient(circle_at_30%_70%,rgba(251,146,60,0.15)_0%,transparent_50%)]'
   }
 ];
