@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye } from 'lucide-react';
 import { CardPreview } from '../CardPreview';
@@ -15,7 +16,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
   const canvasStyles = getCanvasStyles();
   const gridStyles = getGridStyles();
 
-  console.log('CardDesignerPreview rendering with:', {
+  console.log('🖼️ CardDesignerPreview rendering with:', {
     selectedTheme: canvasState.selectedTheme,
     currentTheme: currentTheme?.name,
     backgroundImage: currentTheme?.backgroundImage,
@@ -46,7 +47,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     zIndex: 15,
   };
 
-  // Enhanced background pattern style for CRD logo
+  // Enhanced background pattern style for CRD logo with improved visibility
   const backgroundPatternStyle: React.CSSProperties = currentTheme?.backgroundImage ? {
     position: 'absolute',
     inset: 0,
@@ -56,12 +57,15 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     backgroundPosition: 'center',
     opacity: canvasState.backgroundOpacity,
     zIndex: 5,
-    filter: 'brightness(1.4) contrast(1.5) saturate(1.2)',
-    mixBlendMode: 'normal',
+    // Enhanced filters for better visibility
+    filter: 'brightness(1.6) contrast(1.8) saturate(1.4) hue-rotate(5deg)',
+    mixBlendMode: 'screen',
+    // Add a subtle glow effect for the CRD theme
+    boxShadow: currentTheme.id === 'crd' ? 'inset 0 0 100px rgba(249, 115, 22, 0.1)' : 'none',
   } : {};
 
   // Log the actual style being applied
-  console.log('Background pattern style:', backgroundPatternStyle);
+  console.log('🖼️ Background pattern style being applied:', backgroundPatternStyle);
 
   return (
     <Card className="bg-slate-800 border-slate-700 shadow-lg h-full">
@@ -72,7 +76,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           {currentTheme && (
             <span className="text-sm font-normal text-slate-400 ml-auto">
               Theme: {currentTheme.name}
-              {currentTheme.backgroundImage && ' (with logo)'}
+              {currentTheme.backgroundImage && ' ✨ with CRD logo'}
             </span>
           )}
         </CardTitle>
@@ -96,7 +100,9 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           {currentTheme?.backgroundImage && (
             <div 
               style={backgroundPatternStyle}
-              className="absolute inset-0 logo-pattern"
+              className="absolute inset-0 crd-logo-pattern"
+              onLoad={() => console.log('🖼️ CRD logo pattern loaded successfully!')}
+              onError={() => console.error('🖼️ CRD logo pattern failed to load!')}
             />
           )}
           
@@ -136,10 +142,10 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
             </div>
           )}
 
-          {/* CRD Logo indicator */}
+          {/* Enhanced CRD Logo indicator with better visibility */}
           {currentTheme?.id === 'crd' && (
-            <div className="absolute top-4 right-4 text-emerald-400/60 text-xs font-mono" style={{ zIndex: 18 }}>
-              CRD STUDIO
+            <div className="absolute top-4 right-4 text-emerald-400/80 text-xs font-mono bg-slate-900/60 px-2 py-1 rounded" style={{ zIndex: 18 }}>
+              🎨 CRD STUDIO
             </div>
           )}
         </div>
