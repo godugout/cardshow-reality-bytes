@@ -3,18 +3,18 @@ import { Suspense } from 'react';
 import Header from '@/components/Header';
 import MarketplaceHub from '@/components/marketplace/MarketplaceHub';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
-import { TrendingUp, Zap } from 'lucide-react';
+import { ContextualBadge } from '@/components/ui/contextual-badge';
+import { TrendingUp } from 'lucide-react';
 
 const Marketplace = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95">
-      {/* Modern gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#00C851]/5 via-transparent to-[#00A543]/3" />
+    <div className="min-h-screen bg-background font-primary">
+      {/* Modern gradient background with marketplace blue theme */}
+      <div className="absolute inset-0 bg-gradient-to-br from-marketplace/5 via-transparent to-marketplace/3" />
       
       {/* Subtle dot pattern */}
       <div className="absolute inset-0 opacity-30" style={{
-        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.02) 1px, transparent 0)`,
+        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.05) 1px, transparent 0)`,
         backgroundSize: '32px 32px'
       }} />
 
@@ -22,24 +22,24 @@ const Marketplace = () => {
       <div className="relative">
         <div className="max-w-7xl mx-auto p-8">
           <div className="text-center max-w-4xl mx-auto mb-16">
-            {/* Modern badge */}
-            <Badge className="mb-8 bg-gradient-to-r from-[#00C851]/20 to-[#00A543]/10 text-[#00C851] border-0 backdrop-blur-sm">
+            {/* Marketplace-themed badge */}
+            <ContextualBadge 
+              context="marketplace" 
+              variant="secondary" 
+              className="mb-8 text-lg px-6 py-3"
+            >
               <TrendingUp className="w-4 h-4 mr-2" />
               Live Trading
-            </Badge>
+            </ContextualBadge>
 
-            {/* Enhanced header with modern typography */}
-            <h1 className="text-5xl md:text-7xl font-black mb-8 leading-tight font-display">
-              <span className="bg-gradient-to-r from-white via-gray-100 to-gray-200 bg-clip-text text-transparent">
-                Digital Card
-              </span>
+            {/* Enhanced header with proper typography */}
+            <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-8 leading-tight text-foreground">
+              Digital Card
               <br />
-              <span className="bg-gradient-to-r from-[#00C851] via-[#00C851] to-[#00A543] bg-clip-text text-transparent">
-                Marketplace
-              </span>
+              <span className="text-marketplace">Marketplace</span>
             </h1>
             
-            <p className="text-xl text-gray-300/90 max-w-3xl mx-auto leading-relaxed font-medium">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-medium">
               Discover, analyze, and collect premium digital trading cards. 
               Experience real-time trading with secure transactions and instant settlements.
             </p>
@@ -58,22 +58,22 @@ const MarketplaceSkeleton = () => (
   <div className="max-w-7xl mx-auto p-8">
     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="bg-card/50 backdrop-blur-xl border-0 rounded-3xl p-8 animate-pulse">
-          <Skeleton className="h-16 w-full rounded-2xl bg-muted/20" />
+        <div key={i} className="bg-card rounded-lg p-8 animate-pulse shadow-card">
+          <Skeleton className="h-16 w-full rounded-md bg-muted" />
         </div>
       ))}
     </div>
     
     <div className="space-y-8">
-      <div className="bg-card/50 backdrop-blur-xl border-0 rounded-3xl p-6 animate-pulse">
-        <Skeleton className="h-12 w-full rounded-2xl bg-muted/20" />
+      <div className="bg-card rounded-lg p-6 animate-pulse shadow-card">
+        <Skeleton className="h-12 w-full rounded-md bg-muted" />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="bg-card/50 backdrop-blur-xl border-0 rounded-3xl p-8 animate-pulse">
-            <Skeleton className="h-64 w-full mb-6 rounded-2xl bg-muted/20" />
-            <Skeleton className="h-6 w-3/4 mb-3 rounded-xl bg-muted/20" />
-            <Skeleton className="h-8 w-1/2 rounded-xl bg-muted/20" />
+          <div key={i} className="bg-card rounded-lg p-8 animate-pulse shadow-card">
+            <Skeleton className="h-64 w-full mb-6 rounded-md bg-muted" />
+            <Skeleton className="h-6 w-3/4 mb-3 rounded-md bg-muted" />
+            <Skeleton className="h-8 w-1/2 rounded-md bg-muted" />
           </div>
         ))}
       </div>

@@ -18,7 +18,7 @@ body {
 }
 
 body {
-  font-family: var(--font-family-sans);
+  font-family: var(--font-family-primary);
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
   color: hsl(var(--foreground));
@@ -26,6 +26,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-weight: var(--font-weight-regular);
 }
 
 #root {
@@ -51,7 +52,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--muted-foreground));
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill);
 }
 
 ::-webkit-scrollbar-thumb:hover {

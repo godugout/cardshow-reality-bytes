@@ -1,166 +1,180 @@
 
 /* Cardshow Design System - Design Tokens Foundation */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  /* === COLOR SYSTEM === */
+  /* === BRAND COLOR SYSTEM === */
   /* Primary Brand Colors */
-  --color-primary-50: 236 253 245;
-  --color-primary-100: 209 250 229;
-  --color-primary-200: 167 243 208;
-  --color-primary-300: 110 231 183;
-  --color-primary-400: 52 211 153;
-  --color-primary-500: 16 185 129; /* Main brand color */
-  --color-primary-600: 5 150 105;
-  --color-primary-700: 4 120 87;
-  --color-primary-800: 6 95 70;
-  --color-primary-900: 6 78 59;
+  --color-collections: 34 197 94; /* #22C55E - Green for Collections */
+  --color-cards: 249 115 22; /* #F97316 - Orange for Cards */
+  --color-marketplace: 59 130 246; /* #3B82F6 - Blue for Marketplace */
+  --color-currency: 250 204 21; /* #FACC15 - Gold for CRD Token */
 
-  /* Neutral Colors - Base System */
-  --color-neutral-0: 255 255 255;
-  --color-neutral-50: 250 250 250;
-  --color-neutral-100: 245 245 245;
-  --color-neutral-200: 229 229 229;
-  --color-neutral-300: 212 212 212;
-  --color-neutral-400: 163 163 163;
-  --color-neutral-500: 115 115 115;
-  --color-neutral-600: 82 82 82;
-  --color-neutral-700: 64 64 64;
-  --color-neutral-800: 38 38 38;
-  --color-neutral-900: 23 23 23;
-  --color-neutral-950: 10 10 10;
+  /* Extended Brand Palette */
+  --color-blue-600: 0 99 247;
+  --color-blue-500: 0 131 201;
+  --color-blue-400: 0 159 245;
+  --color-blue-300: 83 189 245;
+  --color-blue-200: 91 141 239;
+  --color-blue-100: 62 123 250;
 
-  /* Semantic Colors */
-  --color-success: 16 185 129;
-  --color-warning: 245 158 11;
-  --color-error: 239 68 68;
-  --color-info: 59 130 246;
+  --color-green-500: 6 194 112;
+  --color-green-400: 31 193 107;
+  --color-green-300: 57 217 138;
+  --color-green-200: 87 235 161;
+  --color-green-100: 132 235 180;
+
+  --color-orange-500: 249 115 22;
+  --color-orange-400: 251 146 60;
+  --color-orange-300: 253 186 116;
+  --color-orange-200: 254 215 170;
+  --color-orange-100: 255 237 213;
+
+  --color-purple-600: 42 0 140;
+  --color-purple-500: 60 0 198;
+  --color-purple-400: 77 0 255;
+  --color-purple-300: 136 85 255;
+
+  /* Professional Gray Scale */
+  --color-gray-900: 28 28 28;
+  --color-gray-800: 31 31 31;
+  --color-gray-700: 40 41 61;
+  --color-gray-600: 45 51 57;
+  --color-gray-500: 51 51 51;
+  --color-gray-400: 64 64 64;
+  --color-gray-300: 74 74 74;
+  --color-gray-200: 85 87 112;
+  --color-gray-100: 96 96 96;
 
   /* === LIGHT THEME MAPPINGS === */
-  --background: var(--color-neutral-0);
-  --foreground: var(--color-neutral-900);
-  --card: var(--color-neutral-50);
-  --card-foreground: var(--color-neutral-900);
-  --popover: var(--color-neutral-0);
-  --popover-foreground: var(--color-neutral-900);
-  --primary: var(--color-primary-500);
-  --primary-foreground: var(--color-neutral-0);
-  --secondary: var(--color-neutral-100);
-  --secondary-foreground: var(--color-neutral-900);
-  --muted: var(--color-neutral-100);
-  --muted-foreground: var(--color-neutral-500);
-  --accent: var(--color-neutral-100);
-  --accent-foreground: var(--color-neutral-900);
-  --border: var(--color-neutral-200);
-  --input: var(--color-neutral-200);
-  --ring: var(--color-primary-500);
+  --background: 245 245 245; /* #F5F5F5 - Light surface */
+  --background-elevated: 255 255 255;
+  --background-default: 18 21 28; /* #12151C - Will be overridden in light mode */
+  --foreground: 28 28 28;
+  --card: 255 255 255;
+  --card-foreground: 28 28 28;
+  --popover: 255 255 255;
+  --popover-foreground: 28 28 28;
+  --primary: var(--color-collections);
+  --primary-foreground: 255 255 255;
+  --secondary: 245 245 245;
+  --secondary-foreground: 28 28 28;
+  --muted: 245 245 245;
+  --muted-foreground: 115 115 115;
+  --accent: 245 245 245;
+  --accent-foreground: 28 28 28;
+  --border: 229 229 229;
+  --input: 229 229 229;
+  --ring: var(--color-collections);
 
-  /* === SPACING SYSTEM === */
-  --space-0: 0;
-  --space-1: 0.25rem;  /* 4px */
-  --space-2: 0.5rem;   /* 8px */
-  --space-3: 0.75rem;  /* 12px */
-  --space-4: 1rem;     /* 16px */
-  --space-5: 1.25rem;  /* 20px */
-  --space-6: 1.5rem;   /* 24px */
-  --space-8: 2rem;     /* 32px */
-  --space-10: 2.5rem;  /* 40px */
-  --space-12: 3rem;    /* 48px */
-  --space-16: 4rem;    /* 64px */
-  --space-20: 5rem;    /* 80px */
-  --space-24: 6rem;    /* 96px */
+  /* === CONTEXTUAL COLORS === */
+  --collections-primary: var(--color-collections);
+  --collections-secondary: var(--color-green-200);
+  --collections-accent: var(--color-green-100);
+  
+  --cards-primary: var(--color-cards);
+  --cards-secondary: var(--color-orange-200);
+  --cards-accent: var(--color-orange-100);
+  
+  --marketplace-primary: var(--color-marketplace);
+  --marketplace-secondary: var(--color-blue-200);
+  --marketplace-accent: var(--color-blue-100);
+  
+  --currency-primary: var(--color-currency);
+  --currency-secondary: 254 240 138;
+  --currency-accent: 255 251 235;
 
   /* === TYPOGRAPHY SYSTEM === */
-  --font-family-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
 
   --font-size-xs: 0.75rem;    /* 12px */
   --font-size-sm: 0.875rem;   /* 14px */
   --font-size-base: 1rem;     /* 16px */
-  --font-size-lg: 1.125rem;   /* 18px */
-  --font-size-xl: 1.25rem;    /* 20px */
-  --font-size-2xl: 1.5rem;    /* 24px */
-  --font-size-3xl: 1.875rem;  /* 30px */
-  --font-size-4xl: 2.25rem;   /* 36px */
-  --font-size-5xl: 3rem;      /* 48px */
+  --font-size-lg: 1.25rem;    /* 20px */
+  --font-size-xl: 1.5rem;     /* 24px */
+  --font-size-2xl: 2rem;      /* 32px */
+  --font-size-3xl: 2.5rem;    /* 40px */
 
-  --font-weight-normal: 400;
+  --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  --font-weight-extrabold: 800;
 
   --line-height-tight: 1.25;
   --line-height-snug: 1.375;
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.625;
-  --line-height-loose: 2;
+
+  /* === SPACING SYSTEM === */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2rem;      /* 32px */
 
   /* === BORDER RADIUS SYSTEM === */
-  --radius: 0.5rem;
-  --radius-none: 0;
-  --radius-sm: 0.125rem;   /* 2px */
-  --radius-base: 0.25rem;  /* 4px */
-  --radius-md: 0.375rem;   /* 6px */
-  --radius-lg: 0.5rem;     /* 8px */
-  --radius-xl: 0.75rem;    /* 12px */
-  --radius-2xl: 1rem;      /* 16px */
-  --radius-3xl: 1.5rem;    /* 24px */
-  --radius-full: 9999px;
+  --radius-sm: 0.25rem;  /* 4px */
+  --radius-md: 0.5rem;   /* 8px */
+  --radius-lg: 0.75rem;  /* 12px */
+  --radius-pill: 9999px;
 
   /* === SHADOW SYSTEM === */
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-base: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-card: 0px 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-hover: 0px 6px 20px rgba(0, 0, 0, 0.35);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-base: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 
   /* === ANIMATION SYSTEM === */
   --duration-fast: 150ms;
   --duration-normal: 300ms;
   --duration-slow: 500ms;
   --easing-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
-  --easing-ease-in: cubic-bezier(0.42, 0, 1, 1);
-  --easing-ease-out: cubic-bezier(0, 0, 0.58, 1);
-  --easing-ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+}
 
-  /* === Z-INDEX SYSTEM === */
-  --z-dropdown: 1000;
-  --z-sticky: 1020;
-  --z-fixed: 1030;
-  --z-modal-backdrop: 1040;
-  --z-modal: 1050;
-  --z-popover: 1060;
-  --z-tooltip: 1070;
-  --z-toast: 1080;
+/* Light Theme Overrides */
+.light {
+  --background: 245 245 245; /* #F5F5F5 */
+  --background-elevated: 255 255 255;
+  --background-default: 245 245 245;
+  --foreground: 28 28 28;
+  --card: 255 255 255;
+  --card-foreground: 28 28 28;
+  --popover: 255 255 255;
+  --popover-foreground: 28 28 28;
+  --secondary: 245 245 245;
+  --secondary-foreground: 28 28 28;
+  --muted: 245 245 245;
+  --muted-foreground: 115 115 115;
+  --accent: 245 245 245;
+  --accent-foreground: 28 28 28;
+  --border: 229 229 229;
+  --input: 229 229 229;
 }
 
 /* Dark Theme Overrides */
 .dark {
-  /* Dark Theme Color Mappings */
-  --background: var(--color-neutral-950);
-  --foreground: var(--color-neutral-50);
-  --card: var(--color-neutral-900);
-  --card-foreground: var(--color-neutral-50);
-  --popover: var(--color-neutral-900);
-  --popover-foreground: var(--color-neutral-50);
-  --primary: var(--color-primary-400);
-  --primary-foreground: var(--color-neutral-900);
-  --secondary: var(--color-neutral-800);
-  --secondary-foreground: var(--color-neutral-50);
-  --muted: var(--color-neutral-800);
-  --muted-foreground: var(--color-neutral-400);
-  --accent: var(--color-neutral-800);
-  --accent-foreground: var(--color-neutral-50);
-  --border: var(--color-neutral-800);
-  --input: var(--color-neutral-800);
-  --ring: var(--color-primary-400);
+  --background: 18 21 28; /* #12151C - Default background */
+  --background-elevated: 30 30 30; /* #1E1E1E - Elevated cards */
+  --background-default: 18 21 28;
+  --foreground: 255 255 255;
+  --card: 30 30 30;
+  --card-foreground: 255 255 255;
+  --popover: 30 30 30;
+  --popover-foreground: 255 255 255;
+  --secondary: 51 51 51;
+  --secondary-foreground: 255 255 255;
+  --muted: 51 51 51;
+  --muted-foreground: 163 163 163;
+  --accent: 51 51 51;
+  --accent-foreground: 255 255 255;
+  --border: 64 64 64;
+  --input: 64 64 64;
 
-  /* Dark Theme Shadows */
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
-  --shadow-base: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
-  --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
-  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
-  --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.6);
+  /* Enhanced shadows for dark mode */
+  --shadow-card: 0px 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0px 6px 20px rgba(0, 0, 0, 0.5);
 }
