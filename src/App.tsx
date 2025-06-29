@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/hooks/auth/AuthProvider';
+import { FeatureFlagsProvider } from '@/hooks/useFeatureFlags';
 import { ErrorBoundary } from 'react-error-boundary';
 import AppErrorFallback from '@/components/error-boundaries/AppErrorFallback';
 
@@ -47,29 +48,31 @@ function App() {
     <ErrorBoundary FallbackComponent={AppErrorFallback}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <BrowserRouter>
-            <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0F0F0F]">
-              <Suspense fallback={<PageLoader />}>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/cards" element={<Cards />} />
-                  <Route path="/collections" element={<Collections />} />
-                  <Route path="/gallery" element={<Gallery />} />
-                  <Route path="/creator" element={<Creator />} />
-                  <Route path="/marketplace" element={<Marketplace />} />
-                  <Route path="/community" element={<Community />} />
-                  <Route path="/community-enhanced" element={<EnhancedCommunity />} />
-                  <Route path="/trading" element={<Trading />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/support" element={<Support />} />
-                  <Route path="/admin" element={<Admin />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-              <Toaster />
-            </div>
-          </BrowserRouter>
+          <FeatureFlagsProvider>
+            <BrowserRouter>
+              <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0F0F0F]">
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/cards" element={<Cards />} />
+                    <Route path="/collections" element={<Collections />} />
+                    <Route path="/gallery" element={<Gallery />} />
+                    <Route path="/creator" element={<Creator />} />
+                    <Route path="/marketplace" element={<Marketplace />} />
+                    <Route path="/community" element={<Community />} />
+                    <Route path="/community-enhanced" element={<EnhancedCommunity />} />
+                    <Route path="/trading" element={<Trading />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/support" element={<Support />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Suspense>
+                <Toaster />
+              </div>
+            </BrowserRouter>
+          </FeatureFlagsProvider>
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>
