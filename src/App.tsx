@@ -1,65 +1,79 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/hooks/useAuth";
-import { FeatureFlagsProvider } from "@/hooks/useFeatureFlags";
-import Index from "./pages/Index";
-import Auth from "./pages/Auth";
-import Cards from "./pages/Cards";
-import Collections from "./pages/Collections";
-import Gallery from "./pages/Gallery";
-import Creator from "./pages/Creator";
-import Trading from "./pages/Trading";
-import Marketplace from "./pages/Marketplace";
-import Profile from "./pages/Profile";
-import Community from "./pages/Community";
-import Admin from "./pages/Admin";
-import AdminContentGenerator from "./pages/AdminContentGenerator";
-import BetaLaunch from "./pages/BetaLaunch";
-import SecurityDashboard from "./pages/SecurityDashboard";
-import Support from "./pages/Support";
-import Privacy from "./pages/Privacy";
-import MobileCards from "./pages/MobileCards";
-import NotFound from "./pages/NotFound";
+import { Suspense, lazy } from 'react';
+import { Toaster } from '@/components/ui/toaster';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from '@/hooks/auth/AuthProvider';
+import { ErrorBoundary } from 'react-error-boundary';
+import PageErrorBoundary from '@/components/error-boundaries/PageErrorBoundary';
 
-const queryClient = new QueryClient();
+// Lazy loading components
+const Index = lazy(() => import('@/pages/Index'));
+const Auth = lazy(() => import('@/pages/Auth'));
+const Cards = lazy(() => import('@/pages/Cards'));
+const Collections = lazy(() => import('@/pages/Collections'));
+const Gallery = lazy(() => import('@/pages/Gallery'));
+const Creator = lazy(() => import('@/pages/Creator'));
+const Marketplace = lazy(() => import('@/pages/Marketplace'));
+const Community = lazy(() => import('@/pages/Community'));
+const EnhancedCommunity = lazy(() => import('@/pages/EnhancedCommunity'));
+const Trading = lazy(() => import('@/pages/Trading'));
+const Profile = lazy(() => import('@/pages/Profile'));
+const Support = lazy(() => import('@/pages/Support'));
+const Admin = lazy(() => import('@/pages/Admin'));
+const NotFound = lazy(() => import('@/pages/NotFound'));
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <FeatureFlagsProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/cards" element={<Cards />} />
-              <Route path="/collections" element={<Collections />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/creator" element={<Creator />} />
-              <Route path="/trading" element={<Trading />} />
-              <Route path="/marketplace" element={<Marketplace />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/community" element={<Community />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/admin/content-generator" element={<AdminContentGenerator />} />
-              <Route path="/admin/beta-launch" element={<BetaLaunch />} />
-              <Route path="/admin/security" element={<SecurityDashboard />} />
-              <Route path="/support" element={<Support />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/mobile/cards" element={<MobileCards />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </FeatureFlagsProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 1,
+    },
+  },
+});
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0F0F0F] flex items-center justify-center">
+    <div className="text-center space-y-4">
+      <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto"></div>
+      <p className="text-muted-foreground">Loading...</p>
+    </div>
+  </div>
 );
+
+function App() {
+  return (
+    <ErrorBoundary FallbackComponent={PageErrorBoundary}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <BrowserRouter>
+            <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0F0F0F]">
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/cards" element={<Cards />} />
+                  <Route path="/collections" element={<Collections />} />
+                  <Route path="/gallery" element={<Gallery />} />
+                  <Route path="/creator" element={<Creator />} />
+                  <Route path="/marketplace" element={<Marketplace />} />
+                  <Route path="/community" element={<Community />} />
+                  <Route path="/community-enhanced" element={<EnhancedCommunity />} />
+                  <Route path="/trading" element={<Trading />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/support" element={<Support />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+              <Toaster />
+            </div>
+          </BrowserRouter>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
+  );
+}
 
 export default App;
