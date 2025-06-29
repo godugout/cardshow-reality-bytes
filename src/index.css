@@ -3,21 +3,41 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './styles/themes.css';
+@import './styles/modern-dark-theme.css';
 @import './styles/design-system.css';
 
 @layer base {
-  /* Ensure body uses theme background */
+  * {
+    @apply border-border;
+  }
+  
   html, body {
-    background-color: hsl(var(--background));
+    background: linear-gradient(135deg, #0A0A0A 0%, #111111 50%, #0F0F0F 100%);
     color: hsl(var(--foreground));
-    transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  #root {
+    background: transparent;
     min-height: 100vh;
   }
 
-  /* Ensure root element also inherits theme colors */
-  #root {
-    background-color: hsl(var(--background));
-    min-height: 100vh;
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary));
   }
 }
