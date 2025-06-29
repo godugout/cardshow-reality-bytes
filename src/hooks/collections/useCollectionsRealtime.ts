@@ -1,3 +1,9 @@
+
+// TODO: Realtime subscriptions temporarily disabled due to crashes
+// This file contains the realtime subscription logic for collections
+// Will be re-enabled with improved implementation later
+
+/*
 import { useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -90,4 +96,11 @@ export const useCollectionsRealtime = (refetch?: () => void) => {
       }
     };
   }, [refetch, safeRefetch]);
+};
+*/
+
+// Temporary no-op implementation
+export const useCollectionsRealtime = (refetch?: () => void) => {
+  // TODO: Re-implement realtime subscriptions with better error handling
+  console.log('Collections realtime subscriptions temporarily disabled');
 };
