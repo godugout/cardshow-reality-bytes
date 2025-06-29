@@ -1,22 +1,22 @@
 
 /* Cardshow Design System - Main Entry Point */
 
-/* Foundation Layer */
+/* Foundation Layer - Must be first */
 @import './foundation/tokens.css';
 @import './foundation/base.css';
 
-/* Component Layer */
-@import './components/button.css';
-@import './components/card.css';
-
-/* Utility Layer */
-@import './utilities/layout.css';
-@import './utilities/typography.css';
-
-/* Tailwind CSS */
+/* Tailwind CSS - After foundation */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Component Layer - After Tailwind */
+@import './components/button.css';
+@import './components/card.css';
+
+/* Utility Layer - Last */
+@import './utilities/layout.css';
+@import './utilities/typography.css';
 
 /* === COMPONENT INTEGRATION === */
 @layer components {

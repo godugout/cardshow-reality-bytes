@@ -51,7 +51,7 @@ function App() {
           <AuthProvider>
             <FeatureFlagsProvider>
               <BrowserRouter>
-                <div className="min-h-screen bg-gradient-to-br from-background via-background to-card transition-colors duration-300">
+                <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
                   <Suspense fallback={<PageLoader />}>
                     <Routes>
                       <Route path="/" element={<Index />} />

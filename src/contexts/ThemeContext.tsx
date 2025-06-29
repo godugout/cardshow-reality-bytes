@@ -25,19 +25,31 @@ interface ThemeProviderProps {
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
     // Check localStorage first, then system preference
-    const stored = localStorage.getItem('theme') as Theme;
-    if (stored) return stored;
+    const stored = localStorage.getItem('cardshow-theme') as Theme;
+    if (stored && (stored === 'light' || stored === 'dark')) {
+      return stored;
+    }
     
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
   useEffect(() => {
-    // Apply theme to document
-    document.documentElement.classList.remove('light', 'dark');
-    document.documentElement.classList.add(theme);
+    const root = document.documentElement;
+    
+    // Remove both classes first
+    root.classList.remove('light', 'dark');
+    
+    // Add the current theme class
+    root.classList.add(theme);
     
     // Store preference
-    localStorage.setItem('theme', theme);
+    localStorage.setItem('cardshow-theme', theme);
+    
+    // Update meta theme-color for better mobile experience
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', theme === 'dark' ? '#0a0a0a' : '#ffffff');
+    }
   }, [theme]);
 
   const toggleTheme = () => {
