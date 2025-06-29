@@ -33,26 +33,29 @@ const ThemeSelector = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2">
+        <Button variant="ghost" size="sm" className="gap-2 rounded-2xl hover:bg-accent/50">
           <Palette className="w-4 h-4" />
           Theme
         </Button>
       </DropdownMenuTrigger>
       
-      <DropdownMenuContent align="end" className="w-56 bg-card border-border">
+      <DropdownMenuContent 
+        align="end" 
+        className="w-56 bg-card/95 backdrop-blur-xl border border-border rounded-3xl p-3 z-50"
+      >
         <div className="px-3 py-2">
           <p className="text-sm font-medium">Choose Theme</p>
           <p className="text-xs text-muted-foreground">Current: {themes.find(t => t.id === theme)?.name}</p>
         </div>
         
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="bg-border/50" />
         
         <div className="p-2 space-y-1">
           {themes.map((themeOption) => (
             <DropdownMenuItem
               key={themeOption.id}
               onClick={() => handleThemeChange(themeOption.id)}
-              className="flex items-center gap-3 px-3 py-2 cursor-pointer"
+              className="flex items-center gap-3 px-3 py-2 cursor-pointer rounded-2xl hover:bg-accent/50"
             >
               <div 
                 className="w-4 h-4 rounded-full border-2 border-white shadow-sm"
@@ -68,14 +71,14 @@ const ThemeSelector = () => {
           ))}
         </div>
 
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="bg-border/50" />
         
         <div className="p-2">
           <p className="text-xs font-medium px-3 py-1 text-muted-foreground">Appearance</p>
           <div className="grid grid-cols-2 gap-1 mt-1">
             <DropdownMenuItem
               onClick={() => handleModeChange('light')}
-              className="flex items-center gap-2 px-3 py-2 cursor-pointer"
+              className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-2xl hover:bg-accent/50"
             >
               <Sun className="w-4 h-4" />
               <span className="text-sm">Light</span>
@@ -83,7 +86,7 @@ const ThemeSelector = () => {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => handleModeChange('dark')}
-              className="flex items-center gap-2 px-3 py-2 cursor-pointer"
+              className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-2xl hover:bg-accent/50"
             >
               <Moon className="w-4 h-4" />
               <span className="text-sm">Dark</span>

@@ -51,10 +51,11 @@ export const useTheme = (): UseThemeReturn => {
   useEffect(() => {
     const root = document.documentElement;
     
-    // Set data-theme attribute
+    // Set both data-theme and data-mode attributes
     root.setAttribute('data-theme', theme);
+    root.setAttribute('data-mode', mode);
     
-    // Handle dark mode class
+    // Handle dark mode class for compatibility
     if (mode === 'dark') {
       root.classList.add('dark');
     } else {

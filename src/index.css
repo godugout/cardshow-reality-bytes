@@ -3,6 +3,5 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './styles/themes.css';
 @import './styles/design-system.css';
-
-/* Remove all redundant CSS - everything is now in design-system.css */
