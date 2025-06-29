@@ -5,7 +5,6 @@ import { CRDStudio } from '@/components/creator/CRDStudio';
 import CreatorOnboardingFlow from '@/components/creator/onboarding/CreatorOnboardingFlow';
 import { useCreatorOnboarding } from '@/hooks/useCreatorOnboarding';
 import { useSafeAuth } from '@/hooks/auth/useSafeAuth';
-import { useFeatureFlags } from '@/hooks/useFeatureFlags';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -16,27 +15,22 @@ import PageErrorBoundary from '@/components/error-boundaries/PageErrorBoundary';
 const Creator = () => {
   const { user, loading: authLoading, initialized: authInitialized, error: authError } = useSafeAuth();
   const { progress, isLoading: onboardingLoading, error: onboardingError } = useCreatorOnboarding();
-  const { isFeatureEnabled, isLoading: flagsLoading } = useFeatureFlags();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showStudio, setShowStudio] = useState(false);
 
-  // Check if creator onboarding feature is enabled
-  const onboardingEnabled = isFeatureEnabled('creator_onboarding');
-
-  // Show onboarding for new users or those who haven't completed it (only if feature is enabled)
+  // Show onboarding for new users or those who haven't completed it
   useEffect(() => {
     if (authInitialized && 
         user && 
         progress && 
-        onboardingEnabled &&
         typeof progress.isOnboardingComplete === 'boolean' &&
         !progress.isOnboardingComplete && 
         !onboardingLoading && 
         !onboardingError) {
-      console.log('Creator: Showing onboarding for user (feature enabled)');
+      console.log('Creator: Showing onboarding for user');
       setShowOnboarding(true);
     }
-  }, [authInitialized, user, progress, onboardingLoading, onboardingError, onboardingEnabled]);
+  }, [authInitialized, user, progress, onboardingLoading, onboardingError]);
 
   const handleOnboardingComplete = () => {
     console.log('Creator: Onboarding completed');
@@ -59,8 +53,8 @@ const Creator = () => {
     setShowStudio(false);
   };
 
-  // Show loading state while auth, onboarding, or feature flags are loading
-  if (authLoading || !authInitialized || onboardingLoading || flagsLoading) {
+  // Show loading state while auth or onboarding are loading
+  if (authLoading || !authInitialized || onboardingLoading) {
     return (
       <PageErrorBoundary pageName="Creator Loading">
         <div className="min-h-screen bg-background">
@@ -120,8 +114,8 @@ const Creator = () => {
       <div className="min-h-screen bg-background">
         <Header />
         
-        {/* Onboarding Flow - Only show if feature is enabled */}
-        {showOnboarding && progress && onboardingEnabled && (
+        {/* Onboarding Flow */}
+        {showOnboarding && progress && (
           <PageErrorBoundary pageName="Creator Onboarding">
             <CreatorOnboardingFlow 
               onClose={handleOnboardingClose}
@@ -190,21 +184,16 @@ const Creator = () => {
                     <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
                       <Sparkles className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="font-bold text-lg mb-2">
-                      {onboardingEnabled ? 'Quick Tutorial' : 'Getting Started'}
-                    </h3>
+                    <h3 className="font-bold text-lg mb-2">Quick Tutorial</h3>
                     <p className="text-sm text-muted-foreground mb-4">
-                      {onboardingEnabled 
-                        ? 'Learn the basics or refresh your skills'
-                        : 'Jump right into creating your first card'
-                      }
+                      Learn the basics or refresh your skills
                     </p>
                     <Button 
                       variant="outline" 
                       className="w-full"
-                      onClick={onboardingEnabled ? () => setShowOnboarding(true) : enterStudio}
+                      onClick={() => setShowOnboarding(true)}
                     >
-                      {onboardingEnabled ? 'Start Tutorial' : 'Get Started'}
+                      Start Tutorial
                     </Button>
                   </CardContent>
                 </Card>
@@ -242,18 +231,6 @@ const Creator = () => {
                   </CardContent>
                 </Card>
               </PageErrorBoundary>
-            )}
-
-            {/* Feature Flag Debug Info - Only in development */}
-            {process.env.NODE_ENV === 'development' && (
-              <Card className="bg-yellow-900/20 border-yellow-600">
-                <CardContent className="p-4">
-                  <h4 className="text-yellow-400 font-medium mb-2">Developer Info</h4>
-                  <p className="text-xs text-yellow-300">
-                    Creator Onboarding Feature: {onboardingEnabled ? 'Enabled' : 'Disabled'}
-                  </p>
-                </CardContent>
-              </Card>
             )}
           </Suspense>
         </div>
