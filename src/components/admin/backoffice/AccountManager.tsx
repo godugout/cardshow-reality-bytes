@@ -1,40 +1,11 @@
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-import { 
-  Users, 
-  Search, 
-  Filter,
-  Mail,
-  Shield,
-  Ban,
-  Crown,
-  Calendar,
-  DollarSign
-} from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-
-interface UserAccount {
-  id: string;
-  username: string;
-  email: string;
-  full_name: string;
-  avatar_url: string;
-  subscription_tier: string;
-  experience_points: number;
-  level: number;
-  total_followers: number;
-  total_following: number;
-  created_at: string;
-  last_active: string;
-  is_verified: boolean;
-  is_suspended: boolean;
-}
+import { UserAccount } from './account/types';
+import AccountFilters from './account/AccountFilters';
+import UserCard from './account/UserCard';
+import AccountEmptyState from './account/AccountEmptyState';
 
 const AccountManager = () => {
   const [users, setUsers] = useState<UserAccount[]>([]);
@@ -43,9 +14,6 @@ const AccountManager = () => {
   const [tierFilter, setTierFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const { toast } = useToast();
-
-  const subscriptionTiers = ['all', 'free', 'collector', 'creator_pro', 'enterprise'];
-  const statusOptions = ['all', 'active', 'suspended', 'verified'];
 
   useEffect(() => {
     fetchUsers();
@@ -60,7 +28,26 @@ const AccountManager = () => {
         .limit(100);
 
       if (error) throw error;
-      setUsers(data || []);
+      
+      // Transform the data to match our UserAccount interface
+      const transformedUsers: UserAccount[] = (data || []).map(user => ({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        full_name: user.full_name,
+        avatar_url: user.avatar_url,
+        subscription_tier: user.subscription_tier,
+        experience_points: user.experience_points,
+        level: user.level,
+        total_followers: user.total_followers,
+        total_following: user.total_following,
+        created_at: user.created_at,
+        last_active: user.last_active || user.created_at, // fallback to created_at
+        is_verified: user.is_verified,
+        is_suspended: user.is_suspended || false, // fallback to false
+      }));
+      
+      setUsers(transformedUsers);
     } catch (error) {
       console.error('Error fetching users:', error);
       toast({
@@ -169,27 +156,19 @@ const AccountManager = () => {
     return matchesSearch && matchesTier && matchesStatus;
   });
 
-  const getTierColor = (tier: string) => {
-    const colors = {
-      free: 'bg-gray-600',
-      collector: 'bg-blue-600',
-      creator_pro: 'bg-purple-600',
-      enterprise: 'bg-yellow-600'
-    };
-    return colors[tier as keyof typeof colors] || 'bg-gray-600';
-  };
-
   if (loading) {
     return (
-      <Card className="bg-gray-900 border-gray-700">
-        <CardContent className="p-6">
-          <div className="animate-pulse space-y-4">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="h-20 bg-gray-800 rounded"></div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold text-white">Account Management</h2>
+          <p className="text-gray-400">Manage user accounts, subscriptions, and permissions</p>
+        </div>
+        <div className="animate-pulse space-y-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-20 bg-gray-800 rounded"></div>
+          ))}
+        </div>
+      </div>
     );
   }
 
@@ -200,166 +179,34 @@ const AccountManager = () => {
         <p className="text-gray-400">Manage user accounts, subscriptions, and permissions</p>
       </div>
 
-      {/* Filters */}
-      <Card className="bg-gray-900 border-gray-700">
-        <CardContent className="p-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-              <Input
-                placeholder="Search users..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-gray-800 border-gray-600 text-white"
-              />
-            </div>
-            <div>
-              <select
-                value={tierFilter}
-                onChange={(e) => setTierFilter(e.target.value)}
-                className="w-full p-2 bg-gray-800 border border-gray-600 rounded text-white"
-              >
-                {subscriptionTiers.map(tier => (
-                  <option key={tier} value={tier}>
-                    {tier === 'all' ? 'All Tiers' : tier.replace('_', ' ').toUpperCase()}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full p-2 bg-gray-800 border border-gray-600 rounded text-white"
-              >
-                {statusOptions.map(status => (
-                  <option key={status} value={status}>
-                    {status === 'all' ? 'All Status' : status.charAt(0).toUpperCase() + status.slice(1)}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="text-right">
-              <Badge variant="outline" className="text-white">
-                {filteredUsers.length} users
-              </Badge>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <AccountFilters
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        tierFilter={tierFilter}
+        setTierFilter={setTierFilter}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
+        filteredCount={filteredUsers.length}
+      />
 
-      {/* User List */}
       <div className="space-y-4">
         {filteredUsers.map((user) => (
-          <Card key={user.id} className="bg-gray-900 border-gray-700">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center">
-                    {user.avatar_url ? (
-                      <img 
-                        src={user.avatar_url} 
-                        alt={user.username}
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    ) : (
-                      <Users className="w-6 h-6 text-gray-400" />
-                    )}
-                  </div>
-                  
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-white font-semibold">{user.username}</h3>
-                      {user.is_verified && (
-                        <Badge className="bg-blue-600 text-white">
-                          <Shield className="w-3 h-3 mr-1" />
-                          Verified
-                        </Badge>
-                      )}
-                      {user.is_suspended && (
-                        <Badge variant="destructive">
-                          <Ban className="w-3 h-3 mr-1" />
-                          Suspended
-                        </Badge>
-                      )}
-                    </div>
-                    <div className="text-sm text-gray-400 space-y-1">
-                      <div className="flex items-center gap-4">
-                        <span className="flex items-center gap-1">
-                          <Mail className="w-3 h-3" />
-                          {user.email}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          Joined {new Date(user.created_at).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <span>Level {user.level} ({user.experience_points} XP)</span>
-                        <span>{user.total_followers} followers</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <Badge className={`${getTierColor(user.subscription_tier)} text-white mb-2`}>
-                      <Crown className="w-3 h-3 mr-1" />
-                      {user.subscription_tier.replace('_', ' ').toUpperCase()}
-                    </Badge>
-                    <div className="space-y-2">
-                      <select
-                        value={user.subscription_tier}
-                        onChange={(e) => updateSubscriptionTier(user.id, e.target.value)}
-                        className="text-xs p-1 bg-gray-800 border border-gray-600 rounded text-white"
-                      >
-                        <option value="free">Free</option>
-                        <option value="collector">Collector</option>
-                        <option value="creator_pro">Creator Pro</option>
-                        <option value="enterprise">Enterprise</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-gray-400">Verified</span>
-                      <Switch
-                        checked={user.is_verified}
-                        onCheckedChange={(checked) => toggleVerification(user.id, checked)}
-                        size="sm"
-                      />
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-gray-400">Suspended</span>
-                      <Switch
-                        checked={user.is_suspended}
-                        onCheckedChange={(checked) => toggleUserStatus(user.id, checked)}
-                        size="sm"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <UserCard
+            key={user.id}
+            user={user}
+            onToggleStatus={toggleUserStatus}
+            onToggleVerification={toggleVerification}
+            onUpdateSubscriptionTier={updateSubscriptionTier}
+          />
         ))}
       </div>
 
       {filteredUsers.length === 0 && (
-        <Card className="bg-gray-900 border-gray-700">
-          <CardContent className="p-12 text-center">
-            <Users className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-white mb-2">No Users Found</h3>
-            <p className="text-gray-400">
-              {searchTerm || tierFilter !== 'all' || statusFilter !== 'all'
-                ? 'No users match your search criteria'
-                : 'No users in the system'
-              }
-            </p>
-          </CardContent>
-        </Card>
+        <AccountEmptyState
+          searchTerm={searchTerm}
+          tierFilter={tierFilter}
+          statusFilter={statusFilter}
+        />
       )}
     </div>
   );
