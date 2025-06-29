@@ -12,7 +12,7 @@ import {
   Filter,
   Trash2,
   Download,
-  Optimize
+  Settings
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -257,7 +257,7 @@ const ImageAssetManager = () => {
                       onClick={() => optimizeAsset(asset.id)}
                       className="flex-1"
                     >
-                      <Optimize className="w-3 h-3" />
+                      <Settings className="w-3 h-3" />
                     </Button>
                   )}
                   <Button size="sm" variant="outline" className="flex-1">

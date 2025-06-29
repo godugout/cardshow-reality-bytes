@@ -37,8 +37,10 @@ const FeatureFlagManager = () => {
         category: flag.category,
         is_enabled: flag.is_enabled,
         rollout_percentage: flag.rollout_percentage,
-        target_users: Array.isArray(flag.target_users) ? flag.target_users : [],
-        metadata: typeof flag.metadata === 'object' ? flag.metadata : {},
+        target_users: Array.isArray(flag.target_users) 
+          ? (flag.target_users as any[]).map(user => String(user)).filter(user => typeof user === 'string')
+          : [],
+        metadata: typeof flag.metadata === 'object' && flag.metadata !== null ? flag.metadata : {},
         created_at: flag.created_at
       }));
       

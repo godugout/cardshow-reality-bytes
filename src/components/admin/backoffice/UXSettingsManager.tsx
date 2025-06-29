@@ -258,7 +258,6 @@ const UXSettingsManager = () => {
                         <Switch
                           checked={setting.is_active}
                           onCheckedChange={(checked) => toggleSetting(setting.id, checked)}
-                          size="sm"
                         />
                       </div>
                       <p className="text-gray-400 text-sm">{setting.description}</p>
