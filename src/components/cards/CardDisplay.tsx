@@ -105,7 +105,7 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
             </div>
           )}
           
-          {/* Rarity Badge */}
+          {/* Rarity Badge with Brighter Colors */}
           {card.rarity && (
             <div className="absolute top-2 right-2">
               <RarityBadge rarity={card.rarity} size="sm" animated />
@@ -169,11 +169,11 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
               />
             )}
 
-            {/* Price and Stats */}
-            <div className="flex items-center gap-2 text-xs text-gray-400">
+            {/* Price and Stats with Brighter Colors */}
+            <div className="flex items-center gap-2 text-xs">
               {card.current_market_value && (
                 <div className="flex items-center gap-1">
-                  <DollarSign className="w-3 h-3" />
+                  <DollarSign className="w-3 h-3 text-[#00C851]" />
                   <span className="font-semibold text-[#00C851]">
                     {formatPrice(card.current_market_value)}
                   </span>
@@ -182,15 +182,15 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
               
               {card.view_count !== undefined && (
                 <div className="flex items-center gap-1">
-                  <Eye className="w-3 h-3" />
-                  <span>{card.view_count}</span>
+                  <Eye className="w-3 h-3 text-blue-400" />
+                  <span className="text-blue-400 font-medium">{card.view_count}</span>
                 </div>
               )}
               
               {card.favorite_count !== undefined && card.favorite_count > 0 && (
                 <div className="flex items-center gap-1">
-                  <Heart className="w-3 h-3" />
-                  <span>{card.favorite_count}</span>
+                  <Heart className="w-3 h-3 text-red-400" />
+                  <span className="text-red-400 font-medium">{card.favorite_count}</span>
                 </div>
               )}
             </div>
@@ -198,7 +198,7 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
 
           {/* Creator Info */}
           {card.creator && (
-            <div className="flex items-center gap-1 mt-1 text-xs text-gray-500">
+            <div className="flex items-center gap-1 mt-1 text-xs text-gray-400">
               <User className="w-3 h-3" />
               <span>by {card.creator.username}</span>
             </div>
