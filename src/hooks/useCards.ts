@@ -61,7 +61,7 @@ export const useCards = (filters: CardFilters = {}) => {
   }, [originalRefetch]);
 
   // Call the realtime hook with proper props object
-  const shouldUseRealtime = !isLoading && !error && originalRefetch;
+  const shouldUseRealtime = !isLoading && !error && !!originalRefetch;
   useCardsRealtime({ 
     refetch: shouldUseRealtime ? refetch : undefined,
     enabled: shouldUseRealtime 
