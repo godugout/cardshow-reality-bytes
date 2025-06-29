@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye } from 'lucide-react';
 import { CardPreview } from '../CardPreview';
@@ -19,7 +20,8 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     selectedTheme: canvasState.selectedTheme,
     currentTheme: currentTheme?.name,
     canvasStyles,
-    gridStyles
+    gridStyles,
+    hasCardImage: !!cardData.imageUrl
   });
 
   // Create a comprehensive themed workspace style
@@ -141,9 +143,16 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           )}
         </div>
         
-        {/* Card Preview - Positioned above the themed workspace */}
-        <div className="relative z-20 p-8 flex items-start justify-center w-full h-full">
-          <div className="transform scale-110 mt-8 transition-transform duration-300 hover:scale-115">
+        {/* Card Preview Container - 2.5 x 3.5 aspect ratio */}
+        <div className="relative z-20 p-8 flex items-center justify-center w-full h-full">
+          <div 
+            className="relative transition-transform duration-300 hover:scale-105"
+            style={{
+              width: '250px',  // 2.5 inches at 100dpi
+              height: '350px', // 3.5 inches at 100dpi
+              aspectRatio: '2.5 / 3.5'
+            }}
+          >
             <CardPreview cardData={cardData} />
           </div>
         </div>
