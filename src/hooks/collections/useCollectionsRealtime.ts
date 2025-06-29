@@ -34,7 +34,7 @@ export const useCollectionsRealtime = ({
     const setupSubscription = async () => {
       try {
         const channelName = `collections-changes-${userId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        console.log('useCollectionsRealtime: Creating channel:', channelName);
+        console.log(`useCollectionsRealtime: Creating channel: ${channelName}`);
         
         const channel = supabase.channel(channelName);
         
@@ -52,7 +52,7 @@ export const useCollectionsRealtime = ({
             }
           )
           .on('subscribe', (status) => {
-            console.log('useCollectionsRealtime: Subscription status:', status);
+            console.log(`useCollectionsRealtime: Subscription status: ${status}`);
             if (status === 'SUBSCRIBED') {
               isSubscribedRef.current = true;
             }

@@ -30,7 +30,7 @@ export const useCardsRealtime = ({ refetch, enabled = true }: UseCardsRealtimePr
       try {
         // Create a unique channel name with timestamp to avoid conflicts
         const channelName = `cards-changes-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        console.log('useCardsRealtime: Creating channel:', channelName);
+        console.log(`useCardsRealtime: Creating channel: ${channelName}`);
         
         const channel = supabase.channel(channelName);
         
@@ -48,7 +48,7 @@ export const useCardsRealtime = ({ refetch, enabled = true }: UseCardsRealtimePr
             }
           )
           .on('subscribe', (status) => {
-            console.log('useCardsRealtime: Subscription status:', status);
+            console.log(`useCardsRealtime: Subscription status: ${status}`);
             if (status === 'SUBSCRIBED') {
               isSubscribedRef.current = true;
             }
