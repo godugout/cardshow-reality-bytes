@@ -1,0 +1,26 @@
+
+/* Glass Panel Component - High Contrast Version */
+
+@layer components {
+  .glass-panel {
+    background: rgba(17, 17, 17, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  
+  .glass-panel-light {
+    background: rgba(17, 17, 17, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  .glass-morphism-high-contrast {
+    background: rgba(30, 30, 33, 0.9);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+}

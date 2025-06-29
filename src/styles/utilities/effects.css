@@ -7,6 +7,8 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    /* Fallback for accessibility */
+    color: var(--text-primary);
   }
   
   .gradient-text-secondary {
@@ -14,10 +16,12 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    /* Fallback for accessibility */
+    color: var(--text-secondary);
   }
   
   .glass-morphism {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(30, 30, 33, 0.8);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
@@ -34,7 +38,7 @@
   }
   
   .skeleton {
-    background: linear-gradient(90deg, var(--bg-tertiary) 25%, rgba(255,255,255,0.1) 50%, var(--bg-tertiary) 75%);
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
     background-size: 200% 100%;
     animation: loading 1.5s infinite;
     border-radius: var(--radius-md);
@@ -57,7 +61,7 @@
   .empty-state {
     text-align: center;
     padding: var(--space-20);
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
   
   @media (min-width: 1024px) {

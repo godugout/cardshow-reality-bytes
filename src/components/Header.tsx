@@ -34,8 +34,8 @@ const Header = () => {
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold gradient-text">Cardshow</span>
-                <span className="text-xs text-muted-foreground">Digital Collectibles</span>
+                <span className="text-xl font-bold text-white">Cardshow</span>
+                <span className="text-xs text-slate-300">Digital Collectibles</span>
               </div>
             </Link>
 
@@ -46,10 +46,10 @@ const Header = () => {
                   key={item.name}
                   to={item.href}
                   className={cn(
-                    'px-4 py-2 rounded-xl font-medium transition-all duration-300',
+                    'px-4 py-2 rounded-xl font-medium transition-all duration-300 text-white',
                     isActive(item.href)
                       ? 'bg-[#00C851] text-white shadow-lg shadow-[#00C851]/30'
-                      : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                      : 'text-slate-200 hover:text-white hover:bg-white/15'
                   )}
                 >
                   {item.name}
@@ -61,25 +61,25 @@ const Header = () => {
             <div className="flex items-center gap-4">
               {user ? (
                 <div className="flex items-center gap-3">
-                  <Button variant="ghost" size="sm" className="rounded-xl">
+                  <Button variant="ghost" size="sm" className="rounded-xl text-white hover:bg-white/15">
                     <ShoppingBag className="w-4 h-4" />
                   </Button>
-                  <Button variant="ghost" size="sm" className="rounded-xl">
+                  <Button variant="ghost" size="sm" className="rounded-xl text-white hover:bg-white/15">
                     <User className="w-4 h-4" />
                   </Button>
-                  <Badge variant="secondary" className="bg-[#00C851]/20 text-[#00C851] border-0">
+                  <Badge className="bg-[#00C851]/30 text-[#00C851] border border-[#00C851]/40 backdrop-blur-sm">
                     {user.email}
                   </Badge>
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
                   <Link to="/auth">
-                    <Button variant="ghost" className="rounded-xl">
+                    <Button variant="ghost" className="rounded-xl text-white hover:bg-white/15">
                       Sign In
                     </Button>
                   </Link>
                   <Link to="/auth">
-                    <Button className="modern-button">
+                    <Button className="bg-[#00C851] hover:bg-[#00C851]/90 text-white rounded-xl">
                       Get Started
                     </Button>
                   </Link>
@@ -90,7 +90,7 @@ const Header = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="lg:hidden rounded-xl"
+                className="lg:hidden rounded-xl text-white hover:bg-white/15"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
                 {isMobileMenuOpen ? (
@@ -118,7 +118,7 @@ const Header = () => {
                       'px-4 py-3 rounded-xl font-medium transition-all duration-300',
                       isActive(item.href)
                         ? 'bg-[#00C851] text-white'
-                        : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                        : 'text-slate-200 hover:text-white hover:bg-white/15'
                     )}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >

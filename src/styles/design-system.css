@@ -9,6 +9,7 @@
 @layer components {
   @import './components/buttons.css';
   @import './components/cards.css';
+  @import './components/glass-panel.css';
 }
 
 @layer utilities {
