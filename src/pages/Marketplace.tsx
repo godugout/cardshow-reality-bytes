@@ -9,16 +9,14 @@ import { TrendingUp } from 'lucide-react';
 const Marketplace = () => {
   return (
     <div className="min-h-screen bg-background font-primary">
-      {/* Modern gradient background with marketplace blue theme */}
-      <div className="absolute inset-0 bg-gradient-to-br from-marketplace/5 via-transparent to-marketplace/3" />
-      
-      {/* Subtle dot pattern */}
-      <div className="absolute inset-0 opacity-30" style={{
-        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.05) 1px, transparent 0)`,
-        backgroundSize: '32px 32px'
-      }} />
+      {/* Marketplace-themed background effects */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-marketplace/5 rounded-full blur-3xl" />
+        <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-marketplace/3 rounded-full blur-3xl" />
+      </div>
 
       <Header />
+      
       <div className="relative">
         <div className="max-w-7xl mx-auto p-8">
           <div className="text-center max-w-4xl mx-auto mb-16">
@@ -58,20 +56,20 @@ const MarketplaceSkeleton = () => (
   <div className="max-w-7xl mx-auto p-8">
     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="bg-card rounded-lg p-8 animate-pulse shadow-card">
-          <Skeleton className="h-16 w-full rounded-md bg-muted" />
+        <div key={i} className="bg-card rounded-3xl p-8 animate-pulse shadow-card">
+          <Skeleton className="h-16 w-full rounded-2xl bg-muted" />
         </div>
       ))}
     </div>
     
     <div className="space-y-8">
-      <div className="bg-card rounded-lg p-6 animate-pulse shadow-card">
-        <Skeleton className="h-12 w-full rounded-md bg-muted" />
+      <div className="bg-card rounded-3xl p-6 animate-pulse shadow-card">
+        <Skeleton className="h-12 w-full rounded-2xl bg-muted" />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="bg-card rounded-lg p-8 animate-pulse shadow-card">
-            <Skeleton className="h-64 w-full mb-6 rounded-md bg-muted" />
+          <div key={i} className="bg-card rounded-3xl p-8 animate-pulse shadow-card">
+            <Skeleton className="h-64 w-full mb-6 rounded-2xl bg-muted" />
             <Skeleton className="h-6 w-3/4 mb-3 rounded-md bg-muted" />
             <Skeleton className="h-8 w-1/2 rounded-md bg-muted" />
           </div>
