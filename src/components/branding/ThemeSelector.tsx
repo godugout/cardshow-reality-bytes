@@ -70,10 +70,14 @@ const ThemeSelector = () => {
             >
               <div className="flex items-center gap-3 flex-1">
                 <div 
-                  className="w-6 h-6 rounded-full border-2 border-white/30 shadow-sm flex-shrink-0 ring-2 ring-offset-2 ring-offset-card"
+                  className={`w-6 h-6 rounded-full border-2 border-white/30 shadow-sm flex-shrink-0 ${
+                    theme === themeOption.id ? 'ring-2 ring-offset-2 ring-offset-card' : ''
+                  }`}
                   style={{ 
                     backgroundColor: themeOption.color,
-                    ringColor: theme === themeOption.id ? themeOption.color : 'transparent'
+                    ...(theme === themeOption.id && { 
+                      boxShadow: `0 0 0 2px hsl(var(--card)), 0 0 0 4px ${themeOption.color}` 
+                    })
                   }}
                 />
                 <div>
