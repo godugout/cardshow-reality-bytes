@@ -1,0 +1,45 @@
+
+import { Button } from '@/components/ui/button';
+import { Heart } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
+import { useCardFavorites } from '@/hooks/useCards';
+import type { Card as CardType } from '@/types/card';
+
+interface CardActionsProps {
+  card: CardType;
+}
+
+const CardActions = ({ card }: CardActionsProps) => {
+  const { user } = useAuth();
+  const { toggleFavorite } = useCardFavorites();
+
+  const handleFavoriteToggle = () => {
+    if (!user) return;
+    toggleFavorite.mutate({
+      cardId: card.id,
+      isFavorited: card.is_favorited || false
+    });
+  };
+
+  if (!user) return null;
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      className="absolute bottom-2 right-2 bg-black/50 hover:bg-black/70 text-white"
+      onClick={handleFavoriteToggle}
+      disabled={toggleFavorite.isPending}
+    >
+      <Heart 
+        className={cn(
+          'w-4 h-4',
+          card.is_favorited ? 'fill-red-500 text-red-500' : 'text-white'
+        )}
+      />
+    </Button>
+  );
+};
+
+export default CardActions;
