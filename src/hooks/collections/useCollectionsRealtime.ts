@@ -3,24 +3,29 @@ import { useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 
-interface UseCardsRealtimeProps {
+interface UseCollectionsRealtimeProps {
   refetch?: () => void;
   enabled?: boolean;
+  userId?: string;
 }
 
-export const useCardsRealtime = ({ refetch, enabled = true }: UseCardsRealtimeProps = {}) => {
+export const useCollectionsRealtime = ({ 
+  refetch, 
+  enabled = true, 
+  userId 
+}: UseCollectionsRealtimeProps = {}) => {
   const channelRef = useRef<RealtimeChannel | null>(null);
   const isSubscribedRef = useRef(false);
 
   useEffect(() => {
-    if (!enabled || !refetch) {
-      console.log('useCardsRealtime: Subscription disabled or no refetch function provided');
+    if (!enabled || !refetch || !userId) {
+      console.log('useCollectionsRealtime: Subscription disabled, no refetch function, or no user');
       return;
     }
 
     // Clean up existing subscription first
     if (channelRef.current) {
-      console.log('useCardsRealtime: Cleaning up existing subscription');
+      console.log('useCollectionsRealtime: Cleaning up existing subscription');
       supabase.removeChannel(channelRef.current);
       channelRef.current = null;
       isSubscribedRef.current = false;
@@ -28,9 +33,8 @@ export const useCardsRealtime = ({ refetch, enabled = true }: UseCardsRealtimePr
 
     const setupSubscription = async () => {
       try {
-        // Create a unique channel name with timestamp to avoid conflicts
-        const channelName = `cards-changes-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        console.log('useCardsRealtime: Creating channel:', channelName);
+        const channelName = `collections-changes-${userId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        console.log('useCollectionsRealtime: Creating channel:', channelName);
         
         const channel = supabase.channel(channelName);
         
@@ -40,49 +44,46 @@ export const useCardsRealtime = ({ refetch, enabled = true }: UseCardsRealtimePr
             {
               event: '*',
               schema: 'public',
-              table: 'cards'
+              table: 'collections'
             },
             (payload) => {
-              console.log('useCardsRealtime: Received change:', payload);
+              console.log('useCollectionsRealtime: Received change:', payload);
               refetch();
             }
           )
           .on('subscribe', (status) => {
-            console.log('useCardsRealtime: Subscription status:', status);
+            console.log('useCollectionsRealtime: Subscription status:', status);
             if (status === 'SUBSCRIBED') {
               isSubscribedRef.current = true;
             }
           })
           .on('error', (error) => {
-            console.error('useCardsRealtime: Subscription error:', error);
+            console.error('useCollectionsRealtime: Subscription error:', error);
           });
 
         channelRef.current = channel;
         
-        // Subscribe only once
         if (!isSubscribedRef.current) {
-          console.log('useCardsRealtime: Subscribing to channel');
+          console.log('useCollectionsRealtime: Subscribing to channel');
           channel.subscribe();
         }
       } catch (error) {
-        console.error('useCardsRealtime: Error setting up subscription:', error);
+        console.error('useCollectionsRealtime: Error setting up subscription:', error);
       }
     };
 
     setupSubscription();
 
-    // Cleanup function
     return () => {
       if (channelRef.current) {
-        console.log('useCardsRealtime: Cleaning up subscription on unmount');
+        console.log('useCollectionsRealtime: Cleaning up subscription on unmount');
         supabase.removeChannel(channelRef.current);
         channelRef.current = null;
         isSubscribedRef.current = false;
       }
     };
-  }, [refetch, enabled]);
+  }, [refetch, enabled, userId]);
 
-  // Return cleanup function for manual cleanup if needed
   return {
     cleanup: () => {
       if (channelRef.current) {

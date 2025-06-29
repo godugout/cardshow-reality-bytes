@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useSupabaseErrorHandler } from '@/hooks/useSupabaseErrorHandler';
+import { useCollectionsRealtime } from './useCollectionsRealtime';
 import type { Collection, CollectionFilters } from '@/types/collection';
 
 export const useCollectionsList = (filters: CollectionFilters = {}) => {
@@ -17,7 +18,7 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
     error,
     refetch
   } = useQuery({
-    queryKey: ['collections', filters, searchTerm],
+    queryKey: ['collections', filters, searchTerm, user?.id],
     queryFn: async () => {
       try {
         console.log('Fetching collections with user:', user?.id);
@@ -76,38 +77,54 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
           return [];
         }
 
-        // Enhance collections with stats using the new helper functions
+        // Enhance collections with stats using safe helper functions
         const enhancedCollections = await Promise.all(
           data.map(async (collection) => {
             try {
-              // Get card count using the safe helper function
-              const { data: cardCountData } = await supabase
-                .rpc('get_collection_card_count', { collection_uuid: collection.id });
+              // Get card count safely
+              let cardCount = 0;
+              try {
+                const { data: cardCountData } = await supabase
+                  .rpc('get_collection_card_count', { collection_uuid: collection.id });
+                cardCount = cardCountData || 0;
+              } catch (error) {
+                console.warn('Error fetching card count for collection:', collection.id, error);
+              }
               
-              // Get follower count using the safe helper function
-              const { data: followerCountData } = await supabase
-                .rpc('get_collection_follower_count', { collection_uuid: collection.id });
+              // Get follower count safely
+              let followerCount = 0;
+              try {
+                const { data: followerCountData } = await supabase
+                  .rpc('get_collection_follower_count', { collection_uuid: collection.id });
+                followerCount = followerCountData || 0;
+              } catch (error) {
+                console.warn('Error fetching follower count for collection:', collection.id, error);
+              }
 
-              // Get owner profile separately to avoid joins
+              // Get owner profile safely
               let owner = null;
               if (collection.user_id) {
-                const { data: profileData } = await supabase
-                  .from('profiles')
-                  .select('id, username, avatar_url')
-                  .eq('id', collection.user_id)
-                  .single();
-                
-                if (profileData) {
-                  owner = profileData;
+                try {
+                  const { data: profileData } = await supabase
+                    .from('profiles')
+                    .select('id, username, avatar_url')
+                    .eq('id', collection.user_id)
+                    .maybeSingle();
+                  
+                  if (profileData) {
+                    owner = profileData;
+                  }
+                } catch (error) {
+                  console.warn('Error fetching owner profile for collection:', collection.id, error);
                 }
               }
 
               return {
                 ...collection,
                 owner,
-                card_count: cardCountData || 0,
-                follower_count: followerCountData || 0,
-                is_following: false // This would need a separate query if needed
+                card_count: cardCount,
+                follower_count: followerCount,
+                is_following: false
               };
             } catch (error) {
               console.warn('Error enhancing collection:', collection.id, error);
@@ -142,32 +159,12 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
     }
   });
 
-  // Real-time subscription
-  useEffect(() => {
-    if (!user) return;
-
-    console.log('Setting up realtime subscription for collections');
-    const channel = supabase
-      .channel('collections-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'collections'
-        },
-        (payload) => {
-          console.log('Realtime collections change:', payload);
-          refetch();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      console.log('Cleaning up realtime subscription');
-      supabase.removeChannel(channel);
-    };
-  }, [user, refetch]);
+  // Use the new realtime hook
+  useCollectionsRealtime({
+    refetch,
+    enabled: !!user,
+    userId: user?.id
+  });
 
   return {
     collections,
