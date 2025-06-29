@@ -24,30 +24,30 @@ export default {
 				'sans': ['Inter', 'sans-serif'],
 			},
 			colors: {
-				// Brand contextual colors
+				// Brand contextual colors - Fixed RGB values
 				collections: {
-					DEFAULT: 'rgb(var(--color-collections))',
-					primary: 'rgb(var(--collections-primary))',
-					secondary: 'rgb(var(--collections-secondary))',
-					accent: 'rgb(var(--collections-accent))',
+					DEFAULT: 'rgb(22 197 94)', /* #16C55E */
+					primary: 'rgb(22 197 94)',
+					secondary: 'rgb(187 247 208)', /* Green 200 */
+					accent: 'rgb(220 252 231)', /* Green 100 */
 				},
 				cards: {
-					DEFAULT: 'rgb(var(--color-cards))',
-					primary: 'rgb(var(--cards-primary))',
-					secondary: 'rgb(var(--cards-secondary))',
-					accent: 'rgb(var(--cards-accent))',
+					DEFAULT: 'rgb(249 115 22)', /* #F97316 */
+					primary: 'rgb(249 115 22)',
+					secondary: 'rgb(254 215 170)', /* Orange 200 */
+					accent: 'rgb(255 237 213)', /* Orange 100 */
 				},
 				marketplace: {
-					DEFAULT: 'rgb(var(--color-marketplace))',
-					primary: 'rgb(var(--marketplace-primary))',
-					secondary: 'rgb(var(--marketplace-secondary))',
-					accent: 'rgb(var(--marketplace-accent))',
+					DEFAULT: 'rgb(59 130 246)', /* #3B82F6 */
+					primary: 'rgb(59 130 246)',
+					secondary: 'rgb(191 219 254)', /* Blue 200 */
+					accent: 'rgb(219 234 254)', /* Blue 100 */
 				},
 				currency: {
-					DEFAULT: 'rgb(var(--color-currency))',
-					primary: 'rgb(var(--currency-primary))',
-					secondary: 'rgb(var(--currency-secondary))',
-					accent: 'rgb(var(--currency-accent))',
+					DEFAULT: 'rgb(250 204 21)', /* #FACC15 */
+					primary: 'rgb(250 204 21)',
+					secondary: 'rgb(254 240 138)', /* Yellow 200 */
+					accent: 'rgb(255 251 235)', /* Yellow 100 */
 				},
 				// Core design system colors
 				border: 'hsl(var(--border))',
