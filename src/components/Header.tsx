@@ -1,9 +1,8 @@
-
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
-import { CardshowLogo } from '@/components/branding/CardshowLogo';
+import CardshowLogo from '@/components/branding/CardshowLogo';
 import { UserMenu } from '@/components/UserMenu';
 import { useAuth } from '@/hooks/useAuth';
 import { Menu, X } from 'lucide-react';
@@ -56,7 +55,7 @@ const Header = () => {
             <ThemeToggle />
             
             {user ? (
-              <UserMenu user={user} />
+              <UserMenu />
             ) : (
               <div className="hidden sm:flex items-center space-x-2">
                 <Link to="/auth">
