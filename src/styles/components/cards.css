@@ -1,0 +1,63 @@
+
+/* Cardshow Design System - Card Components */
+
+@layer components {
+  .card {
+    background: var(--gradient-surface);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-secondary);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-glass);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+  }
+  
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--border-accent);
+  }
+  
+  .card:hover::before {
+    opacity: 1;
+  }
+  
+  .card-glass {
+    background: rgba(30, 30, 33, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-primary);
+  }
+  
+  .card-elevated {
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .card-trading {
+    aspect-ratio: 5/7;
+    position: relative;
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+    transition: all var(--transition-slow);
+  }
+  
+  .card-trading:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-2xl);
+  }
+  
+  .card-premium {
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-surface) 100%);
+    border: 1px solid var(--border-accent);
+    box-shadow: var(--shadow-lg), var(--shadow-glow-soft);
+  }
+}

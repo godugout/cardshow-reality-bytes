@@ -1,0 +1,52 @@
+
+/* Cardshow Design System - Rarity System */
+
+@layer utilities {
+  .rarity-common { color: var(--rarity-common); }
+  .rarity-uncommon { color: var(--rarity-uncommon); }
+  .rarity-rare { color: var(--rarity-rare); }
+  .rarity-epic { color: var(--rarity-epic); }
+  .rarity-legendary { color: var(--rarity-legendary); }
+  .rarity-mythic { color: var(--rarity-mythic); }
+  
+  .rarity-badge {
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    backdrop-filter: blur(8px);
+  }
+  
+  .rarity-badge.common { 
+    background: rgba(156, 163, 175, 0.2); 
+    color: var(--rarity-common);
+    border: 1px solid rgba(156, 163, 175, 0.3);
+  }
+  .rarity-badge.uncommon { 
+    background: rgba(0, 217, 163, 0.2); 
+    color: var(--rarity-uncommon);
+    border: 1px solid rgba(0, 217, 163, 0.3);
+  }
+  .rarity-badge.rare { 
+    background: rgba(96, 165, 250, 0.2); 
+    color: var(--rarity-rare);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+  }
+  .rarity-badge.epic { 
+    background: rgba(167, 139, 250, 0.2); 
+    color: var(--rarity-epic);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+  }
+  .rarity-badge.legendary { 
+    background: rgba(251, 191, 36, 0.2); 
+    color: var(--rarity-legendary);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+  }
+  .rarity-badge.mythic { 
+    background: rgba(248, 113, 113, 0.2); 
+    color: var(--rarity-mythic);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+  }
+}

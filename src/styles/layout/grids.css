@@ -1,0 +1,69 @@
+
+/* Cardshow Design System - Grid Systems */
+
+@layer utilities {
+  .grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-6);
+  }
+  
+  @media (min-width: 768px) {
+    .grid-cards {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--space-8);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .grid-cards {
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: var(--space-10);
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .grid-cards {
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: var(--space-12);
+    }
+  }
+  
+  .grid-features {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+  
+  @media (min-width: 768px) {
+    .grid-features {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-10);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .grid-features {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-12);
+    }
+  }
+  
+  .flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .flex-start {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+}
