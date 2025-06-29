@@ -13,6 +13,8 @@ import {
   DropdownMenuSeparator,
 } from './ui/dropdown-menu';
 import { Badge } from './ui/badge';
+import CardshowLogo from './branding/CardshowLogo';
+import ThemeSelector from './branding/ThemeSelector';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,17 +32,12 @@ const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-xl border-0">
+    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-xl border-b border-border">
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
-          <Link to="/" className="mr-8 flex items-center space-x-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-black text-lg shadow-lg">
-              C
-            </div>
-            <span className="hidden font-black text-xl sm:inline-block bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
-              Cardshow
-            </span>
-          </Link>
+          <div className="mr-8">
+            <CardshowLogo />
+          </div>
           <nav className="flex items-center space-x-8 text-sm font-semibold">
             {navigation.map((item) => (
               <Link
@@ -70,16 +67,13 @@ const Header = () => {
 
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
-            <Link to="/" className="mr-6 flex items-center space-x-3 md:hidden">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-black text-lg shadow-lg">
-                C
-              </div>
-              <span className="font-black text-xl bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
-                Cardshow
-              </span>
-            </Link>
+            <div className="mr-6 flex items-center space-x-3 md:hidden">
+              <CardshowLogo />
+            </div>
           </div>
           <nav className="flex items-center space-x-3">
+            <ThemeSelector />
+            
             {user ? (
               <>
                 {/* Notifications */}
@@ -146,7 +140,7 @@ const Header = () => {
 
         {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="absolute top-16 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-0 rounded-b-3xl md:hidden">
+          <div className="absolute top-16 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-b border-border rounded-b-3xl md:hidden">
             <nav className="container py-6">
               <div className="flex flex-col space-y-3">
                 {navigation.map((item) => (
@@ -163,6 +157,9 @@ const Header = () => {
                     {item.name}
                   </Link>
                 ))}
+              </div>
+              <div className="mt-4 px-4">
+                <ThemeSelector />
               </div>
             </nav>
           </div>

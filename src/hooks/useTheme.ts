@@ -15,8 +15,8 @@ interface UseThemeReturn {
 
 export const useTheme = (): UseThemeReturn => {
   const [theme, setThemeState] = useState<Theme>('classic');
-  const [mode, setModeState] = useState<Mode>('light');
-  const [systemTheme, setSystemTheme] = useState<Mode>('light');
+  const [mode, setModeState] = useState<Mode>('dark');
+  const [systemTheme, setSystemTheme] = useState<Mode>('dark');
 
   // Detect system theme preference
   useEffect(() => {
@@ -43,11 +43,11 @@ export const useTheme = (): UseThemeReturn => {
     if (savedMode && ['light', 'dark'].includes(savedMode)) {
       setModeState(savedMode);
     } else {
-      setModeState(systemTheme);
+      setModeState('dark'); // Default to dark mode
     }
-  }, [systemTheme]);
+  }, []);
 
-  // Apply theme and mode to document immediately
+  // Apply theme and mode to document
   useEffect(() => {
     const root = document.documentElement;
     
@@ -64,18 +64,15 @@ export const useTheme = (): UseThemeReturn => {
     // Save to localStorage
     localStorage.setItem('cardshow-theme', theme);
     localStorage.setItem('cardshow-mode', mode);
-    
-    // Force a repaint to ensure changes are applied
-    document.body.style.display = 'none';
-    document.body.offsetHeight; // trigger reflow
-    document.body.style.display = '';
   }, [theme, mode]);
 
   const setTheme = (newTheme: Theme) => {
+    console.log('Setting theme to:', newTheme);
     setThemeState(newTheme);
   };
 
   const setMode = (newMode: Mode) => {
+    console.log('Setting mode to:', newMode);
     setModeState(newMode);
   };
 

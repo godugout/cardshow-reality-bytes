@@ -39,7 +39,7 @@ const ThemeSelector = () => {
         </Button>
       </DropdownMenuTrigger>
       
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent align="end" className="w-56 bg-card border-border">
         <div className="px-3 py-2">
           <p className="text-sm font-medium">Choose Theme</p>
           <p className="text-xs text-muted-foreground">Current: {themes.find(t => t.id === theme)?.name}</p>
