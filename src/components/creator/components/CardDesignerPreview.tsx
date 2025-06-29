@@ -104,8 +104,12 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           {/* Theme-specific decorative elements */}
           {currentTheme?.id === 'crd-branded' && (
             <div className="absolute top-4 right-4 z-10">
-              <div className="text-xs text-white/40 font-mono bg-black/20 px-2 py-1 rounded backdrop-blur-sm">
-                CRD Studio
+              <div className="bg-black/20 p-2 rounded backdrop-blur-sm">
+                <img 
+                  src="/lovable-uploads/cef0058d-1a9d-45af-ae10-cf715766de84.png" 
+                  alt="CRD Logo" 
+                  className="w-8 h-8 object-contain"
+                />
               </div>
             </div>
           )}
