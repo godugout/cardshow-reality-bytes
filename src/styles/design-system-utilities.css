@@ -1,74 +1,58 @@
 
-/* Cardshow Design System - Text & Color Utilities */
+/* Simplified Design System Utilities */
 
 @layer utilities {
   /* High Contrast Text System */
   .text-primary-bright {
-    color: #FFFFFF !important;
+    color: hsl(var(--foreground)) !important;
   }
   
   .text-secondary-bright {
-    color: #E2E8F0 !important;
-  }
-  
-  .text-tertiary-bright {
-    color: #CBD5E1 !important;
-  }
-  
-  .text-muted-bright {
-    color: #94A3B8 !important;
+    color: hsl(var(--muted-foreground)) !important;
   }
   
   .text-accent-bright {
-    color: #00C851 !important;
+    color: hsl(var(--primary)) !important;
   }
   
   /* Button Text Override */
   .btn-text-bright {
-    color: #FFFFFF !important;
-  }
-  
-  .btn-text-bright:hover {
-    color: #FFFFFF !important;
+    color: hsl(var(--primary-foreground)) !important;
   }
   
   /* Card Text System */
   .card-title-bright {
-    color: #FFFFFF !important;
+    color: hsl(var(--foreground)) !important;
     font-weight: 600;
   }
   
   .card-description-bright {
-    color: #CBD5E1 !important;
-  }
-  
-  .card-meta-bright {
-    color: #94A3B8 !important;
+    color: hsl(var(--muted-foreground)) !important;
   }
   
   /* Collection Specific */
   .collection-title-bright {
-    color: #FFFFFF !important;
+    color: hsl(var(--foreground)) !important;
     font-weight: 700;
   }
   
   .collection-description-bright {
-    color: #E2E8F0 !important;
+    color: hsl(var(--muted-foreground)) !important;
   }
   
   /* Interactive Elements */
   .interactive-text-bright {
-    color: #CBD5E1 !important;
+    color: hsl(var(--muted-foreground)) !important;
     transition: color 0.2s ease;
   }
   
   .interactive-text-bright:hover {
-    color: #FFFFFF !important;
+    color: hsl(var(--foreground)) !important;
   }
   
   /* Status Colors */
   .status-success-bright {
-    color: #10B981 !important;
+    color: hsl(var(--primary)) !important;
   }
   
   .status-warning-bright {
@@ -81,11 +65,11 @@
   
   /* High Contrast Backgrounds */
   .bg-card-bright {
-    background-color: rgba(17, 17, 17, 0.9) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: hsl(var(--card)) !important;
+    border: 1px solid hsl(var(--border));
   }
   
   .bg-surface-bright {
-    background-color: rgba(26, 26, 26, 0.9) !important;
+    background-color: hsl(var(--muted)) !important;
   }
 }

@@ -1,72 +1,48 @@
 
-/* Cardshow Design System - Visual Effects */
+/* Simplified Visual Effects */
 
 @layer utilities {
+  /* Essential Gradient Text */
   .gradient-text-primary {
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)/0.8) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    /* Fallback for accessibility */
-    color: var(--text-primary);
+    color: hsl(var(--primary)); /* Fallback */
   }
   
-  .gradient-text-secondary {
-    background: var(--gradient-secondary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    /* Fallback for accessibility */
-    color: var(--text-secondary);
-  }
-  
+  /* Simplified Glass Effect */
   .glass-morphism {
-    background: rgba(30, 30, 33, 0.8);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: hsl(var(--card)/0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid hsl(var(--border));
   }
   
+  /* Clean Surface Elevation */
   .surface-elevated {
-    background: var(--bg-elevated);
-    border: 1px solid var(--border-secondary);
-    box-shadow: var(--shadow-lg);
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 4px 12px hsl(var(--foreground)/0.1);
   }
   
-  .border-glow {
-    border: 1px solid var(--border-accent);
-    box-shadow: var(--shadow-glow-soft);
+  /* Subtle Glow for Interactive Elements */
+  .subtle-glow {
+    box-shadow: 0 0 10px hsl(var(--primary)/0.2);
   }
   
+  /* Loading Animation */
   .skeleton {
-    background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
+    background: linear-gradient(90deg, 
+      hsl(var(--muted)/0.1) 25%, 
+      hsl(var(--muted)/0.2) 50%, 
+      hsl(var(--muted)/0.1) 75%);
     background-size: 200% 100%;
     animation: loading 1.5s infinite;
-    border-radius: var(--radius-md);
+    border-radius: 0.5rem;
   }
   
   @keyframes loading {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
-  }
-  
-  .pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite alternate;
-  }
-  
-  @keyframes pulse-glow {
-    from { box-shadow: var(--shadow-glow-soft); }
-    to { box-shadow: var(--shadow-glow); }
-  }
-  
-  .empty-state {
-    text-align: center;
-    padding: var(--space-20);
-    color: var(--text-secondary);
-  }
-  
-  @media (min-width: 1024px) {
-    .empty-state {
-      padding: var(--space-32);
-    }
   }
 }

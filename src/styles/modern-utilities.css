@@ -1,27 +1,30 @@
 
-/* Modern Utility Classes */
+/* Essential Modern Utilities */
 
 @layer base {
-  /* Modern Utility Classes */
+  /* Core Utility Classes */
   .glass-effect {
-    @apply bg-background/10 backdrop-blur-xl border-0;
+    background: hsl(var(--card)/0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid hsl(var(--border));
   }
 
   .floating-effect {
-    @apply shadow-floating hover:shadow-elevated transition-all duration-300;
+    box-shadow: 0 4px 12px hsl(var(--foreground)/0.1);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .floating-effect:hover {
+    box-shadow: 0 8px 24px hsl(var(--foreground)/0.15);
   }
 
   .soft-corners {
-    @apply rounded-3xl;
+    border-radius: 1.5rem;
   }
 
-  .extra-soft-corners {
-    @apply rounded-[2rem];
-  }
-
-  /* Modern Gradient Utilities */
+  /* Essential Gradients */
   .gradient-primary {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)/0.8) 100%);
   }
 
   .gradient-surface {
@@ -35,18 +38,13 @@
     background-clip: text;
   }
 
-  /* Card Aspect Ratio Enforcement */
+  /* Card Aspect Ratio */
   .card-aspect-ratio {
-    aspect-ratio: 5/7; /* 2.5:3.5 simplified */
+    aspect-ratio: 5/7;
   }
 
-  /* Enhanced Card Drawer System */
+  /* Smooth Transitions */
   .card-drawer-transition {
-    transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                opacity 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .card-info-lift-transition {
-    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 300ms ease, opacity 300ms ease;
   }
 }
