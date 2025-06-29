@@ -14,6 +14,7 @@ export interface CanvasTheme {
   patternOverlay?: string;
   shadowColor?: string;
   borderColor?: string;
+  primaryColor?: string;
 }
 
 export interface CanvasCustomizerState {

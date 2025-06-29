@@ -15,7 +15,8 @@ export const canvasThemes: CanvasTheme[] = [
     backgroundSize: 120,
     backgroundOpacity: 0.15,
     shadowColor: 'rgba(0, 200, 81, 0.2)',
-    borderColor: '#1e293b'
+    borderColor: '#1e293b',
+    primaryColor: '#00C851'
   },
   {
     id: 'drafting-classic',
@@ -28,7 +29,8 @@ export const canvasThemes: CanvasTheme[] = [
     showGrid: true,
     patternOverlay: 'linear-gradient(45deg, rgba(58, 90, 122, 0.15) 25%, transparent 25%, transparent 75%, rgba(58, 90, 122, 0.15) 75%)',
     shadowColor: 'rgba(58, 90, 122, 0.3)',
-    borderColor: '#2a3a4a'
+    borderColor: '#2a3a4a',
+    primaryColor: '#3a5a7a'
   },
   {
     id: 'architect-green',
@@ -41,7 +43,8 @@ export const canvasThemes: CanvasTheme[] = [
     showGrid: true,
     patternOverlay: 'radial-gradient(circle at 50% 50%, rgba(255, 235, 59, 0.08) 0%, transparent 70%)',
     shadowColor: 'rgba(255, 235, 59, 0.2)',
-    borderColor: '#2a4a2a'
+    borderColor: '#2a4a2a',
+    primaryColor: '#ffeb3b'
   },
   {
     id: 'blueprint-blue',
@@ -54,7 +57,8 @@ export const canvasThemes: CanvasTheme[] = [
     showGrid: true,
     patternOverlay: 'linear-gradient(90deg, rgba(74, 144, 226, 0.12) 50%, transparent 50%)',
     shadowColor: 'rgba(74, 144, 226, 0.25)',
-    borderColor: '#1f2b3d'
+    borderColor: '#1f2b3d',
+    primaryColor: '#4a90e2'
   },
   {
     id: 'modern-dark',
@@ -66,7 +70,8 @@ export const canvasThemes: CanvasTheme[] = [
     gridOpacity: 0.3,
     showGrid: true,
     shadowColor: 'rgba(64, 64, 64, 0.4)',
-    borderColor: '#2e2e2e'
+    borderColor: '#2e2e2e',
+    primaryColor: '#404040'
   },
   {
     id: 'warm-studio',
@@ -79,7 +84,8 @@ export const canvasThemes: CanvasTheme[] = [
     showGrid: true,
     patternOverlay: 'radial-gradient(ellipse at center, rgba(139, 105, 20, 0.12) 0%, transparent 50%)',
     shadowColor: 'rgba(139, 105, 20, 0.3)',
-    borderColor: '#3d3520'
+    borderColor: '#3d3520',
+    primaryColor: '#8b6914'
   },
   {
     id: 'minimal-light',
@@ -91,6 +97,7 @@ export const canvasThemes: CanvasTheme[] = [
     gridOpacity: 0.8,
     showGrid: true,
     shadowColor: 'rgba(222, 226, 230, 0.6)',
-    borderColor: '#e9ecef'
+    borderColor: '#e9ecef',
+    primaryColor: '#dee2e6'
   }
 ];
