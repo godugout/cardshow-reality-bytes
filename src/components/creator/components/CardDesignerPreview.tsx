@@ -45,7 +45,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     position: 'absolute',
     inset: 0,
     pointerEvents: 'none',
-    zIndex: 2, // Increased z-index
+    zIndex: 2,
   };
 
   // Background pattern style (for CRD logo or other patterns)
@@ -57,8 +57,8 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     backgroundRepeat: 'repeat',
     backgroundPosition: 'center',
     opacity: canvasState.backgroundOpacity,
-    zIndex: 1, // Base layer
-    filter: 'brightness(0.8) contrast(1.1)', // Subtle enhancement for better theme effect
+    zIndex: 1,
+    filter: 'brightness(0.8) contrast(1.1)',
   } : {};
 
   return (
@@ -113,7 +113,6 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
                   className="w-8 h-8 object-contain"
                   onError={(e) => {
                     console.error('CRD Logo failed to load:', e);
-                    // Fallback to text if image fails
                     e.currentTarget.style.display = 'none';
                     const fallbackElement = e.currentTarget.nextElementSibling as HTMLElement;
                     if (fallbackElement) {
@@ -150,30 +149,61 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           <div 
             className="relative transition-all duration-300 hover:scale-105 shadow-2xl"
             style={{
-              width: '250px',  // 2.5 inches at 100dpi
-              height: '350px', // 3.5 inches at 100dpi
+              width: '280px',  // Slightly larger for better visibility
+              height: '392px', // Maintaining aspect ratio
               aspectRatio: '2.5 / 3.5',
-              zIndex: 101, // Highest z-index to ensure visibility
-              // Add a subtle glow effect to make the card stand out
-              filter: 'drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5))',
+              zIndex: 101,
+              // Enhanced drop shadow for better card separation
+              filter: 'drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.1))',
             }}
           >
             {/* Card spotlight background for better contrast */}
             <div 
-              className="absolute inset-0 rounded-lg opacity-20"
+              className="absolute inset-0 rounded-lg"
               style={{
-                background: 'radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%)',
+                background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 80%)',
                 zIndex: -1,
-                transform: 'scale(1.2)',
+                transform: 'scale(1.4)',
+                opacity: 0.8,
               }}
             />
+            
+            {/* Secondary glow for themed environments */}
+            {currentTheme && (
+              <div 
+                className="absolute inset-0 rounded-lg"
+                style={{
+                  background: `radial-gradient(ellipse at center, ${currentTheme.primaryColor || '#10B981'}20 0%, transparent 70%)`,
+                  zIndex: -2,
+                  transform: 'scale(1.6)',
+                  opacity: 0.6,
+                }}
+              />
+            )}
             
             <CardPreview cardData={cardData} />
           </div>
         </div>
 
-        {/* Theme transition overlay for smooth changes - lowest overlay z-index */}
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-transparent via-transparent to-black/5" style={{ zIndex: 5 }} />
+        {/* Enhanced theme transition overlay for smooth changes */}
+        <div 
+          className="absolute inset-0 pointer-events-none transition-all duration-500"
+          style={{ 
+            zIndex: 5,
+            background: currentTheme?.id === 'dark-void' 
+              ? 'linear-gradient(45deg, rgba(0,0,0,0.1) 0%, rgba(75,0,130,0.05) 100%)'
+              : currentTheme?.id === 'blueprint-blue'
+              ? 'linear-gradient(180deg, rgba(59,130,246,0.05) 0%, transparent 100%)'
+              : 'linear-gradient(180deg, rgba(0,0,0,0.02) 0%, transparent 100%)'
+          }} 
+        />
+        
+        {/* Theme indicator in bottom corner */}
+        {currentTheme && (
+          <div className="absolute bottom-2 left-2 text-xs text-white/40 font-mono" style={{ zIndex: 6 }}>
+            {currentTheme.name}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
