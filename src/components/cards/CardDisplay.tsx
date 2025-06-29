@@ -112,10 +112,10 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
             </div>
           )}
 
-          {/* Serial Number */}
+          {/* Serial Number with Brighter Color */}
           {card.serial_number && (
             <div className="absolute top-12 right-2">
-              <Badge variant="secondary" className="text-xs font-mono">
+              <Badge className="text-xs font-mono bg-[#00C851] text-white border-0 shadow-lg">
                 #{card.serial_number}
               </Badge>
             </div>
