@@ -1,5 +1,5 @@
 
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme, Theme } from '@/hooks/useTheme';
 import { Button } from '@/components/ui/button';
 import { Palette, Sun, Moon } from 'lucide-react';
 import { 

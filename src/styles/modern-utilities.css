@@ -1,0 +1,52 @@
+
+/* Modern Utility Classes */
+
+@layer base {
+  /* Modern Utility Classes */
+  .glass-effect {
+    @apply bg-background/10 backdrop-blur-xl border-0;
+  }
+
+  .floating-effect {
+    @apply shadow-floating hover:shadow-elevated transition-all duration-300;
+  }
+
+  .soft-corners {
+    @apply rounded-3xl;
+  }
+
+  .extra-soft-corners {
+    @apply rounded-[2rem];
+  }
+
+  /* Modern Gradient Utilities */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%);
+  }
+
+  .gradient-surface {
+    background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card)/0.8) 100%);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)/0.8) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Card Aspect Ratio Enforcement */
+  .card-aspect-ratio {
+    aspect-ratio: 5/7; /* 2.5:3.5 simplified */
+  }
+
+  /* Enhanced Card Drawer System */
+  .card-drawer-transition {
+    transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .card-info-lift-transition {
+    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
