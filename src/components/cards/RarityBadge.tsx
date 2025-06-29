@@ -16,22 +16,22 @@ const RarityBadge = ({ rarity, size = 'md', animated = false }: RarityBadgeProps
     lg: 'text-base px-4 py-1.5'
   };
 
-  // Updated rarity colors with much brighter, more vibrant colors
+  // Updated rarity colors with better contrast
   const rarityColors = {
-    common: 'bg-slate-500 text-white border border-slate-400/50 shadow-lg',
-    uncommon: 'bg-[#00C851] text-white border border-[#00C851]/50 shadow-lg',
-    rare: 'bg-blue-500 text-white border border-blue-400/50 shadow-lg',
-    ultra_rare: 'bg-purple-500 text-white border border-purple-400/50 shadow-lg',
-    legendary: 'bg-yellow-500 text-black border border-yellow-400/50 shadow-lg font-bold'
+    common: 'bg-neutral-500 text-white',
+    uncommon: 'bg-success text-white',
+    rare: 'bg-primary text-white',
+    ultra_rare: 'bg-secondary text-white',
+    legendary: 'bg-accent text-white'
   };
 
   return (
     <Badge
       className={cn(
-        'font-semibold rounded-lg backdrop-blur-sm',
+        'font-semibold border-0 shadow-sm rounded-lg',
         rarityColors[rarity] || rarityColors.common,
         sizeClasses[size],
-        animated && 'animate-pulse hover:animate-none transition-all duration-200 hover:scale-110'
+        animated && 'animate-pulse hover:animate-none transition-all duration-200'
       )}
     >
       {RARITY_LABELS[rarity]}

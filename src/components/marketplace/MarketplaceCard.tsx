@@ -1,7 +1,6 @@
 
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { ContextualButton } from '@/components/ui/contextual-button';
 import { useWatchListing } from '@/hooks/useMarketplace';
 import { useCurrentHighestBid } from '@/hooks/useAuctions';
 import CardImage from './card/CardImage';
@@ -9,10 +8,10 @@ import CardInfo from './card/CardInfo';
 import PriceSection from './card/PriceSection';
 import SellerInfo from './card/SellerInfo';
 import CardStats from './card/CardStats';
+import CardActions from './card/CardActions';
 import CardDetailsDialog from './card/CardDetailsDialog';
 import type { MarketplaceListing } from '@/types/marketplace';
 import { formatDistanceToNow } from 'date-fns';
-import { Eye, Heart } from 'lucide-react';
 
 interface MarketplaceCardProps {
   listing: MarketplaceListing;
@@ -44,7 +43,7 @@ const MarketplaceCard = ({ listing }: MarketplaceCardProps) => {
 
   return (
     <>
-      <Card className="group bg-card border-border hover:border-marketplace/50 transition-all duration-300 overflow-hidden shadow-card hover:shadow-hover rounded-3xl">
+      <Card className="group bg-gray-900 border-gray-800 hover:border-[#00C851] transition-all duration-300 overflow-hidden">
         <CardImage
           imageUrl={listing.card?.image_url}
           title={listing.card?.title}
@@ -54,7 +53,7 @@ const MarketplaceCard = ({ listing }: MarketplaceCardProps) => {
           onWatchToggle={handleWatchToggle}
         />
 
-        <CardContent className="p-6 space-y-4">
+        <CardContent className="p-4 space-y-3">
           <CardInfo
             title={listing.card?.title}
             rarity={listing.card?.rarity}
@@ -80,27 +79,11 @@ const MarketplaceCard = ({ listing }: MarketplaceCardProps) => {
             watchersCount={listing.watchers_count}
           />
 
-          <div className="flex gap-2 pt-2">
-            <ContextualButton
-              context="marketplace"
-              variant="outline"
-              size="sm"
-              onClick={() => setShowDetails(true)}
-              className="flex-1 rounded-2xl"
-            >
-              <Eye className="w-4 h-4 mr-2" />
-              View Details
-            </ContextualButton>
-            <ContextualButton
-              context="marketplace"
-              variant="secondary"
-              size="sm"
-              onClick={handleWatchToggle}
-              className="rounded-2xl"
-            >
-              <Heart className={`w-4 h-4 ${isWatching ? 'fill-current text-marketplace' : ''}`} />
-            </ContextualButton>
-          </div>
+          <CardActions
+            isAuction={isAuction}
+            isAuctionEnded={isAuctionEnded}
+            onViewDetails={() => setShowDetails(true)}
+          />
         </CardContent>
       </Card>
 

@@ -1,76 +1,49 @@
 
-/* Modern Dark Theme System - Inspired by Reference Design */
+/* Modern Dark Theme - Unified Design System */
 
 :root {
-  /* Light Theme Colors */
-  --background: 255 255 255; /* #FFFFFF */
-  --foreground: 15 15 15; /* #0F0F0F */
-  --card: 250 250 250; /* #FAFAFA */
-  --card-foreground: 15 15 15;
-  --popover: 255 255 255;
-  --popover-foreground: 15 15 15;
+  /* Dark Theme Color Palette */
+  --background: 10 10 10; /* #0A0A0A */
+  --foreground: 248 250 252; /* #F8FAFC */
+  --card: 17 17 17; /* #111111 */
+  --card-foreground: 248 250 252;
+  --popover: 17 17 17;
+  --popover-foreground: 248 250 252;
   --primary: 0 200 81; /* #00C851 - Green accent */
   --primary-foreground: 255 255 255;
-  --secondary: 245 245 245; /* #F5F5F5 */
-  --secondary-foreground: 15 15 15;
-  --muted: 245 245 245;
-  --muted-foreground: 100 116 139; /* #64748B */
-  --accent: 240 240 240; /* #F0F0F0 */
-  --accent-foreground: 15 15 15;
+  --secondary: 26 26 26; /* #1A1A1A */
+  --secondary-foreground: 248 250 252;
+  --muted: 26 26 26;
+  --muted-foreground: 156 163 175; /* #9CA3AF */
+  --accent: 34 34 34; /* #222222 */
+  --accent-foreground: 248 250 252;
   --destructive: 220 38 38;
   --destructive-foreground: 248 250 252;
-  --border: 229 229 229; /* #E5E5E5 */
-  --input: 229 229 229;
-  --ring: 0 200 81;
-}
-
-.dark {
-  /* Modern Ultra Dark Theme - Matching Reference Images */
-  --background: 10 10 11; /* Almost pure black - #0A0A0B */
-  --foreground: 255 255 255; /* Pure white text for maximum contrast */
-  
-  /* Card surfaces with strategic elevation */
-  --card: 20 20 22; /* Dark card surface - #141416 */
-  --card-foreground: 255 255 255;
-  
-  /* Elevated surfaces for modals, popovers */
-  --popover: 26 26 29; /* Slightly elevated - #1A1A1D */
-  --popover-foreground: 255 255 255;
-  
-  /* Vibrant primary matching the green accents in reference */
-  --primary: 34 197 94; /* Bright green - #22C55E */
-  --primary-foreground: 0 0 0; /* Black text on green */
-  
-  /* Secondary surfaces - even darker for depth */
-  --secondary: 15 15 16; /* Very dark - #0F0F10 */
-  --secondary-foreground: 240 240 240;
-  
-  /* Muted surfaces and text */
-  --muted: 31 31 35; /* Dark muted surface - #1F1F23 */
-  --muted-foreground: 156 163 175; /* Light gray - #9CA3AF */
-  
-  /* Accent surfaces for highlights */
-  --accent: 38 38 42; /* Accent surface - #26262A */
-  --accent-foreground: 255 255 255;
-  
-  /* Error states */
-  --destructive: 239 68 68; /* Bright red - #EF4444 */
-  --destructive-foreground: 255 255 255;
-  
-  /* Subtle borders for definition */
-  --border: 39 39 42; /* Dark border - #27272A */
+  --border: 39 39 42; /* #27272A */
   --input: 39 39 42;
+  --ring: 0 200 81; /* Green ring */
   
-  /* Ring color for focus states */
-  --ring: 34 197 94; /* Green ring - #22C55E */
+  /* Gradient Variables */
+  --gradient-primary: linear-gradient(135deg, #00C851 0%, #00A543 100%);
+  --gradient-dark: linear-gradient(135deg, #0A0A0A 0%, #111111 50%, #1A1A1A 100%);
+  --gradient-card: linear-gradient(135deg, rgba(17,17,17,0.8) 0%, rgba(26,26,26,0.9) 100%);
+  
+  /* Glass Morphism */
+  --glass-bg: rgba(17, 17, 17, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(20px);
+  
+  /* Shadows */
+  --shadow-glow: 0 0 50px rgba(0, 200, 81, 0.15);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 /* Base Styles */
 html, body {
-  background: hsl(var(--background));
+  background: linear-gradient(135deg, #0A0A0A 0%, #111111 50%, #0F0F0F 100%);
   color: hsl(var(--foreground));
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #root {
@@ -78,70 +51,21 @@ html, body {
   min-height: 100vh;
 }
 
-/* Light theme specific gradients */
-:root {
-  --gradient-primary: linear-gradient(135deg, #00C851 0%, #00A543 100%);
-  --gradient-surface: linear-gradient(135deg, #FAFAFA 0%, #F5F5F5 100%);
-  --gradient-card: linear-gradient(135deg, rgba(250,250,250,0.8) 0%, rgba(245,245,245,0.9) 100%);
-  
-  /* Glass Morphism for light */
-  --glass-bg: rgba(250, 250, 250, 0.8);
-  --glass-border: rgba(0, 0, 0, 0.1);
-  
-  /* Shadows for light */
-  --shadow-glow: 0 0 50px rgba(0, 200, 81, 0.15);
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.1);
-  --shadow-elevated: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-
-.dark {
-  /* Dark theme gradients with strategic color pops */
-  --gradient-primary: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
-  --gradient-surface: linear-gradient(135deg, #141416 0%, #1A1A1D 100%);
-  --gradient-card: linear-gradient(135deg, rgba(20,20,22,0.9) 0%, rgba(26,26,29,0.95) 100%);
-  
-  /* Glass Morphism for dark - more subtle */
-  --glass-bg: rgba(20, 20, 22, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  
-  /* Enhanced shadows for dark theme depth */
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.6);
-  --shadow-elevated: 0 20px 50px rgba(0, 0, 0, 0.8);
-  --shadow-glow: 0 0 30px rgba(34, 197, 94, 0.2);
-}
-
-/* High Contrast Text Utilities */
-.text-bright {
-  color: hsl(var(--foreground)) !important;
-}
-
-.text-bright-secondary {
-  color: hsl(var(--muted-foreground)) !important;
-}
-
-.text-bright-muted {
-  color: hsl(var(--muted-foreground)) !important;
-}
-
-.text-bright-accent {
-  color: hsl(var(--primary)) !important;
-}
-
-/* Modern Glass Morphism */
+/* Glass Morphism Utilities */
 .glass-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
+  backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-card);
 }
 
 .glass-panel {
-  background: var(--glass-bg);
+  background: rgba(17, 17, 17, 0.6);
   backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Enhanced gradients with color pops */
+/* Modern Gradients */
 .gradient-primary {
   background: var(--gradient-primary);
 }
@@ -153,37 +77,41 @@ html, body {
   background-clip: text;
 }
 
-/* Modern Button Styles with strategic color use */
-.modern-button {
-  @apply px-8 py-4 rounded-2xl font-semibold transition-all duration-300;
-  background: var(--gradient-primary);
-  @apply hover:shadow-lg;
-  color: #000000 !important; /* Black text on bright green */
+.gradient-border {
+  position: relative;
 }
 
-.modern-button:hover {
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: var(--gradient-primary);
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+}
+
+/* Modern Button Styles */
+.modern-button {
+  @apply px-8 py-4 rounded-2xl font-semibold transition-all duration-300;
+  @apply bg-gradient-to-r from-[#00C851] to-[#00A543];
+  @apply hover:shadow-lg hover:shadow-[#00C851]/30;
+  @apply active:scale-95;
 }
 
 .modern-button-outline {
   @apply px-8 py-4 rounded-2xl font-semibold transition-all duration-300;
-  @apply bg-transparent border-2;
-  border-color: hsl(var(--primary));
-  color: hsl(var(--primary));
-}
-
-.modern-button-outline:hover {
-  background: hsl(var(--primary));
-  color: #000000;
+  @apply bg-transparent border-2 border-[#00C851];
+  @apply text-[#00C851] hover:bg-[#00C851] hover:text-white;
 }
 
 /* Modern Card Styles */
 .modern-card {
-  @apply rounded-3xl border-0;
+  @apply rounded-3xl border-0 shadow-2xl;
   background: var(--glass-bg);
-  backdrop-filter: blur(10px);
+  backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-card);
 }
 
 .modern-card-elevated {
@@ -191,60 +119,17 @@ html, body {
   box-shadow: var(--shadow-elevated);
 }
 
-/* Floating Elements with enhanced dark theme effects */
+/* Floating Elements */
 .floating {
   @apply transform transition-all duration-300;
+  @apply hover:-translate-y-1 hover:shadow-2xl;
 }
 
-.floating:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
-}
-
-/* Strategic Glow Effects */
+/* Glow Effects */
 .glow-green {
-  box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
-}
-
-.glow-orange {
-  box-shadow: 0 0 30px rgba(249, 115, 22, 0.3);
-}
-
-.glow-blue {
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 30px rgba(0, 200, 81, 0.3);
 }
 
 .glow-subtle {
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
-}
-
-/* Strategic color highlights for dark theme */
-.dark .accent-collections {
-  color: #22C55E !important;
-}
-
-.dark .accent-cards {
-  color: #F97316 !important;
-}
-
-.dark .accent-marketplace {
-  color: #3B82F6 !important;
-}
-
-.dark .accent-currency {
-  color: #FACC15 !important;
-}
-
-/* Enhanced borders and surfaces for depth */
-.dark .surface-elevated {
-  background-color: rgba(26, 26, 29, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.dark .surface-primary {
-  background-color: rgba(20, 20, 22, 0.95);
-}
-
-.dark .surface-secondary {
-  background-color: rgba(15, 15, 16, 0.9);
+  box-shadow: 0 0 20px rgba(0, 200, 81, 0.1);
 }

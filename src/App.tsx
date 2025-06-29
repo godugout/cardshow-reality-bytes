@@ -4,9 +4,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/hooks/auth/AuthProvider';
-import { FeatureFlagsProvider } from '@/hooks/useFeatureFlags';
-import { ThemeProvider } from '@/contexts/ThemeContext';
-import GlobalErrorBoundary from '@/components/error-boundaries/GlobalErrorBoundary';
+import { ErrorBoundary } from 'react-error-boundary';
+import AppErrorFallback from '@/components/error-boundaries/AppErrorFallback';
 
 // Lazy loading components
 const Index = lazy(() => import('@/pages/Index'));
@@ -24,92 +23,56 @@ const Support = lazy(() => import('@/pages/Support'));
 const Admin = lazy(() => import('@/pages/Admin'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
-// Enhanced QueryClient with better error handling
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 5 * 60 * 1000, // 5 minutes
-      retry: (failureCount, error: any) => {
-        // Don't retry on authentication errors
-        if (error?.status === 401 || error?.status === 403) {
-          return false;
-        }
-        // Don't retry on client errors (4xx) except network issues
-        if (error?.status >= 400 && error?.status < 500 && error?.status !== 408) {
-          return false;
-        }
-        // Retry up to 2 times for other errors
-        return failureCount < 2;
-      },
-      refetchOnWindowFocus: false, // Prevent excessive refetching
+      retry: 1,
     },
-    mutations: {
-      retry: (failureCount, error: any) => {
-        // Don't retry mutations on client errors
-        if (error?.status >= 400 && error?.status < 500) {
-          return false;
-        }
-        return failureCount < 1;
-      }
-    }
   },
 });
 
-// Enhanced loading fallback component
+// Loading fallback component
 const PageLoader = () => (
-  <div className="min-h-screen bg-gradient-to-br from-background via-background to-card flex items-center justify-center">
+  <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0F0F0F] flex items-center justify-center">
     <div className="text-center space-y-4">
       <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto"></div>
-      <p className="text-muted-foreground animate-pulse">Loading...</p>
+      <p className="text-muted-foreground">Loading...</p>
     </div>
   </div>
 );
 
-// Global error handler
-const handleGlobalError = (error: Error, errorInfo: any) => {
-  console.error('Global application error:', {
-    message: error.message,
-    stack: error.stack,
-    componentStack: errorInfo.componentStack,
-    timestamp: new Date().toISOString()
-  });
-};
-
 function App() {
   return (
-    <GlobalErrorBoundary onError={handleGlobalError}>
+    <ErrorBoundary FallbackComponent={AppErrorFallback}>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <AuthProvider>
-            <FeatureFlagsProvider>
-              <BrowserRouter>
-                <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
-                  <Suspense fallback={<PageLoader />}>
-                    <Routes>
-                      <Route path="/" element={<Index />} />
-                      <Route path="/auth" element={<Auth />} />
-                      <Route path="/cards" element={<Cards />} />
-                      <Route path="/collections" element={<Collections />} />
-                      <Route path="/gallery" element={<Gallery />} />
-                      <Route path="/creator" element={<Creator />} />
-                      <Route path="/marketplace" element={<Marketplace />} />
-                      <Route path="/community" element={<Community />} />
-                      <Route path="/community-enhanced" element={<EnhancedCommunity />} />
-                      <Route path="/trading" element={<Trading />} />
-                      <Route path="/profile" element={<Profile />} />
-                      <Route path="/support" element={<Support />} />
-                      <Route path="/admin" element={<Admin />} />
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </Suspense>
-                  <Toaster />
-                </div>
-              </BrowserRouter>
-            </FeatureFlagsProvider>
-          </AuthProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0F0F0F]">
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/cards" element={<Cards />} />
+                  <Route path="/collections" element={<Collections />} />
+                  <Route path="/gallery" element={<Gallery />} />
+                  <Route path="/creator" element={<Creator />} />
+                  <Route path="/marketplace" element={<Marketplace />} />
+                  <Route path="/community" element={<Community />} />
+                  <Route path="/community-enhanced" element={<EnhancedCommunity />} />
+                  <Route path="/trading" element={<Trading />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/support" element={<Support />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+              <Toaster />
+            </div>
+          </BrowserRouter>
+        </AuthProvider>
       </QueryClientProvider>
-    </GlobalErrorBoundary>
+    </ErrorBoundary>
   );
 }
 

@@ -19,19 +19,12 @@
   --bg-elevated: #26262A;
   --bg-surface: #2D2D32;
   
-  /* HIGH CONTRAST Text Hierarchy */
+  /* Proper Text Hierarchy */
   --text-primary: #FFFFFF;
   --text-secondary: #E2E8F0;
-  --text-tertiary: #CBD5E1;
-  --text-muted: #94A3B8;
-  --text-disabled: #64748B;
-  
-  /* Navigation Specific Colors */
-  --nav-text-primary: #FFFFFF;
-  --nav-text-secondary: #E2E8F0;
-  --nav-text-active: #FFFFFF;
-  --nav-bg-active: rgba(0, 217, 163, 0.8);
-  --nav-bg-hover: rgba(255, 255, 255, 0.1);
+  --text-tertiary: #94A3B8;
+  --text-muted: #64748B;
+  --text-disabled: #475569;
   
   /* Professional Borders */
   --border-primary: rgba(255, 255, 255, 0.12);
@@ -39,7 +32,7 @@
   --border-accent: rgba(0, 217, 163, 0.3);
   
   /* Enhanced Color System */
-  --rarity-common: #CBD5E1;
+  --rarity-common: #9CA3AF;
   --rarity-uncommon: #00D9A3;
   --rarity-rare: #60A5FA;
   --rarity-epic: #A78BFA;

@@ -1,8 +1,8 @@
 
-/* Simplified Animation System */
+/* Modern Animations */
 
 @layer base {
-  /* Core Card Animations */
+  /* Enhanced Card Drawer Animations */
   @keyframes cardDrawerSlideUp {
     from {
       transform: translateY(100%);
@@ -14,31 +14,40 @@
     }
   }
 
+  @keyframes cardInfoLift {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-2rem);
+    }
+  }
+
   @keyframes cardHoverScale {
     from {
       transform: scale(1);
     }
     to {
-      transform: scale(1.02);
+      transform: scale(1.05);
     }
   }
 
-  /* Essential Fade Animations */
-  @keyframes fadeIn {
+  /* Modern Animations */
+  @keyframes modernFadeIn {
     from { 
       opacity: 0; 
-      transform: translateY(10px);
+      transform: translateY(20px) scale(0.95);
     }
     to { 
       opacity: 1; 
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
   }
   
-  @keyframes slideUp {
+  @keyframes modernSlideUp {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(30px);
     }
     to {
       opacity: 1;
@@ -46,29 +55,57 @@
     }
   }
 
-  /* Animation Classes */
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-out;
+  @keyframes modernBounceIn {
+    0% {
+      transform: scale(0.3);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 
-  .animate-slide-up {
-    animation: slideUp 0.3s ease-out;
+  @keyframes modernPulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+  
+  .animate-modern-fade-in {
+    animation: modernFadeIn var(--transition-base);
+  }
+
+  .animate-modern-slide-up {
+    animation: modernSlideUp var(--transition-base);
+  }
+
+  .animate-modern-bounce-in {
+    animation: modernBounceIn var(--transition-bounce);
+  }
+
+  .animate-modern-pulse {
+    animation: modernPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   .animate-card-drawer-slide {
     animation: cardDrawerSlideUp 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
+  .animate-card-info-lift {
+    animation: cardInfoLift 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
   .animate-card-hover-scale {
-    animation: cardHoverScale 200ms ease-out;
-  }
-
-  /* Interactive Hover Effects */
-  .hover-scale {
-    transition: transform 0.2s ease;
-  }
-
-  .hover-scale:hover {
-    transform: scale(1.02);
+    animation: cardHoverScale 300ms cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 }

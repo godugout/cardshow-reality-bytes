@@ -21,6 +21,7 @@ export const ModernCardDesigner = () => {
 
   const [activeSection, setActiveSection] = useState<ActiveSection>('content');
 
+  // Debug logging
   useEffect(() => {
     console.log('ModernCardDesigner initialized with Canvas Context Provider');
   }, []);
@@ -42,13 +43,7 @@ export const ModernCardDesigner = () => {
 
   return (
     <CanvasCustomizerProvider>
-      <div className="min-h-screen bg-background">
-        {/* Cards-themed background effects */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/3 left-1/3 w-72 h-72 bg-cards/4 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/3 right-1/3 w-64 h-64 bg-cards/2 rounded-full blur-3xl" />
-        </div>
-
+      <div className="min-h-screen bg-slate-900">
         <CardDesignerHeader
           cardData={cardData}
           isLoading={isLoading}
@@ -56,7 +51,7 @@ export const ModernCardDesigner = () => {
           onPublish={handlePublish}
         />
 
-        <div className="container mx-auto px-6 py-6 relative">
+        <div className="container mx-auto px-6 py-6">
           <div className="flex gap-6 h-[calc(100vh-12rem)]">
             <CardDesignerSidebar
               activeSection={activeSection}
@@ -74,8 +69,9 @@ export const ModernCardDesigner = () => {
           </div>
         </div>
 
-        <div className="fixed bottom-4 right-4 bg-card/90 backdrop-blur-sm text-foreground p-3 rounded-lg text-xs max-w-xs border border-cards/20 shadow-card">
-          <div className="font-bold mb-1 text-cards">Canvas Debug Info:</div>
+        {/* Enhanced debug info panel */}
+        <div className="fixed bottom-4 right-4 bg-slate-800 text-white p-3 rounded-lg text-xs max-w-xs border border-slate-600">
+          <div className="font-bold mb-1">Canvas Debug Info:</div>
           <div>Active Section: {activeSection}</div>
           <div>Canvas Context: ✓ Enabled</div>
           <div>Theme Sync: ✓ Active</div>

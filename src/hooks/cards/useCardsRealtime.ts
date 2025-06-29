@@ -1,95 +1,83 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import type { RealtimeChannel } from '@supabase/supabase-js';
 
-interface UseCardsRealtimeProps {
-  refetch?: () => void;
-  enabled?: boolean;
-}
+export const useCardsRealtime = (refetch?: () => void) => {
+  const refetchRef = useRef(refetch);
+  const channelRef = useRef<any>(null);
 
-export const useCardsRealtime = ({ refetch, enabled = true }: UseCardsRealtimeProps = {}) => {
-  const channelRef = useRef<RealtimeChannel | null>(null);
-  const isSubscribedRef = useRef(false);
+  // Keep refetch function up to date
+  useEffect(() => {
+    refetchRef.current = refetch;
+  }, [refetch]);
+
+  // Safe refetch function that handles undefined cases
+  const safeRefetch = useCallback(() => {
+    try {
+      if (refetchRef.current && typeof refetchRef.current === 'function') {
+        refetchRef.current();
+      }
+    } catch (error) {
+      console.error('useCardsRealtime: Error during refetch:', error);
+    }
+  }, []);
 
   useEffect(() => {
-    if (!enabled || !refetch) {
-      console.log('useCardsRealtime: Subscription disabled or no refetch function provided');
+    // Don't set up realtime if we don't have a refetch function
+    if (!refetch) {
+      console.log('useCardsRealtime: No refetch function provided, skipping subscription');
       return;
     }
 
-    // Clean up existing subscription first
+    // Cleanup any existing channel first
     if (channelRef.current) {
-      console.log('useCardsRealtime: Cleaning up existing subscription');
+      console.log('Cleaning up existing cards realtime channel');
       supabase.removeChannel(channelRef.current);
       channelRef.current = null;
-      isSubscribedRef.current = false;
     }
 
-    const setupSubscription = async () => {
-      try {
-        // Create a unique channel name with timestamp to avoid conflicts
-        const channelName = `cards-changes-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        console.log(`useCardsRealtime: Creating channel: ${channelName}`);
-        
-        const channel = supabase.channel(channelName);
-        
-        channel
-          .on(
-            'postgres_changes',
-            {
-              event: '*',
-              schema: 'public',
-              table: 'cards'
-            },
-            (payload) => {
-              console.log('useCardsRealtime: Received change:', payload);
-              refetch();
-            }
-          )
-          .on('subscribe', (status) => {
-            console.log(`useCardsRealtime: Subscription status: ${status}`);
-            if (status === 'SUBSCRIBED') {
-              isSubscribedRef.current = true;
-            }
-          })
-          .on('error', (error) => {
-            console.error('useCardsRealtime: Subscription error:', error);
-          });
+    console.log('Setting up cards realtime subscription');
+    
+    try {
+      const channel = supabase
+        .channel('cards-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'cards',
+            filter: 'is_public=eq.true'
+          },
+          (payload) => {
+            console.log('Cards realtime update received:', payload);
+            safeRefetch();
+          }
+        )
+        .subscribe((status) => {
+          console.log('Cards realtime subscription status:', status);
+          if (status === 'CLOSED') {
+            console.error('Failed to subscribe to cards realtime updates');
+          } else if (status === 'SUBSCRIBED') {
+            console.log('Successfully subscribed to cards realtime updates');
+          }
+        });
 
-        channelRef.current = channel;
-        
-        // Subscribe only once
-        if (!isSubscribedRef.current) {
-          console.log('useCardsRealtime: Subscribing to channel');
-          channel.subscribe();
-        }
-      } catch (error) {
-        console.error('useCardsRealtime: Error setting up subscription:', error);
-      }
-    };
+      channelRef.current = channel;
+    } catch (error) {
+      console.error('useCardsRealtime: Error setting up subscription:', error);
+    }
 
-    setupSubscription();
-
-    // Cleanup function
     return () => {
+      console.log('Cleaning up cards realtime subscription');
       if (channelRef.current) {
-        console.log('useCardsRealtime: Cleaning up subscription on unmount');
-        supabase.removeChannel(channelRef.current);
+        try {
+          supabase.removeChannel(channelRef.current);
+        } catch (error) {
+          console.error('useCardsRealtime: Error cleaning up subscription:', error);
+        }
         channelRef.current = null;
-        isSubscribedRef.current = false;
       }
     };
-  }, [refetch, enabled]);
-
-  // Return cleanup function for manual cleanup if needed
-  return {
-    cleanup: () => {
-      if (channelRef.current) {
-        supabase.removeChannel(channelRef.current);
-        channelRef.current = null;
-        isSubscribedRef.current = false;
-      }
-    }
-  };
+  }, [refetch, safeRefetch]); // Include both refetch and safeRefetch in dependencies
 };

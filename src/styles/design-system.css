@@ -4,14 +4,11 @@
 @layer base {
   @import './core/variables.css';
   @import './core/typography.css';
-  @import './modern-dark-theme.css';
-  @import './design-system-utilities.css';
 }
 
 @layer components {
   @import './components/buttons.css';
   @import './components/cards.css';
-  @import './components/glass-panel.css';
 }
 
 @layer utilities {
@@ -20,5 +17,4 @@
   @import './utilities/interactions.css';
   @import './utilities/effects.css';
   @import './utilities/rarity.css';
-  @import './modern-utilities.css';
 }

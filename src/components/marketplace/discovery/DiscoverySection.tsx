@@ -1,10 +1,10 @@
 
 import { useState, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Search, SlidersHorizontal, X } from 'lucide-react';
-import { ContextualButton } from '@/components/ui/contextual-button';
+import { Search, Filter, SlidersHorizontal, X } from 'lucide-react';
 import { useMarketplaceListings } from '@/hooks/useMarketplace';
 import MarketplaceCard from '../MarketplaceCard';
 import DiscoveryFilters from './DiscoveryFilters';
@@ -51,7 +51,7 @@ const DiscoverySection = () => {
             placeholder="Search cards, collections, or creators..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-12 h-14 rounded-3xl border-marketplace/20 focus:border-marketplace bg-background/50 backdrop-blur-sm"
+            className="pl-12 h-14 rounded-3xl"
           />
         </div>
         
@@ -69,15 +69,14 @@ const DiscoverySection = () => {
             </SelectContent>
           </Select>
           
-          <ContextualButton
-            context="marketplace"
+          <Button
             variant="outline"
             onClick={() => setShowFilters(!showFilters)}
             className="flex items-center gap-2 h-14 px-6 rounded-3xl"
           >
             <SlidersHorizontal className="w-4 h-4" />
             Filters
-          </ContextualButton>
+          </Button>
         </div>
       </div>
 
@@ -86,26 +85,20 @@ const DiscoverySection = () => {
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-sm text-muted-foreground font-medium">Filters:</span>
           {appliedFilters.map((filter, index) => (
-            <Badge key={index} variant="secondary" className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-marketplace/10 text-marketplace border-marketplace/20">
+            <Badge key={index} variant="secondary" className="flex items-center gap-2 px-4 py-2 rounded-2xl">
               {filter}
               <X className="w-3 h-3 cursor-pointer hover:text-destructive transition-colors" onClick={clearFilters} />
             </Badge>
           ))}
-          <ContextualButton 
-            context="marketplace" 
-            variant="ghost" 
-            size="sm" 
-            onClick={clearFilters} 
-            className="rounded-2xl"
-          >
+          <Button variant="ghost" size="sm" onClick={clearFilters} className="rounded-2xl">
             Clear all
-          </ContextualButton>
+          </Button>
         </div>
       )}
 
       {/* Advanced Filters Panel */}
       {showFilters && (
-        <div className="bg-card/80 backdrop-blur-xl rounded-3xl p-6 border-0 shadow-card">
+        <div className="bg-card/80 backdrop-blur-xl rounded-3xl p-6 border-0">
           <DiscoveryFilters
             filters={filters}
             onFiltersChange={handleFiltersChange}
@@ -125,7 +118,7 @@ const DiscoverySection = () => {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="bg-card/50 backdrop-blur-xl rounded-3xl h-96 animate-pulse border-0 shadow-card" />
+              <div key={i} className="bg-card/50 backdrop-blur-xl rounded-3xl h-96 animate-pulse border-0" />
             ))}
           </div>
         ) : (
@@ -138,24 +131,19 @@ const DiscoverySection = () => {
 
         {!isLoading && listings.length === 0 && (
           <div className="text-center py-16">
-            <div className="w-20 h-20 mx-auto mb-6 bg-marketplace/10 rounded-3xl flex items-center justify-center">
-              <Search className="w-10 h-10 text-marketplace" />
+            <div className="w-20 h-20 mx-auto mb-6 bg-muted/50 rounded-3xl flex items-center justify-center">
+              <Search className="w-10 h-10 text-muted-foreground" />
             </div>
-            <h3 className="text-2xl font-bold mb-3 text-foreground">No cards found</h3>
+            <h3 className="text-2xl font-bold mb-3">No cards found</h3>
             <p className="text-muted-foreground mb-6 text-lg">
               {searchTerm || Object.keys(filters).length > 0
                 ? 'Try adjusting your search or filters'
                 : 'No cards are currently available'}
             </p>
             {(searchTerm || Object.keys(filters).length > 0) && (
-              <ContextualButton 
-                context="marketplace" 
-                variant="outline" 
-                onClick={clearFilters} 
-                className="rounded-3xl px-8 py-3"
-              >
+              <Button variant="outline" onClick={clearFilters} className="rounded-3xl px-8 py-3">
                 Clear search and filters
-              </ContextualButton>
+              </Button>
             )}
           </div>
         )}

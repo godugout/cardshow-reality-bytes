@@ -28,6 +28,7 @@ export const CardDesignerSidebar = ({
   updateDesignConfig,
   uploadImage
 }: CardDesignerSidebarProps) => {
+  // Debug logging
   console.log('CardDesignerSidebar rendering with activeSection:', activeSection);
   console.log('Available sections: content, design, effects, canvas');
 
@@ -67,7 +68,7 @@ export const CardDesignerSidebar = ({
       default:
         console.log('ERROR: No matching section for:', activeSection);
         return (
-          <div className="text-center py-8 text-muted-foreground">
+          <div className="text-center py-8 text-slate-400">
             <p>Unknown section: {activeSection}</p>
             <p>Available: content, design, effects, canvas</p>
           </div>
@@ -82,7 +83,7 @@ export const CardDesignerSidebar = ({
         onSectionChange={onSectionChange}
       />
 
-      <Card className="bg-card/80 backdrop-blur-sm border-cards/20 shadow-card flex-1">
+      <Card className="bg-slate-800 border-slate-700 shadow-lg flex-1">
         <CardContent className="p-6 h-full overflow-y-auto">
           {renderActiveSection()}
         </CardContent>
