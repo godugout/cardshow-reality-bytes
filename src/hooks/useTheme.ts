@@ -51,6 +51,8 @@ export const useTheme = (): UseThemeReturn => {
   useEffect(() => {
     const root = document.documentElement;
     
+    console.log('Applying theme:', theme, 'mode:', mode);
+    
     // Set both data-theme and data-mode attributes
     root.setAttribute('data-theme', theme);
     root.setAttribute('data-mode', mode);
@@ -62,9 +64,17 @@ export const useTheme = (): UseThemeReturn => {
       root.classList.remove('dark');
     }
 
+    // Force a repaint to ensure CSS variables are applied
+    root.style.setProperty('--theme-transition', '1');
+    
     // Save to localStorage
     localStorage.setItem('cardshow-theme', theme);
     localStorage.setItem('cardshow-mode', mode);
+    
+    // Trigger a small delay to ensure CSS variables are updated
+    setTimeout(() => {
+      document.body.style.transition = 'background-color 300ms ease-in-out, color 300ms ease-in-out';
+    }, 10);
   }, [theme, mode]);
 
   const setTheme = (newTheme: Theme) => {

@@ -21,13 +21,23 @@ const ThemeSelector = () => {
   ] as const;
 
   const handleThemeChange = (themeId: string) => {
-    console.log('Changing theme to:', themeId);
-    setTheme(themeId as any);
+    console.log('Theme selector changing theme to:', themeId);
+    setTheme(themeId as Theme);
+    
+    // Force re-render by triggering a small state change
+    setTimeout(() => {
+      document.body.style.transition = 'background-color 300ms ease-in-out';
+    }, 50);
   };
 
   const handleModeChange = (newMode: 'light' | 'dark') => {
-    console.log('Changing mode to:', newMode);
+    console.log('Theme selector changing mode to:', newMode);
     setMode(newMode);
+    
+    // Force re-render
+    setTimeout(() => {
+      document.body.style.transition = 'background-color 300ms ease-in-out';
+    }, 50);
   };
 
   return (
@@ -54,7 +64,7 @@ const ThemeSelector = () => {
           {themes.map((themeOption) => (
             <DropdownMenuItem
               key={themeOption.id}
-              onClick={() => handleThemeChange(themeOption.id)}
+              onSelect={() => handleThemeChange(themeOption.id)}
               className="flex items-center gap-3 px-3 py-2 cursor-pointer rounded-2xl hover:bg-accent/50"
             >
               <div 
@@ -77,7 +87,7 @@ const ThemeSelector = () => {
           <p className="text-xs font-medium px-3 py-1 text-muted-foreground">Appearance</p>
           <div className="grid grid-cols-2 gap-1 mt-1">
             <DropdownMenuItem
-              onClick={() => handleModeChange('light')}
+              onSelect={() => handleModeChange('light')}
               className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-2xl hover:bg-accent/50"
             >
               <Sun className="w-4 h-4" />
@@ -85,7 +95,7 @@ const ThemeSelector = () => {
               {mode === 'light' && <div className="w-2 h-2 bg-primary rounded-full ml-auto" />}
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => handleModeChange('dark')}
+              onSelect={() => handleModeChange('dark')}
               className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-2xl hover:bg-accent/50"
             >
               <Moon className="w-4 h-4" />

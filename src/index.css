@@ -3,5 +3,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './styles/theme.css';
 @import './styles/themes.css';
 @import './styles/design-system.css';
+
+@layer base {
+  /* Ensure body uses theme background */
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    transition: all 300ms ease-in-out;
+  }
+
+  /* Root element should also inherit theme colors */
+  html {
+    background-color: hsl(var(--background));
+  }
+}
