@@ -1,11 +1,10 @@
-
 import { Suspense, lazy } from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/hooks/auth/AuthProvider';
 import { ErrorBoundary } from 'react-error-boundary';
-import PageErrorBoundary from '@/components/error-boundaries/PageErrorBoundary';
+import AppErrorFallback from '@/components/error-boundaries/AppErrorFallback';
 
 // Lazy loading components
 const Index = lazy(() => import('@/pages/Index'));
@@ -44,7 +43,7 @@ const PageLoader = () => (
 
 function App() {
   return (
-    <ErrorBoundary FallbackComponent={PageErrorBoundary}>
+    <ErrorBoundary FallbackComponent={AppErrorFallback}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <BrowserRouter>
