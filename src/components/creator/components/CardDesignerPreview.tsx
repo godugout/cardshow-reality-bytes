@@ -10,20 +10,44 @@ interface CardDesignerPreviewProps {
 }
 
 export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
-  const { getCanvasStyles, getCurrentTheme, canvasState } = useCanvasCustomizer();
+  const { getCanvasStyles, getGridStyles, getCurrentTheme, canvasState } = useCanvasCustomizer();
   
   const currentTheme = getCurrentTheme();
+  const canvasStyles = getCanvasStyles();
+  const gridStyles = getGridStyles();
 
-  console.log('🖼️ CardDesignerPreview - Simplified view with only logo pattern:', {
+  console.log('CardDesignerPreview rendering with:', {
     selectedTheme: canvasState.selectedTheme,
     currentTheme: currentTheme?.name,
-    backgroundImage: currentTheme?.backgroundImage,
-    backgroundSize: canvasState.backgroundSize,
-    backgroundOpacity: canvasState.backgroundOpacity
+    canvasStyles,
+    gridStyles
   });
 
-  // Enhanced background pattern style for maximum visibility
-  const logoPatternStyle: React.CSSProperties = currentTheme?.backgroundImage ? {
+  // Create a comprehensive themed workspace style
+  const workspaceStyle: React.CSSProperties = {
+    ...canvasStyles,
+    minHeight: '100%',
+    position: 'relative',
+    borderRadius: '12px',
+    overflow: 'hidden',
+    // Add theme-specific border and shadow effects
+    border: currentTheme?.borderColor ? `2px solid ${currentTheme.borderColor}` : '2px solid #334155',
+    boxShadow: currentTheme?.shadowColor 
+      ? `0 8px 32px ${currentTheme.shadowColor}, inset 0 1px 0 rgba(255,255,255,0.1)`
+      : '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
+  };
+
+  // Enhanced grid overlay style
+  const gridOverlayStyle: React.CSSProperties = {
+    ...gridStyles,
+    position: 'absolute',
+    inset: 0,
+    pointerEvents: 'none',
+    zIndex: 1,
+  };
+
+  // Background pattern style (for CRD logo or other patterns)
+  const backgroundPatternStyle: React.CSSProperties = currentTheme?.backgroundImage ? {
     position: 'absolute',
     inset: 0,
     backgroundImage: `url(${currentTheme.backgroundImage})`,
@@ -31,10 +55,8 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     backgroundRepeat: 'repeat',
     backgroundPosition: 'center',
     opacity: canvasState.backgroundOpacity,
-    // Maximum visibility settings
-    filter: 'brightness(2) contrast(2) saturate(2)',
-    mixBlendMode: 'normal',
-    zIndex: 10,
+    zIndex: 0,
+    filter: 'brightness(0.8) contrast(1.1)', // Subtle enhancement for better theme effect
   } : {};
 
   return (
@@ -42,40 +64,79 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
       <CardHeader className="pb-4 border-b border-slate-600">
         <CardTitle className="flex items-center gap-2 text-slate-100 text-lg">
           <Eye className="w-5 h-5 text-emerald-500" />
-          CRD Logo Pattern Preview
+          Live Preview
           {currentTheme && (
             <span className="text-sm font-normal text-slate-400 ml-auto">
-              {currentTheme.name} - Size: {canvasState.backgroundSize}px - Opacity: {Math.round((canvasState.backgroundOpacity || 0) * 100)}%
+              Theme: {currentTheme.name}
             </span>
           )}
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0 h-full relative overflow-hidden">
-        {/* Simple background container - only base color and logo pattern */}
+        {/* Themed Canvas Workspace */}
         <div 
-          className="absolute inset-0"
-          style={{
-            backgroundColor: canvasState.customBackgroundColor,
-          }}
+          className="absolute inset-0 transition-all duration-500 ease-out"
+          style={workspaceStyle}
         >
-          {/* ONLY the CRD Logo Pattern - No other layers */}
+          {/* Background Pattern Layer (CRD Logo, etc.) */}
           {currentTheme?.backgroundImage && (
+            <div style={backgroundPatternStyle} />
+          )}
+          
+          {/* Pattern Overlay Layer (for special patterns) */}
+          {currentTheme?.patternOverlay && (
             <div 
-              style={logoPatternStyle}
-              className="crd-logo-pattern-only"
+              className="absolute inset-0"
+              style={{
+                backgroundImage: currentTheme.patternOverlay,
+                backgroundSize: `${canvasState.gridSize}px ${canvasState.gridSize}px`,
+                opacity: 0.3,
+                zIndex: 1,
+              }}
             />
           )}
           
-          {/* Simple centered message when no logo */}
-          {!currentTheme?.backgroundImage && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center text-slate-400">
-                <p className="text-lg font-medium">No Logo Pattern</p>
-                <p className="text-sm">Select CRD theme to see logo pattern</p>
+          {/* Grid Overlay Layer */}
+          {canvasState.showGrid && (
+            <div style={gridOverlayStyle} />
+          )}
+          
+          {/* Theme-specific decorative elements */}
+          {currentTheme?.id === 'crd-branded' && (
+            <div className="absolute top-4 right-4 z-10">
+              <div className="text-xs text-white/40 font-mono bg-black/20 px-2 py-1 rounded backdrop-blur-sm">
+                CRD Studio
               </div>
             </div>
           )}
+          
+          {currentTheme?.id === 'blueprint-blue' && (
+            <>
+              <div className="absolute top-4 left-4 z-10 text-blue-300/60 text-xs font-mono">
+                BLUEPRINT v2.1
+              </div>
+              <div className="absolute bottom-4 right-4 z-10 text-blue-300/40 text-xs">
+                SCALE 1:1
+              </div>
+            </>
+          )}
+          
+          {currentTheme?.id === 'architect-green' && (
+            <div className="absolute bottom-4 left-4 z-10 text-yellow-400/60 text-xs font-mono">
+              DRAFTING TABLE
+            </div>
+          )}
         </div>
+        
+        {/* Card Preview - Positioned above the themed workspace */}
+        <div className="relative z-20 p-8 flex items-start justify-center w-full h-full">
+          <div className="transform scale-110 mt-8 transition-transform duration-300 hover:scale-115">
+            <CardPreview cardData={cardData} />
+          </div>
+        </div>
+
+        {/* Theme transition overlay for smooth changes */}
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-transparent via-transparent to-black/5 z-30" />
       </CardContent>
     </Card>
   );
