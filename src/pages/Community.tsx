@@ -25,6 +25,12 @@ const Community = () => {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
+      {/* Background Effects */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-secondary/10 rounded-full blur-3xl" />
+      </div>
+      
       <Header />
       
       <PageHeader
@@ -52,12 +58,21 @@ const Community = () => {
       />
 
       {/* Community Features Grid */}
-      <div className="section">
-        <div className="container">
-          <div className="grid-cards mb-12">
+      <div className="section" style={{ background: 'linear-gradient(180deg, transparent 0%, var(--bg-secondary) 100%)' }}>
+        <div className="container-2xl">
+          <div className="text-center mb-16">
+            <h2 className="text-headline mb-6 gradient-text-primary">
+              Community Features
+            </h2>
+            <p className="text-body-large max-w-3xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+              Discover all the ways you can connect, create, and grow within our vibrant community ecosystem.
+            </p>
+          </div>
+          
+          <div className="grid-features">
             <ContentCard
               title="Creator Challenges"
-              description="Participate in weekly design challenges, showcase your skills, and win exclusive rewards and recognition."
+              description="Participate in weekly design challenges, showcase your skills, and win exclusive rewards and recognition from the community."
               badge={{ text: "Weekly Events", variant: "success" }}
               icon={Trophy}
               action={{
@@ -65,14 +80,14 @@ const Community = () => {
                 onClick: () => console.log('View challenges')
               }}
               stats={[
-                { label: "Active", value: "12" },
-                { label: "Winners", value: "156" }
+                { label: "Active Challenges", value: "12" },
+                { label: "Total Winners", value: "156" }
               ]}
             />
 
             <ContentCard
               title="Community Forums"
-              description="Join discussions, share tips, get feedback on your work, and connect with fellow creators and collectors."
+              description="Join discussions, share tips, get feedback on your work, and connect with fellow creators and collectors in our active forums."
               badge={{ text: "24/7 Active", variant: "default" }}
               icon={MessageCircle}
               action={{
@@ -80,14 +95,14 @@ const Community = () => {
                 onClick: () => console.log('Join discussion')
               }}
               stats={[
-                { label: "Topics", value: "2.3K" },
+                { label: "Active Topics", value: "2.3K" },
                 { label: "Daily Posts", value: "450+" }
               ]}
             />
 
             <ContentCard
               title="Trending Creators"
-              description="Discover rising stars in the community, follow your favorite creators, and get inspired by their latest work."
+              description="Discover rising stars in the community, follow your favorite creators, and get inspired by their latest innovative work."
               badge={{ text: "Updated Daily" }}
               icon={TrendingUp}
               action={{
@@ -95,14 +110,14 @@ const Community = () => {
                 onClick: () => console.log('Explore creators')
               }}
               stats={[
-                { label: "Featured", value: "24" },
+                { label: "Featured Today", value: "24" },
                 { label: "This Week", value: "156" }
               ]}
             />
 
             <ContentCard
               title="Creator Showcase"
-              description="Feature your best work in our community gallery, get votes from peers, and gain recognition."
+              description="Feature your best work in our community gallery, get votes from peers, and gain recognition for your creative achievements."
               badge={{ text: "Curated Weekly" }}
               icon={Star}
               action={{
@@ -110,14 +125,14 @@ const Community = () => {
                 onClick: () => console.log('Submit work')
               }}
               stats={[
-                { label: "Featured", value: "89" },
-                { label: "Votes Cast", value: "12K+" }
+                { label: "Featured Works", value: "89" },
+                { label: "Community Votes", value: "12K+" }
               ]}
             />
 
             <ContentCard
               title="Collaboration Hub"
-              description="Find creative partners, join collaborative projects, and create amazing collections together."
+              description="Find creative partners, join collaborative projects, and create amazing collections together with like-minded creators."
               badge={{ text: "Project Matching" }}
               icon={Users}
               action={{
@@ -132,7 +147,7 @@ const Community = () => {
 
             <ContentCard
               title="Achievement System"
-              description="Unlock badges, earn reputation points, and climb the leaderboards as you contribute to the community."
+              description="Unlock badges, earn reputation points, and climb the leaderboards as you contribute to and engage with the community."
               badge={{ text: "Gamified Experience" }}
               icon={Award}
               action={{
@@ -140,7 +155,7 @@ const Community = () => {
                 onClick: () => console.log('View achievements')
               }}
               stats={[
-                { label: "Badges", value: "45" },
+                { label: "Total Badges", value: "45" },
                 { label: "Top Players", value: "500" }
               ]}
             />
@@ -149,14 +164,14 @@ const Community = () => {
       </div>
 
       {/* Community Dashboard */}
-      <div className="section" style={{ background: 'var(--bg-secondary)' }}>
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-title mb-4" style={{ color: 'var(--primary)' }}>
+      <div className="section" style={{ background: 'var(--bg-tertiary)' }}>
+        <div className="container-2xl">
+          <div className="text-center mb-16">
+            <h2 className="text-headline mb-6 gradient-text-secondary">
               Community Activity Feed
             </h2>
-            <p className="text-body text-secondary max-w-2xl mx-auto">
-              Stay updated with the latest happenings, featured content, and community highlights.
+            <p className="text-body-large max-w-3xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+              Stay updated with the latest happenings, featured content, and community highlights from creators you follow.
             </p>
           </div>
           
@@ -170,27 +185,28 @@ const Community = () => {
 };
 
 const CommunityDashboardSkeleton = () => (
-  <div className="space-y-8">
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+  <div className="space-y-12">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="card p-8 animate-pulse">
-          <div className="h-16 w-full rounded-lg skeleton" />
+        <div key={i} className="card p-8">
+          <div className="h-20 w-full skeleton mb-4" />
+          <div className="h-4 w-3/4 skeleton" />
         </div>
       ))}
     </div>
     
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div className="lg:col-span-2 space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="lg:col-span-2 space-y-8">
         {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="card p-8 animate-pulse">
-            <div className="h-32 w-full rounded-lg skeleton" />
+          <div key={i} className="card p-8">
+            <div className="h-40 w-full skeleton" />
           </div>
         ))}
       </div>
-      <div className="space-y-6">
+      <div className="space-y-8">
         {Array.from({ length: 2 }).map((_, i) => (
-          <div key={i} className="card p-8 animate-pulse">
-            <div className="h-24 w-full rounded-lg skeleton" />
+          <div key={i} className="card p-8">
+            <div className="h-32 w-full skeleton" />
           </div>
         ))}
       </div>

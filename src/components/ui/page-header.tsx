@@ -38,41 +38,46 @@ const PageHeader = ({
 
   return (
     <div className="section">
-      <div className="container">
-        <div className="text-center max-w-4xl mx-auto">
+      <div className="container-2xl">
+        <div className="text-center max-w-5xl mx-auto relative">
+          {/* Background decoration */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 rounded-3xl blur-3xl -z-10" />
+          
           {/* Badge */}
           {badge && (
-            <div className="mb-8">
-              <Badge className="bg-primary/20 text-primary border-0 px-6 py-2">
-                {BadgeIcon && <BadgeIcon className="w-4 h-4 mr-2" />}
+            <div className="mb-10">
+              <Badge className="glass-morphism border-glow px-8 py-3 text-lg font-semibold">
+                {BadgeIcon && <BadgeIcon className="w-5 h-5 mr-3" />}
                 {badge.text}
               </Badge>
             </div>
           )}
 
-          {/* Title */}
-          <div className="space-y-6 mb-12">
-            <h1 className="text-display">
-              <span className="text-white">{title}</span>
+          {/* Title Section */}
+          <div className="space-y-8 mb-16">
+            <h1 className="text-display leading-none">
+              <span style={{ color: 'var(--text-primary)' }}>{title}</span>
               {subtitle && (
                 <>
                   <br />
-                  <span style={{ color: 'var(--primary)' }}>{subtitle}</span>
+                  <span className="gradient-text-primary">{subtitle}</span>
                 </>
               )}
             </h1>
             
-            <p className="text-body text-secondary max-w-3xl mx-auto">
-              {description}
-            </p>
+            <div className="max-w-4xl mx-auto">
+              <p className="text-body-large leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                {description}
+              </p>
+            </div>
           </div>
 
           {/* Actions */}
           {(primaryAction || secondaryAction) && (
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
               {primaryAction && (
                 <Button 
-                  className="btn btn-primary btn-lg"
+                  className="btn btn-primary btn-xl hover-glow"
                   onClick={primaryAction.onClick}
                 >
                   {primaryAction.text}
@@ -81,7 +86,7 @@ const PageHeader = ({
               
               {secondaryAction && (
                 <Button 
-                  className="btn btn-ghost btn-lg"
+                  className="btn btn-ghost btn-xl hover-lift"
                   onClick={secondaryAction.onClick}
                 >
                   {secondaryAction.text}
@@ -92,13 +97,15 @@ const PageHeader = ({
 
           {/* Stats */}
           {stats && (
-            <div className="flex gap-8 justify-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
               {stats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-title" style={{ color: 'var(--primary)' }}>
+                <div key={index} className="text-center space-y-3">
+                  <div className="text-title gradient-text-primary font-bold">
                     {stat.value}
                   </div>
-                  <div className="text-caption">{stat.label}</div>
+                  <div className="text-caption font-medium" style={{ color: 'var(--text-tertiary)' }}>
+                    {stat.label}
+                  </div>
                 </div>
               ))}
             </div>
