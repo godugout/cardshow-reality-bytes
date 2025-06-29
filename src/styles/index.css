@@ -1,0 +1,90 @@
+
+/* Cardshow Design System - Main Entry Point */
+
+/* Foundation Layer */
+@import './foundation/tokens.css';
+@import './foundation/base.css';
+
+/* Component Layer */
+@import './components/button.css';
+@import './components/card.css';
+
+/* Utility Layer */
+@import './utilities/layout.css';
+@import './utilities/typography.css';
+
+/* Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === COMPONENT INTEGRATION === */
+@layer components {
+  /* Ensure our design system components work with Tailwind */
+  .crd-button {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+  
+  .crd-card {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+}
+
+@layer utilities {
+  /* High contrast utilities for better accessibility */
+  .text-high-contrast {
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  .bg-high-contrast {
+    background-color: hsl(var(--background)) !important;
+  }
+  
+  /* Glass morphism effect */
+  .glass-effect {
+    background-color: hsl(var(--background) / 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+  
+  /* Interactive states */
+  .hover-lift {
+    transition: transform var(--duration-fast) var(--easing-ease);
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fadeIn var(--duration-normal) var(--easing-ease);
+  }
+  
+  .animate-slide-up {
+    animation: slideUp var(--duration-normal) var(--easing-ease);
+  }
+}
+
+/* === KEYFRAMES === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

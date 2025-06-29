@@ -1,0 +1,148 @@
+
+/* Cardshow Design System - Card Component */
+
+.crd-card {
+  /* Base card styles */
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-normal) var(--easing-ease);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Interactive card */
+.crd-card--interactive {
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: hsl(var(--border) / 0.8);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+/* Card variants */
+.crd-card--elevated {
+  box-shadow: var(--shadow-lg);
+}
+
+.crd-card--bordered {
+  border-width: 2px;
+}
+
+.crd-card--glass {
+  background-color: hsl(var(--background) / 0.8);
+  backdrop-filter: blur(12px);
+  border-color: hsl(var(--border) / 0.5);
+}
+
+/* Card sections */
+.crd-card__header {
+  padding: var(--space-6);
+  border-bottom: 1px solid hsl(var(--border));
+  background-color: hsl(var(--muted) / 0.3);
+}
+
+.crd-card__content {
+  padding: var(--space-6);
+}
+
+.crd-card__footer {
+  padding: var(--space-6);
+  border-top: 1px solid hsl(var(--border));
+  background-color: hsl(var(--muted) / 0.3);
+}
+
+/* Card title and description */
+.crd-card__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: hsl(var(--card-foreground));
+  line-height: var(--line-height-tight);
+}
+
+.crd-card__description {
+  font-size: var(--font-size-sm);
+  color: hsl(var(--muted-foreground));
+  line-height: var(--line-height-normal);
+  margin-top: var(--space-2);
+}
+
+/* Trading card specific styles */
+.crd-card--trading {
+  aspect-ratio: 5/7;
+  max-width: 280px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-xl);
+  }
+}
+
+.crd-card--trading .crd-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-normal) var(--easing-ease);
+}
+
+.crd-card--trading:hover .crd-card__image {
+  transform: scale(1.05);
+}
+
+/* Rarity indicators */
+.crd-card--common {
+  border-color: hsl(var(--color-neutral-300));
+}
+
+.crd-card--uncommon {
+  border-color: hsl(var(--color-success));
+  box-shadow: 0 0 0 1px hsl(var(--color-success) / 0.2);
+}
+
+.crd-card--rare {
+  border-color: hsl(var(--color-info));
+  box-shadow: 0 0 0 1px hsl(var(--color-info) / 0.2);
+}
+
+.crd-card--epic {
+  border-color: hsl(280 100% 70%);
+  box-shadow: 0 0 0 1px hsl(280 100% 70% / 0.2);
+}
+
+.crd-card--legendary {
+  border-color: hsl(var(--color-warning));
+  box-shadow: 0 0 0 1px hsl(var(--color-warning) / 0.2);
+  position: relative;
+}
+
+.crd-card--legendary::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(45deg, 
+    hsl(var(--color-warning)), 
+    hsl(var(--color-error)), 
+    hsl(var(--color-warning))
+  );
+  background-size: 400% 400%;
+  border-radius: inherit;
+  z-index: -1;
+  animation: rainbow-border 3s ease infinite;
+}
+
+@keyframes rainbow-border {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
