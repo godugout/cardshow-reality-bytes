@@ -31,20 +31,14 @@ const CardDisplay = ({ card, size = 'md', showStats = false, className }: CardDi
       className
     )}>
       <CardContent className="p-0 h-full">
-        {/* Card Image/3D View */}
         <CardImage
           card={card}
           is3D={is3D}
           onToggle3D={setIs3D}
         />
         
-        {/* Card Metadata (Rarity, Serial Number) */}
         <CardMetadata card={card} />
-
-        {/* Favorite Button */}
         <CardActions card={card} />
-
-        {/* Card Info */}
         <CardInfo card={card} showStats={showStats} />
       </CardContent>
     </Card>
