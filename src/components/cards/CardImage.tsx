@@ -29,7 +29,7 @@ const CardImage = ({ card, is3D, onToggle3D }: CardImageProps) => {
       {!is3D && (
         <>
           {!imageLoaded && (
-            <div className="absolute inset-0 bg-gray-800 animate-pulse" />
+            <div className="absolute inset-0 bg-gray-700 animate-pulse" />
           )}
           <img
             src={card.image_url || '/placeholder.svg'}
@@ -57,8 +57,8 @@ const CardImage = ({ card, is3D, onToggle3D }: CardImageProps) => {
           />
           
           {!view3DLoaded && (
-            <div className="absolute inset-0 bg-gray-800 animate-pulse flex items-center justify-center">
-              <div className="text-gray-400 text-sm">Loading premium 3D...</div>
+            <div className="absolute inset-0 bg-gray-700 animate-pulse flex items-center justify-center">
+              <div className="text-gray-200 text-sm font-medium">Loading premium 3D...</div>
             </div>
           )}
         </div>

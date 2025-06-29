@@ -25,7 +25,7 @@ const CardInfo = ({ card, showStats = false }: CardInfoProps) => {
         </h3>
         
         {card.description && (
-          <p className="text-xs text-gray-400 line-clamp-2 mt-1">
+          <p className="text-xs text-gray-200 line-clamp-2 mt-1">
             {card.description}
           </p>
         )}
@@ -50,8 +50,8 @@ const CardInfo = ({ card, showStats = false }: CardInfoProps) => {
         <div className="flex items-center gap-2 text-xs">
           {card.current_market_value && (
             <div className="flex items-center gap-1">
-              <DollarSign className="w-3 h-3 text-[#00C851]" />
-              <span className="font-semibold text-[#00C851]">
+              <DollarSign className="w-3 h-3 text-[#1DF27A]" />
+              <span className="font-semibold text-[#1DF27A]">
                 {formatPrice(card.current_market_value)}
               </span>
             </div>
@@ -59,15 +59,15 @@ const CardInfo = ({ card, showStats = false }: CardInfoProps) => {
           
           {card.view_count !== undefined && (
             <div className="flex items-center gap-1">
-              <Eye className="w-3 h-3 text-blue-400" />
-              <span className="text-blue-400 font-medium">{card.view_count}</span>
+              <Eye className="w-3 h-3 text-cyan-300" />
+              <span className="text-cyan-300 font-medium">{card.view_count}</span>
             </div>
           )}
           
           {card.favorite_count !== undefined && card.favorite_count > 0 && (
             <div className="flex items-center gap-1">
-              <Heart className="w-3 h-3 text-red-400" />
-              <span className="text-red-400 font-medium">{card.favorite_count}</span>
+              <Heart className="w-3 h-3 text-pink-300" />
+              <span className="text-pink-300 font-medium">{card.favorite_count}</span>
             </div>
           )}
         </div>
@@ -75,7 +75,7 @@ const CardInfo = ({ card, showStats = false }: CardInfoProps) => {
 
       {/* Creator Info */}
       {card.creator && (
-        <div className="flex items-center gap-1 mt-1 text-xs text-gray-400">
+        <div className="flex items-center gap-1 mt-1 text-xs text-gray-200">
           <User className="w-3 h-3" />
           <span>by {card.creator.username}</span>
         </div>

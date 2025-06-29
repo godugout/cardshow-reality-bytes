@@ -28,14 +28,14 @@ const CardActions = ({ card }: CardActionsProps) => {
     <Button
       variant="ghost"
       size="sm"
-      className="absolute bottom-2 right-2 bg-black/50 hover:bg-black/70 text-white"
+      className="absolute bottom-2 right-2 bg-black/60 hover:bg-black/80 text-white border border-white/20"
       onClick={handleFavoriteToggle}
       disabled={toggleFavorite.isPending}
     >
       <Heart 
         className={cn(
           'w-4 h-4',
-          card.is_favorited ? 'fill-red-500 text-red-500' : 'text-white'
+          card.is_favorited ? 'fill-pink-400 text-pink-400' : 'text-gray-200'
         )}
       />
     </Button>
