@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye } from 'lucide-react';
 import { CardPreview } from '../CardPreview';
@@ -113,7 +112,10 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
                     console.error('CRD Logo failed to load:', e);
                     // Fallback to text if image fails
                     e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling!.style.display = 'block';
+                    const fallbackElement = e.currentTarget.nextElementSibling as HTMLElement;
+                    if (fallbackElement) {
+                      fallbackElement.style.display = 'block';
+                    }
                   }}
                 />
                 <span className="text-xs text-white/60 font-mono hidden">CRD</span>
