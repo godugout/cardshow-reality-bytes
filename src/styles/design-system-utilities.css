@@ -1,0 +1,91 @@
+
+/* Cardshow Design System - Text & Color Utilities */
+
+@layer utilities {
+  /* High Contrast Text System */
+  .text-primary-bright {
+    color: #FFFFFF !important;
+  }
+  
+  .text-secondary-bright {
+    color: #E2E8F0 !important;
+  }
+  
+  .text-tertiary-bright {
+    color: #CBD5E1 !important;
+  }
+  
+  .text-muted-bright {
+    color: #94A3B8 !important;
+  }
+  
+  .text-accent-bright {
+    color: #00C851 !important;
+  }
+  
+  /* Button Text Override */
+  .btn-text-bright {
+    color: #FFFFFF !important;
+  }
+  
+  .btn-text-bright:hover {
+    color: #FFFFFF !important;
+  }
+  
+  /* Card Text System */
+  .card-title-bright {
+    color: #FFFFFF !important;
+    font-weight: 600;
+  }
+  
+  .card-description-bright {
+    color: #CBD5E1 !important;
+  }
+  
+  .card-meta-bright {
+    color: #94A3B8 !important;
+  }
+  
+  /* Collection Specific */
+  .collection-title-bright {
+    color: #FFFFFF !important;
+    font-weight: 700;
+  }
+  
+  .collection-description-bright {
+    color: #E2E8F0 !important;
+  }
+  
+  /* Interactive Elements */
+  .interactive-text-bright {
+    color: #CBD5E1 !important;
+    transition: color 0.2s ease;
+  }
+  
+  .interactive-text-bright:hover {
+    color: #FFFFFF !important;
+  }
+  
+  /* Status Colors */
+  .status-success-bright {
+    color: #10B981 !important;
+  }
+  
+  .status-warning-bright {
+    color: #F59E0B !important;
+  }
+  
+  .status-error-bright {
+    color: #EF4444 !important;
+  }
+  
+  /* High Contrast Backgrounds */
+  .bg-card-bright {
+    background-color: rgba(17, 17, 17, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .bg-surface-bright {
+    background-color: rgba(26, 26, 26, 0.9) !important;
+  }
+}

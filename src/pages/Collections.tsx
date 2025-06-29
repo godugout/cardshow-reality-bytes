@@ -40,13 +40,13 @@ const Collections = () => {
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8">
+          <p className="text-xl md:text-2xl text-secondary-bright max-w-4xl mx-auto leading-relaxed mb-8">
             Organize your cards into beautiful collections and showcase your favorites. 
             Create themed galleries and share your most prized digital assets.
           </p>
           
           {/* Desktop-specific action button */}
-          <Button className="btn btn-primary btn-xl">
+          <Button className="modern-button btn-text-bright">
             <Plus className="w-6 h-6 mr-2" />
             Create New Collection
           </Button>

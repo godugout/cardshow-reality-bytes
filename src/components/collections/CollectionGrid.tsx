@@ -53,8 +53,8 @@ const CollectionGrid = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Collections</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-3xl font-bold text-primary-bright">Collections</h1>
+          <p className="text-secondary-bright mt-1">
             Discover and organize amazing card collections
           </p>
         </div>
@@ -62,7 +62,7 @@ const CollectionGrid = () => {
         {user && (
           <Button 
             onClick={() => setShowCreateDialog(true)}
-            className="bg-success hover:bg-success/90 text-success-foreground"
+            className="modern-button btn-text-bright"
           >
             <Plus className="w-4 h-4 mr-2" aria-hidden="true" />
             Create Collection
@@ -76,13 +76,13 @@ const CollectionGrid = () => {
           <Label htmlFor="collections-search" className="sr-only">
             Search collections
           </Label>
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" aria-hidden="true" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-tertiary-bright w-4 h-4" aria-hidden="true" />
           <Input
             id="collections-search"
             placeholder="Search collections..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-10 bg-card-bright text-primary-bright placeholder:text-muted-bright border-gray-600"
             aria-describedby="collections-search-help"
           />
           <div id="collections-search-help" className="sr-only">
@@ -103,7 +103,11 @@ const CollectionGrid = () => {
               }
               size="sm"
               onClick={() => handleFilterChange(option.value)}
-              className="border-border text-foreground hover:text-foreground hover:bg-accent"
+              className={`border-gray-600 transition-all duration-200 ${
+                JSON.stringify(filters) === JSON.stringify(option.value)
+                  ? 'bg-[#00C851] text-white hover:bg-[#00A543]'
+                  : 'text-secondary-bright hover:text-primary-bright hover:bg-surface-bright border-gray-600'
+              }`}
               aria-pressed={JSON.stringify(filters) === JSON.stringify(option.value)}
             >
               {option.label}
@@ -114,16 +118,16 @@ const CollectionGrid = () => {
 
       {/* Collections Grid */}
       {collections.length === 0 ? (
-        <Card className="bg-card border-border p-8 text-center">
-          <div className="text-muted-foreground mb-4">
+        <Card className="bg-card-bright border-gray-700 p-8 text-center">
+          <div className="text-secondary-bright mb-4">
             <Filter className="w-12 h-12 mx-auto mb-4 opacity-50" aria-hidden="true" />
-            <p className="text-lg">No collections found</p>
-            <p className="text-sm">Try adjusting your search or filters</p>
+            <p className="text-lg text-primary-bright">No collections found</p>
+            <p className="text-sm text-tertiary-bright">Try adjusting your search or filters</p>
           </div>
           {user && (
             <Button 
               onClick={() => setShowCreateDialog(true)}
-              className="bg-success hover:bg-success/90 text-success-foreground mt-4"
+              className="modern-button btn-text-bright mt-4"
             >
               Create Your First Collection
             </Button>

@@ -2,21 +2,21 @@
 /* Modern Dark Theme - Unified Design System */
 
 :root {
-  /* Dark Theme Color Palette */
+  /* Dark Theme Color Palette - Updated for High Contrast */
   --background: 10 10 10; /* #0A0A0A */
-  --foreground: 248 250 252; /* #F8FAFC */
+  --foreground: 255 255 255; /* #FFFFFF - Pure white for maximum contrast */
   --card: 17 17 17; /* #111111 */
-  --card-foreground: 248 250 252;
+  --card-foreground: 255 255 255; /* #FFFFFF - Pure white */
   --popover: 17 17 17;
-  --popover-foreground: 248 250 252;
+  --popover-foreground: 255 255 255; /* #FFFFFF */
   --primary: 0 200 81; /* #00C851 - Green accent */
   --primary-foreground: 255 255 255;
   --secondary: 26 26 26; /* #1A1A1A */
-  --secondary-foreground: 248 250 252;
+  --secondary-foreground: 248 250 252; /* #F8FAFC - Very light */
   --muted: 26 26 26;
-  --muted-foreground: 156 163 175; /* #9CA3AF */
+  --muted-foreground: 226 232 240; /* #E2E8F0 - Much brighter than before */
   --accent: 34 34 34; /* #222222 */
-  --accent-foreground: 248 250 252;
+  --accent-foreground: 255 255 255; /* #FFFFFF */
   --destructive: 220 38 38;
   --destructive-foreground: 248 250 252;
   --border: 39 39 42; /* #27272A */
@@ -49,6 +49,23 @@ html, body {
 #root {
   background: transparent;
   min-height: 100vh;
+}
+
+/* High Contrast Text Utilities */
+.text-bright {
+  color: #FFFFFF !important;
+}
+
+.text-bright-secondary {
+  color: #E2E8F0 !important;
+}
+
+.text-bright-muted {
+  color: #CBD5E1 !important;
+}
+
+.text-bright-accent {
+  color: #00C851 !important;
 }
 
 /* Glass Morphism Utilities */
@@ -98,6 +115,7 @@ html, body {
   @apply bg-gradient-to-r from-[#00C851] to-[#00A543];
   @apply hover:shadow-lg hover:shadow-[#00C851]/30;
   @apply active:scale-95;
+  color: #FFFFFF !important;
 }
 
 .modern-button-outline {
