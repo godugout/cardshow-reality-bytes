@@ -36,6 +36,8 @@ export const useTheme = (): UseThemeReturn => {
     const savedTheme = localStorage.getItem('cardshow-theme') as Theme;
     const savedMode = localStorage.getItem('cardshow-mode') as Mode;
 
+    console.log('Loading saved preferences:', { savedTheme, savedMode });
+
     if (savedTheme && ['classic', 'royal', 'vibrant', 'fresh'].includes(savedTheme)) {
       setThemeState(savedTheme);
     }
@@ -47,43 +49,47 @@ export const useTheme = (): UseThemeReturn => {
     }
   }, []);
 
-  // Apply theme and mode to document
+  // Apply theme and mode to document immediately
   useEffect(() => {
     const root = document.documentElement;
+    const body = document.body;
     
-    console.log('Applying theme:', theme, 'mode:', mode);
+    console.log('Applying theme and mode:', { theme, mode });
     
-    // Set both data-theme and data-mode attributes
+    // Set data attributes for CSS targeting
     root.setAttribute('data-theme', theme);
     root.setAttribute('data-mode', mode);
     
     // Handle dark mode class for compatibility
     if (mode === 'dark') {
       root.classList.add('dark');
+      body.classList.add('dark');
     } else {
       root.classList.remove('dark');
+      body.classList.remove('dark');
     }
 
-    // Force a repaint to ensure CSS variables are applied
-    root.style.setProperty('--theme-transition', '1');
+    // Force immediate style recalculation
+    root.style.colorScheme = mode;
     
     // Save to localStorage
     localStorage.setItem('cardshow-theme', theme);
     localStorage.setItem('cardshow-mode', mode);
     
-    // Trigger a small delay to ensure CSS variables are updated
-    setTimeout(() => {
-      document.body.style.transition = 'background-color 300ms ease-in-out, color 300ms ease-in-out';
-    }, 10);
+    console.log('Theme applied. Current CSS variables:', {
+      background: getComputedStyle(root).getPropertyValue('--background'),
+      foreground: getComputedStyle(root).getPropertyValue('--foreground'),
+      primary: getComputedStyle(root).getPropertyValue('--primary')
+    });
   }, [theme, mode]);
 
   const setTheme = (newTheme: Theme) => {
-    console.log('Setting theme to:', newTheme);
+    console.log('Theme selector: changing theme to:', newTheme);
     setThemeState(newTheme);
   };
 
   const setMode = (newMode: Mode) => {
-    console.log('Setting mode to:', newMode);
+    console.log('Theme selector: changing mode to:', newMode);
     setModeState(newMode);
   };
 

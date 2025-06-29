@@ -1,5 +1,5 @@
 
-/* Cardshow Multi-Theme System */
+/* Cardshow Multi-Theme System with Proper Specificity */
 
 /* Theme: Classic Red (Default) */
 :root,
@@ -13,7 +13,7 @@
   --primary: 220 38 38;
   --primary-foreground: 255 255 255;
 
-  /* Background System */
+  /* Background System - Light Mode */
   --background: 255 255 255;
   --foreground: 17 24 39;
   --card: 255 255 255;
@@ -72,41 +72,30 @@
   --ring: 5 150 105;
 }
 
-/* Dark Mode Variants for all themes */
-[data-mode="dark"] {
-  --background: 15 23 42;
-  --foreground: 248 250 252;
-  --card: 30 41 59;
-  --card-foreground: 248 250 252;
-  --popover: 30 41 59;
-  --popover-foreground: 248 250 252;
-  --secondary: 30 41 59;
-  --secondary-foreground: 248 250 252;
-  --muted: 30 41 59;
-  --muted-foreground: 148 163 184;
-  --accent: 30 41 59;
-  --accent-foreground: 248 250 252;
-  --border: 51 65 85;
-  --input: 51 65 85;
-}
-
-/* Apply to all theme/mode combinations */
+/* Dark Mode Override - Higher Specificity */
+[data-mode="dark"],
 [data-theme="classic"][data-mode="dark"],
 [data-theme="royal"][data-mode="dark"],
 [data-theme="vibrant"][data-mode="dark"],
 [data-theme="fresh"][data-mode="dark"] {
-  --background: 15 23 42;
-  --foreground: 248 250 252;
-  --card: 30 41 59;
-  --card-foreground: 248 250 252;
-  --popover: 30 41 59;
-  --popover-foreground: 248 250 252;
-  --secondary: 30 41 59;
-  --secondary-foreground: 248 250 252;
-  --muted: 30 41 59;
-  --muted-foreground: 148 163 184;
-  --accent: 30 41 59;
-  --accent-foreground: 248 250 252;
-  --border: 51 65 85;
-  --input: 51 65 85;
+  --background: 15 23 42 !important;
+  --foreground: 248 250 252 !important;
+  --card: 30 41 59 !important;
+  --card-foreground: 248 250 252 !important;
+  --popover: 30 41 59 !important;
+  --popover-foreground: 248 250 252 !important;
+  --secondary: 30 41 59 !important;
+  --secondary-foreground: 248 250 252 !important;
+  --muted: 30 41 59 !important;
+  --muted-foreground: 148 163 184 !important;
+  --accent: 30 41 59 !important;
+  --accent-foreground: 248 250 252 !important;
+  --border: 51 65 85 !important;
+  --input: 51 65 85 !important;
+}
+
+/* Ensure body background inherits from CSS variables */
+body {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
 }
