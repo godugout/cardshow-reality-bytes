@@ -36,7 +36,7 @@ export const useTheme = (): UseThemeReturn => {
     const savedTheme = localStorage.getItem('cardshow-theme') as Theme;
     const savedMode = localStorage.getItem('cardshow-mode') as Mode;
 
-    console.log('Loading saved preferences:', { savedTheme, savedMode });
+    console.log('🎨 Loading saved preferences:', { savedTheme, savedMode });
 
     if (savedTheme && ['classic', 'royal', 'vibrant', 'fresh'].includes(savedTheme)) {
       setThemeState(savedTheme);
@@ -49,47 +49,57 @@ export const useTheme = (): UseThemeReturn => {
     }
   }, []);
 
-  // Apply theme and mode to document immediately
+  // Apply theme and mode to document immediately with force update
   useEffect(() => {
     const root = document.documentElement;
     const body = document.body;
     
-    console.log('Applying theme and mode:', { theme, mode });
+    console.log('🎨 Applying theme and mode:', { theme, mode });
     
-    // Set data attributes for CSS targeting
+    // Remove all existing theme and mode attributes first
+    root.removeAttribute('data-theme');
+    root.removeAttribute('data-mode');
+    root.classList.remove('dark', 'light');
+    body.classList.remove('dark', 'light');
+    
+    // Set new theme and mode
     root.setAttribute('data-theme', theme);
     root.setAttribute('data-mode', mode);
+    root.classList.add(mode);
+    body.classList.add(mode);
     
-    // Handle dark mode class for compatibility
-    if (mode === 'dark') {
-      root.classList.add('dark');
-      body.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-      body.classList.remove('dark');
-    }
-
     // Force immediate style recalculation
     root.style.colorScheme = mode;
+    
+    // Force repaint
+    void root.offsetHeight;
     
     // Save to localStorage
     localStorage.setItem('cardshow-theme', theme);
     localStorage.setItem('cardshow-mode', mode);
     
-    console.log('Theme applied. Current CSS variables:', {
-      background: getComputedStyle(root).getPropertyValue('--background'),
-      foreground: getComputedStyle(root).getPropertyValue('--foreground'),
-      primary: getComputedStyle(root).getPropertyValue('--primary')
-    });
+    // Debug current CSS variables
+    setTimeout(() => {
+      const computedStyle = getComputedStyle(root);
+      console.log('🎨 Current CSS variables after theme change:', {
+        theme,
+        mode,
+        background: computedStyle.getPropertyValue('--background'),
+        foreground: computedStyle.getPropertyValue('--foreground'),
+        primary: computedStyle.getPropertyValue('--primary'),
+        dataTheme: root.getAttribute('data-theme'),
+        dataMode: root.getAttribute('data-mode')
+      });
+    }, 100);
   }, [theme, mode]);
 
   const setTheme = (newTheme: Theme) => {
-    console.log('Theme selector: changing theme to:', newTheme);
+    console.log('🎨 Theme selector: changing theme to:', newTheme);
     setThemeState(newTheme);
   };
 
   const setMode = (newMode: Mode) => {
-    console.log('Theme selector: changing mode to:', newMode);
+    console.log('🎨 Theme selector: changing mode to:', newMode);
     setModeState(newMode);
   };
 

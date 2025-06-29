@@ -1,19 +1,9 @@
 
 /* Cardshow Multi-Theme System with Proper Specificity */
 
-/* Theme: Classic Red (Default) */
-:root,
-[data-theme="classic"] {
-  /* Brand Colors - Classic Red Theme */
-  --color-brand-primary: 220 38 38;     /* DC2626 as HSL */
-  --color-brand-secondary: 124 45 18;   /* 7C2D12 as HSL */
-  --color-brand-accent: 252 165 165;    /* FCA5A5 as HSL */
-
-  /* Primary Palette for Tailwind compatibility */
-  --primary: 220 38 38;
-  --primary-foreground: 255 255 255;
-
-  /* Background System - Light Mode */
+/* Base variables that apply to all themes */
+:root {
+  /* Background System */
   --background: 255 255 255;
   --foreground: 17 24 39;
   --card: 255 255 255;
@@ -32,11 +22,21 @@
   /* Borders and UI elements */
   --border: 226 232 240;
   --input: 226 232 240;
-  --ring: 220 38 38;
 
   /* State colors */
   --destructive: 239 68 68;
   --destructive-foreground: 255 255 255;
+}
+
+/* Theme: Classic Red (Default) */
+:root,
+[data-theme="classic"] {
+  --color-brand-primary: 220 38 38;
+  --color-brand-secondary: 124 45 18;
+  --color-brand-accent: 252 165 165;
+  --primary: 220 38 38;
+  --primary-foreground: 255 255 255;
+  --ring: 220 38 38;
 }
 
 /* Theme: Royal Blue */
@@ -44,7 +44,6 @@
   --color-brand-primary: 29 78 216;
   --color-brand-secondary: 30 58 138;
   --color-brand-accent: 147 197 253;
-
   --primary: 29 78 216;
   --primary-foreground: 255 255 255;
   --ring: 29 78 216;
@@ -55,7 +54,6 @@
   --color-brand-primary: 234 88 12;
   --color-brand-secondary: 194 65 12;
   --color-brand-accent: 254 215 170;
-
   --primary: 234 88 12;
   --primary-foreground: 255 255 255;
   --ring: 234 88 12;
@@ -66,18 +64,13 @@
   --color-brand-primary: 5 150 105;
   --color-brand-secondary: 4 120 87;
   --color-brand-accent: 167 243 208;
-
   --primary: 5 150 105;
   --primary-foreground: 255 255 255;
   --ring: 5 150 105;
 }
 
-/* Dark Mode Override - Higher Specificity */
-[data-mode="dark"],
-[data-theme="classic"][data-mode="dark"],
-[data-theme="royal"][data-mode="dark"],
-[data-theme="vibrant"][data-mode="dark"],
-[data-theme="fresh"][data-mode="dark"] {
+/* Dark Mode - Higher specificity with !important */
+[data-mode="dark"] {
   --background: 15 23 42 !important;
   --foreground: 248 250 252 !important;
   --card: 30 41 59 !important;
@@ -94,8 +87,14 @@
   --input: 51 65 85 !important;
 }
 
-/* Ensure body background inherits from CSS variables */
-body {
+/* Ensure body background inherits from CSS variables with higher specificity */
+html, body {
   background-color: hsl(var(--background)) !important;
   color: hsl(var(--foreground)) !important;
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+#root {
+  background-color: hsl(var(--background)) !important;
+  min-height: 100vh;
 }
