@@ -12,7 +12,8 @@ export const CardPreview = ({ cardData, className = '' }: CardPreviewProps) => {
     let backgroundImage = '';
     
     if (cardData.imageUrl) {
-      backgroundImage = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url(${cardData.imageUrl})`;
+      // Use the uploaded image as the primary background
+      backgroundImage = `url(${cardData.imageUrl})`;
     }
 
     let effectClasses = '';
@@ -85,17 +86,26 @@ export const CardPreview = ({ cardData, className = '' }: CardPreviewProps) => {
         `}
       </style>
       
-      <div className={`flex justify-center ${className}`}>
+      <div className={`w-full h-full ${className}`}>
         <div 
-          className={`relative w-64 h-80 flex flex-col justify-end p-4 text-white shadow-2xl overflow-hidden transition-transform duration-300 hover:scale-105 ${effectClasses}`}
+          className={`relative w-full h-full flex flex-col justify-end p-4 text-white shadow-2xl overflow-hidden transition-transform duration-300 ${effectClasses}`}
           style={{
-            backgroundColor: designConfig.backgroundColor,
+            backgroundColor: cardData.imageUrl ? 'transparent' : designConfig.backgroundColor,
             borderRadius: `${designConfig.borderRadius}px`,
             backgroundImage,
             backgroundSize: "cover",
             backgroundPosition: "center",
+            border: '2px solid rgba(255, 255, 255, 0.1)',
           }}
         >
+          {/* Dark overlay for better text readability when image is present */}
+          {cardData.imageUrl && (
+            <div 
+              className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"
+              style={{ borderRadius: `${designConfig.borderRadius}px` }}
+            />
+          )}
+
           {/* Effects overlay */}
           {(designConfig.effects.holographic || designConfig.effects.foil || designConfig.effects.chrome) && (
             <div 
@@ -109,33 +119,33 @@ export const CardPreview = ({ cardData, className = '' }: CardPreviewProps) => {
 
           {/* Placeholder for image if no image uploaded */}
           {!cardData.imageUrl && (
-            <div className="absolute inset-0 flex items-center justify-center bg-muted/80">
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-700 to-slate-800">
               <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-2 bg-muted rounded-lg flex items-center justify-center">
-                  <svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 mx-auto mb-2 bg-slate-600 rounded-lg flex items-center justify-center">
+                  <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <p className="text-sm text-muted-foreground">Upload an image</p>
+                <p className="text-sm text-slate-400">Upload an image</p>
               </div>
             </div>
           )}
 
           {/* Text content */}
           <div className={`relative z-10 ${
-            designConfig.textPosition === "top" ? "self-start" :
-            designConfig.textPosition === "center" ? "self-center" :
+            designConfig.textPosition === "top" ? "self-start absolute top-4 left-4" :
+            designConfig.textPosition === "center" ? "self-center absolute top-1/2 left-4 transform -translate-y-1/2" :
             "self-end"
           }`}>
             <h2 
-              className="text-xl font-bold mb-1"
+              className="text-xl font-bold mb-1 drop-shadow-lg"
               style={{ color: designConfig.titleColor }}
             >
               {cardData.title || 'Card Title'}
             </h2>
             {cardData.description && (
               <p 
-                className="text-sm opacity-90"
+                className="text-sm opacity-90 drop-shadow-md"
                 style={{ color: designConfig.subtitleColor }}
               >
                 {cardData.description}

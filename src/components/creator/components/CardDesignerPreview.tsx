@@ -1,5 +1,4 @@
 
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye } from 'lucide-react';
 import { CardPreview } from '../CardPreview';
@@ -22,7 +21,8 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     currentTheme: currentTheme?.name,
     canvasStyles,
     gridStyles,
-    hasCardImage: !!cardData.imageUrl
+    hasCardImage: !!cardData.imageUrl,
+    imageUrl: cardData.imageUrl
   });
 
   // Create a comprehensive themed workspace style
@@ -105,7 +105,7 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           
           {/* Theme-specific decorative elements - z-index 4 */}
           {currentTheme?.id === 'crd-branded' && (
-            <div className="absolute top-4 right-4 z-10" style={{ zIndex: 4 }}>
+            <div className="absolute top-4 right-4" style={{ zIndex: 4 }}>
               <div className="bg-black/20 p-2 rounded backdrop-blur-sm">
                 <img 
                   src="/lovable-uploads/ee2692c5-a584-445e-8845-81fc3e9c57f1.png" 
@@ -144,17 +144,30 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
           )}
         </div>
         
-        {/* Card Preview Container - HIGHEST z-index to ensure visibility */}
-        <div className="relative flex items-center justify-center w-full h-full p-8" style={{ zIndex: 50 }}>
+        {/* Card Preview Container - HIGHEST z-index with enhanced visibility */}
+        <div className="relative flex items-center justify-center w-full h-full p-8" style={{ zIndex: 100 }}>
+          {/* Enhanced card container with better visual prominence */}
           <div 
-            className="relative transition-transform duration-300 hover:scale-105 bg-white/5 backdrop-blur-sm rounded-lg p-2"
+            className="relative transition-all duration-300 hover:scale-105 shadow-2xl"
             style={{
               width: '250px',  // 2.5 inches at 100dpi
               height: '350px', // 3.5 inches at 100dpi
               aspectRatio: '2.5 / 3.5',
-              zIndex: 51, // Even higher to ensure card content is visible
+              zIndex: 101, // Highest z-index to ensure visibility
+              // Add a subtle glow effect to make the card stand out
+              filter: 'drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5))',
             }}
           >
+            {/* Card spotlight background for better contrast */}
+            <div 
+              className="absolute inset-0 rounded-lg opacity-20"
+              style={{
+                background: 'radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%)',
+                zIndex: -1,
+                transform: 'scale(1.2)',
+              }}
+            />
+            
             <CardPreview cardData={cardData} />
           </div>
         </div>
@@ -165,4 +178,3 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
     </Card>
   );
 };
-
