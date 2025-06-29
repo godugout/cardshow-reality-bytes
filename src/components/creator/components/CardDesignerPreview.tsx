@@ -106,10 +106,17 @@ export const CardDesignerPreview = ({ cardData }: CardDesignerPreviewProps) => {
             <div className="absolute top-4 right-4 z-10">
               <div className="bg-black/20 p-2 rounded backdrop-blur-sm">
                 <img 
-                  src="/lovable-uploads/cef0058d-1a9d-45af-ae10-cf715766de84.png" 
+                  src="/lovable-uploads/ee2692c5-a584-445e-8845-81fc3e9c57f1.png" 
                   alt="CRD Logo" 
                   className="w-8 h-8 object-contain"
+                  onError={(e) => {
+                    console.error('CRD Logo failed to load:', e);
+                    // Fallback to text if image fails
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling!.style.display = 'block';
+                  }}
                 />
+                <span className="text-xs text-white/60 font-mono hidden">CRD</span>
               </div>
             </div>
           )}
