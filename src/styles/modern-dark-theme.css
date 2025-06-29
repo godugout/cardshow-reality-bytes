@@ -1,5 +1,5 @@
 
-/* Modern Theme System - Light & Dark */
+/* Modern Dark Theme System - Inspired by Reference Design */
 
 :root {
   /* Light Theme Colors */
@@ -25,26 +25,44 @@
 }
 
 .dark {
-  /* Lighter Dark Theme Colors - More comfortable */
-  --background: 20 20 23; /* #141417 - Lighter than before */
-  --foreground: 250 250 250; /* #FAFAFA */
-  --card: 30 30 34; /* #1E1E22 - Lighter than before */
-  --card-foreground: 250 250 250;
-  --popover: 30 30 34;
-  --popover-foreground: 250 250 250;
-  --primary: 0 200 81; /* #00C851 - Green accent */
-  --primary-foreground: 255 255 255;
-  --secondary: 39 39 42; /* #27272A - Lighter than before */
-  --secondary-foreground: 248 250 252;
-  --muted: 39 39 42;
-  --muted-foreground: 161 161 170; /* #A1A1AA - Much brighter */
-  --accent: 50 50 55; /* #323237 - Lighter than before */
-  --accent-foreground: 250 250 250;
-  --destructive: 220 38 38;
-  --destructive-foreground: 248 250 252;
-  --border: 63 63 70; /* #3F3F46 - Lighter border */
-  --input: 63 63 70;
-  --ring: 0 200 81;
+  /* Modern Ultra Dark Theme - Matching Reference Images */
+  --background: 10 10 11; /* Almost pure black - #0A0A0B */
+  --foreground: 255 255 255; /* Pure white text for maximum contrast */
+  
+  /* Card surfaces with strategic elevation */
+  --card: 20 20 22; /* Dark card surface - #141416 */
+  --card-foreground: 255 255 255;
+  
+  /* Elevated surfaces for modals, popovers */
+  --popover: 26 26 29; /* Slightly elevated - #1A1A1D */
+  --popover-foreground: 255 255 255;
+  
+  /* Vibrant primary matching the green accents in reference */
+  --primary: 34 197 94; /* Bright green - #22C55E */
+  --primary-foreground: 0 0 0; /* Black text on green */
+  
+  /* Secondary surfaces - even darker for depth */
+  --secondary: 15 15 16; /* Very dark - #0F0F10 */
+  --secondary-foreground: 240 240 240;
+  
+  /* Muted surfaces and text */
+  --muted: 31 31 35; /* Dark muted surface - #1F1F23 */
+  --muted-foreground: 156 163 175; /* Light gray - #9CA3AF */
+  
+  /* Accent surfaces for highlights */
+  --accent: 38 38 42; /* Accent surface - #26262A */
+  --accent-foreground: 255 255 255;
+  
+  /* Error states */
+  --destructive: 239 68 68; /* Bright red - #EF4444 */
+  --destructive-foreground: 255 255 255;
+  
+  /* Subtle borders for definition */
+  --border: 39 39 42; /* Dark border - #27272A */
+  --input: 39 39 42;
+  
+  /* Ring color for focus states */
+  --ring: 34 197 94; /* Green ring - #22C55E */
 }
 
 /* Base Styles */
@@ -77,16 +95,19 @@ html, body {
 }
 
 .dark {
-  --gradient-surface: linear-gradient(135deg, #1E1E22 0%, #27272A 100%);
-  --gradient-card: linear-gradient(135deg, rgba(30,30,34,0.8) 0%, rgba(39,39,42,0.9) 100%);
+  /* Dark theme gradients with strategic color pops */
+  --gradient-primary: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+  --gradient-surface: linear-gradient(135deg, #141416 0%, #1A1A1D 100%);
+  --gradient-card: linear-gradient(135deg, rgba(20,20,22,0.9) 0%, rgba(26,26,29,0.95) 100%);
   
-  /* Glass Morphism for dark */
-  --glass-bg: rgba(30, 30, 34, 0.8);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  /* Glass Morphism for dark - more subtle */
+  --glass-bg: rgba(20, 20, 22, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.08);
   
-  /* Shadows for dark */
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
-  --shadow-elevated: 0 20px 40px rgba(0, 0, 0, 0.6);
+  /* Enhanced shadows for dark theme depth */
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-elevated: 0 20px 50px rgba(0, 0, 0, 0.8);
+  --shadow-glow: 0 0 30px rgba(34, 197, 94, 0.2);
 }
 
 /* High Contrast Text Utilities */
@@ -106,10 +127,10 @@ html, body {
   color: hsl(var(--primary)) !important;
 }
 
-/* Glass Morphism Utilities */
+/* Modern Glass Morphism */
 .glass-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-card);
 }
@@ -120,7 +141,7 @@ html, body {
   border: 1px solid var(--glass-border);
 }
 
-/* Modern Gradients */
+/* Enhanced gradients with color pops */
 .gradient-primary {
   background: var(--gradient-primary);
 }
@@ -132,27 +153,37 @@ html, body {
   background-clip: text;
 }
 
-/* Modern Button Styles */
+/* Modern Button Styles with strategic color use */
 .modern-button {
   @apply px-8 py-4 rounded-2xl font-semibold transition-all duration-300;
-  @apply bg-gradient-to-r from-[#00C851] to-[#00A543];
-  @apply hover:shadow-lg hover:shadow-[#00C851]/30;
-  @apply active:scale-95;
-  color: #FFFFFF !important;
+  background: var(--gradient-primary);
+  @apply hover:shadow-lg;
+  color: #000000 !important; /* Black text on bright green */
+}
+
+.modern-button:hover {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
 }
 
 .modern-button-outline {
   @apply px-8 py-4 rounded-2xl font-semibold transition-all duration-300;
-  @apply bg-transparent border-2 border-[#00C851];
-  @apply text-[#00C851] hover:bg-[#00C851] hover:text-white;
+  @apply bg-transparent border-2;
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary));
+}
+
+.modern-button-outline:hover {
+  background: hsl(var(--primary));
+  color: #000000;
 }
 
 /* Modern Card Styles */
 .modern-card {
-  @apply rounded-3xl border-0 shadow-lg;
+  @apply rounded-3xl border-0;
   background: var(--glass-bg);
   backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-card);
 }
 
 .modern-card-elevated {
@@ -160,17 +191,60 @@ html, body {
   box-shadow: var(--shadow-elevated);
 }
 
-/* Floating Elements */
+/* Floating Elements with enhanced dark theme effects */
 .floating {
   @apply transform transition-all duration-300;
-  @apply hover:-translate-y-1 hover:shadow-lg;
 }
 
-/* Glow Effects */
+.floating:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Strategic Glow Effects */
 .glow-green {
-  box-shadow: 0 0 30px rgba(0, 200, 81, 0.3);
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+}
+
+.glow-orange {
+  box-shadow: 0 0 30px rgba(249, 115, 22, 0.3);
+}
+
+.glow-blue {
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
 }
 
 .glow-subtle {
-  box-shadow: 0 0 20px rgba(0, 200, 81, 0.1);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+}
+
+/* Strategic color highlights for dark theme */
+.dark .accent-collections {
+  color: #22C55E !important;
+}
+
+.dark .accent-cards {
+  color: #F97316 !important;
+}
+
+.dark .accent-marketplace {
+  color: #3B82F6 !important;
+}
+
+.dark .accent-currency {
+  color: #FACC15 !important;
+}
+
+/* Enhanced borders and surfaces for depth */
+.dark .surface-elevated {
+  background-color: rgba(26, 26, 29, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark .surface-primary {
+  background-color: rgba(20, 20, 22, 0.95);
+}
+
+.dark .surface-secondary {
+  background-color: rgba(15, 15, 16, 0.9);
 }
