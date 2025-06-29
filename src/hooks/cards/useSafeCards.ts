@@ -62,8 +62,11 @@ export const useSafeCards = (filters: CardFilters = {}) => {
            typeof originalRefetch === 'function';
   }, [safeState.hasInitialized, safeState.isLoading, safeState.error, originalRefetch]);
 
-  // Always call the hook but conditionally pass the refetch function
-  useCardsRealtime(shouldUseRealtime ? refetch : undefined);
+  // Call the hook with proper props object
+  useCardsRealtime({ 
+    refetch: shouldUseRealtime ? refetch : undefined,
+    enabled: shouldUseRealtime 
+  });
 
   const returnValue = useMemo(() => ({
     cards: safeState.cards,

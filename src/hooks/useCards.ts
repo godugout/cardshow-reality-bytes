@@ -60,9 +60,12 @@ export const useCards = (filters: CardFilters = {}) => {
     }
   }, [originalRefetch]);
 
-  // Always call the realtime hook, but pass undefined if refetch isn't ready
+  // Call the realtime hook with proper props object
   const shouldUseRealtime = !isLoading && !error && originalRefetch;
-  useCardsRealtime(shouldUseRealtime ? refetch : undefined);
+  useCardsRealtime({ 
+    refetch: shouldUseRealtime ? refetch : undefined,
+    enabled: shouldUseRealtime 
+  });
 
   // If no cards from API, supplement with sample cards for demo
   const finalCards = useMemo(() => {
