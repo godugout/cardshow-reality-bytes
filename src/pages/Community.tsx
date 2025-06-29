@@ -24,11 +24,11 @@ const Community = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-secondary/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
       </div>
       
       <Header />
@@ -58,18 +58,18 @@ const Community = () => {
       />
 
       {/* Community Features Grid */}
-      <div className="section" style={{ background: 'linear-gradient(180deg, transparent 0%, var(--bg-secondary) 100%)' }}>
-        <div className="container-2xl">
+      <div className="py-20 bg-gradient-to-b from-transparent to-slate-800/50">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-headline mb-6 gradient-text-primary">
+            <h2 className="text-4xl font-bold mb-6 text-white">
               Community Features
             </h2>
-            <p className="text-body-large max-w-3xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
               Discover all the ways you can connect, create, and grow within our vibrant community ecosystem.
             </p>
           </div>
           
-          <div className="grid-features">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <ContentCard
               title="Creator Challenges"
               description="Participate in weekly design challenges, showcase your skills, and win exclusive rewards and recognition from the community."
@@ -164,13 +164,13 @@ const Community = () => {
       </div>
 
       {/* Community Dashboard */}
-      <div className="section" style={{ background: 'var(--bg-tertiary)' }}>
-        <div className="container-2xl">
+      <div className="py-20 bg-slate-800/30">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-headline mb-6 gradient-text-secondary">
+            <h2 className="text-4xl font-bold mb-6 text-white">
               Community Activity Feed
             </h2>
-            <p className="text-body-large max-w-3xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
               Stay updated with the latest happenings, featured content, and community highlights from creators you follow.
             </p>
           </div>
@@ -188,9 +188,9 @@ const CommunityDashboardSkeleton = () => (
   <div className="space-y-12">
     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="card p-8">
-          <div className="h-20 w-full skeleton mb-4" />
-          <div className="h-4 w-3/4 skeleton" />
+        <div key={i} className="bg-slate-700/50 backdrop-blur-sm border border-slate-600 rounded-2xl p-8">
+          <div className="h-20 w-full bg-slate-600/50 rounded-xl mb-4 animate-pulse" />
+          <div className="h-4 w-3/4 bg-slate-600/50 rounded animate-pulse" />
         </div>
       ))}
     </div>
@@ -198,15 +198,15 @@ const CommunityDashboardSkeleton = () => (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
       <div className="lg:col-span-2 space-y-8">
         {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="card p-8">
-            <div className="h-40 w-full skeleton" />
+          <div key={i} className="bg-slate-700/50 backdrop-blur-sm border border-slate-600 rounded-2xl p-8">
+            <div className="h-40 w-full bg-slate-600/50 rounded-xl animate-pulse" />
           </div>
         ))}
       </div>
       <div className="space-y-8">
         {Array.from({ length: 2 }).map((_, i) => (
-          <div key={i} className="card p-8">
-            <div className="h-32 w-full skeleton" />
+          <div key={i} className="bg-slate-700/50 backdrop-blur-sm border border-slate-600 rounded-2xl p-8">
+            <div className="h-32 w-full bg-slate-600/50 rounded-xl animate-pulse" />
           </div>
         ))}
       </div>
