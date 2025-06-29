@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
-export const useCardsRealtime = (refetch?: () => void) => {
+export const useCollectionsRealtime = (refetch?: () => void) => {
   const refetchRef = useRef(refetch);
   const channelRef = useRef<any>(null);
   const isSubscribedRef = useRef(false);
@@ -18,7 +18,7 @@ export const useCardsRealtime = (refetch?: () => void) => {
         refetchRef.current();
       }
     } catch (error) {
-      console.error('useCardsRealtime: Error during refetch:', error);
+      console.error('useCollectionsRealtime: Error during refetch:', error);
     }
   }, []);
 
@@ -38,53 +38,53 @@ export const useCardsRealtime = (refetch?: () => void) => {
       try {
         supabase.removeChannel(channelRef.current);
       } catch (error) {
-        console.error('useCardsRealtime: Error cleaning up existing channel:', error);
+        console.error('useCollectionsRealtime: Error cleaning up existing channel:', error);
       }
       channelRef.current = null;
     }
 
-    console.log('Setting up cards realtime subscription');
+    console.log('Setting up collections realtime subscription');
     
     try {
       const channel = supabase
-        .channel(`cards-changes-${Date.now()}`) // Unique channel name
+        .channel(`collections-changes-${Date.now()}`) // Unique channel name
         .on(
           'postgres_changes',
           {
             event: '*',
             schema: 'public',
-            table: 'cards',
+            table: 'collections',
             filter: 'is_public=eq.true'
           },
           (payload) => {
-            console.log('Cards realtime update received:', payload);
+            console.log('Collections realtime update received:', payload);
             safeRefetch();
           }
         )
         .subscribe((status) => {
-          console.log('Cards realtime subscription status:', status);
+          console.log('Collections realtime subscription status:', status);
           if (status === 'SUBSCRIBED') {
             isSubscribedRef.current = true;
-            console.log('Successfully subscribed to cards realtime updates');
+            console.log('Successfully subscribed to collections realtime updates');
           } else if (status === 'CLOSED') {
             isSubscribedRef.current = false;
-            console.error('Failed to subscribe to cards realtime updates');
+            console.error('Failed to subscribe to collections realtime updates');
           }
         });
 
       channelRef.current = channel;
     } catch (error) {
-      console.error('useCardsRealtime: Error setting up subscription:', error);
+      console.error('useCollectionsRealtime: Error setting up subscription:', error);
     }
 
     return () => {
-      console.log('Cleaning up cards realtime subscription');
+      console.log('Cleaning up collections realtime subscription');
       isSubscribedRef.current = false;
       if (channelRef.current) {
         try {
           supabase.removeChannel(channelRef.current);
         } catch (error) {
-          console.error('useCardsRealtime: Error cleaning up subscription:', error);
+          console.error('useCollectionsRealtime: Error cleaning up subscription:', error);
         }
         channelRef.current = null;
       }
