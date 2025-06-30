@@ -9,7 +9,7 @@ import PageErrorBoundary from '@/components/error-boundaries/PageErrorBoundary';
 const Index = () => {
   return (
     <PageErrorBoundary pageName="Home">
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen">
         <Header />
         <main id="main-content">
           <PageErrorBoundary pageName="Hero Section">

@@ -52,10 +52,10 @@ const MobileCards = () => {
   // Redirect to desktop version if not mobile
   if (!isMobile) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Mobile Experience</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl font-bold mb-4 text-white">Mobile Experience</h1>
+          <p className="text-slate-300">
             This page is designed for mobile devices. 
             Please use the main cards page on desktop.
           </p>
@@ -69,7 +69,7 @@ const MobileCards = () => {
       <MobileLayout>
         <div className="p-4 space-y-4">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-lg" />
+            <div key={i} className="aspect-[3/4] bg-slate-700/50 animate-pulse rounded-lg" />
           ))}
         </div>
       </MobileLayout>
