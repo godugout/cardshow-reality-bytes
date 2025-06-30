@@ -25,17 +25,17 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full">
-      <div className="glass-panel">
+      <div className="bg-white/95 backdrop-blur-sm border-b border-emerald-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-primary flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold gradient-text">Cardshow</span>
-                <span className="text-xs text-muted-foreground">Digital Collectibles</span>
+                <span className="text-xl font-bold text-gray-800">Cardshow</span>
+                <span className="text-xs text-emerald-600">Digital Collectibles</span>
               </div>
             </Link>
 
@@ -48,8 +48,8 @@ const Header = () => {
                   className={cn(
                     'px-4 py-2 rounded-xl font-medium transition-all duration-300',
                     isActive(item.href)
-                      ? 'bg-[#00C851] text-white shadow-lg shadow-[#00C851]/30'
-                      : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                      ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30'
+                      : 'text-gray-700 hover:text-emerald-700 hover:bg-emerald-50'
                   )}
                 >
                   {item.name}
@@ -61,25 +61,25 @@ const Header = () => {
             <div className="flex items-center gap-4">
               {user ? (
                 <div className="flex items-center gap-3">
-                  <Button variant="ghost" size="sm" className="rounded-xl">
+                  <Button variant="ghost" size="sm" className="rounded-xl text-gray-700 hover:text-emerald-700 hover:bg-emerald-50">
                     <ShoppingBag className="w-4 h-4" />
                   </Button>
-                  <Button variant="ghost" size="sm" className="rounded-xl">
+                  <Button variant="ghost" size="sm" className="rounded-xl text-gray-700 hover:text-emerald-700 hover:bg-emerald-50">
                     <User className="w-4 h-4" />
                   </Button>
-                  <Badge variant="secondary" className="bg-[#00C851]/20 text-[#00C851] border-0">
+                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 border-emerald-200">
                     {user.email}
                   </Badge>
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
                   <Link to="/auth">
-                    <Button variant="ghost" className="rounded-xl">
+                    <Button variant="ghost" className="rounded-xl text-gray-700 hover:text-emerald-700 hover:bg-emerald-50">
                       Sign In
                     </Button>
                   </Link>
                   <Link to="/auth">
-                    <Button className="modern-button">
+                    <Button className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white shadow-lg shadow-emerald-500/25 rounded-xl">
                       Get Started
                     </Button>
                   </Link>
@@ -90,7 +90,7 @@ const Header = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="lg:hidden rounded-xl"
+                className="lg:hidden rounded-xl text-gray-700 hover:text-emerald-700 hover:bg-emerald-50"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
                 {isMobileMenuOpen ? (
@@ -107,7 +107,7 @@ const Header = () => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden">
-          <div className="glass-panel border-t border-white/10">
+          <div className="bg-white/98 backdrop-blur-sm border-b border-emerald-200 shadow-lg">
             <div className="max-w-7xl mx-auto px-6 py-6">
               <nav className="flex flex-col gap-3">
                 {navigation.map((item) => (
@@ -117,8 +117,8 @@ const Header = () => {
                     className={cn(
                       'px-4 py-3 rounded-xl font-medium transition-all duration-300',
                       isActive(item.href)
-                        ? 'bg-[#00C851] text-white'
-                        : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                        ? 'bg-emerald-500 text-white shadow-md'
+                        : 'text-gray-700 hover:text-emerald-700 hover:bg-emerald-50'
                     )}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
