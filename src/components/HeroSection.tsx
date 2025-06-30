@@ -8,8 +8,45 @@ import { Play, Sparkles, Zap, Trophy, Users } from 'lucide-react';
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Transparent background */}
-      <div className="absolute inset-0 bg-transparent" />
+      {/* Light hunter green background with pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-green-100">
+        {/* Subtle tech pattern overlay */}
+        <div 
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 20% 50%, rgba(34, 197, 94, 0.1) 2px, transparent 2px),
+              radial-gradient(circle at 80% 50%, rgba(34, 197, 94, 0.1) 1px, transparent 1px),
+              linear-gradient(45deg, rgba(34, 197, 94, 0.05) 25%, transparent 25%),
+              linear-gradient(-45deg, rgba(34, 197, 94, 0.05) 25%, transparent 25%)
+            `,
+            backgroundSize: '60px 60px, 40px 40px, 20px 20px, 20px 20px',
+            backgroundPosition: '0 0, 30px 30px, 0 0, 10px 10px'
+          }}
+        />
+        {/* Card-like geometric shapes */}
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `
+              repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 100px,
+                rgba(34, 197, 94, 0.1) 100px,
+                rgba(34, 197, 94, 0.1) 102px
+              ),
+              repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 80px,
+                rgba(34, 197, 94, 0.1) 80px,
+                rgba(34, 197, 94, 0.1) 82px
+              )
+            `
+          }}
+        />
+      </div>
       
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -24,14 +61,14 @@ const HeroSection = () => {
             {/* Headline */}
             <div className="space-y-6">
               <h1 className="text-5xl md:text-7xl font-black leading-tight">
-                <span className="text-white">Create</span>
+                <span className="text-gray-800">Create</span>
                 <br />
                 <span className="gradient-text">Extraordinary</span>
                 <br />
-                <span className="text-white">Digital Cards</span>
+                <span className="text-gray-800">Digital Cards</span>
               </h1>
               
-              <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
+              <p className="text-xl text-gray-700 max-w-2xl leading-relaxed">
                 Transform your creativity into stunning 3D digital collectibles. 
                 Create, trade, and showcase your cards in our premium platform.
               </p>
@@ -57,16 +94,16 @@ const HeroSection = () => {
             {/* Stats */}
             <div className="flex gap-8 justify-center lg:justify-start pt-8">
               <div className="text-center">
-                <div className="text-3xl font-bold text-white">25K+</div>
-                <div className="text-sm text-muted-foreground">Cards Created</div>
+                <div className="text-3xl font-bold text-gray-800">25K+</div>
+                <div className="text-sm text-gray-600">Cards Created</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-white">8K+</div>
-                <div className="text-sm text-muted-foreground">Active Creators</div>
+                <div className="text-3xl font-bold text-gray-800">8K+</div>
+                <div className="text-sm text-gray-600">Active Creators</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-white">$2M+</div>
-                <div className="text-sm text-muted-foreground">Volume Traded</div>
+                <div className="text-3xl font-bold text-gray-800">$2M+</div>
+                <div className="text-sm text-gray-600">Volume Traded</div>
               </div>
             </div>
           </div>
@@ -104,7 +141,7 @@ const HeroSection = () => {
                 </div>
                 <div className="space-y-2">
                   <h3 className="font-bold">All-Star Collection</h3>
-                  <p className="text-sm text-muted-foreground">Premium Series</p>
+                  <p className="text-sm text-muted-foregroup">Premium Series</p>
                 </div>
               </ModernCard>
 
