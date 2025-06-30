@@ -34,10 +34,10 @@ const queryClient = new QueryClient({
 
 // Loading fallback component
 const PageLoader = () => (
-  <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0F0F0F] flex items-center justify-center">
+  <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center">
     <div className="text-center space-y-4">
-      <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto"></div>
-      <p className="text-muted-foreground">Loading...</p>
+      <div className="w-12 h-12 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin mx-auto"></div>
+      <p className="text-gray-700">Loading...</p>
     </div>
   </div>
 );
@@ -48,25 +48,64 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <BrowserRouter>
-            <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0F0F0F]">
-              <Suspense fallback={<PageLoader />}>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/cards" element={<Cards />} />
-                  <Route path="/collections" element={<Collections />} />
-                  <Route path="/gallery" element={<Gallery />} />
-                  <Route path="/creator" element={<Creator />} />
-                  <Route path="/marketplace" element={<Marketplace />} />
-                  <Route path="/community" element={<Community />} />
-                  <Route path="/community-enhanced" element={<EnhancedCommunity />} />
-                  <Route path="/trading" element={<Trading />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/support" element={<Support />} />
-                  <Route path="/admin" element={<Admin />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
+            <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-100 relative">
+              {/* Background pattern overlay */}
+              <div 
+                className="fixed inset-0 opacity-30 pointer-events-none"
+                style={{
+                  backgroundImage: `
+                    radial-gradient(circle at 20% 50%, rgba(34, 197, 94, 0.1) 2px, transparent 2px),
+                    radial-gradient(circle at 80% 50%, rgba(34, 197, 94, 0.1) 1px, transparent 1px),
+                    linear-gradient(45deg, rgba(34, 197, 94, 0.05) 25%, transparent 25%),
+                    linear-gradient(-45deg, rgba(34, 197, 94, 0.05) 25%, transparent 25%)
+                  `,
+                  backgroundSize: '60px 60px, 40px 40px, 20px 20px, 20px 20px',
+                  backgroundPosition: '0 0, 30px 30px, 0 0, 10px 10px'
+                }}
+              />
+              {/* Card-like geometric shapes */}
+              <div 
+                className="fixed inset-0 opacity-20 pointer-events-none"
+                style={{
+                  backgroundImage: `
+                    repeating-linear-gradient(
+                      90deg,
+                      transparent,
+                      transparent 100px,
+                      rgba(34, 197, 94, 0.1) 100px,
+                      rgba(34, 197, 94, 0.1) 102px
+                    ),
+                    repeating-linear-gradient(
+                      0deg,
+                      transparent,
+                      transparent 80px,
+                      rgba(34, 197, 94, 0.1) 80px,
+                      rgba(34, 197, 94, 0.1) 82px
+                    )
+                  `
+                }}
+              />
+              
+              <div className="relative z-10">
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/cards" element={<Cards />} />
+                    <Route path="/collections" element={<Collections />} />
+                    <Route path="/gallery" element={<Gallery />} />
+                    <Route path="/creator" element={<Creator />} />
+                    <Route path="/marketplace" element={<Marketplace />} />
+                    <Route path="/community" element={<Community />} />
+                    <Route path="/community-enhanced" element={<EnhancedCommunity />} />
+                    <Route path="/trading" element={<Trading />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/support" element={<Support />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Suspense>
+              </div>
               <Toaster />
             </div>
           </BrowserRouter>
