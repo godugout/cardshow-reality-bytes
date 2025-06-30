@@ -8,15 +8,9 @@ import { Play, Sparkles, Zap, Trophy, Users } from 'lucide-react';
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0F0F0F]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(0,200,81,0.1)_0%,transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(0,165,67,0.08)_0%,transparent_50%)]" />
+      {/* Simple dark background */}
+      <div className="absolute inset-0 bg-background" />
       
-      {/* Floating Orbs */}
-      <div className="absolute top-20 left-20 w-32 h-32 rounded-full bg-[#00C851]/10 blur-3xl animate-pulse" />
-      <div className="absolute bottom-20 right-20 w-40 h-40 rounded-full bg-[#00A543]/8 blur-3xl animate-pulse delay-1000" />
-
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left Column - Content */}
@@ -135,10 +129,6 @@ const HeroSection = () => {
                 </div>
               </ModernCard>
             </div>
-
-            {/* Floating Elements */}
-            <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-[#00C851]/20 blur-xl animate-bounce" />
-            <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-[#00A543]/20 blur-xl animate-bounce delay-500" />
           </div>
         </div>
       </div>
