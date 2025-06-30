@@ -4,8 +4,7 @@ import Header from '@/components/Header';
 import CollectionGrid from '@/components/collections/CollectionGrid';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
-import { FolderOpen, Star, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { FolderOpen, Star } from 'lucide-react';
 
 const Collections = () => {
   return (
@@ -19,18 +18,16 @@ const Collections = () => {
       }} />
 
       <Header />
-      
-      {/* Full width container for desktop */}
-      <div className="w-full px-4 py-8 relative">
-        <div className="text-center max-w-6xl mx-auto mb-16">
+      <div className="container mx-auto px-4 py-8 relative">
+        <div className="text-center max-w-4xl mx-auto mb-12">
           {/* Announcement Badge */}
-          <Badge className="mb-8 bg-[#00C851]/20 text-[#00C851] border-[#00C851]/30 hover:bg-[#00C851]/30 text-lg px-6 py-3">
-            <Star className="w-5 h-5 mr-2" />
+          <Badge className="mb-6 bg-[#00C851]/20 text-[#00C851] border-[#00C851]/30 hover:bg-[#00C851]/30">
+            <Star className="w-3 h-3 mr-1" />
             Curated Collections
           </Badge>
 
-          {/* Enhanced Header for desktop */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight font-display">
+          {/* Enhanced Header */}
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight font-display">
             <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
               Card
             </span>
@@ -40,22 +37,14 @@ const Collections = () => {
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             Organize your cards into beautiful collections and showcase your favorites. 
             Create themed galleries and share your most prized digital assets.
           </p>
-          
-          {/* Desktop-specific action button */}
-          <Button className="btn btn-primary btn-xl">
-            <Plus className="w-6 h-6 mr-2" />
-            Create New Collection
-          </Button>
         </div>
 
         <Suspense fallback={<CollectionsSkeleton />}>
-          <div className="max-w-7xl mx-auto">
-            <CollectionGrid />
-          </div>
+          <CollectionGrid />
         </Suspense>
       </div>
     </div>
@@ -63,12 +52,12 @@ const Collections = () => {
 };
 
 const CollectionsSkeleton = () => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-8">
-    {Array.from({ length: 12 }).map((_, i) => (
-      <div key={i} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-3xl p-6 hover:border-[#00C851]/50 transition-all duration-300 animate-pulse">
-        <Skeleton className="h-48 w-full mb-4 rounded-2xl" />
-        <Skeleton className="h-6 w-3/4 mb-2 rounded-xl" />
-        <Skeleton className="h-4 w-1/2 rounded-xl" />
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {Array.from({ length: 6 }).map((_, i) => (
+      <div key={i} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 hover:border-[#00C851]/50 transition-all duration-300 animate-pulse">
+        <Skeleton className="h-48 w-full mb-4 rounded-xl" />
+        <Skeleton className="h-6 w-3/4 mb-2" />
+        <Skeleton className="h-4 w-1/2" />
       </div>
     ))}
   </div>

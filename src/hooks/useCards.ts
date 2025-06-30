@@ -1,7 +1,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { useCardsQuery } from './cards/useCardsQuery';
-// TODO: Realtime disabled temporarily - import { useCardsRealtime } from './cards/useCardsRealtime';
+import { useCardsRealtime } from './cards/useCardsRealtime';
 import type { CardFilters, Card } from '@/types/card';
 
 // Additional sample cards to supplement the main grid
@@ -60,9 +60,9 @@ export const useCards = (filters: CardFilters = {}) => {
     }
   }, [originalRefetch]);
 
-  // TODO: Realtime subscriptions temporarily disabled
-  // const shouldUseRealtime = !isLoading && !error && originalRefetch;
-  // useCardsRealtime(shouldUseRealtime ? refetch : undefined);
+  // Always call the realtime hook, but pass undefined if refetch isn't ready
+  const shouldUseRealtime = !isLoading && !error && originalRefetch;
+  useCardsRealtime(shouldUseRealtime ? refetch : undefined);
 
   // If no cards from API, supplement with sample cards for demo
   const finalCards = useMemo(() => {

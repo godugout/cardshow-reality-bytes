@@ -53,9 +53,7 @@ export const useCollectionCards = (collectionId: string) => {
     }
   });
 
-  // TODO: Real-time subscription temporarily disabled due to crashes
-  // Will be re-enabled with improved implementation later
-  /*
+  // Real-time subscription for collection cards
   useEffect(() => {
     if (!collectionId) return;
 
@@ -79,7 +77,6 @@ export const useCollectionCards = (collectionId: string) => {
       supabase.removeChannel(channel);
     };
   }, [collectionId, refetch]);
-  */
 
   return { cards, isLoading, refetch };
 };

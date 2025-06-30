@@ -1,26 +1,58 @@
-
 import { Suspense } from 'react';
 import Header from '@/components/Header';
+import Collection3DGallery from '@/components/gallery/Collection3DGallery';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Eye, Sparkles } from 'lucide-react';
 
-// Simple 3D Gallery component that doesn't use problematic hooks outside Canvas
-const Gallery3DDisplay = () => {
-  return (
-    <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-3xl p-8 min-h-96 flex items-center justify-center">
-      <div className="text-center space-y-4">
-        <div className="w-16 h-16 mx-auto bg-primary/20 rounded-2xl flex items-center justify-center">
-          <Eye className="w-8 h-8 text-primary" />
-        </div>
-        <h3 className="text-xl font-semibold">3D Gallery Experience</h3>
-        <p className="text-muted-foreground">
-          Interactive 3D card viewing coming soon
-        </p>
-      </div>
-    </div>
-  );
+// Mock data for the gallery - in a real app this would come from props or API
+const mockCollection = {
+  id: '1',
+  title: 'Featured Collection',
+  description: 'A showcase of premium cards',
+  user_id: 'user1',
+  visibility: 'public' as const,
+  cover_image_url: '/placeholder.svg',
+  template_id: null,
+  is_featured: false,
+  is_group: false,
+  allow_member_card_sharing: false,
+  group_code: null,
+  metadata: {},
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString()
 };
+
+const mockCards = [
+  {
+    id: '1',
+    title: 'Sample Card 1',
+    description: 'A premium trading card',
+    image_url: '/placeholder.svg',
+    thumbnail_url: '/placeholder.svg',
+    creator_id: 'creator1',
+    rarity: 'rare' as const,
+    card_type: 'character' as const,
+    visibility: 'public' as const,
+    is_public: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: '2',
+    title: 'Sample Card 2', 
+    description: 'Another premium trading card',
+    image_url: '/placeholder.svg',
+    thumbnail_url: '/placeholder.svg',
+    creator_id: 'creator2',
+    rarity: 'legendary' as const,
+    card_type: 'character' as const,
+    visibility: 'public' as const,
+    is_public: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  }
+];
 
 const Gallery = () => {
   return (
@@ -34,20 +66,18 @@ const Gallery = () => {
       }} />
 
       <Header />
-      
-      {/* Full width container for desktop gallery */}
-      <div className="w-full px-4 py-8 relative">
-        <div className="text-center max-w-6xl mx-auto mb-16">
+      <div className="container mx-auto px-4 py-8 relative">
+        <div className="text-center max-w-4xl mx-auto mb-12">
           {/* Announcement Badge */}
-          <Badge className="mb-8 bg-[#00C851]/20 text-[#00C851] border-[#00C851]/30 hover:bg-[#00C851]/30 text-lg px-6 py-3">
-            <Eye className="w-5 h-5 mr-2" />
+          <Badge className="mb-6 bg-[#00C851]/20 text-[#00C851] border-[#00C851]/30 hover:bg-[#00C851]/30">
+            <Eye className="w-3 h-3 mr-1" />
             3D Experience
           </Badge>
 
-          {/* Enhanced Header for desktop */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight font-display">
+          {/* Enhanced Header */}
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight font-display">
             <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
-              3D Card
+              3D
             </span>
             <br />
             <span className="bg-gradient-to-r from-[#00C851] to-[#00A543] bg-clip-text text-transparent">
@@ -55,33 +85,17 @@ const Gallery = () => {
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             Experience your card collection in immersive 3D environments. 
             Rotate, zoom, and explore every detail with stunning visual effects.
           </p>
         </div>
 
         <Suspense fallback={<GallerySkeleton />}>
-          <div className="max-w-7xl mx-auto">
-            <Gallery3DDisplay />
-            
-            {/* Enhanced desktop grid for featured cards */}
-            <div className="mt-12">
-              <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Featured Cards</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-6">
-                {Array.from({ length: 16 }).map((_, i) => (
-                  <div key={i} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-4 hover:border-[#00C851]/50 transition-all duration-300 aspect-[3/4] flex items-center justify-center">
-                    <div className="text-center space-y-2">
-                      <div className="w-12 h-12 mx-auto bg-primary/20 rounded-lg flex items-center justify-center">
-                        <Sparkles className="w-6 h-6 text-primary" />
-                      </div>
-                      <p className="text-sm text-muted-foreground">Card {i + 1}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <Collection3DGallery 
+            collection={mockCollection}
+            cards={mockCards}
+          />
         </Suspense>
       </div>
     </div>
@@ -89,14 +103,14 @@ const Gallery = () => {
 };
 
 const GallerySkeleton = () => (
-  <div className="space-y-8">
-    <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-3xl p-8 animate-pulse min-h-96">
-      <Skeleton className="h-full w-full rounded-2xl" />
+  <div className="space-y-6">
+    <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 animate-pulse">
+      <Skeleton className="h-96 w-full rounded-xl" />
     </div>
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-6">
-      {Array.from({ length: 16 }).map((_, i) => (
-        <div key={i} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-4 animate-pulse aspect-[3/4]">
-          <Skeleton className="h-full w-full rounded-xl" />
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-4 animate-pulse">
+          <Skeleton className="h-20 w-full rounded-xl" />
         </div>
       ))}
     </div>

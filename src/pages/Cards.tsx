@@ -3,15 +3,28 @@ import { Suspense } from 'react';
 import Header from '@/components/Header';
 import CardGrid from '@/components/cards/CardGrid';
 import CardShowcase from '@/components/cards/CardShowcase';
+import MobileCards from './MobileCards';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { useCards } from '@/hooks/useCards';
 import PageErrorBoundary from '@/components/error-boundaries/PageErrorBoundary';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Zap } from 'lucide-react';
 
 const Cards = () => {
+  const isMobile = useIsMobile();
   const { cards, isLoading } = useCards();
 
+  // Show mobile-optimized experience on mobile devices
+  if (isMobile) {
+    return (
+      <PageErrorBoundary pageName="Mobile Cards">
+        <MobileCards />
+      </PageErrorBoundary>
+    );
+  }
+
+  // Desktop experience with enhanced styling
   return (
     <PageErrorBoundary pageName="Cards">
       <div className="min-h-screen bg-background">
@@ -24,18 +37,16 @@ const Cards = () => {
         }} />
 
         <Header />
-        
-        {/* Full width container for desktop */}
-        <div className="w-full px-4 py-8 relative">
-          <div className="text-center max-w-6xl mx-auto mb-16">
+        <div className="container mx-auto px-4 py-8 relative">
+          <div className="text-center max-w-4xl mx-auto mb-12">
             {/* Announcement Badge */}
-            <Badge className="mb-8 bg-[#00C851]/20 text-[#00C851] border-[#00C851]/30 hover:bg-[#00C851]/30 text-lg px-6 py-3">
-              <Sparkles className="w-5 h-5 mr-2" />
+            <Badge className="mb-6 bg-[#00C851]/20 text-[#00C851] border-[#00C851]/30 hover:bg-[#00C851]/30">
+              <Sparkles className="w-3 h-3 mr-1" />
               Premium Collection
             </Badge>
 
-            {/* Enhanced Header for desktop */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight font-display">
+            {/* Enhanced Header */}
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight font-display">
               <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
                 Digital Trading
               </span>
@@ -45,18 +56,20 @@ const Cards = () => {
               </span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Discover, collect, and trade digital cards from creators around the world. 
-              Experience stunning visualization and real-time trading.
+              Experience stunning 3D visualization and real-time trading.
             </p>
           </div>
 
           <PageErrorBoundary pageName="Card Showcase">
             <Suspense fallback={
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-6 justify-items-center mb-16">
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <div key={i} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 animate-pulse w-full aspect-[3/4]">
-                    <Skeleton className="h-full w-full rounded-xl" />
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center mb-12">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 animate-pulse w-80 h-96">
+                    <Skeleton className="h-56 w-full mb-4 rounded-xl" />
+                    <Skeleton className="h-4 w-3/4 mb-2" />
+                    <Skeleton className="h-3 w-1/2" />
                   </div>
                 ))}
               </div>
@@ -67,10 +80,12 @@ const Cards = () => {
 
           <PageErrorBoundary pageName="Card Grid">
             <Suspense fallback={
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-6">
-                {Array.from({ length: 24 }).map((_, i) => (
-                  <div key={i} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-4 animate-pulse aspect-[3/4]">
-                    <Skeleton className="h-full w-full rounded-xl" />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 animate-pulse">
+                    <Skeleton className="h-64 w-full mb-4 rounded-xl" />
+                    <Skeleton className="h-4 w-3/4 mb-2" />
+                    <Skeleton className="h-3 w-1/2" />
                   </div>
                 ))}
               </div>

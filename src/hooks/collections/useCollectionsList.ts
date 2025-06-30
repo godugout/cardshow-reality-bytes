@@ -142,9 +142,7 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
     }
   });
 
-  // TODO: Real-time subscription temporarily disabled due to crashes
-  // Will be re-enabled with improved implementation later
-  /*
+  // Real-time subscription
   useEffect(() => {
     if (!user) return;
 
@@ -170,7 +168,6 @@ export const useCollectionsList = (filters: CollectionFilters = {}) => {
       supabase.removeChannel(channel);
     };
   }, [user, refetch]);
-  */
 
   return {
     collections,

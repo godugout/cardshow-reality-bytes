@@ -1,7 +1,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useCardsQuery } from './useCardsQuery';
-// TODO: Realtime disabled temporarily - import { useCardsRealtime } from './useCardsRealtime';
+import { useCardsRealtime } from './useCardsRealtime';
 import type { CardFilters } from '@/types/card';
 
 interface SafeCardsState {
@@ -53,16 +53,17 @@ export const useSafeCards = (filters: CardFilters = {}) => {
     }
   }, [originalRefetch]);
 
-  // TODO: Realtime subscriptions temporarily disabled
-  // const shouldUseRealtime = useMemo(() => {
-  //   return safeState.hasInitialized && 
-  //          !safeState.isLoading && 
-  //          !safeState.error && 
-  //          originalRefetch && 
-  //          typeof originalRefetch === 'function';
-  // }, [safeState.hasInitialized, safeState.isLoading, safeState.error, originalRefetch]);
+  // Only use realtime if we have initialized successfully and have a working refetch
+  const shouldUseRealtime = useMemo(() => {
+    return safeState.hasInitialized && 
+           !safeState.isLoading && 
+           !safeState.error && 
+           originalRefetch && 
+           typeof originalRefetch === 'function';
+  }, [safeState.hasInitialized, safeState.isLoading, safeState.error, originalRefetch]);
 
-  // useCardsRealtime(shouldUseRealtime ? refetch : undefined);
+  // Always call the hook but conditionally pass the refetch function
+  useCardsRealtime(shouldUseRealtime ? refetch : undefined);
 
   const returnValue = useMemo(() => ({
     cards: safeState.cards,
