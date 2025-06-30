@@ -8,8 +8,8 @@ import { Play, Sparkles, Zap, Trophy, Users } from 'lucide-react';
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Simple dark background */}
-      <div className="absolute inset-0 bg-background" />
+      {/* Transparent background */}
+      <div className="absolute inset-0 bg-transparent" />
       
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
