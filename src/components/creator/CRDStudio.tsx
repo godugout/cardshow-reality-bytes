@@ -18,6 +18,11 @@ interface CRDStudioProps {
 
 export const CRDStudio = ({ onBack }: CRDStudioProps) => {
   const [activeTab, setActiveTab] = useState('designer');
+  const [showWizard, setShowWizard] = useState(false);
+
+  if (showWizard) {
+    return <CardCreationWizard onBack={() => setShowWizard(false)} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/95">
