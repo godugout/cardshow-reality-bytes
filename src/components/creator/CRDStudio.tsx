@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { ModernCardDesigner } from './ModernCardDesigner';
 import { CreatorDashboard } from './CreatorDashboard';
+import { CardCreationWizard } from './wizard/CardCreationWizard';
 import { 
   ArrowLeft, 
   Sparkles, 
