@@ -37,15 +37,15 @@ export const WizardNavigation = ({ wizard }: WizardNavigationProps) => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-t border-slate-700/50">
-      <div className="container mx-auto px-6 py-4">
+    <div className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-xl border-t border-border shadow-elevation">
+      <div className="container mx-auto px-lg py-md">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center gap-3">
             {!isFirstStep && (
               <Button
                 variant="outline"
                 onClick={prevStep}
-                className="border-slate-600 text-slate-300 hover:text-white hover:border-slate-500"
+                size="sm"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Previous
@@ -56,7 +56,7 @@ export const WizardNavigation = ({ wizard }: WizardNavigationProps) => {
                 variant="ghost"
                 onClick={handleSaveDraft}
                 disabled={wizard.isLoading}
-                className="text-slate-400 hover:text-white"
+                size="sm"
               >
                 <Save className="w-4 h-4 mr-2" />
                 Save Draft
@@ -68,7 +68,8 @@ export const WizardNavigation = ({ wizard }: WizardNavigationProps) => {
             <Button
               onClick={handleNext}
               disabled={!canProceed() || wizard.isLoading}
-              className="bg-primary hover:bg-primary/90 text-white px-6"
+              size="default"
+              className="px-lg"
             >
               {isLastStep ? (
                 <>
