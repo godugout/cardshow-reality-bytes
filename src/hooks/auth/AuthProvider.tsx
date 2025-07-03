@@ -22,6 +22,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       tested: true
     });
 
+    // Auto-login test user in development
+    const autoLoginInDev = async () => {
+      if (import.meta.env.DEV) {
+        try {
+          const { error } = await signIn('test@cardshow.com', 'testpassword');
+          if (error) {
+            console.log('Test user auto-login failed, they may need to be created first');
+          }
+        } catch (err) {
+          console.log('Auto-login error:', err);
+        }
+      }
+    };
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -92,6 +106,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+
+      // Try auto-login if no session exists
+      if (!session && import.meta.env.DEV) {
+        autoLoginInDev();
+      }
     });
 
     return () => subscription.unsubscribe();
