@@ -39,18 +39,13 @@ export const ImageUpload = ({ wizard }: ImageUploadProps) => {
   }, [wizard, previewUrls]);
 
   const MainImageDropzone = () => {
-    const onDrop = useCallback((acceptedFiles: File[]) => {
+    const onDrop = useCallback(async (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
       if (file) {
-        createPreviewUrl(file, 'main');
-        wizard.updateState({
-          images: {
-            ...wizard.state.images,
-            main: file
-          }
-        });
+        // Upload the image immediately and store the URL
+        await wizard.uploadImage(file, 'main');
       }
-    }, []);
+    }, [wizard]);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
       onDrop,
@@ -62,7 +57,7 @@ export const ImageUpload = ({ wizard }: ImageUploadProps) => {
     });
 
     const mainImage = wizard.state.images.main;
-    const previewUrl = mainImage ? previewUrls.main : null;
+    const previewUrl = wizard.getImagePreviewUrl('main');
 
     return (
       <Card className="bg-slate-800 border-slate-700">
@@ -140,18 +135,13 @@ export const ImageUpload = ({ wizard }: ImageUploadProps) => {
     title: string; 
     description: string; 
   }) => {
-    const onDrop = useCallback((acceptedFiles: File[]) => {
+    const onDrop = useCallback(async (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
       if (file) {
-        createPreviewUrl(file, type);
-        wizard.updateState({
-          images: {
-            ...wizard.state.images,
-            [type]: file
-          }
-        });
+        // Upload the image immediately and store the URL
+        await wizard.uploadImage(file, type);
       }
-    }, [type]);
+    }, [wizard, type]);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
       onDrop,
@@ -163,7 +153,7 @@ export const ImageUpload = ({ wizard }: ImageUploadProps) => {
     });
 
     const image = wizard.state.images[type];
-    const previewUrl = image ? previewUrls[type] : null;
+    const previewUrl = wizard.getImagePreviewUrl(type);
 
     return (
       <Card className="bg-slate-800 border-slate-700">

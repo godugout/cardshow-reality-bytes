@@ -57,8 +57,26 @@ export const CardCreationWizard = ({ onBack }: CardCreationWizardProps) => {
               <h1 className="text-xl font-bold text-white">
                 Create New Card
               </h1>
+              {wizard.hasCachedData && (
+                <div className="flex items-center gap-2 px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-lg">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <span className="text-xs text-green-400 font-medium">Draft Saved</span>
+                </div>
+              )}
             </div>
-            <WizardProgress currentStep={wizard.state.currentStep} />
+            <div className="flex items-center gap-4">
+              {wizard.hasCachedData && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={wizard.clearCache}
+                  className="text-slate-400 hover:text-slate-300 text-xs"
+                >
+                  Clear Cache
+                </Button>
+              )}
+              <WizardProgress currentStep={wizard.state.currentStep} />
+            </div>
           </div>
         </div>
       </div>

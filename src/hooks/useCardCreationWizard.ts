@@ -1,14 +1,58 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { CardCreationState, CreationStep, defaultCreationState, Template } from '@/types/cardCreation';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+
+const CACHE_KEY = 'cardCreationWizard_cache';
 
 export const useCardCreationWizard = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [state, setState] = useState<CardCreationState>(defaultCreationState);
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadedImageUrls, setUploadedImageUrls] = useState<Record<string, string>>({});
+
+  // Load cached data on mount
+  useEffect(() => {
+    const loadCachedData = () => {
+      try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const parsedCache = JSON.parse(cached);
+          if (parsedCache.userId === user?.id) {
+            setState(parsedCache.state);
+            setUploadedImageUrls(parsedCache.uploadedImageUrls || {});
+            console.log('Loaded cached card creation data');
+          }
+        }
+      } catch (error) {
+        console.error('Error loading cached data:', error);
+      }
+    };
+
+    if (user) {
+      loadCachedData();
+    }
+  }, [user]);
+
+  // Cache data whenever state changes
+  useEffect(() => {
+    if (user && state.currentStep !== 'templates') {
+      try {
+        const cacheData = {
+          userId: user.id,
+          state,
+          uploadedImageUrls,
+          timestamp: Date.now()
+        };
+        localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+        console.log('Cached card creation data');
+      } catch (error) {
+        console.error('Error caching data:', error);
+      }
+    }
+  }, [state, uploadedImageUrls, user]);
 
   const updateState = useCallback((updates: Partial<CardCreationState>) => {
     setState(prev => ({ ...prev, ...updates }));
@@ -57,6 +101,8 @@ export const useCardCreationWizard = () => {
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}/${Date.now()}_${type}.${fileExt}`;
 
+      console.log('Uploading image:', fileName);
+
       const { data, error } = await supabase.storage
         .from('card-images')
         .upload(fileName, file, {
@@ -64,12 +110,18 @@ export const useCardCreationWizard = () => {
           upsert: false
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Upload error:', error);
+        throw error;
+      }
 
       const { data: { publicUrl } } = supabase.storage
         .from('card-images')
         .getPublicUrl(data.path);
 
+      console.log('Upload successful, URL:', publicUrl);
+
+      // Store both the file AND the uploaded URL
       setState(prev => ({
         ...prev,
         images: {
@@ -78,12 +130,23 @@ export const useCardCreationWizard = () => {
         }
       }));
 
+      // Store the uploaded URL separately for preview
+      setUploadedImageUrls(prev => ({
+        ...prev,
+        [type]: publicUrl
+      }));
+
+      toast({
+        title: "Image uploaded successfully",
+        description: "Your image is ready for preview",
+      });
+
       return publicUrl;
     } catch (error) {
       console.error('Error uploading image:', error);
       toast({
         title: "Upload failed",
-        description: "Failed to upload image. Please try again.",
+        description: `Failed to upload image: ${error.message}`,
         variant: "destructive",
       });
       return null;
@@ -114,12 +177,24 @@ export const useCardCreationWizard = () => {
     try {
       setIsLoading(true);
 
-      // Upload main image if exists
-      let imageUrl = null;
-      if (state.images.main) {
-        imageUrl = await uploadImage(state.images.main);
-        if (!imageUrl) return null;
+      // Use already uploaded image URL instead of re-uploading
+      const imageUrl = uploadedImageUrls.main || null;
+      
+      if (!imageUrl && state.images.main) {
+        // Fallback: upload if we somehow don't have the URL
+        console.log('No cached URL found, uploading image...');
+        const uploadedUrl = await uploadImage(state.images.main);
+        if (!uploadedUrl) {
+          toast({
+            title: "Image upload failed",
+            description: "Please try uploading your image again",
+            variant: "destructive",
+          });
+          return null;
+        }
       }
+
+      console.log('Saving card with image URL:', imageUrl);
 
       const cardInsert = {
         title: state.cardDetails.title,
@@ -138,13 +213,20 @@ export const useCardCreationWizard = () => {
         price: state.price,
       };
 
+      console.log('Card insert data:', cardInsert);
+
       const { data, error } = await supabase
         .from('cards')
         .insert([cardInsert])
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Database error:', error);
+        throw error;
+      }
+
+      console.log('Card saved successfully:', data);
 
       toast({
         title: publish ? "Card published!" : "Card saved!",
@@ -153,9 +235,11 @@ export const useCardCreationWizard = () => {
           : "Your card has been saved as a draft",
       });
 
-      // Reset form after successful save
+      // Clear cache after successful save
       if (publish) {
+        localStorage.removeItem(CACHE_KEY);
         setState(defaultCreationState);
+        setUploadedImageUrls({});
       }
       
       return data.id;
@@ -163,18 +247,39 @@ export const useCardCreationWizard = () => {
       console.error('Error saving card:', error);
       toast({
         title: "Save failed",
-        description: "Failed to save card. Please try again.",
+        description: `Failed to save card: ${error.message}. Your work is cached locally.`,
         variant: "destructive",
       });
       return null;
     } finally {
       setIsLoading(false);
     }
-  }, [user, state, toast, uploadImage]);
+  }, [user, state, toast, uploadedImageUrls, uploadImage]);
 
   const resetWizard = useCallback(() => {
+    localStorage.removeItem(CACHE_KEY);
     setState(defaultCreationState);
+    setUploadedImageUrls({});
   }, []);
+
+  const clearCache = useCallback(() => {
+    localStorage.removeItem(CACHE_KEY);
+    toast({
+      title: "Cache cleared",
+      description: "Local cached data has been removed",
+    });
+  }, [toast]);
+
+  const getImagePreviewUrl = useCallback((type: 'main' | 'background' | 'overlay' = 'main') => {
+    // Return the uploaded URL for preview, or create object URL from file as fallback
+    if (uploadedImageUrls[type]) {
+      return uploadedImageUrls[type];
+    }
+    if (state.images[type]) {
+      return URL.createObjectURL(state.images[type]);
+    }
+    return null;
+  }, [uploadedImageUrls, state.images]);
 
   return {
     state,
@@ -186,6 +291,9 @@ export const useCardCreationWizard = () => {
     uploadImage,
     saveCard,
     resetWizard,
+    clearCache,
+    getImagePreviewUrl,
     isLoading,
+    hasCachedData: Object.keys(uploadedImageUrls).length > 0 || state.currentStep !== 'templates',
   };
 };
