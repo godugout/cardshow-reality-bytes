@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Navigate } from 'react-router-dom';
 
 const Auth = () => {
-  const { user } = useAuth();
+  const { user, signIn, signUp } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,8 +21,26 @@ const Auth = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // TODO: Implement actual authentication logic
-    console.log('Auth form submitted', { isLogin, email, password, username, fullName });
+    
+    try {
+      if (isLogin) {
+        const { error } = await signIn(email, password);
+        if (error) {
+          console.error('Sign in error:', error.message);
+        }
+      } else {
+        const { error } = await signUp(email, password, { 
+          username, 
+          full_name: fullName 
+        });
+        if (error) {
+          console.error('Sign up error:', error.message);
+        }
+      }
+    } catch (error) {
+      console.error('Auth error:', error);
+    }
+    
     setLoading(false);
   };
 
