@@ -196,12 +196,19 @@ export const useCardCreationWizard = () => {
 
       console.log('Saving card with image URL:', imageUrl);
 
+      // Ensure template_id is a valid UUID or null
+      let templateId = state.selectedTemplate?.id || null;
+      if (templateId && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(templateId)) {
+        console.warn('Invalid template ID format, setting to null:', templateId);
+        templateId = null;
+      }
+
       const cardInsert = {
         title: state.cardDetails.title,
         description: state.cardDetails.description || null,
         image_url: imageUrl,
         creator_id: user.id,
-        template_id: state.selectedTemplate?.id,
+        template_id: templateId,
         design_metadata: {
           effects: state.visualEffects,
           colors: state.colors,
@@ -209,7 +216,7 @@ export const useCardCreationWizard = () => {
         },
         rarity: state.cardDetails.rarity as any,
         card_type: state.cardDetails.cardType as any,
-        is_public: publish && state.isPublic,
+        is_public: publish,
         price: state.price,
       };
 
@@ -218,7 +225,7 @@ export const useCardCreationWizard = () => {
       const { data, error } = await supabase
         .from('cards')
         .insert([cardInsert])
-        .select()
+        .select('*, series_one_number')
         .single();
 
       if (error) {
@@ -228,12 +235,22 @@ export const useCardCreationWizard = () => {
 
       console.log('Card saved successfully:', data);
 
-      toast({
-        title: publish ? "Card published!" : "Card saved!",
-        description: publish 
-          ? "Your card has been published successfully" 
-          : "Your card has been saved as a draft",
-      });
+      if (publish && data.series_one_number) {
+        toast({
+          title: "Card Published!",
+          description: `Your card has been published as CRD Series One #${data.series_one_number}`,
+        });
+      } else if (publish) {
+        toast({
+          title: "Card Published!",
+          description: "Your card has been published successfully",
+        });
+      } else {
+        toast({
+          title: "Draft Saved!",
+          description: "Your card has been saved as a draft",
+        });
+      }
 
       // Clear cache after successful save
       if (publish) {

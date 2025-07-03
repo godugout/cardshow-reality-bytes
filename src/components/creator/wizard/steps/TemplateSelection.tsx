@@ -1,88 +1,41 @@
 import { useState, useEffect } from 'react';
 import { useCardCreationWizard } from '@/hooks/useCardCreationWizard';
+import { useCardTemplates, CardTemplate } from '@/hooks/useCardTemplates';
 import { Template, TEMPLATE_CATEGORIES } from '@/types/cardCreation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Crown, Sparkles } from 'lucide-react';
+import { Search, Crown, Sparkles, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface TemplateSelectionProps {
   wizard: ReturnType<typeof useCardCreationWizard>;
 }
 
-// Mock template data - in a real app, this would come from an API
-const mockTemplates: Template[] = [
-  {
-    id: '1',
-    name: 'Sports Legend',
-    category: 'sports',
-    description: 'Perfect for athlete cards with stats and achievements',
-    preview_url: '/placeholder.svg',
-    is_premium: false,
-    price: 0,
-    tags: ['athlete', 'stats', 'professional'],
-  },
-  {
-    id: '2',
-    name: 'Fantasy Warrior',
-    category: 'fantasy',
-    description: 'Epic template for fantasy characters and creatures',
-    preview_url: '/placeholder.svg',
-    is_premium: true,
-    price: 4.99,
-    tags: ['fantasy', 'warrior', 'magic'],
-  },
-  {
-    id: '3',
-    name: 'Sci-Fi Hero',
-    category: 'sci-fi',
-    description: 'Futuristic design for space-age characters',
-    preview_url: '/placeholder.svg',
-    is_premium: false,
-    price: 0,
-    tags: ['sci-fi', 'futuristic', 'technology'],
-  },
-  {
-    id: '4',
-    name: 'Gaming Champion',
-    category: 'gaming',
-    description: 'Gaming-inspired design with dynamic elements',
-    preview_url: '/placeholder.svg',
-    is_premium: true,
-    price: 3.99,
-    tags: ['gaming', 'esports', 'champion'],
-  },
-  {
-    id: '5',
-    name: 'Artistic Portrait',
-    category: 'art',
-    description: 'Elegant template for artistic expressions',
-    preview_url: '/placeholder.svg',
-    is_premium: false,
-    price: 0,
-    tags: ['art', 'portrait', 'elegant'],
-  },
-  {
-    id: '6',
-    name: 'Anime Style',
-    category: 'anime',
-    description: 'Vibrant anime-inspired card design',
-    preview_url: '/placeholder.svg',
-    is_premium: true,
-    price: 2.99,
-    tags: ['anime', 'manga', 'vibrant'],
-  },
-];
+// Convert CardTemplate to Template format
+const mapCardTemplateToTemplate = (cardTemplate: CardTemplate): Template => ({
+  id: cardTemplate.id,
+  name: cardTemplate.name,
+  category: cardTemplate.category,
+  description: cardTemplate.description || '',
+  preview_url: cardTemplate.preview_url || '/placeholder.svg',
+  is_premium: cardTemplate.is_premium || false,
+  price: 0, // Default price for now
+  tags: [], // Default empty tags for now
+});
 
 export const TemplateSelection = ({ wizard }: TemplateSelectionProps) => {
-  const [templates, setTemplates] = useState<Template[]>(mockTemplates);
-  const [filteredTemplates, setFilteredTemplates] = useState<Template[]>(mockTemplates);
+  const [filteredTemplates, setFilteredTemplates] = useState<Template[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // Fetch templates from database
+  const { data: cardTemplates = [], isLoading } = useCardTemplates(selectedCategory !== 'all' ? selectedCategory : undefined);
 
   useEffect(() => {
+    // Map CardTemplate to Template format
+    const templates = cardTemplates.map(mapCardTemplateToTemplate);
     let filtered = templates;
 
     if (selectedCategory !== 'all') {
@@ -92,13 +45,12 @@ export const TemplateSelection = ({ wizard }: TemplateSelectionProps) => {
     if (searchTerm) {
       filtered = filtered.filter(template =>
         template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        template.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        template.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+        (template.description && template.description.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
     setFilteredTemplates(filtered);
-  }, [templates, selectedCategory, searchTerm]);
+  }, [cardTemplates, selectedCategory, searchTerm]);
 
   return (
     <div className="space-y-8 pb-24">
@@ -154,9 +106,20 @@ export const TemplateSelection = ({ wizard }: TemplateSelectionProps) => {
         </div>
       </div>
 
+      {/* Loading State */}
+      {isLoading && (
+        <div className="flex items-center justify-center py-12">
+          <div className="flex items-center gap-3 text-slate-300">
+            <Loader2 className="w-6 h-6 animate-spin" />
+            <span>Loading templates...</span>
+          </div>
+        </div>
+      )}
+
       {/* Templates Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredTemplates.map((template) => (
+      {!isLoading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredTemplates.map((template) => (
           <Card
             key={template.id}
             className={cn(
@@ -215,10 +178,11 @@ export const TemplateSelection = ({ wizard }: TemplateSelectionProps) => {
               </div>
             </CardContent>
           </Card>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
-      {filteredTemplates.length === 0 && (
+      {!isLoading && filteredTemplates.length === 0 && (
         <div className="text-center py-12">
           <div className="text-slate-400 mb-4">
             <Search className="w-12 h-12 mx-auto mb-4 opacity-50" />
