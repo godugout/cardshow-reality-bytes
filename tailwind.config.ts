@@ -20,70 +20,59 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'manrope': ['Manrope', 'sans-serif'],
-				'open-sans': ['Open Sans', 'sans-serif'],
-				'space-grotesk': ['Space Grotesk', 'monospace'],
+				'inter': ['Inter', 'sans-serif'],
+				'default': ['Inter', 'sans-serif'],
 			},
 			colors: {
-				// Modern Professional Palette
-				primary: {
-					50: '#eff6ff',
-					100: '#dbeafe',
-					200: '#bfdbfe',
-					300: '#93c5fd',
-					400: '#60a5fa',
-					500: '#3b82f6', // Main primary
-					600: '#2563eb',
-					700: '#1d4ed8',
-					800: '#1e40af',
-					900: '#1e3a8a',
-					DEFAULT: '#3b82f6',
-					foreground: '#ffffff'
-				},
-				secondary: {
-					50: '#f5f3ff',
-					100: '#ede9fe',
-					200: '#ddd6fe',
-					300: '#c4b5fd',
-					400: '#a78bfa',
-					500: '#8b5cf6', // Main secondary
-					600: '#7c3aed',
-					700: '#6d28d9',
-					800: '#5b21b6',
-					900: '#4c1d95',
-					DEFAULT: '#8b5cf6',
-					foreground: '#ffffff'
-				},
-				success: {
-					50: '#ecfdf5',
-					100: '#d1fae5',
-					500: '#10b981', // Main success
-					600: '#059669',
-					DEFAULT: '#10b981',
-					foreground: '#ffffff'
-				},
-				warning: {
-					50: '#fffbeb',
-					100: '#fef3c7',
-					500: '#f59e0b', // Main warning
-					600: '#d97706',
-					DEFAULT: '#f59e0b',
-					foreground: '#ffffff'
-				},
-				destructive: {
-					50: '#fef2f2',
-					100: '#fecaca',
-					500: '#ef4444', // Main destructive
-					600: '#dc2626',
-					DEFAULT: '#ef4444',
-					foreground: '#ffffff'
-				},
-				// Design system colors
+				// Cardshow Brand Colors
+				'brand-collections': 'hsl(var(--brand-collections))',
+				'brand-cards': 'hsl(var(--brand-cards))',
+				'brand-marketplace': 'hsl(var(--brand-marketplace))',
+				'brand-currency': 'hsl(var(--brand-currency))',
+				
+				// Extended Brand Palette
+				'blue-600': 'hsl(var(--blue-600))',
+				'blue-500': 'hsl(var(--blue-500))',
+				'blue-400': 'hsl(var(--blue-400))',
+				'blue-300': 'hsl(var(--blue-300))',
+				'blue-200': 'hsl(var(--blue-200))',
+				'blue-100': 'hsl(var(--blue-100))',
+				
+				'green-500': 'hsl(var(--green-500))',
+				'green-400': 'hsl(var(--green-400))',
+				'green-300': 'hsl(var(--green-300))',
+				'green-200': 'hsl(var(--green-200))',
+				'green-100': 'hsl(var(--green-100))',
+				
+				'purple-600': 'hsl(var(--purple-600))',
+				'purple-500': 'hsl(var(--purple-500))',
+				'purple-400': 'hsl(var(--purple-400))',
+				'purple-300': 'hsl(var(--purple-300))',
+				
+				'gray-900': 'hsl(var(--gray-900))',
+				'gray-800': 'hsl(var(--gray-800))',
+				'gray-700': 'hsl(var(--gray-700))',
+				'gray-600': 'hsl(var(--gray-600))',
+				'gray-500': 'hsl(var(--gray-500))',
+				'gray-400': 'hsl(var(--gray-400))',
+				'gray-300': 'hsl(var(--gray-300))',
+				'gray-200': 'hsl(var(--gray-200))',
+				'gray-100': 'hsl(var(--gray-100))',
+				
+				// Design system semantic colors
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				surface: 'hsl(var(--surface))',
+				'surface-foreground': 'hsl(var(--surface-foreground))',
+				
+				primary: 'hsl(var(--primary))',
+				'primary-foreground': 'hsl(var(--primary-foreground))',
+				secondary: 'hsl(var(--secondary))',
+				'secondary-foreground': 'hsl(var(--secondary-foreground))',
+				
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
@@ -100,21 +89,37 @@ export default {
 					DEFAULT: 'hsl(var(--accent))',
 					foreground: 'hsl(var(--accent-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				}
+				destructive: {
+					DEFAULT: 'hsl(var(--destructive))',
+					foreground: 'hsl(var(--destructive-foreground))'
+				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
+				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))'
+				},
+			},
+			spacing: {
+				'xs': 'var(--space-xs)',
+				'sm': 'var(--space-sm)',
+				'md': 'var(--space-md)',
+				'lg': 'var(--space-lg)',
+				'xl': 'var(--space-xl)',
 			},
 			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'var(--radius-sm)',
+				md: 'var(--radius-md)', 
+				lg: 'var(--radius-lg)',
+				pill: 'var(--radius-pill)',
+				DEFAULT: 'var(--radius)',
+			},
+			boxShadow: {
+				'card': 'var(--shadow-card)',
+				'hover': 'var(--shadow-hover)',
+				'elevation': 'var(--shadow-elevation)',
 			},
 			keyframes: {
 				'accordion-down': {

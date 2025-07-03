@@ -3,6 +3,211 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './styles/design-system.css';
+/* Cardshow Unified Design System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* Remove all redundant CSS - everything is now in design-system.css */
+@layer base {
+  :root {
+    /* === CARDSHOW BRAND COLOR TOKENS === */
+    
+    /* Primary Brand Colors (HSL values) */
+    --brand-collections: 142 71% 45%;      /* #22C55E - Green for collections */
+    --brand-cards: 20 91% 48%;             /* #F97316 - Orange for cards */
+    --brand-marketplace: 217 91% 60%;      /* #3B82F6 - Blue for shops/marketplace */
+    --brand-currency: 45 93% 58%;          /* #FACC15 - Gold for CRD tokens */
+    
+    /* Extended Brand Palette */
+    --blue-600: 215 100% 48%;              /* #0063f7 */
+    --blue-500: 199 100% 40%;              /* #0083c9 */
+    --blue-400: 197 100% 48%;              /* #009ff5 */
+    --blue-300: 197 85% 65%;               /* #53bdf5 */
+    --blue-200: 226 77% 72%;               /* #5b8def */
+    --blue-100: 227 96% 61%;               /* #3e7bfa */
+    
+    --green-500: 160 92% 39%;              /* #06c270 */
+    --green-400: 155 83% 44%;              /* #1fc16b */
+    --green-300: 153 74% 54%;              /* #39d98a */
+    --green-200: 152 82% 63%;              /* #57eba1 */
+    --green-100: 151 68% 72%;              /* #84ebb4 */
+    
+    --purple-600: 258 100% 27%;            /* #2a008c */
+    --purple-500: 258 100% 39%;            /* #3c00c6 */
+    --purple-400: 258 100% 50%;            /* #4d00ff */
+    --purple-300: 258 100% 67%;            /* #8855ff */
+    
+    /* Neutral Scale */
+    --gray-900: 0 0% 11%;                  /* #1c1c1c */
+    --gray-800: 0 0% 12%;                  /* #1f1f1f */
+    --gray-700: 235 14% 20%;               /* #28293d */
+    --gray-600: 208 10% 19%;               /* #2d3339 */
+    --gray-500: 0 0% 20%;                  /* #333333 */
+    --gray-400: 0 0% 25%;                  /* #404040 */
+    --gray-300: 0 0% 29%;                  /* #4a4a4a */
+    --gray-200: 228 14% 38%;               /* #555770 */
+    --gray-100: 0 0% 38%;                  /* #606060 */
+    
+    /* === SEMANTIC DESIGN TOKENS === */
+    
+    /* Base System Colors */
+    --background: 216 33% 8%;              /* #12151C - Dark background */
+    --foreground: 0 0% 98%;                /* Near white text */
+    --card: 0 0% 12%;                      /* #1E1E1E - Elevated cards */
+    --card-foreground: 0 0% 98%;           
+    --surface: 0 0% 96%;                   /* #F5F5F5 - Light surface sections */
+    --surface-foreground: 0 0% 11%;        
+    
+    /* Interactive Elements */
+    --primary: var(--brand-marketplace);    /* Blue for primary actions */
+    --primary-foreground: 0 0% 100%;
+    --secondary: var(--gray-700);
+    --secondary-foreground: 0 0% 98%;
+    --muted: var(--gray-800);
+    --muted-foreground: var(--gray-100);
+    --accent: var(--gray-700);
+    --accent-foreground: 0 0% 98%;
+    
+    /* State Colors */
+    --destructive: 0 84% 60%;              /* Red */
+    --destructive-foreground: 0 0% 100%;
+    --success: var(--brand-collections);    /* Green for success */
+    --success-foreground: 0 0% 100%;
+    --warning: var(--brand-currency);       /* Gold for warnings */
+    --warning-foreground: 0 0% 11%;
+    
+    /* Borders & Inputs */
+    --border: var(--gray-700);
+    --input: var(--gray-700);
+    --ring: var(--brand-marketplace);
+    
+    /* === SPACING TOKENS === */
+    --space-xs: 0.25rem;    /* 4px */
+    --space-sm: 0.5rem;     /* 8px */
+    --space-md: 1rem;       /* 16px */
+    --space-lg: 1.5rem;     /* 24px */
+    --space-xl: 2rem;       /* 32px */
+    
+    /* === RADIUS TOKENS === */
+    --radius-sm: 0.25rem;   /* 4px */
+    --radius-md: 0.5rem;    /* 8px */
+    --radius-lg: 0.75rem;   /* 12px */
+    --radius-pill: 9999px;
+    --radius: var(--radius-md);
+    
+    /* === SHADOW TOKENS === */
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.25);
+    --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.35);
+    --shadow-elevation: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .light {
+    --background: 0 0% 100%;               /* White background */
+    --foreground: 0 0% 11%;                /* Dark text */
+    --card: 0 0% 100%;                     /* White cards */
+    --card-foreground: 0 0% 11%;
+    --surface: var(--gray-900);            /* Dark surface in light mode */
+    --surface-foreground: 0 0% 98%;
+    --muted: 0 0% 96%;                     /* Light gray */
+    --muted-foreground: var(--gray-500);
+    --border: 0 0% 89%;                    /* Light border */
+    --input: 0 0% 89%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+  }
+}
+
+@layer components {
+  /* === CARDSHOW COMPONENT CLASSES === */
+  
+  /* Collections Theme */
+  .collections-theme {
+    @apply text-brand-collections border-brand-collections;
+  }
+  
+  .collections-bg {
+    background-color: hsl(var(--brand-collections));
+  }
+  
+  /* Cards Theme */
+  .cards-theme {
+    @apply text-brand-cards border-brand-cards;
+  }
+  
+  .cards-bg {
+    background-color: hsl(var(--brand-cards));
+  }
+  
+  /* Marketplace Theme */
+  .marketplace-theme {
+    @apply text-brand-marketplace border-brand-marketplace;
+  }
+  
+  .marketplace-bg {
+    background-color: hsl(var(--brand-marketplace));
+  }
+  
+  /* Currency Display */
+  .currency-display {
+    @apply text-brand-currency font-semibold;
+  }
+  
+  .currency-bg {
+    background-color: hsl(var(--brand-currency));
+    color: hsl(var(--gray-900));
+  }
+  
+  /* Card Layouts */
+  .card-shell {
+    @apply bg-card rounded-lg shadow-card border border-border;
+  }
+  
+  .card-elevated {
+    @apply bg-card rounded-lg border border-border;
+    box-shadow: var(--shadow-hover);
+  }
+  
+  .surface-section {
+    @apply bg-surface text-surface-foreground rounded-lg p-lg;
+  }
+}
+
+@layer utilities {
+  /* Typography Utilities */
+  .text-xs { font-size: 12px; }
+  .text-sm { font-size: 14px; }
+  .text-base { font-size: 16px; }
+  .text-lg { font-size: 20px; }
+  .text-xl { font-size: 24px; }
+  .text-2xl { font-size: 32px; }
+  .text-3xl { font-size: 40px; }
+  
+  /* Spacing Utilities */
+  .p-xs { padding: var(--space-xs); }
+  .p-sm { padding: var(--space-sm); }
+  .p-md { padding: var(--space-md); }
+  .p-lg { padding: var(--space-lg); }
+  .p-xl { padding: var(--space-xl); }
+  
+  .m-xs { margin: var(--space-xs); }
+  .m-sm { margin: var(--space-sm); }
+  .m-md { margin: var(--space-md); }
+  .m-lg { margin: var(--space-lg); }
+  .m-xl { margin: var(--space-xl); }
+  
+  /* Radius Utilities */
+  .rounded-card { border-radius: var(--radius-lg); }
+  .rounded-pill { border-radius: var(--radius-pill); }
+}

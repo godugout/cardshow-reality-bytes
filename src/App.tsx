@@ -48,14 +48,14 @@ function App() {
             <AuthProvider>
               <Toaster />
               <Sonner />
-              <div className="min-h-screen bg-gradient-to-br from-slate-900 via-green-900/20 to-slate-800 relative">
-                {/* Subtle Dot Pattern Background */}
+              <div className="min-h-screen bg-background relative">
+                {/* Subtle Brand Pattern Background */}
                 <div 
-                  className="absolute inset-0 opacity-15 pointer-events-none"
+                  className="absolute inset-0 opacity-5 pointer-events-none"
                   style={{
-                    backgroundImage: `radial-gradient(circle, #00C851 1px, transparent 1px)`,
-                    backgroundSize: '24px 24px',
-                    backgroundPosition: '0 0, 12px 12px'
+                    backgroundImage: `radial-gradient(circle, hsl(var(--brand-collections)) 1px, transparent 1px)`,
+                    backgroundSize: '32px 32px',
+                    backgroundPosition: '0 0, 16px 16px'
                   }}
                 />
                 
