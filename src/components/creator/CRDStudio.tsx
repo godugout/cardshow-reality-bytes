@@ -79,7 +79,7 @@ export const CRDStudio = ({ onBack }: CRDStudioProps) => {
           </TabsContent>
 
           <TabsContent value="designer">
-            <ModernCardDesigner />
+            <CardCreationWizard onBack={() => setActiveTab('dashboard')} />
           </TabsContent>
 
           <TabsContent value="analytics">
