@@ -201,9 +201,7 @@ export const useCardCreationWizard = () => {
         description: state.cardDetails.description || null,
         image_url: imageUrl,
         creator_id: user.id,
-        template_id: state.selectedTemplate?.id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i) 
-          ? state.selectedTemplate.id 
-          : null, // Only set if it's a valid UUID, otherwise null
+        template_id: state.selectedTemplate?.id,
         design_metadata: {
           effects: state.visualEffects,
           colors: state.colors,

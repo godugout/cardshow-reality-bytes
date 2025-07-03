@@ -36,12 +36,12 @@ export const CardDetails = ({ wizard }: CardDetailsProps) => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Basic Information */}
-        <Card className="card-shell">
-          <CardContent className="p-lg">
-            <h3 className="text-lg font-bold text-foreground mb-lg flex items-center">
-              <FileText className="w-5 h-5 mr-2 text-brand-cards" />
+        <Card className="bg-slate-800 border-slate-700">
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold text-white mb-6 flex items-center">
+              <FileText className="w-5 h-5 mr-2 text-primary" />
               Basic Information
             </h3>
 
@@ -56,6 +56,7 @@ export const CardDetails = ({ wizard }: CardDetailsProps) => {
                   placeholder="Enter your card title..."
                   value={state.cardDetails.title}
                   onChange={(e) => updateCardDetails({ title: e.target.value })}
+                  className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
                 />
                 <p className="text-xs text-slate-400 mt-1">
                   This will be the main title displayed on your card
@@ -73,7 +74,7 @@ export const CardDetails = ({ wizard }: CardDetailsProps) => {
                   value={state.cardDetails.description}
                   onChange={(e) => updateCardDetails({ description: e.target.value })}
                   rows={4}
-                  className="resize-none"
+                  className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 resize-none"
                 />
                 <p className="text-xs text-slate-400 mt-1">
                   Optional but recommended for better engagement
@@ -84,10 +85,10 @@ export const CardDetails = ({ wizard }: CardDetailsProps) => {
         </Card>
 
         {/* Card Properties */}
-        <Card className="card-shell">
-          <CardContent className="p-lg">
-            <h3 className="text-lg font-bold text-foreground mb-lg flex items-center">
-              <Tag className="w-5 h-5 mr-2 text-brand-cards" />
+        <Card className="bg-slate-800 border-slate-700">
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold text-white mb-6 flex items-center">
+              <Tag className="w-5 h-5 mr-2 text-primary" />
               Card Properties
             </h3>
 
@@ -101,12 +102,12 @@ export const CardDetails = ({ wizard }: CardDetailsProps) => {
                   value={state.cardDetails.cardType}
                   onValueChange={(value) => updateCardDetails({ cardType: value })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
                     <SelectValue placeholder="Select card type" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-slate-700 border-slate-600">
                     {CARD_TYPES.map((type) => (
-                      <SelectItem key={type.value} value={type.value}>
+                      <SelectItem key={type.value} value={type.value} className="text-white hover:bg-slate-600">
                         {type.label}
                       </SelectItem>
                     ))}
@@ -127,7 +128,7 @@ export const CardDetails = ({ wizard }: CardDetailsProps) => {
                       className={`p-3 rounded-lg border text-left transition-all duration-200 ${
                         state.cardDetails.rarity === rarity.value
                           ? 'border-primary bg-primary/10'
-                          : 'border-border bg-muted hover:border-primary/50'
+                          : 'border-slate-600 bg-slate-700 hover:border-slate-500'
                       }`}
                     >
                       <div className="flex items-center gap-2 mb-1">
@@ -135,7 +136,7 @@ export const CardDetails = ({ wizard }: CardDetailsProps) => {
                           className="w-3 h-3 rounded-full"
                           style={{ backgroundColor: rarity.color }}
                         />
-                        <span className="text-foreground font-medium text-sm">
+                        <span className="text-white font-medium text-sm">
                           {rarity.label}
                         </span>
                       </div>
@@ -149,24 +150,24 @@ export const CardDetails = ({ wizard }: CardDetailsProps) => {
       </div>
 
       {/* Preview Card Info */}
-      <Card className="card-elevated">
-        <CardContent className="p-lg">
-          <h3 className="text-lg font-bold text-foreground mb-md flex items-center">
-            <Star className="w-5 h-5 mr-2 text-brand-currency" />
+      <Card className="bg-gradient-to-r from-slate-800 to-slate-700 border-slate-600">
+        <CardContent className="p-6">
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+            <Star className="w-5 h-5 mr-2 text-yellow-400" />
             Card Preview
           </h3>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <p className="text-sm text-slate-400 mb-1">Title</p>
-              <p className="text-foreground font-medium">
+              <p className="text-white font-medium">
                 {state.cardDetails.title || 'Untitled Card'}
               </p>
             </div>
             
             <div>
               <p className="text-sm text-slate-400 mb-1">Type</p>
-              <Badge variant="secondary">
+              <Badge variant="secondary" className="bg-slate-600 text-slate-200">
                 {CARD_TYPES.find(type => type.value === state.cardDetails.cardType)?.label || 'Character'}
               </Badge>
             </div>
@@ -180,7 +181,7 @@ export const CardDetails = ({ wizard }: CardDetailsProps) => {
                     backgroundColor: CARD_RARITIES.find(r => r.value === state.cardDetails.rarity)?.color || '#94a3b8'
                   }}
                 />
-                <span className="text-foreground font-medium">
+                <span className="text-white font-medium">
                   {CARD_RARITIES.find(r => r.value === state.cardDetails.rarity)?.label || 'Common'}
                 </span>
               </div>
@@ -188,9 +189,9 @@ export const CardDetails = ({ wizard }: CardDetailsProps) => {
           </div>
 
           {state.cardDetails.description && (
-            <div className="mt-4 pt-4 border-t border-border">
-              <p className="text-sm text-muted-foreground mb-1">Description</p>
-              <p className="text-foreground text-sm leading-relaxed">
+            <div className="mt-4 pt-4 border-t border-slate-600">
+              <p className="text-sm text-slate-400 mb-1">Description</p>
+              <p className="text-slate-200 text-sm leading-relaxed">
                 {state.cardDetails.description}
               </p>
             </div>

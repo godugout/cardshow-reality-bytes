@@ -27,25 +27,25 @@ export const WizardProgress = ({ currentStep }: WizardProgressProps) => {
         return (
           <div key={step.key} className="flex items-center gap-2">
             <div className={cn(
-              "w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-200 border-2",
-              isActive && "bg-primary text-primary-foreground border-primary scale-110 shadow-lg shadow-primary/25",
-              isCompleted && "bg-success text-success-foreground border-success",
-              isUpcoming && "bg-muted text-muted-foreground border-border"
+              "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200",
+              isActive && "bg-primary text-white scale-110",
+              isCompleted && "bg-green-500 text-white",
+              isUpcoming && "bg-slate-700 text-slate-400"
             )}>
               {step.number}
             </div>
             <span className={cn(
               "text-sm font-medium transition-colors duration-200 hidden sm:block",
-              isActive && "text-foreground font-semibold",
-              isCompleted && "text-success",
-              isUpcoming && "text-muted-foreground"
+              isActive && "text-white",
+              isCompleted && "text-green-400",
+              isUpcoming && "text-slate-400"
             )}>
               {step.label}
             </span>
             {index < steps.length - 1 && (
               <div className={cn(
-                "w-6 h-0.5 transition-colors duration-200 hidden sm:block rounded-full",
-                index < currentStepIndex ? "bg-success" : "bg-border"
+                "w-8 h-0.5 transition-colors duration-200 hidden sm:block",
+                index < currentStepIndex ? "bg-green-500" : "bg-slate-700"
               )} />
             )}
           </div>

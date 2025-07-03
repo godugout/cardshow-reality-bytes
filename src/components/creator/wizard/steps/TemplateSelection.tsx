@@ -120,7 +120,7 @@ export const TemplateSelection = ({ wizard }: TemplateSelectionProps) => {
             placeholder="Search templates..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-10 bg-slate-800 border-slate-600 text-white placeholder:text-slate-400"
           />
         </div>
         <div className="flex gap-2 overflow-x-auto pb-2">
@@ -130,8 +130,8 @@ export const TemplateSelection = ({ wizard }: TemplateSelectionProps) => {
             onClick={() => setSelectedCategory('all')}
             className={cn(
               selectedCategory === 'all' 
-                ? 'bg-primary text-primary-foreground' 
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'bg-primary text-white' 
+                : 'border-slate-600 text-slate-300 hover:text-white'
             )}
           >
             All
@@ -144,8 +144,8 @@ export const TemplateSelection = ({ wizard }: TemplateSelectionProps) => {
               onClick={() => setSelectedCategory(category.value)}
               className={cn(
                 selectedCategory === category.value 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'bg-primary text-white' 
+                  : 'border-slate-600 text-slate-300 hover:text-white'
               )}
             >
               {category.icon} {category.label}
@@ -160,14 +160,14 @@ export const TemplateSelection = ({ wizard }: TemplateSelectionProps) => {
           <Card
             key={template.id}
             className={cn(
-              "card-shell hover:border-primary/50 transition-all duration-200 cursor-pointer group hover:shadow-hover",
-              wizard.state.selectedTemplate?.id === template.id && "border-primary bg-primary/5"
+              "bg-slate-800 border-slate-700 hover:border-primary/50 transition-all duration-200 cursor-pointer group",
+              wizard.state.selectedTemplate?.id === template.id && "border-primary bg-slate-700"
             )}
             onClick={() => wizard.selectTemplate(template)}
           >
             <CardContent className="p-0">
               {/* Template Preview */}
-              <div className="aspect-[3/4] bg-gradient-to-br from-muted to-muted/50 rounded-t-lg relative overflow-hidden">
+              <div className="aspect-[3/4] bg-gradient-to-br from-slate-700 to-slate-800 rounded-t-lg relative overflow-hidden">
                 <img
                   src={template.preview_url}
                   alt={template.name}
@@ -193,21 +193,21 @@ export const TemplateSelection = ({ wizard }: TemplateSelectionProps) => {
               {/* Template Info */}
               <div className="p-4">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                  <h3 className="font-semibold text-white group-hover:text-primary transition-colors">
                     {template.name}
                   </h3>
                   {template.is_premium && (
-                    <span className="text-brand-currency font-medium text-sm">
+                    <span className="text-yellow-400 font-medium text-sm">
                       ${template.price}
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground mb-3">
+                <p className="text-sm text-slate-400 mb-3">
                   {template.description}
                 </p>
                 <div className="flex flex-wrap gap-1">
                   {template.tags.slice(0, 3).map((tag) => (
-                    <Badge key={tag} variant="secondary" className="text-xs">
+                    <Badge key={tag} variant="secondary" className="text-xs bg-slate-700 text-slate-300">
                       {tag}
                     </Badge>
                   ))}
@@ -223,10 +223,10 @@ export const TemplateSelection = ({ wizard }: TemplateSelectionProps) => {
           <div className="text-slate-400 mb-4">
             <Search className="w-12 h-12 mx-auto mb-4 opacity-50" />
           </div>
-          <h3 className="text-xl font-semibold text-foreground mb-2">
+          <h3 className="text-xl font-semibold text-slate-300 mb-2">
             No templates found
           </h3>
-          <p className="text-muted-foreground">
+          <p className="text-slate-400">
             Try adjusting your search terms or category filter.
           </p>
         </div>

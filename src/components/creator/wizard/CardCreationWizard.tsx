@@ -38,40 +38,39 @@ export const CardCreationWizard = ({ onBack }: CardCreationWizardProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Header */}
-      <div className="border-b border-border bg-card/80 backdrop-blur-xl shadow-card">
-        <div className="container mx-auto px-lg py-md">
+      <div className="border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-xl">
+        <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-md">
+            <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={onBack}
+                className="text-slate-300 hover:text-white"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Studio
               </Button>
-              <div className="h-6 w-px bg-border" />
-              <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-brand-cards to-brand-cards/80 flex items-center justify-center text-white font-bold text-sm">
-                  C
-                </div>
+              <div className="h-6 w-px bg-slate-600" />
+              <h1 className="text-xl font-bold text-white">
                 Create New Card
               </h1>
               {wizard.hasCachedData && (
-                <div className="flex items-center gap-2 px-3 py-1 bg-success/10 border border-success/30 rounded-lg">
-                  <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
-                  <span className="text-xs text-success font-medium">Draft Saved</span>
+                <div className="flex items-center gap-2 px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-lg">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <span className="text-xs text-green-400 font-medium">Draft Saved</span>
                 </div>
               )}
             </div>
-            <div className="flex items-center gap-md">
+            <div className="flex items-center gap-4">
               {wizard.hasCachedData && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={wizard.clearCache}
+                  className="text-slate-400 hover:text-slate-300 text-xs"
                 >
                   Clear Cache
                 </Button>
@@ -83,7 +82,7 @@ export const CardCreationWizard = ({ onBack }: CardCreationWizardProps) => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-lg py-xl">
+      <div className="container mx-auto px-6 py-8">
         <div className="max-w-6xl mx-auto">
           {renderCurrentStep()}
         </div>

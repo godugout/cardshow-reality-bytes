@@ -20,24 +20,24 @@ const Header = () => {
   const location = useLocation();
 
   const navigation = [
-    { name: 'Home', href: '/', color: 'from-brand-marketplace to-brand-marketplace/80', theme: 'marketplace' },
-    { name: 'Cards', href: '/cards', color: 'from-brand-cards to-brand-cards/80', theme: 'cards' },
-    { name: 'Creator', href: '/creator', color: 'from-brand-cards to-brand-cards/80', theme: 'cards' },
-    { name: 'Marketplace', href: '/marketplace', color: 'from-brand-marketplace to-brand-marketplace/80', theme: 'marketplace' },
-    { name: 'Community', href: '/community', color: 'from-brand-collections to-brand-collections/80', theme: 'collections' },
+    { name: 'Home', href: '/', color: 'from-blue-500 to-cyan-400' },
+    { name: 'Cards', href: '/cards', color: 'from-green-500 to-emerald-400' },
+    { name: 'Creator', href: '/creator', color: 'from-purple-500 to-violet-400' },
+    { name: 'Marketplace', href: '/marketplace', color: 'from-orange-500 to-amber-400' },
+    { name: 'Community', href: '/community', color: 'from-pink-500 to-rose-400' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-card/90 backdrop-blur-xl border-b border-border shadow-card">
+    <header className="sticky top-0 z-50 w-full bg-slate-900/90 backdrop-blur-xl border-b border-slate-700/50">
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link to="/" className="mr-8 flex items-center space-x-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-r from-brand-collections to-brand-collections/80 text-white font-black text-lg shadow-lg">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-r from-[#00C851] to-[#00A543] text-white font-black text-lg shadow-lg">
               C
             </div>
-            <span className="hidden font-black text-xl sm:inline-block bg-gradient-to-r from-brand-collections to-brand-collections/80 bg-clip-text text-transparent">
+            <span className="hidden font-black text-xl sm:inline-block bg-gradient-to-r from-[#00C851] to-[#00A543] bg-clip-text text-transparent">
               Cardshow
             </span>
           </Link>
@@ -49,7 +49,7 @@ const Header = () => {
                 className={`relative transition-all duration-300 hover:scale-105 px-4 py-2 rounded-2xl group ${
                   isActive(item.href) 
                     ? 'text-white shadow-lg' 
-                    : 'text-muted-foreground hover:text-foreground'
+                    : 'text-slate-300 hover:text-white'
                 }`}
               >
                 {isActive(item.href) && (
